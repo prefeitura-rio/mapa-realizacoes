@@ -22,7 +22,7 @@ npm start
 ```
 
 
-#### Instação e dependências
+#### Instalação e dependências
 
 Este aplicativo foi construído e testado usando
 
