@@ -1,7 +1,7 @@
-# Google Maps Clone React
-Fullstack Google Maps Clone created with React, Redux, Leaflet and Firebase. <br/><br/>
+# Mapa de realizações da prefeitura inspirado no google maps
+Projeto fullstack criado com React, Redux, Leaflet e Firebase. <br/><br/>
 ## Demo:
- <a href="https://g-maps-clone.web.app/">g-maps-clone</a> 
+ <a href="https://g-maps-clone.web.app/">mapa-realizacoes</a> 
 ## Screenshots:
 ### Fullwidth:
 ![image](./images/132619257-a49f59b9-b3f8-47f6-8dbe-9764a462bc20%20(1).png)<br/><br/>
