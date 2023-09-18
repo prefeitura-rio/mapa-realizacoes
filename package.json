@@ -46,7 +46,7 @@
   "devDependencies": {
     "node-gyp": "^8.4.1"
   },
-  "homepage": "http://https://github.com/prefeitura-rio/Mapa-De-Realizacoes-3.0",
+  "homepage": "https://prefeitura-rio.github.io/Mapa-De-Realizacoes-3.0",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
