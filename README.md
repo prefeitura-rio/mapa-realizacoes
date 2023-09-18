@@ -32,8 +32,8 @@ Este aplicativo foi construído e testado usando
 #### Credenciais do firebase - firebase.js
 ```
 As credenciais do firebase estão no arquivo firebaseconfig.js.
-Esse arquivo não se encontra neste repositório.Entre em contato com algum
-dos desenvolvedores do escritório de dados para ter acesso a este arquivo.
+Esse arquivo não se encontra neste repositório. Este arquivo é
+de uso exclusivo dos desenvolvedores do escritório de dados.
 ```
   
 ## Screenshots:
