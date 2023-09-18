@@ -111,12 +111,12 @@ const MainUnderSearchBar = forwardRef(
             <HistoryContainer />
           </div>
         </Paper>
-        <Paper
+        {/* <Paper
           square
           variant="outlined"
           className={clsx(classes.card, classes.outlined)}
-        >
-          <List>
+        > */}
+          {/* <List>
             {myPlaces.map((item, index) => (
               <div key={index}>
                 <ListItem button key={item.name}>
@@ -138,14 +138,14 @@ const MainUnderSearchBar = forwardRef(
                 ) : null}
               </div>
             ))}
-          </List>
-        </Paper>
-        <Paper
+          </List> */}
+        {/* </Paper> */}
+        {/* <Paper
           square
           variant="outlined"
           className={clsx(classes.card, classes.outlined)}
-        >
-          <List>
+        > */}
+          {/* <List>
             <ListItem button key={"Traffic"}>
               <ListItemIcon>
                 <Avatar
@@ -175,8 +175,8 @@ const MainUnderSearchBar = forwardRef(
                 <ArrowForwardIosRoundedIcon fontSize="small" />
               </IconButton>
             </ListItem>
-          </List>
-        </Paper>
+          </List> */}
+        {/* </Paper> */}
         <Paper
           square
           variant="outlined"

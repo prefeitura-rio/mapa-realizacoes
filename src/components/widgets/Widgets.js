@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import UnderSearchContainer from "../sidebars/wrapper/UnderSearchContainer";
 import HorizontalContainer from "./horizontalWidget/HorizontalContainer";
-import MinimapWidget from "./minimapWidget/MinimapWidget";
+// import MinimapWidget from "./minimapWidget/MinimapWidget";
 import SearchbarContainer from "./searchBar/SearchbarContainer";
 import UserWidget from "./userWidget/UserWidget";
 import VerticalContainer from "./verticalWidget/VerticalContainer";
@@ -86,7 +86,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
           <BottomGalleryContainer />
         </div>
         <div className={classes.bottomLeftWidgets}>
-          <MinimapWidget bottomGallery={bottomGallery} />
+          {/* <MinimapWidget bottomGallery={bottomGallery} /> */}
         </div>
       </div>
 

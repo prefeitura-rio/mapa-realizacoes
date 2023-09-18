@@ -20,11 +20,11 @@ const BasicInfo = ({ content }) => {
   return (
     <div className={classes.basicInfo}>
       <Typography variant="h1">{content.name}</Typography>
-      <Typography variant="h2" style={{ marginTop: "4px" }}>
+      {/* <Typography variant="h2" style={{ marginTop: "4px" }}>
         {content.name}
-      </Typography>
-      <Typography variant="body2" component="div" style={{ marginTop: "8px" }}>
-        <div className={classes.rating}>
+      </Typography> */}
+      {/* <Typography variant="body2" component="div" style={{ marginTop: "8px" }}> */}
+        {/* <div className={classes.rating}>
           <Box mr="3px">{numeral(content.ratingValue).format("0.0")}</Box>
           <Rating
             name="read-only"
@@ -35,16 +35,16 @@ const BasicInfo = ({ content }) => {
           <Box ml="3px">
             {numeral(content.ratingCount).format("0,0") + " rewiews"}
           </Box>
-        </div>
-        <Link
+        </div> */}
+        {/* <Link
           href="#"
           onClick={(e) => e.preventDefault()}
           variant="body2"
           color="textSecondary"
         >
           {content.type}
-        </Link>
-      </Typography>
+        </Link> */}
+      {/* </Typography> */}
     </div>
   );
 };

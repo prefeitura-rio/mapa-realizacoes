@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     promptText: {
+      marginTop:"10px",
       marginLeft: "13px",
       marginRight: "20px",
       color: "inherit",
@@ -69,7 +70,7 @@ const PromptBlock = ({
 
   console.log(underSearchBar);
 
-  const promptText = "Mostrar mais informações e filtros de pesquisa ...";
+  const promptText = "Filtros de pesquisa ...";
 
   return searchPrompt || underSearchBar ? (
     <>

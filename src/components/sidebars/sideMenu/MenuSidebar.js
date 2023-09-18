@@ -47,18 +47,19 @@ const useStyles = makeStyles((theme) => {
     },
     headerImage: {
       display: "block",
-      height: "35px",
+      height: "40px",
       paddingLeft: "11px",
     },
     listItemText: {
       fontSize: "0.8rem",
+      paddingBottom:"5px"
     },
     
   };
 });
 
 const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
-  const layersText = "Another layers";
+  // const layersText = "Another layers";
   const classes = useStyles();
   const componentsToText = [
     { iconComponent: LocationOnOutlinedIcon, text: "My places" },
@@ -80,14 +81,14 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
       <div className={classes.header}>
       <img
         className={classes.headerImage}
-        src={logo}  // Substituído pela variável logo
+        src={logo}  
         alt="logo"
       />
         <IconButton onClick={() => setMenuSidebar(!menuSidebar)}>
           <CloseIcon />
         </IconButton>
       </div>
-      <Divider />
+      {/* <Divider />
       <List>
         <ListItem button>
           <ListItemIcon>
@@ -99,8 +100,8 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
           />
         </ListItem>
       </List>
-      <Divider />
-      <List>
+      <Divider /> */}
+      {/* <List>
         {componentsToText.map((data) => (
           <ListItem button key={data.text}>
             <ListItemIcon>
@@ -112,8 +113,8 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
             />
           </ListItem>
         ))}
-      </List>
-      <Divider />
+      </List> */}
+      {/* <Divider />
       <ListItem
         button
         onClick={() =>
@@ -129,7 +130,7 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
           primary={"prefeitura.rio"}
           // primary={"github.com/AlexanderBaikal"}
         />
-      </ListItem>
+      </ListItem> */}
       <Divider />
       <ListItem>
         <ListItemIcon>
@@ -138,10 +139,17 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
         <ListItemText
           classes={{ primary: classes.listItemText }}
           primary={"Sobre o projeto"}
-          secondary={"blablablalbla"}
+          
+          secondary={`O Mapa de Realizações da Cidade do Rio de Janeiro é
+           uma iniciativa inovadora que visa aumentar a transparência,
+            eficiência e responsabilidade no uso de recursos públicos destinados 
+            a obras e projetos de desenvolvimento urbano. Desenvolvido com a cooperação 
+            dos desenvolvedores do Escritório de Dados, este mapa digital
+             interativo serve como um ponto focal para o acompanhamento em tempo real do status, 
+             progresso e impacto de diversas obras em toda a cidade.`}
         />
       </ListItem>
-      <ListItem>
+      {/* <ListItem>
         <ListItemIcon>
           <BookmarkIcon />
         </ListItemIcon>
@@ -151,7 +159,7 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
           secondary={"Ver outros projetos da prefeitura aqui..."}
           // secondary={"You can see other projects here: alexbaikalov.com"}
         />
-      </ListItem>
+      </ListItem> */}
     </Paper>
   );
 };

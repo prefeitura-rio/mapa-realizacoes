@@ -144,8 +144,8 @@ const PlaceDescriptionBar = ({
         className={classes.topImage}
       />
       <BasicInfo content={content} />
-      <Divider />
-      <ActionButtons />
+      {/* <Divider /> */}
+      {/* <ActionButtons /> */}
       <Divider />
       <div className={classes.listInfo}>
         <ListInfo content={content} />
