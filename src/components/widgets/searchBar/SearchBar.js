@@ -168,7 +168,7 @@ const SearchBar = ({
           </IconButton>
           <InputBase
             className={classes.input}
-            placeholder="Search Google Maps"
+            placeholder="Buscar por bairro"
             inputRef={inputRef}
             onChange={(e) => setinputValue(e.target.value)}
           />

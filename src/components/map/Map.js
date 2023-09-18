@@ -68,35 +68,36 @@ const Map = ({
 
   return (
     <>
-      <MapContainer
-        center={[8.98, -79.50]}
-        zoom={13}
-        scrollWheelZoom={true}
-        zoomControl={false}
-        whenCreated={setMap}
-      >
-        <TileLayer
-          url="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}@2x.png?key=aqjLoB2kRuhWSZjNO6YJ"
-          attribution='<a href="https://www.maptiler.com/copyright/\" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors | Follow me <a href="https://github.com/AlexanderBaikal" target="_blank">AlexanderBaikal</a> | <a href="https://alexbaikalov.com" target="_blank">Personal website</a>'
-          maxZoom={18}
-          tileSize={512}
-          zoomOffset={-1}
-        />
-        {points.map((point) => (
-          <Marker
-            key={Object.values(point.coords).join("")}
-            position={Object.values(point.coords)}
-            icon={getIcon(point.type)}
-            eventHandlers={{
-              click: (e) => onMarkerClick(point),
-            }}
-          >
-            <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-              <span>{point.name}</span>
-            </Tooltip>
-          </Marker>
-        ))}
-      </MapContainer>
+     <MapContainer
+  center={[-22.9068, -43.3999]}  // Coordenadas para o Rio de Janeiro
+  zoom={11.5}
+  scrollWheelZoom={true}
+  zoomControl={false}
+  whenCreated={setMap}
+>
+  <TileLayer
+    url="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}@2x.png?key=aqjLoB2kRuhWSZjNO6YJ"
+    attribution='<a href="https://www.maptiler.com/copyright/\" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors | Prefeitura do Rio de Janeiro <a href="https://prefeitura.rio/" target="_blank"></a>'
+    maxZoom={18}
+    tileSize={512}
+    zoomOffset={-1}
+  />
+  {points.map((point) => (
+    <Marker
+      key={Object.values(point.coords).join("")}
+      position={Object.values(point.coords)}
+      icon={getIcon(point.type)}
+      eventHandlers={{
+        click: (e) => onMarkerClick(point),
+      }}
+    >
+      <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+        <span>{point.name}</span>
+      </Tooltip>
+    </Marker>
+  ))}
+</MapContainer>
+
       {contextCoords && opened ? (
         <ContextMenu
           screenCoords={contextCoords.point}

@@ -264,7 +264,7 @@ const EditInfoModal = ({
       >
         <div className={classes.title}>
           <Typography variant="h3" component="span">
-            Suggest an edit
+          Editar infomações
           </Typography>
           <Typography variant="body1" color="textSecondary" component="span">
             {content.name}
@@ -395,7 +395,7 @@ const EditInfoModal = ({
           color="primary"
           className={classes.actionButton}
         >
-          Cancel
+          Cancelar
         </Button>
         <Button
           disabled={disabled}
@@ -405,7 +405,7 @@ const EditInfoModal = ({
           onClick={onPostClick}
           className={classes.actionButton}
         >
-          Send
+          Enviar
         </Button>
       </DialogActions>
     </>

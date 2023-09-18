@@ -172,7 +172,7 @@ const ReviewContent = ({
                 variant="body2"
                 color="textSecondary"
               >
-                Posting publicly
+                Postar publicamente
               </Typography>
             </div>
           </div>
@@ -211,7 +211,7 @@ const ReviewContent = ({
             onClick={onCancel}
             className={classes.buttons}
           >
-            Cancel
+            Cancelar
           </Button>
           <Button
             variant="contained"
@@ -221,7 +221,7 @@ const ReviewContent = ({
             className={classes.buttons}
             onClick={onPostClick}
           >
-            Post
+            Postar
           </Button>
         </DialogActions>
       </div>

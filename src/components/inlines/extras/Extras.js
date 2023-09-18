@@ -107,7 +107,7 @@ const extras = ({ handleActiveBar, handleShownMore }) => [
     onClick: () => handleActiveBar("Hostels"),
   },
   {
-    name: "Show more",
+    name: "Mostrar mais",
     iconComponent: MoreHorizIcon,
     color: "#78909c",
     onClick: handleShownMore,
@@ -153,10 +153,10 @@ const Extras = ({
     <div className={classes.extras}>
       <div className={classes.extrasHeader}>
         <div>
-          <h1 style={{ fontSize: "15px" }}>Irkutsk</h1>
+          <h1 style={{ fontSize: "15px" }}>Rio de Janeiro</h1>
         </div>
         <div className={classes.weather}>
-          <div className={classes.weatherLabel}>15°</div>
+          <div className={classes.weatherLabel}>29°</div>
           <img
             className={classes.weatherImage}
             src="https://ssl.gstatic.com/onebox/weather/128/partly_cloudy.png"

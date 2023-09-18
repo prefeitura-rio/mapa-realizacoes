@@ -197,7 +197,7 @@ const MainUnderSearchBar = forwardRef(
             }}
           >
             <ExpandLessIcon className={classes.extendedIcon} />
-            <div style={{ marginRight: "8px", color: "#3C4043" }}>Hide all</div>
+            <div style={{ marginRight: "8px", color: "#3C4043" }}>Ocultar</div>
           </Fab>
         </div>
       </div>

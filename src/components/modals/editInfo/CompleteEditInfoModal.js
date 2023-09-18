@@ -54,15 +54,15 @@ const CompleteEditInfoModal = ({
         </IconButton>
         <div className={classes.picture} />
         <Typography variant="h3" style={{ marginBottom: "20px" }}>
-          Thanks for improving Google Maps!
+          A prefeitura agradece o seu registro!
         </Typography>
         <Typography variant="h2">
-          You'll get an email when your suggestion is reviewed
+          Sua modificação já foi salva.
         </Typography>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={onClose} color="primary" size="small">
-          DONE
+          Fechar janela
         </Button>
       </DialogActions>
     </Dialog>

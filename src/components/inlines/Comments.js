@@ -132,7 +132,7 @@ const Comments = ({ comments, content, handleExtended, extended }) => {
                       variant="body2"
                       color="textSecondary"
                     >
-                      {item.author.reviewCount + " review(s)"}
+                      {item.author.reviewCount + " comentário(s)"}
                     </Typography>
                   </div>
                   <IconButton
@@ -185,11 +185,11 @@ const Comments = ({ comments, content, handleExtended, extended }) => {
       <div className={classes.textButtonContainer}>
         {comments !== null ? (
           !comments.length ? (
-            <Typography>No reviews:(</Typography>
+            <Typography>Nenhum comentário feito:(</Typography>
           ) : (
             <Button className={classes.textButton} onClick={handleExtended}>
               <Typography variant="subtitle2">
-                {!extended ? `More reviews` : "Show less"}
+                {!extended ? `Mais comentários` : "Menos comentários"}
               </Typography>
             </Button>
           )

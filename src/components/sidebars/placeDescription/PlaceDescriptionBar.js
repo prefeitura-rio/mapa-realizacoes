@@ -151,14 +151,14 @@ const PlaceDescriptionBar = ({
         <ListInfo content={content} />
         {profile ? (
           <BottomButton
-            title="Suggest an edit"
+            title="Editar infomações"
             startIcon={CreateOutlinedIcon}
             onClick={handleOpenEdit}
           />
         ) : (
           <div className={classes.signInButton}>
             <Button color="primary" variant="outlined" onClick={login}>
-              Sign in to edit
+               Faça login para editar
             </Button>
           </div>
         )}
@@ -176,7 +176,7 @@ const PlaceDescriptionBar = ({
         ) : (
           <div className={classes.signInButton}>
             <Button color="primary" variant="outlined" onClick={login}>
-              Sign in upload photo
+              Faça login para fazer um upload uma foto
             </Button>
           </div>
         )}
@@ -185,7 +185,7 @@ const PlaceDescriptionBar = ({
 
       <Divider />
       <div className={classes.directory}>
-        <HeaderBar title="Directory" />
+        {/* <HeaderBar title="Directory" />
         <div className={classes.directoryFilters}>
           <Input
             placeholder="Search for places"
@@ -211,22 +211,22 @@ const PlaceDescriptionBar = ({
             />
           </div>
         ) : null}
-        <BottomButton title="View all" textButton />
+        <BottomButton title="View all" textButton /> */}
       </div>
       <Divider />
       <div className={classes.review}>
-        <HeaderBar title="Review Summary" />
-        <RatingReview content={content} />
+        <HeaderBar title="Comentários" />
+        {/* <RatingReview content={content} /> */}
         {profile ? (
           <BottomButton
             onClick={() => setAddComment(true)}
-            title="Write a review"
+            title="Escreva um comentário"
             startIcon={RateReviewOutlinedIcon}
           />
         ) : (
           <div className={classes.signInButton}>
             <Button color="primary" variant="outlined" onClick={login}>
-              Sign in to write a review
+              Faça login para escrever um comentário
             </Button>
           </div>
         )}

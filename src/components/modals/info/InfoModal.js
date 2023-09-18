@@ -81,8 +81,9 @@ import {
               >
                 <ListItemText
                     classes={{ primary: classes.listItemText }}
-                    primary={"About this project"}
-                    secondary={"This project was created as a study project when i first started learning frontend development in August 2021. It was created from scratch based on Leaflet and it doesn't use Google Maps API"}
+                    primary={"Sobre o projeto"}
+                    secondary={"Mapa de realizações"}
+                    // secondary={"This project was created as a study project when i first started learning frontend development in August 2021. It was created from scratch based on Leaflet and it doesn't use Google Maps API"}
                     />
               </ListItem>
               <Divider component="li" />
@@ -91,8 +92,8 @@ import {
                 >
                 <ListItemText
                 classes={{ primary: classes.listItemText }}
-                primary={"See more"}
-                secondary={"You can see other projects here: alexbaikalov.com"}
+                primary={"Ver mais"}
+                secondary={"Você pode ver mais sobre o projeto aqui: ...."}
                 />
             </ListItem>
               <Divider component="li" />

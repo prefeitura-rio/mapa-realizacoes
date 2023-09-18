@@ -51,14 +51,14 @@ const CompletePhotoModal = ({ setOpenCompletePhoto, openCompletePhoto }) => {
           <CloseIcon />
         </IconButton>
         <div className={classes.picture} />
-        <Typography>Thanks for sharing your photo!</Typography>
+        <Typography>Obrigado por compartilhar a sua foto!</Typography>
         <Typography variant="h2">
-          Your photo will be public on Google Maps soon.
+          Sua foto já publicada.
         </Typography>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={onClose} color="primary" size="small">
-          DONE
+          Ok
         </Button>
       </DialogActions>
     </Dialog>

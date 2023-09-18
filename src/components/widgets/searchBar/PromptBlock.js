@@ -69,7 +69,7 @@ const PromptBlock = ({
 
   console.log(underSearchBar);
 
-  const promptText = "Show traffic jams, expected time and places close to you";
+  const promptText = "Mostrar mais informações e filtros de pesquisa ...";
 
   return searchPrompt || underSearchBar ? (
     <>
@@ -97,7 +97,7 @@ const PromptBlock = ({
               secondaryTypographyProps={{
                 className: classes.underHistoryPromptText,
               }}
-              secondary={"Show similar"}
+              secondary={"Mais opções similares"}
             />
           </div>
         </Paper>

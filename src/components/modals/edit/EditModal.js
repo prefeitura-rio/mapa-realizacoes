@@ -71,7 +71,7 @@ const EditModal = ({ setOpenEdit, openEdit, setOpenEditInfo }) => {
       >
         <DialogTitle className={classes.dialogTitle} onClose={onClose}>
           <Typography variant="h3" component="div">
-            Suggest an edit
+            Editar infomações
           </Typography>
           <IconButton
             aria-label="close"

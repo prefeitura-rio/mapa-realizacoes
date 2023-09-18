@@ -31,7 +31,7 @@ const SuccessContent = ({ onClose }) => {
           alt=""
           className={classes.completeImage}
         />
-        <Typography variant="h1">Thanks for your review!</Typography>
+        <Typography variant="h1">Obrigado por criar um comentário!</Typography>
       </DialogContent>
       <DialogActions className={classes.actions}>
         <Button
@@ -41,7 +41,7 @@ const SuccessContent = ({ onClose }) => {
           className={classes.buttons}
           onClick={onClose}
         >
-          Ok
+          Fechar janela
         </Button>
       </DialogActions>
     </>

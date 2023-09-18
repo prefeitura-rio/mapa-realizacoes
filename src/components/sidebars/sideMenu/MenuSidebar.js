@@ -18,6 +18,8 @@ import clsx from "clsx";
 import LinkIcon from "@material-ui/icons/Link";
 import InfoIcon from "@material-ui/icons/InfoOutlined";
 import BookmarkIcon from "@material-ui/icons/TurnedInNot";
+import logo from './logo.svg';  // Certifique-se de que o caminho para logo.png esteja correto
+
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme) => {
     },
     headerImage: {
       display: "block",
-      height: "24px",
+      height: "35px",
       paddingLeft: "11px",
     },
     listItemText: {
@@ -76,11 +78,11 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
       square
     >
       <div className={classes.header}>
-        <img
-          className={classes.headerImage}
-          src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_74x24dp.png"
-          alt="logo"
-        />
+      <img
+        className={classes.headerImage}
+        src={logo}  // Substituído pela variável logo
+        alt="logo"
+      />
         <IconButton onClick={() => setMenuSidebar(!menuSidebar)}>
           <CloseIcon />
         </IconButton>
@@ -115,7 +117,8 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
       <ListItem
         button
         onClick={() =>
-          window.open("https://github.com/AlexanderBaikal", "_blank").focus()
+          window.open("prefeitura.rio", "_blank").focus()
+          // window.open("https://github.com/AlexanderBaikal", "_blank").focus()
         }
       >
         <ListItemIcon>
@@ -123,7 +126,8 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
         </ListItemIcon>
         <ListItemText
           classes={{ primary: classes.listItemText }}
-          primary={"github.com/AlexanderBaikal"}
+          primary={"prefeitura.rio"}
+          // primary={"github.com/AlexanderBaikal"}
         />
       </ListItem>
       <Divider />
@@ -133,8 +137,8 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
         </ListItemIcon>
         <ListItemText
           classes={{ primary: classes.listItemText }}
-          primary={"About this project"}
-          secondary={"This project was created as a study project when i first started learning frontend development in August 2021. It was created from scratch based on Leaflet and it doesn't use Google Maps API"}
+          primary={"Sobre o projeto"}
+          secondary={"blablablalbla"}
         />
       </ListItem>
       <ListItem>
@@ -143,8 +147,9 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
         </ListItemIcon>
         <ListItemText
           classes={{ primary: classes.listItemText }}
-          primary={"See more"}
-          secondary={"You can see other projects here: alexbaikalov.com"}
+          primary={"Ver mais"}
+          secondary={"Ver outros projetos da prefeitura aqui..."}
+          // secondary={"You can see other projects here: alexbaikalov.com"}
         />
       </ListItem>
     </Paper>
