@@ -29,6 +29,12 @@ Este aplicativo foi construído e testado usando
 - Node version v14.17.6
 - NPM version 6.14.15
 
+#### Credenciais do firebase - firebase.js
+```
+As credenciais do firebase estão no arquivo firebaseconfig.js.
+Esse arquivo não se encontra neste repositório.Entre em contato com algum
+dos desenvolvedores do escritório de dados para ter acesso a este arquivo.
+```
   
 ## Screenshots:
 ### Fullwidth:
