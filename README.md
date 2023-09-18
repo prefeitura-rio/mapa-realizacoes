@@ -1,7 +1,35 @@
 # Mapa de realizações da prefeitura inspirado no google maps
-Projeto fullstack criado com React, Redux, Leaflet e Firebase. <br/><br/>
-## Demo:
- <a href="https://g-maps-clone.web.app/">mapa-realizacoes</a> 
+Projeto fullstack criado com:
+- Mapbox GL JS
+- Scrollama.js
+- React
+- Three.js
+<br/><br/>
+
+## Configuração do ambiente
+
+- Baixe este repositório como um arquivo ZIP usando o botão acima e descompacte-o. Se você estiver usando `git`, clone este repositório.
+- Instale as dependências listadas no arquivo `package.json`:
+
+```
+npm install
+```
+
+- Para rodar o ambiente de desenvolvimento:
+
+```
+npm start
+```
+
+
+#### Instação e dependências
+
+Este aplicativo foi construído e testado usando
+
+- Node version v14.17.6
+- NPM version 6.14.15
+
+  
 ## Screenshots:
 ### Fullwidth:
 ![image](./images/132619257-a49f59b9-b3f8-47f6-8dbe-9764a462bc20%20(1).png)<br/><br/>
