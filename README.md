@@ -29,7 +29,7 @@ Este aplicativo foi construído e testado usando
 - Node version v14.17.6
 - NPM version 6.14.15
 
-#### Credenciais do firebase - firebase.js
+#### ⚠ Credenciais do firebase - firebase.js ⚠
 ```
 As credenciais do firebase estão no arquivo firebaseconfig.js.
 
