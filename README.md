@@ -1,9 +1,9 @@
-# Mapa de realizações da prefeitura inspirado no google maps
+# Mapa de realizações da prefeitura. <br> Inspirado no Google Maps &copy;
 Projeto fullstack criado com:
-- Mapbox GL JS
-- Scrollama.js
 - React
-- Three.js
+- Redux
+- Leaflet 
+- Firebase (backend da aplicação)
 <br/><br/>
 
 ## Configuração do ambiente
