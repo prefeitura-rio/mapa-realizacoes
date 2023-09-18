@@ -2,13 +2,12 @@ import firebase from "firebase";
 import "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAHGkHYmycEGkoZMVt1bWeLrAWOF_FbGy4",
-  authDomain: "maps-4015c.firebaseapp.com",
-  projectId: "maps-4015c",
-  storageBucket: "maps-4015c.appspot.com",
-  messagingSenderId: "502799106809",
-  appId: "1:502799106809:web:0555998f4c50d6faf09828",
-  measurementId: "G-LQPKQ7CQGN"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 
