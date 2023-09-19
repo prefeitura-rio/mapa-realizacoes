@@ -172,7 +172,7 @@ const PlaceDescriptionBar = ({
         <PhotoCards images={images} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
         {profile ? (
           <BottomButton
-            title="Add a photo"
+            title="Adicionar uma foto"
             startIcon={CameraAltOutlinedIcon}
             onClick={handleOpenUploadPhoto}
           />

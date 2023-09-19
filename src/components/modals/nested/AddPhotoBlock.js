@@ -57,7 +57,7 @@ const AddPhotoBlock = ({ photoFiles, setPhotoFiles }) => {
           onClick={onAddPhotoClick}
         >
           <AddAPhotoIcon fontSize="small" className={classes.bottonIcon} />
-          Add a photo
+          Adicionar uma foto
         </Button>
       )}
 

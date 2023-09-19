@@ -45,6 +45,7 @@
     "web-vitals": "^1.1.2"
   },
   "devDependencies": {
+    "gh-pages": "^6.0.0",
     "node-gyp": "^8.4.1"
   },
   "homepage": "https://prefeitura-rio.github.io/Mapa-De-Realizacoes-3.0",
