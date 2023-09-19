@@ -158,7 +158,7 @@ const PlaceDescriptionBar = ({
         ) : (
           <div className={classes.signInButton}>
             <Button color="primary" variant="outlined" onClick={login}>
-               Faça login para editar
+               Editar informação
             </Button>
           </div>
         )}
@@ -176,7 +176,7 @@ const PlaceDescriptionBar = ({
         ) : (
           <div className={classes.signInButton}>
             <Button color="primary" variant="outlined" onClick={login}>
-              Faça login para fazer um upload uma foto
+              Adicionar uma foto
             </Button>
           </div>
         )}
