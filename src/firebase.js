@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import "firebase/firestore";
 import firebaseCredentials from "./firebaseconfig";
+import Papa from 'papaparse';
 
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
@@ -190,3 +191,35 @@ export async function getComments({ data, limit }) {
     console.error("Error getting document: ", e);
   }
 }
+
+// Código para importar o CSV
+
+export async function uploadCSVtoFirestore(file) {
+    return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+            complete: async (results) => {
+                const batch = db.batch();
+
+                results.data.forEach(row => {
+                    // Supondo que a primeira coluna é o nome, a segunda é o email, etc.
+                    const docRef = db.collection("desired_collection").doc(); // Altere 'desired_collection' para o nome da sua coleção
+                    const data = {
+                        name: row[0],
+                        email: row[1],
+                        // ... Adicione mais campos conforme a estrutura do seu CSV
+                    };
+                    batch.set(docRef, data);
+                });
+
+                try {
+                    await batch.commit();
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            },
+            header: true // Isso supõe que a primeira linha do seu CSV são os cabeçalhos
+        });
+    });
+}
+

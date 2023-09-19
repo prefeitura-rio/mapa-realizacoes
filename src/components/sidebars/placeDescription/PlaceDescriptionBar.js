@@ -21,6 +21,7 @@ import BasicInfo from "./../../inlines/BasicInfo";
 import HeaderBar from "./../../inlines/HeaderBar";
 import BottomButton from "./../../inlines/BottomButton";
 import ReviewModalContainer from "../../modals/review/ReviewModalContainer";
+import  CSVUploader from '../../../CSVUploader';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -162,7 +163,9 @@ const PlaceDescriptionBar = ({
             </Button>
           </div>
         )}
+        {/* <CSVUploader /> */}
       </div>
+     
       <Divider />
       <div className={classes.photos}>
         <HeaderBar title="Photos" />
