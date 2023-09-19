@@ -44,23 +44,18 @@ const UserWidget = ({ profile }) => {
   };
 
   return (
-    <div className={classes.userWidget}>
-      <AppsIcon
-        size={28}
-        className={classes.apps}
-        onClick={profile ? signOut : signIn}
-      />
-      {profile ? (
-        <img
-          className={classes.userImage}
-          src={profile.photoURL}
-          onClick={signOut}
-          alt="avatar"
-        />
-      ) : (
-        <VpnKeyOutlinedIcon className={classes.signIn} onClick={signIn} />
-      )}
-    </div>
+<div className={classes.userWidget}>
+  {profile ? (
+    <img
+      className={classes.userImage}
+      src={profile.photoURL}
+      onClick={signOut}
+      alt="avatar"
+    />
+  ) : (
+    <VpnKeyOutlinedIcon className={classes.signIn} onClick={signIn} />
+  )}
+</div>
   );
 };
 

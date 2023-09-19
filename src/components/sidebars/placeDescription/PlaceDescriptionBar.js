@@ -152,7 +152,7 @@ const PlaceDescriptionBar = ({
         <ListInfo content={content} />
         {profile ? (
           <BottomButton
-            title="Editar infomações"
+            title="Fazer login para editar infomações"
             startIcon={CreateOutlinedIcon}
             onClick={handleOpenEdit}
           />
@@ -172,7 +172,7 @@ const PlaceDescriptionBar = ({
         <PhotoCards images={images} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
         {profile ? (
           <BottomButton
-            title="Adicionar uma foto"
+            title="Fazer login para adicionar uma foto"
             startIcon={CameraAltOutlinedIcon}
             onClick={handleOpenUploadPhoto}
           />

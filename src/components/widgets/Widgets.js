@@ -81,7 +81,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
         <div className={classes.bottomRightWidgets}>
           <div className={classes.tools}>
             <VerticalContainer />
-            <HorizontalContainer />
+            {/* <HorizontalContainer /> */}
           </div>
           <BottomGalleryContainer />
         </div>
@@ -95,7 +95,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
         <UnderSearchContainer />
       </div>
       <div className={classes.topRightWidgets}>
-        <InfoWidget/>
+        {/* <InfoWidget/> */}
         <UserWidget profile={profile} />
       </div>
     </div>

@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   zoom: {
     marginTop: "4px",
+    marginRight:"20px",
     position: "relative",
   },
   buttons: {
@@ -52,11 +53,11 @@ const VerticalWidget = ({ setZoomDelta }) => {
 
   return (
     <div className={classes.root}>
-      <div>
+      {/* <div>
         <Button variant="contained" className={classes.controlButton}>
           <MyLocationIcon fontSize="small" className={classes.textSecondary} />
         </Button>
-      </div>
+      </div> */}
       <div className={classes.zoom}>
         <div className={classes.buttons}>
           <Button
