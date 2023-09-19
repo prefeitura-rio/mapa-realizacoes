@@ -11,7 +11,6 @@ const firebaseConfig = {
   appId: firebaseCredentials.appId
 };
 
-
 firebase.initializeApp(firebaseConfig);
 
 export const db = firebase.firestore();
