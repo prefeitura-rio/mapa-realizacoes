@@ -49,6 +49,8 @@ const useStyles = makeStyles((theme) => {
       display: "block",
       height: "40px",
       paddingLeft: "11px",
+      paddingBottom: "15px",
+      paddingTop: "15px"
     },
     listItemText: {
       fontSize: "0.8rem",

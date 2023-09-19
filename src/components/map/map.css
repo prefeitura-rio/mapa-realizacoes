@@ -8,3 +8,16 @@
 .leaflet-bottom{
   z-index: 502;
 }
+
+.leaflet-bottom{
+  display: none !important;
+}
+.MuiButtonGroup-root.makeStyles-horizontalWidget-18.MuiButtonGroup-contained{
+  display: none !important  ;
+}
+.MuiSvgIcon-root.makeStyles-apps-47{
+  display: none !important;
+}
+.MuiSvgIcon-root.makeStyles-apps-47{
+  display: none !important;
+}

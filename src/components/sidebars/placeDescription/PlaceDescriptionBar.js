@@ -213,10 +213,10 @@ const PlaceDescriptionBar = ({
         ) : null}
         <BottomButton title="View all" textButton /> */}
       </div>
-      <Divider />
+      {/* <Divider />
       <div className={classes.review}>
         <HeaderBar title="Comentários" />
-        {/* <RatingReview content={content} /> */}
+        <RatingReview content={content} />
         {profile ? (
           <BottomButton
             onClick={() => setAddComment(true)}
@@ -232,9 +232,9 @@ const PlaceDescriptionBar = ({
         )}
       </div>
       <Divider />
-      <ReviewModalContainer />
+      <ReviewModalContainer /> */}
 
-      <div className={classes.comments}>
+      {/* <div className={classes.comments}>
         <HeaderBar
           title="Reviews"
           buttons={
@@ -265,7 +265,7 @@ const PlaceDescriptionBar = ({
           handleExtended={handleExtended}
           extended={extended}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

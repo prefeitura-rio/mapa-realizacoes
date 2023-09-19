@@ -10,11 +10,14 @@ const useStyles = makeStyles((theme) => {
       width: "24px",
       height: "24px",
       marginRight: "17px",
+      display: "none"
     },
     userWidget: {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        display: "none"
+        
       },
   };
 });

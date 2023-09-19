@@ -33,21 +33,22 @@ const ListInfo = ({ content }) => {
   const classes = useStyles();
 
   const listInfo = [
-    {
-      text: moment({})
-        .seconds(content.lastVisit.seconds ? content.lastVisit.seconds : 0)
-        .format("dddd, MMMM Do YYYY, h:mm:ss a"),
-      iconComponent: TimelineOutlinedIcon,
-    },
+    // {
+    //   text: moment({})
+    //     .seconds(content.lastVisit.seconds ? content.lastVisit.seconds : 0)
+    //     .format("dddd, MMMM Do YYYY, h:mm:ss a"),
+    //   iconComponent: TimelineOutlinedIcon,
+    // },
     {
       text: content.address,
       iconComponent: LocationOnOutlinedIcon,
-    },
-    { text: "Opens at 10:00", iconComponent: QueryBuilderOutlinedIcon },
-    { text: content.website, iconComponent: PublicIcon },
-    { text: content.phoneNumber, iconComponent: CallIcon },
-    { text: "Claim this business", iconComponent: VerifiedUserOutlinedIcon },
-    { text: "Add a label", iconComponent: LabelOutlinedIcon },
+    }
+    // ,
+    // { text: "Opens at 10:00", iconComponent: QueryBuilderOutlinedIcon },
+    // { text: content.website, iconComponent: PublicIcon },
+    // { text: content.phoneNumber, iconComponent: CallIcon },
+    // { text: "Claim this business", iconComponent: VerifiedUserOutlinedIcon },
+    // { text: "Add a label", iconComponent: LabelOutlinedIcon },
   ];
 
   return (
