@@ -1,4 +1,4 @@
-name : Firebase Deployment
+name : Deployment
 
 
 on:
@@ -6,22 +6,28 @@ on:
     branches:
       - master
 
+env:
+  FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+
 jobs:
   deploy:
-    name: Build & Deployment
+    name: GitHub Pages
     runs-on : ubuntu-latest
 
     steps:
-      - name : get the source code
+      - name : Checkout
         uses: actions/checkout@v2
 
-      - name : install node
+      - name : Install Node.js
         uses: actions/setup-node@v2
         with:
             node-version: '12'
 
-      - name : install node packages
+      - name : Install packages
         run: npm i
+
+      - name: Create firebaseconfig.js
+        run: echo $FIREBASE_CONFIG | base64 --decode > ./src/firebaseconfig.js
 
       - name: Build
         run: npm run build
