@@ -27,10 +27,9 @@ jobs:
         run: npm run build
         env:
           CI: false
-      
-      - name : Deploy to Firebase
-        uses: w9jds/firebase-action@master
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          args: deploy --only hosting
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
