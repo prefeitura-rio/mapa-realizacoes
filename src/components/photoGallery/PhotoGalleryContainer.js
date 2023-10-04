@@ -31,7 +31,7 @@ const PhotoGalleryContainer = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    title: state.place.content?.name,
+    title: state.place.content?.titulo,
     images: state.images.images,
     allImages: state.images.allImages,
     photoGallery: state.active.photoGallery,

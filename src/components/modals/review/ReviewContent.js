@@ -12,10 +12,10 @@ import { Rating } from "@material-ui/lab";
 import clsx from "clsx";
 import StarOutlineRoundedIcon from "@material-ui/icons/StarOutlineRounded";
 import { useEffect, useState } from "react";
-import { createComment } from "../../../firebase";
+// import { createComment } from "../../../firebase";
 import Prompt from "./Prompt";
 import PhotoSection from "./PhotoSection";
-import { loadComments } from "../../../redux/comments/actions";
+// import { loadComments } from "../../../redux/comments/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -126,8 +126,8 @@ const ReviewContent = ({
   async function onPostClick() {
     setDisabled(true);
     const data = {
-      place: content.name,
-      photoFolder: content.photoFolder || content.name,
+      place: content.titulo,
+      photoFolder: content.photoFolder || content.titulo,
       author: {
         name: profile.name,
         photoURL: profile.photoURL,
@@ -137,11 +137,12 @@ const ReviewContent = ({
       photos: photoFiles,
       text: commentText,
     };
-    await createComment(data);
+    await
+    // createComment(data);
     setDisabled(false);
     setPhotoFiles([]);
     setCompleteReview(true);
-    loadComments(content.photoFolder || content.name);
+    // loadComments(content.photoFolder || content.name);
   }
 
   const [ratingValue, setRatingValue] = useState(0);

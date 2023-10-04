@@ -71,7 +71,7 @@ const EditModal = ({ setOpenEdit, openEdit, setOpenEditInfo }) => {
       >
         <DialogTitle className={classes.dialogTitle} onClose={onClose}>
           <Typography variant="h3" component="div">
-            Editar infomações
+            Editar informações
           </Typography>
           <IconButton
             aria-label="close"
@@ -93,14 +93,14 @@ const EditModal = ({ setOpenEdit, openEdit, setOpenEditInfo }) => {
                 <EditIcon color="primary" />
               </ListItemIcon>
               <ListItemText
-                primary="Change the name or other details"
+                primary="Alterar título ou outros detalhes"
                 primaryTypographyProps={{ variant: "subtitle2" }}
                 secondaryTypographyProps={{ variant: "body2" }}
-                secondary="Edit name, location, hours, etc"
+                secondary="Edite título, bairro, status, etc"
               />
             </ListItem>
             <Divider component="li" />
-            <ListItem button classes={{ gutters: classes.gutters }}>
+            {/* <ListItem button classes={{ gutters: classes.gutters }}>
               <ListItemIcon>
                 <LocationOffIcon color="primary" />
               </ListItemIcon>
@@ -110,8 +110,8 @@ const EditModal = ({ setOpenEdit, openEdit, setOpenEditInfo }) => {
                 secondaryTypographyProps={{ variant: "body2" }}
                 secondary="Mark as closed, non-existent or duplicate"
               />
-            </ListItem>
-            <Divider component="li" />
+            </ListItem> */}
+            {/* <Divider component="li" /> */}
           </List>
         </DialogContent>
       </Dialog>

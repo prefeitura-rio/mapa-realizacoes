@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import "firebase/firestore";
 import firebaseCredentials from "./firebaseconfig";
-import Papa from 'papaparse';
+import { toSnakeCase, concatenaEmSnakeCase, obterSiglaSecretaria } from './utils/formatFile';
 
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
@@ -45,10 +45,11 @@ export async function uploadPhotoFirebase(file, keyword = "All") {
   }
 }
 
-export async function editDescription(data) {
+
+export async function editarRealizacao(data) {
   var { content, photos, profile, contentSnapshot } = data;
 
-  content.photoFolder = content.photoFolder || content.name;
+  content.photoFolder = content.photoFolder || content.titulo;
 
   try {
     if (photos) {
@@ -58,25 +59,11 @@ export async function editDescription(data) {
       photos = await Promise.all(promises);
     }
 
-    const ref = db.collection("descriptions").doc(content.name);
+    const ref = db.collection("Realizacoes").doc(toSnakeCase(content.titulo));
 
-    const getInBuilding = (oldValue, newValue) => {
-      if (!newValue) return [];
-      let result = [];
-      if (oldValue) {
-        for (var value of oldValue) {
-          let segments = value._delegate._key.path.segments;
-          let itemName = segments[segments.length - 1];
-          result.push(db.doc(`descriptions/${itemName}`));
-        }
-      }
-      result.push(db.doc(`descriptions/${newValue}`));
-      return result;
-    };
 
     const newContent = {
       ...content,
-      inBuilding: getInBuilding(content.inBuilding, content.inside),
       imageUrl: content.imageUrl || photos[0] || null,
       coords: new firebase.firestore.GeoPoint(
         content.coords.latitude,
@@ -89,10 +76,21 @@ export async function editDescription(data) {
     await ref.set(rest);
 
     if (content.coords) {
-      const ref = db.collection("places").doc(content.name);
-      await ref.set({
-        name: content.name,
-        type: content.type,
+      const ref1 = db.collection("RealizacaoOrgao").doc(concatenaEmSnakeCase(content.titulo,obterSiglaSecretaria(content.secretaria)));
+      await ref1.set({
+        id_orgao: obterSiglaSecretaria(content.secretaria),
+        id_realizacao: toSnakeCase(content.titulo)
+      });
+
+      const ref2 = db.collection("RealizacaoTema").doc(concatenaEmSnakeCase(content.titulo,(content.tema).toLowerCase()));
+      await ref2.set({
+        id_tema: (content.tema).toLowerCase(),
+        id_realizacao: toSnakeCase(content.titulo)
+      });
+
+      const ref3 = db.collection("Places").doc(toSnakeCase(content.titulo));
+      await ref3.set({
+        nome: toSnakeCase(content.titulo),
         coords: new firebase.firestore.GeoPoint(
           content.coords.latitude,
           content.coords.longitude
@@ -121,18 +119,19 @@ export async function editDescription(data) {
       return res;
     }
 
-    const logref = db.collection("firestore_log").doc(Date.now().toString());
+    const logref = db.collection("LogUsuarios").doc(Date.now().toString());
     await logref.set({
       data: compareContent(rest, contentSnapshot),
-      doc: content.name,
+      doc: content.titulo,
       name: profile.name,
       email: profile.email,
       date: firebase.firestore.Timestamp.fromDate(new Date()),
     });
 
-    if (content.name !== contentSnapshot.name) {
-      await db.collection("descriptions").doc(contentSnapshot.name).delete();
-      await db.collection("places").doc(contentSnapshot.name).delete();
+    if (content.titulo !== contentSnapshot.titulo) {
+      await db.collection("Realizacoes").doc(contentSnapshot.titulo).delete();
+      await db.collection("RealizacaoTema").doc(contentSnapshot.titulo).delete();
+      await db.collection("Places").doc(contentSnapshot.titulo).delete();
       console.log("Document successfully moved!");
     }
 
@@ -142,84 +141,54 @@ export async function editDescription(data) {
   }
 }
 
-export async function createComment(data) {
-  //! if doc doesn exists ? if commets doesnt exists?
-  var { place, author, value, photos, text, photoFolder } = data;
+// export async function createComment(data) {
+//   //! if doc doesn exists ? if commets doesnt exists?
+//   var { place, author, value, photos, text, photoFolder } = data;
 
-  try {
-    if (photos) {
-      var promises = photos.map((file) => uploadPhotoFirebase(file, photoFolder));
-      photos = await Promise.all(promises);
-    }
+//   try {
+//     if (photos) {
+//       var promises = photos.map((file) => uploadPhotoFirebase(file, photoFolder));
+//       photos = await Promise.all(promises);
+//     }
 
-    const ref = db.collection("comments").doc(Date.now().toString());
+//     const ref = db.collection("comments").doc(Date.now().toString());
 
 
-    await ref.set({
-      forPlace: photoFolder,
-      author: {
-        name: author.name,
-        photoURL: author.photoURL || "/",
-        email: author.email,
-        reviewCount: author.reviewCount || 1,
-      },
-      date: firebase.firestore.Timestamp.fromDate(new Date()),
-      value,
-      text,
-      photos: photos || [],
-    });
+//     await ref.set({
+//       forPlace: photoFolder,
+//       author: {
+//         name: author.name,
+//         photoURL: author.photoURL || "/",
+//         email: author.email,
+//         reviewCount: author.reviewCount || 1,
+//       },
+//       date: firebase.firestore.Timestamp.fromDate(new Date()),
+//       value,
+//       text,
+//       photos: photos || [],
+//     });
 
-    console.log("Document successfully written!");
-  } catch (e) {
-    console.error("Error writing document: ", e);
-  }
-}
+//     console.log("Document successfully written!");
+//   } catch (e) {
+//     console.error("Error writing document: ", e);
+//   }
+// }
 
-export async function getComments({ data, limit }) {
-  limit = limit || 3;
-  try {
-    const query = await db
-      .collection("comments")
-      .where("forPlace", "==", data)
-      .orderBy("date", "desc")
-      .limit(limit)
-      .get();
-    let result = [];
-    query.forEach((doc) => result.push(doc.data()));
-    return result;
-  } catch (e) {
-    console.error("Error getting document: ", e);
-  }
-}
+// export async function getComments({ data, limit }) {
+//   limit = limit || 3;
+//   try {
+//     const query = await db
+//       .collection("comments")
+//       .where("forPlace", "==", data)
+//       .orderBy("date", "desc")
+//       .limit(limit)
+//       .get();
+//     let result = [];
+//     query.forEach((doc) => result.push(doc.data()));
+//     return result;
+//   } catch (e) {
+//     console.error("Error getting document: ", e);
+//   }
+// }
 
-// Código para importar o CSV
-
-export async function uploadCSVtoFirestore(file) {
-    return new Promise((resolve, reject) => {
-        Papa.parse(file, {
-            complete: async (results) => {
-                const batch = db.batch();
-
-                results.data.forEach(row => {
-                    // Supondo que a primeira coluna é o nome, a segunda é o email, etc.
-                    const docRef = db.collection("desired_collection").doc(); // Altere 'desired_collection' para o nome da sua coleção
-                    const data = {
-                        name: row[0],
-                        email: row[1],
-                        // ... Adicione mais campos conforme a estrutura do seu CSV
-                    };
-                    batch.set(docRef, data);
-                });
-
-                try {
-                    await batch.commit();
-                    resolve();
-                } catch (error) {
-                    reject(error);
-                }
-            },
-            header: true // Isso supõe que a primeira linha do seu CSV são os cabeçalhos
-        });
-    });
-}
 

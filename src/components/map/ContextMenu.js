@@ -81,8 +81,8 @@ const ContextMenu = ({
             <ListItemText
               primary={
                 profile
-                  ? "Add missing place"
-                  : "Please, sing in to make changes"
+                  ? "Adicionar nova realização"
+                  : "Por favor, faça login para adiconar realização."
               }
             ></ListItemText>
           </ListItem>

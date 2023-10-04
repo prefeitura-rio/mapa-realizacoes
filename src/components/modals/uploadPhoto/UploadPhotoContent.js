@@ -70,7 +70,7 @@ const UploadPhotoContent = ({
     <div>
       <DialogTitle className={classes.dialogTitle} onClose={onClose}>
         <Typography variant="h3" component="span">
-          Upload public photos
+          Carregar fotos publicamente
         </Typography>
         <IconButton
           aria-label="close"
@@ -88,9 +88,9 @@ const UploadPhotoContent = ({
           textColor="primary"
           className={classes.tabs}
         >
-          <Tab disableRipple label="Upload" />
-          <Tab disableRipple label="Photos from phone" />
-          <Tab disableRipple label="Your photos" />
+          <Tab disableRipple label="Carregar" />
+          <Tab disableRipple label="Fotos do celular" />
+          <Tab disableRipple label="Syas fotos" />
         </Tabs>
         <DropzoneContainer />
       </DialogContent>
@@ -105,7 +105,7 @@ const UploadPhotoContent = ({
           onClick={onSelect}
           size="small"
         >
-          Select
+          Selecionar
         </Button>
         <Button
           variant="contained"
@@ -115,7 +115,7 @@ const UploadPhotoContent = ({
           classes={{ containedSizeSmall: classes.small }}
           size="small"
         >
-          Cancel
+          Cancelar
         </Button>
       </DialogActions>
     </div>

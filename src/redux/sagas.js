@@ -1,11 +1,12 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, db, getComments, storageRef } from "../firebase";
-import {
-  LOAD_COMMENTS,
-  requestComments,
-  requestCommentsFailed,
-  requestCommentsSuccess,
-} from "./comments/actions";
+import { auth, db, storageRef } from "../firebase";
+// import { auth, db, getComments, storageRef } from "../firebase";
+// import {
+//   LOAD_COMMENTS,
+//   requestComments,
+//   requestCommentsFailed,
+//   requestCommentsSuccess,
+// } from "./comments/actions";
 import {
   LOAD_DATA,
   requestData,
@@ -53,7 +54,7 @@ import firebase from "firebase/app";
 
 function fetchData(document) {
   return db
-    .collection("descriptions")
+    .collection("Realizacoes")
     .doc(document)
     .get()
     .then((doc) => doc.data());
@@ -64,7 +65,6 @@ function* workerLoadData(action) {
     yield put(requestData());
     const data = yield call(fetchData, action.payload);
     yield put(requestDataSuccess(data));
-    yield put(loadPlaces(data.inBuilding));
   } catch (error) {
     yield put(requestDataFailed());
   }
@@ -104,8 +104,6 @@ export function* watchLoadAllImages() {
   yield takeEvery(LOAD_ALL_IMAGES, workerLoadAllImages);
 }
 
-// ----------------------------
-
 async function fetchImages(keyword) {
   var res = await storageRef.child(keyword).listAll();
 
@@ -126,8 +124,6 @@ function* workerLoadImages(action) {
 export function* watchLoadImages() {
   yield takeEvery(LOAD_IMAGES, workerLoadImages);
 }
-
-// ----------------------------
 
 async function fetchPlaces(refs) {
   async function getDataByRef(ref) {
@@ -155,24 +151,22 @@ export function* watchLoadPlaces() {
 
 // ----------------------------
 
-async function fetchAllPlaces(category) {
+async function fetchAllPlaces() {
   let res;
-  if (category)
-    res = await db
-      .collection("descriptions")
-      .where("type", "in", byCategory(category)) // byCategory(category)
-      .get();
-  else res = await db.collection("descriptions").get();
-  return res.docs.map((doc) => doc.data());
+  res = await db.collection("Realizacoes").get();
+  const data = res.docs.map((doc) => doc.data());
+  console.log("Data de fetchAllPlaces:", data); // Imprime o valor de "data" no console
+  return data;
 }
 
 function* workerLoadAllPlaces(action) {
   try {
     yield put(requestAllPlaces());
     const data = yield call(fetchAllPlaces, action.payload);
+    console.log("Data em workerLoadAllPlaces:", data); // Imprime o valor de "data" no console
     yield put(requestAllPlacesSuccess(data));
   } catch (error) {
-    console.log(error);
+    console.log("Erro em workerLoadAllPlaces:", error); // Imprime o erro no console
     yield put(requestAllPlacesFailed());
   }
 }
@@ -180,9 +174,8 @@ function* workerLoadAllPlaces(action) {
 export function* watchLoadAllPlaces() {
   yield takeEvery(LOAD_ALL_PLACES, workerLoadAllPlaces);
 }
-// ----------------------------
 
-async function fetchAllPoints(collection = "places") {
+async function fetchAllPoints(collection = "Places") {
   var res = await db.collection(collection).get();
   return res.docs.map((doc) => doc.data());
 }
@@ -193,7 +186,7 @@ function* workerLoadAllPoints() {
     const data = yield call(fetchAllPoints);
     yield put(requestAllPointsSuccess(data));
   } catch (error) {
-    console.error(error);
+    console.error("Erro2: "+error);
     yield put(requestAllPointsFailed());
   }
 }
@@ -201,25 +194,6 @@ function* workerLoadAllPoints() {
 export function* watchLoadAllPoints() {
   yield takeEvery(LOAD_ALL_POINTS, workerLoadAllPoints);
 }
-
-// ----------------------------
-
-function* workerLoadComments(action) {
-  try {
-    yield put(requestComments());
-    const data = yield call(getComments, action.payload);
-    yield put(requestCommentsSuccess(data));
-  } catch (error) {
-    console.log(error);
-    yield put(requestCommentsFailed());
-  }
-}
-
-export function* watchLoadComments() {
-  yield takeEvery(LOAD_COMMENTS, workerLoadComments);
-}
-
-// ----------------------------
 
 async function loginFirebase() {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -232,7 +206,6 @@ async function loginFirebase() {
   sessionStorage.setItem("gmc-user", JSON.stringify(profile));
   return profile;
 }
-
 function* workerLogin() {
   try {
     yield put(loginRequest());
@@ -243,18 +216,13 @@ function* workerLogin() {
     yield put(loginFail());
   }
 }
-
 export function* watchLogin() {
   yield takeEvery(LOGIN, workerLogin);
 }
-
-// ----------------------------
-
 async function logOutFirebase() {
   await auth.signOut()
   sessionStorage.removeItem("gmc-user");
 }
-
 function* workerLogOut() {
   try {
     yield call(logOutFirebase);
@@ -262,7 +230,6 @@ function* workerLogOut() {
     console.log(error);
   }
 }
-
 export function* watchLogOut() {
   yield takeEvery(LOG_OUT, workerLogOut);
 }
@@ -276,7 +243,7 @@ export function* rootSaga() {
     fork(watchLoadData),
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
-    fork(watchLoadComments),
+    // fork(watchLoadComments),
     fork(watchLoadAllPoints),
     fork(watchLogin),
     fork(watchLogOut),

@@ -1,5 +1,6 @@
 import {
   List,
+  Divider,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -33,46 +34,43 @@ const ListInfo = ({ content }) => {
   const classes = useStyles();
 
   const listInfo = [
-    // {
-    //   text: moment({})
-    //     .seconds(content.lastVisit.seconds ? content.lastVisit.seconds : 0)
-    //     .format("dddd, MMMM Do YYYY, h:mm:ss a"),
-    //   iconComponent: TimelineOutlinedIcon,
-    // },
-    {
-      text: content.address,
-      iconComponent: LocationOnOutlinedIcon,
-    }
-    // ,
-    // { text: "Opens at 10:00", iconComponent: QueryBuilderOutlinedIcon },
-    // { text: content.website, iconComponent: PublicIcon },
-    // { text: content.phoneNumber, iconComponent: CallIcon },
-    // { text: "Claim this business", iconComponent: VerifiedUserOutlinedIcon },
-    // { text: "Add a label", iconComponent: LabelOutlinedIcon },
+  
+    { text: content.programa, iconComponent: PublicIcon },
+    { text: content.secretaria, iconComponent: PublicIcon },
+    { text: content.bairro, iconComponent: PublicIcon },
+    { text: content.subprefeitura, iconComponent: PublicIcon},
+    { text: "R$ " +  content.totalInvestido + " investidos", iconComponent: PublicIcon},
+    { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: PublicIcon},
+    { text: content.dataInicio, iconComponent: PublicIcon},
+    { text: content.dataFim, iconComponent: PublicIcon},
+   
   ];
 
   return (
     <List>
-      {listInfo.map((item, i) =>
-        item.text ? (
-          <ListItem
-            button
-            classes={{ gutters: classes.listItemGutters }}
-            key={item.text}
-          >
-            <ListItemIcon classes={{ root: classes.listItemIcon }}>
-              <item.iconComponent color="primary" />
-            </ListItemIcon>
-            <ListItemText
-              primary={item.text}
-              primaryTypographyProps={{ variant: "body2" }}
-              classes={{ root: classes.marginZero }}
-            />
-          </ListItem>
-        ) : null
-      )}
+      {listInfo.map((item, i) => (
+        <>
+          {item.text ? (
+            <ListItem
+              button
+              classes={{ gutters: classes.listItemGutters }}
+              key={item.text}
+            >
+              <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                <item.iconComponent color="primary" />
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{ variant: 'body2' }}
+                classes={{ root: classes.marginZero }}
+              />
+            </ListItem>
+          ) : null}
+          {i === 3 && <Divider/>} {/* Adicionar Divider após subprefeitura */}
+          {i === 5 && <Divider />} {/* Adicionar Divider após cariocasAtendidos */}
+        </>
+      ))}
     </List>
   );
 };
-
 export default ListInfo;

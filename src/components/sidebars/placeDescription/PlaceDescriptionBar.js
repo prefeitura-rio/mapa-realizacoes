@@ -21,7 +21,6 @@ import BasicInfo from "./../../inlines/BasicInfo";
 import HeaderBar from "./../../inlines/HeaderBar";
 import BottomButton from "./../../inlines/BottomButton";
 import ReviewModalContainer from "../../modals/review/ReviewModalContainer";
-import  CSVUploader from '../../../CSVUploader';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -145,41 +144,42 @@ const PlaceDescriptionBar = ({
         className={classes.topImage}
       />
       <BasicInfo content={content} />
-      {/* <Divider /> */}
-      {/* <ActionButtons /> */}
       <Divider />
       <div className={classes.listInfo}>
         <ListInfo content={content} />
+      
+        <br></br>
+        {}
         {profile ? (
           <BottomButton
-            title="Fazer login para editar infomações"
+            title="Editar infomarções"
             startIcon={CreateOutlinedIcon}
             onClick={handleOpenEdit}
           />
         ) : (
           <div className={classes.signInButton}>
             <Button color="primary" variant="outlined" onClick={login}>
-               Editar informação
+            Fazer login para editar informação
             </Button>
           </div>
         )}
-        {/* <CSVUploader /> */}
+
       </div>
      
       <Divider />
       <div className={classes.photos}>
-        <HeaderBar title="Photos" />
+        <HeaderBar title="Fotos" />
         <PhotoCards images={images} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
         {profile ? (
           <BottomButton
-            title="Fazer login para adicionar uma foto"
+            title="Adicionar uma foto"
             startIcon={CameraAltOutlinedIcon}
             onClick={handleOpenUploadPhoto}
           />
         ) : (
           <div className={classes.signInButton}>
             <Button color="primary" variant="outlined" onClick={login}>
-              Adicionar uma foto
+              Fazer login para adicionar uma foto
             </Button>
           </div>
         )}

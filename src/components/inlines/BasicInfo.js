@@ -1,7 +1,8 @@
-import { Box, Link, makeStyles, Typography } from "@material-ui/core";
+import { Box, Link, makeStyles, Typography,  Button} from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { useEffect } from "react";
 import numeral from "numeral";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -12,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
   basicInfo: {
     padding: "15px 25px",
   },
+  nonClickableButton: {
+    pointerEvents: "none",
+  }
+  
 }));
 
 const BasicInfo = ({ content }) => {
@@ -19,7 +24,14 @@ const BasicInfo = ({ content }) => {
 
   return (
     <div className={classes.basicInfo}>
-      <Typography variant="h1">{content.name}</Typography>
+      <Typography variant="h1">{content.titulo}</Typography>
+      <br></br>
+      <Typography variant="h2">{content.descricao}</Typography>
+      <br></br>
+      <Button variant="contained" className={classes.nonClickableButton}>
+      {content.status}
+    </Button>
+
       {/* <Typography variant="h2" style={{ marginTop: "4px" }}>
         {content.name}
       </Typography> */}

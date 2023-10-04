@@ -11,7 +11,7 @@ const ModalsContainer = (props) => {
   return props.content ? (
     <>
       <ModalContainer /> <EditModalContainer />
-      <ScheduleModalContainer />
+      {/* <ScheduleModalContainer /> */}
       <CompleteEditInfoModal
         setOpenCompleteEditInfo={props.setOpenCompleteEditInfo}
         openCompleteEditInfo={props.openCompleteEditInfo}

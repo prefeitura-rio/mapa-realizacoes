@@ -18,7 +18,7 @@ export const getTileImage = (coords) => {
   const zoom = 15;
 
   const accessToken =
-    "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw";
+    " 'pk.eyJ1IjoiZXNjcml0b3Jpb2RlZGFkb3MiLCJhIjoiY2t3bWdmcHpjMmJ2cTJucWJ4MGQ1Mm1kbiJ9.4hHJX-1pSevYoBbja7Pq4w'";
   return `https://api.mapbox.com/styles/v1/${id}/tiles/512/${zoom}/${lon2tile(
     coords.longitude,
     zoom
