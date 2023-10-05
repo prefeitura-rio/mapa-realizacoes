@@ -46,9 +46,10 @@ const Map = ({
 
   const onMarkerClick = (point) => {
     setUnderSearchBar(true);
-    setDescriptionData(point.name);
+    setDescriptionData(point.nome);
     setActiveBar(DESCRIPTION_BAR);
-    loadData(point.name);
+    loadData(point.nome);
+    console.log(point)
   };
 
   const [opened, setOpened] = useState(false);
@@ -68,35 +69,35 @@ const Map = ({
 
   return (
     <>
-     <MapContainer
-  center={[-22.9068, -43.3999]}  // Coordenadas para o Rio de Janeiro
-  zoom={11.5}
-  scrollWheelZoom={true}
-  zoomControl={false}
-  whenCreated={setMap}
->
-  <TileLayer
-    url="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}@2x.png?key=aqjLoB2kRuhWSZjNO6YJ"
-    // attribution='<a href="https://www.maptiler.com/copyright/\" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors | Prefeitura do Rio de Janeiro <a href="https://prefeitura.rio/" target="_blank"></a>'
-    maxZoom={18}
-    tileSize={512}
-    zoomOffset={-1}
-  />
-  {points.map((point) => (
-    <Marker
-      key={Object.values(point.coords).join("")}
-      position={Object.values(point.coords)}
-      icon={getIcon(point.type)}
-      eventHandlers={{
-        click: (e) => onMarkerClick(point),
-      }}
-    >
-      <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-        <span>{point.name}</span>
-      </Tooltip>
-    </Marker>
-  ))}
-</MapContainer>
+      <MapContainer
+        center={[-22.9068, -43.3999]}  // Coordenadas para o Rio de Janeiro
+        zoom={11.5}
+        scrollWheelZoom={true}
+        zoomControl={false}
+        whenCreated={setMap}
+      >
+        <TileLayer
+          url="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}@2x.png?key=aqjLoB2kRuhWSZjNO6YJ"
+          // attribution='<a href="https://www.maptiler.com/copyright/\" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors | Prefeitura do Rio de Janeiro <a href="https://prefeitura.rio/" target="_blank"></a>'
+          maxZoom={18}
+          tileSize={512}
+          zoomOffset={-1}
+        />
+        {points.map((point) => (
+          <Marker
+            key={Object.values(point.coords).join("")}
+            position={Object.values(point.coords)}
+            icon={getIcon("university")}
+            eventHandlers={{
+              click: (e) => onMarkerClick(point),
+            }}
+          >
+            <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+              <span>{point.nome}</span>
+            </Tooltip>
+          </Marker>
+        ))}
+      </MapContainer>
 
       {contextCoords && opened ? (
         <ContextMenu

@@ -51,8 +51,8 @@ const History = ({
     }
   }, [loading, content]);
 
-  const onPlaceClick = (coords, name) => {
-    setDescriptionData(name);
+  const onPlaceClick = (coords, nome) => {
+    setDescriptionData(nome);
     setPlacePosition(coords);
     if (setSearchPrompt) setSearchPrompt();
   };
@@ -62,15 +62,15 @@ const History = ({
       {historyItems.map((item) => (
         <ListItem
           button
-          key={item.name}
+          key={item.nome}
           className={classes.listItem}
-          onClick={() => onPlaceClick(item.coords, item.name)}
+          onClick={() => onPlaceClick(item.coords, item.nome)}
         >
           <ListItemIcon className={classes.listItemIcon}>
             <ScheduleOutlinedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText
-            primary={item.name}
+            primary={item.nome}
             classes={{ primary: classes.listItemText }}
           />
         </ListItem>

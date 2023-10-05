@@ -22,7 +22,7 @@ import EditItem from "./EditItem";
 import { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import AddPhotoBlock from "../nested/AddPhotoBlock";
-import { editDescription } from "../../../firebase";
+import { editarRealizacao } from "../../../firebase";
 import clsx from "clsx";
 import MySchedule from "./MySchedule";
 import { getTileImage } from "../../../utils/getTileImage";
@@ -126,12 +126,12 @@ const EditInfoModal = ({
   contentSnapshot,
   setOpenEditInfo,
   setOpenCompleteEditInfo,
-  categoryModal,
-  setCategoryModal,
-  setHoursModal,
-  setNewHours,
+  // categoryModal,
+  // setCategoryModal,
+  // setHoursModal,
+  // setNewHours,
   setContent,
-  allPlaces,
+  // allPlaces,
   photoFiles,
   setPhotoFiles,
   loadAllPoints,
@@ -167,7 +167,7 @@ const EditInfoModal = ({
       profile,
       contentSnapshot: contentSnapshot
     };
-    await editDescription(data);
+    await editarRealizacao(data);
 
     setOpenEditInfo(false);
     setDisabled(false);
@@ -192,56 +192,57 @@ const EditInfoModal = ({
     }
   };
 
-  const onHoursClick = () => {
-    setNewHours(JSON.parse(JSON.stringify(content.schedule)));
-    setHoursModal(true);
-  };
 
   const onUpdateLocation = () => {
     setLocationModal(true);
   };
 
-  const onAddressChange = (value) => {
-    setContent({ ...content, address: value });
+  const onEnderecoChange = (value) => {
+    setContent({ ...content, endereco: value });
   };
 
-  const onPhoneChange = (value) => {
-    setContent({ ...content, phoneNumber: value });
+  // --------------- INICIO ------------------
+  const onTituloChange = (value) => {
+    setContent({ ...content, titulo: value });
+  };
+  const onDescricaoChange = (value) => {
+    setContent({ ...content, descricao: value });
+  };
+  const onStatusChange = (value) => {
+    setContent({ ...content, status: value });
+  };
+  const onProgramaChange = (value) => {
+    setContent({ ...content, programa: value });
+  };
+  const onTemaChange = (value) => {
+    setContent({ ...content, tema: value });
+  };
+  const onSecretariaChange = (value) => {
+    setContent({ ...content, secretaria: value });
+  };
+  const onBairroChange = (value) => {
+    setContent({ ...content, bairro: value });
+  };
+  const onSubprefeituraChange = (value) => {
+    setContent({ ...content, subprefeitura: value });
+  };
+  const onTotalInvestidoChange = (value) => {
+    setContent({ ...content, totalInvestido: value });
+  };
+  const onCariocasAtendidosChange = (value) => {
+    setContent({ ...content, cariocasAtendidos: value });
+  };
+  const onDataInicioChange = (value) => {
+    setContent({ ...content, dataInicio: value });
+  };
+  const onDataFimChange = (value) => {
+    setContent({ ...content, dataFim: value });
   };
 
-  const onInsideChange = (value) => {
-    setContent({ ...content, inside: value });
-  };
-
-  const onWebsiteChange = (value) => {
-    setContent({ ...content, website: value });
-  };
-
-  const onNameChange = (value) => {
-    setContent({ ...content, name: value });
-  };
-
+  //------------------FIM ----------------------
   const [canceledFields, setCanceledFields] = useState([]);
 
-  const onPhoneCancel = () => {
-    setCanceledFields([...canceledFields, "phoneNumber"]);
-  };
 
-  const onWebsiteCancel = () => {
-    setCanceledFields([...canceledFields, "website"]);
-  };
-
-  const onCategoryClick = () => {
-    setCategoryModal(!categoryModal);
-  };
-
-  const getWeekdayHours = (name, data) => {
-    let status;
-    if (data.closed) status = "Closed";
-    if (data.allDay) status = "24 hours";
-    if (!data.closed && !data.allDay) status = data.open + "-" + data.close;
-    return name.slice(0, 3) + ": " + status;
-  };
 
   const [disabled, setDisabled] = useState(false);
 
@@ -264,7 +265,7 @@ const EditInfoModal = ({
       >
         <div className={classes.title}>
           <Typography variant="h3" component="span">
-          Editar infomações
+          Inclusão de Nova Realização
           </Typography>
           <Typography variant="body1" color="textSecondary" component="span">
             {content.name}
@@ -286,27 +287,86 @@ const EditInfoModal = ({
         className={disabled ? classes.disabled : ""}
       >
         <Typography className={classes.contentTitle} color="textSecondary">
-          Overview
+          Por favor, Forneça Detalhes da Realização
         </Typography>
         <Divider />
         <EditItem
-          title="Name"
+          title="Título da Realização"
           IconComponent={StoreIcon}
-          value={content.name}
-          onChange={onNameChange}
+          value={content.titulo}
+          onChange={onTituloChange}
         />
         <EditItem
-          title="Category"
-          IconComponent={CategoryIcon}
-          value={content.type || "Add category"}
-          extraIcon={"forward"}
-          onClick={onCategoryClick}
+          title="Descrição"
+          IconComponent={StoreIcon}
+          value={content.descricao}
+          onChange={onDescricaoChange}
         />
         <EditItem
-          title="Location"
+          title="Status"
+          IconComponent={StoreIcon}
+          value={content.status}
+          onChange={onStatusChange}
+        />
+        <EditItem
+          title="Programa"
+          IconComponent={StoreIcon}
+          value={content.programa}
+          onChange={onProgramaChange}
+        />
+        <EditItem
+          title="Tema"
+          IconComponent={StoreIcon}
+          value={content.tema}
+          onChange={onTemaChange}
+        />
+        <EditItem
+          title="Secretaria"
+          IconComponent={StoreIcon}
+          value={content.secretaria}
+          onChange={onSecretariaChange}
+        />
+        <EditItem
+          title="Bairro"
+          IconComponent={StoreIcon}
+          value={content.bairro}
+          onChange={onBairroChange}
+        />
+        <EditItem
+          title="Subprefeitura"
+          IconComponent={StoreIcon}
+          value={content.subprefeitura}
+          onChange={onSubprefeituraChange}
+        />
+        <EditItem
+          title="Total Investido"
+          IconComponent={StoreIcon}
+          value={content.totalInvestido}
+          onChange={onTotalInvestidoChange}
+        />
+        <EditItem
+          title="Cariocas Atendidos"
+          IconComponent={StoreIcon}
+          value={content.cariocasAtendidos}
+          onChange={onCariocasAtendidosChange}
+        />
+        <EditItem
+          title="Data Início"
+          IconComponent={StoreIcon}
+          value={content.dataInicio}
+          onChange={onDataInicioChange}
+        />
+        <EditItem
+          title="Data Fim"
+          IconComponent={StoreIcon}
+          value={content.dataFim}
+          onChange={onDataFimChange}
+        />
+        <EditItem
+          title="Localização"
           IconComponent={LocationOnIcon}
-          value={content.address}
-          onChange={onAddressChange}
+          value={content.endereco}
+          onChange={onEnderecoChange}
         />
         <div className={classes.centerButton}>
           <Button
@@ -314,75 +374,15 @@ const EditInfoModal = ({
             classes={{ outlined: classes.outlinedWhite }}
             onClick={onUpdateLocation}
           >
-            Update location
+            Atualizar Localização
           </Button>
         </div>
-        <EditItem
-          title="Located within"
-          IconComponent={null}
-          value={typeof content.inside === "string" ? content.inside : ""}
-          subTitle={
-            "If this place is located within another, enter the containing place."
-          }
-          select={allPlaces}
-          onChange={onInsideChange}
-          disableBlur
-        />
-        <EditItem
-          title="Hours"
-          IconComponent={WatchLaterOutlinedIcon}
-          onClick={onHoursClick}
-          jsxValue={
-            <MySchedule
-              classes={classes}
-              onHoursClick={onHoursClick}
-              getWeekdayHours={getWeekdayHours}
-              content={content}
-            />
-          }
-          extraIcon={"forward"}
-        />
-        <EditItem
-          title="Contact"
-          IconComponent={PhoneIcon}
-          value={content.phoneNumber}
-          extraIcon={"close"}
-          onChange={onPhoneChange}
-          onCancel={onPhoneCancel}
-        />
-        <EditItem
-          title="Website"
-          IconComponent={PublicIcon}
-          value={content.website}
-          extraIcon={"close"}
-          onChange={onWebsiteChange}
-          onCancel={onWebsiteCancel}
-        />
-        <Typography className={classes.contentTitle} color="textSecondary">
-          About
-        </Typography>
-        <Divider />
-
-        <EditItem
-          title="Opening date"
-          IconComponent={null}
-          value={""}
-          extraIcon={"forward"}
-        />
 
         <div className={classes.bottomDiv}>
           <AddPhotoBlock
             photoFiles={photoFiles}
             setPhotoFiles={setPhotoFiles}
           />
-          <Typography
-            variant="h2"
-            component="div"
-            className={classes.underButtonText2}
-          >
-            Google will email you about the status of your edits.{" "}
-            <Link>Learn more</Link>
-          </Typography>
         </div>
       </DialogContent>
 

@@ -73,11 +73,7 @@ const AddPhotoBlock = ({ photoFiles, setPhotoFiles }) => {
         color="textSecondary"
         className={classes.underButtonText}
       >
-        Helpful photos include the shopfront, notices and hours. If you add
-        photos, they will appear publicly with your profile name and picture.
-        They will appear on Google services across the web, like Maps and
-        Search, and on third-party sites and apps that use Google services.
-        Google may also use them to update other information about this place.
+       Contribua com fotos desta realização. Esteja ciente que a sua postagem aparecerá publicamente para todos os usuários.
       </Typography>
     </div>
   );
