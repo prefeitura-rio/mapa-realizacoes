@@ -20,8 +20,8 @@ function toSnakeCase(str) {
     return resultado;
   }
   
-  function obterSiglaSecretaria(nomeSecretaria) {
-    const siglasSecretarias = {
+  function obterSiglaOrgao(nomeOrgao) {
+    const siglasOrgaos = {
       "Controladoria Geral do Município": "CGM",
       "Gabinete do Prefeito": "GBP",
       "Procuradoria Geral do Município": "PGM",
@@ -73,13 +73,13 @@ function toSnakeCase(str) {
       "Fundação Cidade das Artes": "FCA"
     };
   
-    // Verifica se o nome da secretaria existe no mapeamento
-    if (siglasSecretarias.hasOwnProperty(nomeSecretaria)) {
-      return siglasSecretarias[nomeSecretaria];
+    // Verifica se o nome do orgao existe no mapeamento
+    if (siglasOrgaos.hasOwnProperty(nomeOrgao)) {
+      return siglasOrgaos[nomeOrgao];
     } else {
       return "Sigla não encontrada";
     }
   }
 
   // Exporte as funções
-export { toSnakeCase, concatenaEmSnakeCase, obterSiglaSecretaria };
+export { toSnakeCase, concatenaEmSnakeCase, obterSiglaOrgao };

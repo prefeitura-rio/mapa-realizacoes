@@ -9,7 +9,7 @@ export const emptyContent = {
 
   //informações básicas
   programa:"Adicionar programa",
-  secretaria:"Adicionar secretaria ",
+  orgao:"Adicionar órgao ",
   bairro:"Adicionar bairro ",
   // endereco:"Adicionar endereço",
   subprefeitura:"Adicionar subprefeitura",

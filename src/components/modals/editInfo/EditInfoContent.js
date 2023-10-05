@@ -126,12 +126,7 @@ const EditInfoModal = ({
   contentSnapshot,
   setOpenEditInfo,
   setOpenCompleteEditInfo,
-  // categoryModal,
-  // setCategoryModal,
-  // setHoursModal,
-  // setNewHours,
   setContent,
-  // allPlaces,
   photoFiles,
   setPhotoFiles,
   loadAllPoints,
@@ -217,8 +212,8 @@ const EditInfoModal = ({
   const onTemaChange = (value) => {
     setContent({ ...content, tema: value });
   };
-  const onSecretariaChange = (value) => {
-    setContent({ ...content, secretaria: value });
+  const onOrgaoChange = (value) => {
+    setContent({ ...content, orgao: value });
   };
   const onBairroChange = (value) => {
     setContent({ ...content, bairro: value });
@@ -321,10 +316,10 @@ const EditInfoModal = ({
           onChange={onTemaChange}
         />
         <EditItem
-          title="Secretaria"
+          title="Órgao"
           IconComponent={StoreIcon}
-          value={content.secretaria}
-          onChange={onSecretariaChange}
+          value={content.orgao}
+          onChange={onOrgaoChange}
         />
         <EditItem
           title="Bairro"

@@ -36,7 +36,7 @@ const ListInfo = ({ content }) => {
   const listInfo = [
   
     { text: content.programa, iconComponent: PublicIcon },
-    { text: content.secretaria, iconComponent: PublicIcon },
+    { text: content.orgao, iconComponent: PublicIcon },
     { text: content.bairro, iconComponent: PublicIcon },
     { text: content.subprefeitura, iconComponent: PublicIcon},
     { text: "R$ " +  content.totalInvestido + " investidos", iconComponent: PublicIcon},

@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import "firebase/firestore";
 import firebaseCredentials from "./firebaseconfig";
-import { toSnakeCase, concatenaEmSnakeCase, obterSiglaSecretaria } from './utils/formatFile';
+import { toSnakeCase, concatenaEmSnakeCase, obterSiglaOrgao } from './utils/formatFile';
 
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
@@ -76,9 +76,9 @@ export async function editarRealizacao(data) {
     await ref.set(rest);
 
     if (content.coords) {
-      const ref1 = db.collection("RealizacaoOrgao").doc(concatenaEmSnakeCase(content.titulo,obterSiglaSecretaria(content.secretaria)));
+      const ref1 = db.collection("RealizacaoOrgao").doc(concatenaEmSnakeCase(content.titulo,obterSiglaOrgao(content.orgao)));
       await ref1.set({
-        id_orgao: obterSiglaSecretaria(content.secretaria),
+        id_orgao: obterSiglaOrgao(content.orgao),
         id_realizacao: toSnakeCase(content.titulo)
       });
 
