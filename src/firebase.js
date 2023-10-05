@@ -84,7 +84,7 @@ export async function editarRealizacao(data) {
 
       const ref2 = db.collection("RealizacaoTema").doc(concatenaEmSnakeCase(content.titulo,(content.tema).toLowerCase()));
       await ref2.set({
-        id_tema: (content.tema).toLowerCase(),
+        id_tema: (content.tema[0]).toLowerCase(),
         id_realizacao: toSnakeCase(content.titulo)
       });
 
@@ -129,10 +129,13 @@ export async function editarRealizacao(data) {
     });
 
     if (content.titulo !== contentSnapshot.titulo) {
-      await db.collection("Realizacoes").doc(contentSnapshot.titulo).delete();
-      await db.collection("RealizacaoTema").doc(contentSnapshot.titulo).delete();
-      await db.collection("Places").doc(contentSnapshot.titulo).delete();
+      await db.collection("Realizacoes").doc(toSnakeCase(contentSnapshot.titulo)).delete();
+      await db.collection("RealizacaoOrgao").doc(toSnakeCase(contentSnapshot.titulo)).delete();
+      await db.collection("RealizacaoTema").doc(toSnakeCase(contentSnapshot.titulo)).delete();
+      await db.collection("Places").doc(toSnakeCase(contentSnapshot.titulo)).delete();
       console.log("Document successfully moved!");
+      console.log("contentSnapshot", contentSnapshot);
+      console.log("content", content);
     }
 
     console.log("Document successfully updated!");

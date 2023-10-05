@@ -6,6 +6,8 @@ import {
   ListItemText,
   makeStyles,
 } from "@material-ui/core";
+import React from 'react';
+
 
 import TimelineOutlinedIcon from "@material-ui/icons/TimelineOutlined";
 import QueryBuilderOutlinedIcon from "@material-ui/icons/QueryBuilderOutlined";
@@ -49,27 +51,28 @@ const ListInfo = ({ content }) => {
   return (
     <List>
       {listInfo.map((item, i) => (
-        <>
-          {item.text ? (
+    <React.Fragment key={i}>
+        {item.text ? (
             <ListItem
-              button
-              classes={{ gutters: classes.listItemGutters }}
-              key={item.text}
+                button
+                classes={{ gutters: classes.listItemGutters }}
+                key={item.text}
             >
-              <ListItemIcon classes={{ root: classes.listItemIcon }}>
-                <item.iconComponent color="primary" />
-              </ListItemIcon>
-              <ListItemText
-                primary={item.text}
-                primaryTypographyProps={{ variant: 'body2' }}
-                classes={{ root: classes.marginZero }}
-              />
+                <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                    <item.iconComponent color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                    primary={item.text}
+                    primaryTypographyProps={{ variant: 'body2' }}
+                    classes={{ root: classes.marginZero }}
+                />
             </ListItem>
-          ) : null}
-          {i === 3 && <Divider/>} {/* Adicionar Divider após subprefeitura */}
-          {i === 5 && <Divider />} {/* Adicionar Divider após cariocasAtendidos */}
-        </>
-      ))}
+        ) : null}
+        {i === 3 && <Divider/>} {/* Adicionar Divider após subprefeitura */}
+        {i === 5 && <Divider />} {/* Adicionar Divider após cariocasAtendidos */}
+    </React.Fragment>
+))}
+
     </List>
   );
 };

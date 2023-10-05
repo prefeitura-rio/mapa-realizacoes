@@ -11,6 +11,7 @@ import {
   Link,
   TextField,
 } from "@material-ui/core";
+import Temas from './Temas';
 import CloseIcon from "@material-ui/icons/Close";
 import StoreIcon from "@material-ui/icons/Store";
 import CategoryIcon from "@material-ui/icons/Category";
@@ -290,6 +291,7 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={content.titulo}
           onChange={onTituloChange}
+          
         />
         <EditItem
           title="Descrição"
@@ -297,42 +299,50 @@ const EditInfoModal = ({
           value={content.descricao}
           onChange={onDescricaoChange}
         />
+
         <EditItem
           title="Status"
           IconComponent={StoreIcon}
           value={content.status}
           onChange={onStatusChange}
+          isAutocomplete={true} 
         />
+       
         <EditItem
           title="Programa"
           IconComponent={StoreIcon}
           value={content.programa}
           onChange={onProgramaChange}
+          isAutocomplete={true} 
         />
-        <EditItem
+
+       <EditItem
           title="Tema"
           IconComponent={StoreIcon}
           value={content.tema}
           onChange={onTemaChange}
+          isAutocomplete={true} 
         />
+                
         <EditItem
-          title="Órgao"
+          title="Órgão"
           IconComponent={StoreIcon}
           value={content.orgao}
           onChange={onOrgaoChange}
+          isAutocomplete={true} 
         />
-        <EditItem
+        {/* <EditItem
           title="Bairro"
           IconComponent={StoreIcon}
           value={content.bairro}
           onChange={onBairroChange}
-        />
-        <EditItem
+        /> */}
+        {/* <EditItem
           title="Subprefeitura"
           IconComponent={StoreIcon}
           value={content.subprefeitura}
           onChange={onSubprefeituraChange}
-        />
+        /> */}
         <EditItem
           title="Total Investido"
           IconComponent={StoreIcon}
