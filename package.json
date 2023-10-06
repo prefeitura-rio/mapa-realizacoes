@@ -48,7 +48,7 @@
     "gh-pages": "^6.0.0",
     "node-gyp": "^8.4.1"
   },
-  "homepage": "https://prefeitura-rio.github.io/mapa-realizacoes/",
+  "homepage": "https://mapa-realizacoes.dados.rio/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
