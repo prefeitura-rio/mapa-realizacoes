@@ -43,8 +43,8 @@ const ListInfo = ({ content }) => {
     { text: content.subprefeitura, iconComponent: PublicIcon},
     { text: "R$ " +  content.totalInvestido + " investidos", iconComponent: PublicIcon},
     { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: PublicIcon},
-    { text: content.dataInicio, iconComponent: PublicIcon},
-    { text: content.dataFim, iconComponent: PublicIcon},
+    { text: content.dataInicio + "início", iconComponent: PublicIcon},
+    { text: content.dataFim + "fim", iconComponent: PublicIcon},
    
   ];
 
