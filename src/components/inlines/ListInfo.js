@@ -42,8 +42,9 @@ const ListInfo = ({ content }) => {
   const getBairro = async (latitude, longitude) => {
     try {
       console.log('Iniciando busca de bairro...');
+      const apiKey = API_KEY_GOOGLE.apiKey;
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY_GOOGLE}`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
       );
 
       const { results } = response.data;
