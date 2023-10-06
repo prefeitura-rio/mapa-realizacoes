@@ -147,12 +147,12 @@ const PlaceDescriptionBar = ({
       <Divider />
       <div className={classes.listInfo}>
         <ListInfo content={content} />
-      
+          
         <br></br>
         {}
         {profile ? (
           <BottomButton
-            title="Editar infomarções"
+            title="Editar informarções"
             startIcon={CreateOutlinedIcon}
             onClick={handleOpenEdit}
           />
