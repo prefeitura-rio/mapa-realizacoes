@@ -10,73 +10,15 @@ export const emptyContent = {
   //informações básicas
   programa:[],
   orgao:[],
-  bairro:"-",
+  // bairro:"-",
   // endereco:"Adicionar endereço",
-  subprefeitura:"-",
+  // subprefeitura:"-",
 
   //total investido + cariocas atendidos
   totalInvestido:"Adicionar total investido",
   cariocasAtendidos:"Adicionar total de cariocas atendidos",
-
-  //data início + data fim
-
-
-
-
-  // endereco: "Adicionar Endereço",
-  // lastVisit: firestore.Timestamp.fromDate(
-  //   new Date("March 1, 2021 at 12:00:00 AM UTC+8")
-  // ),
-  // website: "Add website",
-  // phoneNumber: "Add phone number",
-  // ratingCount: 0,
-  // ratingValue: 5,
-  // inside: null,
-  // type: 'Shopping mall',
   imageUrl: null,
   coords: null,
-  // schedule: {
-  //   monday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   tuesday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   wednesday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   thursday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   friday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   saturday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   sunday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  // },
+  //data início + data fim
+
 };

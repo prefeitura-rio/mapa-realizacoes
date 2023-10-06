@@ -6,8 +6,9 @@ import {
   ListItemText,
   makeStyles,
 } from "@material-ui/core";
-import React from 'react';
 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import TimelineOutlinedIcon from "@material-ui/icons/TimelineOutlined";
 import QueryBuilderOutlinedIcon from "@material-ui/icons/QueryBuilderOutlined";
@@ -34,12 +35,53 @@ const useStyles = makeStyles((theme) => ({
 
 const ListInfo = ({ content }) => {
   const classes = useStyles();
+  const [bairro, setBairro] = useState('');
+
+  const getBairro = async (latitude, longitude) => {
+    try {
+      console.log('Iniciando busca de bairro...');
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAEUIVAW7Rr57xULgXKRd_I1I1aStxGvDU`
+      );
+
+      const { results } = response.data;
+
+      if (results && results.length > 0) {
+        const enderecoComponents = results[0].address_components;
+        const bairroComponent = enderecoComponents.find(component =>
+          component.types.includes("sublocality_level_1") || component.types.includes("sublocality")
+        );
+
+        if (bairroComponent) {
+          setBairro(bairroComponent.long_name);
+          console.log('Bairro encontrado:', bairroComponent.long_name);
+        } else {
+          setBairro('Bairro não encontrado');
+          console.log('Nenhum bairro encontrado no endereço retornado.');
+        }
+      } else {
+        setBairro('Bairro não encontrado');
+        console.log('Nenhum resultado encontrado.');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o bairro:', error);
+      setBairro('Erro ao buscar o bairro');
+    }
+  };
+
+  useEffect(() => {
+    if (content.coords) {
+      // Se 'coords' estiver presente em 'content', chame a função getBairro
+      const { latitude, longitude } = content.coords;
+      getBairro(latitude, longitude);
+    }
+  }, [content]);
 
   const listInfo = [
   
     { text: content.programa, iconComponent: PublicIcon },
     { text: content.orgao, iconComponent: PublicIcon },
-    { text: content.bairro, iconComponent: PublicIcon },
+    { text: bairro, iconComponent: PublicIcon }, // Usar o estado bairro aqui
     { text: content.subprefeitura, iconComponent: PublicIcon},
     { text: "R$ " +  content.totalInvestido + ",00" + " investidos", iconComponent: PublicIcon},
     { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: PublicIcon},
