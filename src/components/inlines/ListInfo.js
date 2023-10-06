@@ -19,6 +19,8 @@ import LabelOutlinedIcon from "@material-ui/icons/LabelOutlined";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import moment from "moment";
 
+import API_KEY_GOOGLE from "../../API_KEY_GOOGLE";
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   marginZero: {
@@ -41,7 +43,7 @@ const ListInfo = ({ content }) => {
     try {
       console.log('Iniciando busca de bairro...');
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAEUIVAW7Rr57xULgXKRd_I1I1aStxGvDU`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY_GOOGLE}`
       );
 
       const { results } = response.data;
