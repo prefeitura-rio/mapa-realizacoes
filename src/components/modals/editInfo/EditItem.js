@@ -26,7 +26,6 @@ import DatePickerFim from "./DatePickerFim";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-
   contentInput: {
     paddingTop: "8px",
     paddingLeft: "20px",
@@ -88,15 +87,12 @@ const EditItem = ({
   onCancel,
   select = [],
   disableBlur = false,
-  isAutocomplete = false, // Adicione o novo prop "isAutocomplete" e defina como falso por padrão
-  disableBlur = false,
-  isAutocomplete = false, // Adicione o novo prop "isAutocomplete" e defina como falso por padrão
+  isAutocomplete = false,
 }) => {
   const classes = useStyles();
 
 
   const [inputValue, setinputValue] = useState(value || "");
-
   const [canceled, setCanceled] = useState(false);
 
   const handleCanceled = () => {
@@ -104,20 +100,24 @@ const EditItem = ({
     onCancel();
   };
 
-  const onCariocasAtendidosChange = (value) => {
-    // Remove qualquer caractere não numérico antes de atualizar o estado
-    const numericValue = value.replace(/\D/g, "");
+  const onTotalInvestidoChange = (value) => {
+    const numericValue = value.replace(/\D/g, ""); // Isso remove todos os caracteres não numéricos
     setinputValue(numericValue);
     if (onChange) onChange(numericValue);
   };
+  
+  const onCariocasAtendidosChange = (value) => {
+    const numericValue = value.replace(/\D/g, ""); // Isso remove todos os caracteres não numéricos
+    setinputValue(numericValue);
+    if (onChange) onChange(numericValue);
+  };
+  
 
   const changeInputValue = (newValue) => {
     setinputValue(newValue);
     if (onChange) onChange(newValue);
   };
-  const changeInputValuee = (e) => {
-    setinputValue(e.target.value);
-  };
+
 
   const [focused, setFocused] = useState(false);
 
@@ -194,26 +194,35 @@ const EditItem = ({
         <div className={classes.inputLabel}>{title}</div>
         {subTitle ? <div className={classes.inputLabel}>{subTitle}</div> : null}
         {jsxValue ? (
-  jsxValue
-) : isAutocomplete ? (
-  <ClickAwayListener onClickAway={() => setFocused(false)}>
-    <div onClick={onClick}>
-      {renderAutocompleteComponent()}
-    </div>
-  </ClickAwayListener>
-) : ( // Caso contrário, use um campo de entrada simples
+          jsxValue
+        ) : isAutocomplete ? (
+          <ClickAwayListener onClickAway={() => setFocused(false)}>
+            <div onClick={onClick}>{renderAutocompleteComponent()}</div>
+          </ClickAwayListener>
+        ) : (
           <Input
-            value={inputValue}
-            inputProps={{
-              style: { textDecoration: canceled ? "line-through" : "none" },
-            }}
-            className={classes.inputField}
-            classes={{ underline: classes.underline }}
-            onChange={changeInputValuee}
-            disabled={canceled ? true : false}
-            onClick={() => setFocused(true)}
-            onBlur={disableBlur ? () => {} : onBlur}
-          />
+          value={inputValue}
+          inputProps={{
+            style: { textDecoration: canceled ? "line-through" : "none" },
+            type: title === "Total Investido" || title === "Cariocas Atendidos" ? "number" : "text",
+          }}
+          className={classes.inputField}
+          classes={{ underline: classes.underline }}
+          onChange={(e) => {
+            if (title === "Total Investido" || title === "Cariocas Atendidos") {
+              const numericValue = e.target.value.replace(/\D/g, "");
+              setinputValue(numericValue);
+              if (onChange) onChange(numericValue);
+            } else {
+              setinputValue(e.target.value);
+              if (onChange) onChange(e.target.value);
+            }
+          }}
+          disabled={canceled ? true : false}
+          onClick={() => setFocused(true)}
+          onBlur={disableBlur ? () => {} : onBlur}
+        />
+        
         )}
         {extraIcon ? (
           <IconButton
@@ -240,6 +249,9 @@ const EditItem = ({
     </div>
   );
 };
+
+  
+
 
   
 

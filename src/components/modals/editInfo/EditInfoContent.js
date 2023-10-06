@@ -331,18 +331,6 @@ const EditInfoModal = ({
           onChange={onOrgaoChange}
           isAutocomplete={true} 
         />
-        {/* <EditItem
-          title="Bairro"
-          IconComponent={StoreIcon}
-          value={content.bairro}
-          onChange={onBairroChange}
-        /> */}
-        {/* <EditItem
-          title="Subprefeitura"
-          IconComponent={StoreIcon}
-          value={content.subprefeitura}
-          onChange={onSubprefeituraChange}
-        /> */}
         <EditItem
           title="Total Investido"
           IconComponent={StoreIcon}
