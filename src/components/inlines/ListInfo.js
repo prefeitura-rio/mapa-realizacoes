@@ -309,44 +309,43 @@ const ListInfo = ({ content }) => {
     }
   }, [content]);
 
+  const orgaos = content.orgao.map((orgao, index) => ({ text: orgao, iconComponent: PublicIcon }));
+
   const listInfo = [
-  
     { text: content.programa, iconComponent: PublicIcon },
-    { text: content.orgao, iconComponent: PublicIcon },
+    ...orgaos, // Adicione os órgãos diretamente aqui
     { text: bairro, iconComponent: PublicIcon }, // Use o estado bairro aqui
     { text: subprefeitura, iconComponent: PublicIcon }, // Use o estado subprefeitura aqui
-    { text: "R$ " +  content.totalInvestido + ",00" + " investidos", iconComponent: PublicIcon},
-    { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: PublicIcon},
-    { text: content.dataInicio + " início", iconComponent: PublicIcon},
-    { text: content.dataFim + " fim", iconComponent: PublicIcon},
-   
+    { text: "R$ " + content.totalInvestido + ",00" + " investidos", iconComponent: PublicIcon },
+    { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: PublicIcon },
+    { text: content.dataInicio + " início", iconComponent: PublicIcon },
+    { text: content.dataFim + " fim", iconComponent: PublicIcon },
   ];
-
+  
   return (
     <List>
       {listInfo.map((item, i) => (
-    <React.Fragment key={i}>
-        {item.text ? (
+        <React.Fragment key={i}>
+          {item.text ? (
             <ListItem
-                button
-                classes={{ gutters: classes.listItemGutters }}
-                key={item.text}
+              button
+              classes={{ gutters: classes.listItemGutters }}
+              key={item.text}
             >
-                <ListItemIcon classes={{ root: classes.listItemIcon }}>
-                    <item.iconComponent color="primary" />
-                </ListItemIcon>
-                <ListItemText
-                    primary={item.text}
-                    primaryTypographyProps={{ variant: 'body2' }}
-                    classes={{ root: classes.marginZero }}
-                />
+              <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                <item.iconComponent color="primary" />
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{ variant: 'body2' }}
+                classes={{ root: classes.marginZero }}
+              />
             </ListItem>
-        ) : null}
-        {i === 3 && <Divider/>} {/* Adicionar Divider após subprefeitura */}
-        {i === 5 && <Divider />} {/* Adicionar Divider após cariocasAtendidos */}
-    </React.Fragment>
-))}
-
+          ) : null}
+          {/* {i === 3 && <Divider />} Adicionar Divider após subprefeitura */}
+          {/* {i === 5 && <Divider />} Adicionar Divider após cariocasAtendidos */}
+        </React.Fragment>
+      ))}
     </List>
   );
 };
