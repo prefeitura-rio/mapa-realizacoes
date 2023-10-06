@@ -11,6 +11,7 @@ import {
   Link,
   TextField,
 } from "@material-ui/core";
+import Temas from './Temas';
 import CloseIcon from "@material-ui/icons/Close";
 import StoreIcon from "@material-ui/icons/Store";
 import CategoryIcon from "@material-ui/icons/Category";
@@ -26,7 +27,7 @@ import { editarRealizacao } from "../../../firebase";
 import clsx from "clsx";
 import MySchedule from "./MySchedule";
 import { getTileImage } from "../../../utils/getTileImage";
-
+import DatePickerFim from './DatePickerFim'; 
 const useStyles = makeStyles((theme) => ({
   root: {},
   dialog: {
@@ -290,6 +291,7 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={content.titulo}
           onChange={onTituloChange}
+          
         />
         <EditItem
           title="Descrição"
@@ -297,41 +299,37 @@ const EditInfoModal = ({
           value={content.descricao}
           onChange={onDescricaoChange}
         />
+
         <EditItem
           title="Status"
           IconComponent={StoreIcon}
           value={content.status}
           onChange={onStatusChange}
+          isAutocomplete={true} 
         />
+       
         <EditItem
           title="Programa"
           IconComponent={StoreIcon}
-          value={content.programa}
+          value={JSON.stringify(content.programa)}
           onChange={onProgramaChange}
+          isAutocomplete={true} 
         />
-        <EditItem
+
+       <EditItem
           title="Tema"
           IconComponent={StoreIcon}
           value={content.tema}
           onChange={onTemaChange}
+          isAutocomplete={true} 
         />
+                
         <EditItem
-          title="Órgao"
+          title="Órgão"
           IconComponent={StoreIcon}
           value={content.orgao}
           onChange={onOrgaoChange}
-        />
-        <EditItem
-          title="Bairro"
-          IconComponent={StoreIcon}
-          value={content.bairro}
-          onChange={onBairroChange}
-        />
-        <EditItem
-          title="Subprefeitura"
-          IconComponent={StoreIcon}
-          value={content.subprefeitura}
-          onChange={onSubprefeituraChange}
+          isAutocomplete={true} 
         />
         <EditItem
           title="Total Investido"
@@ -350,19 +348,21 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={content.dataInicio}
           onChange={onDataInicioChange}
+          isAutocomplete={true} 
         />
         <EditItem
           title="Data Fim"
           IconComponent={StoreIcon}
           value={content.dataFim}
           onChange={onDataFimChange}
+          isAutocomplete={true} 
         />
-        <EditItem
+        {/* <EditItem
           title="Localização"
           IconComponent={LocationOnIcon}
           value={content.endereco}
           onChange={onEnderecoChange}
-        />
+        /> */}
         <div className={classes.centerButton}>
           <Button
             variant="outlined"

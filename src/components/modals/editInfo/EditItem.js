@@ -17,10 +17,15 @@ import clsx from "clsx";
 import { useState } from "react";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import UndoIcon from "@material-ui/icons/Undo";
+import Temas from './Temas';
+import Programas from './Programas';
+import Orgaos from './Orgaos';
+import Status from './Status';
+import DatePicker from './DatePicker';
+import DatePickerFim from "./DatePickerFim";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-
   contentInput: {
     paddingTop: "8px",
     paddingLeft: "20px",
@@ -81,12 +86,12 @@ const EditItem = ({
   onChange,
   onCancel,
   select = [],
-  disableBlur=false
+  disableBlur = false,
+  isAutocomplete = false,
 }) => {
   const classes = useStyles();
 
   const [inputValue, setinputValue] = useState(value || "");
-
   const [canceled, setCanceled] = useState(false);
 
   const handleCanceled = () => {
@@ -94,9 +99,24 @@ const EditItem = ({
     onCancel();
   };
 
-  const changeInputValue = (e) => {
-    setinputValue(e.target.value);
+  const onTotalInvestidoChange = (value) => {
+    const numericValue = value.replace(/\D/g, ""); // Isso remove todos os caracteres não numéricos
+    setinputValue(numericValue);
+    if (onChange) onChange(numericValue);
   };
+  
+  const onCariocasAtendidosChange = (value) => {
+    const numericValue = value.replace(/\D/g, ""); // Isso remove todos os caracteres não numéricos
+    setinputValue(numericValue);
+    if (onChange) onChange(numericValue);
+  };
+  
+
+  const changeInputValue = (newValue) => {
+    setinputValue(newValue);
+    if (onChange) onChange(newValue);
+  };
+
 
   const [focused, setFocused] = useState(false);
 
@@ -107,7 +127,22 @@ const EditItem = ({
   // const onFocus = (e) => {
   //   setFocused(true);
   // };
-
+  const renderAutocompleteComponent = () => {
+    if (title === "Órgão") {
+      return <Orgaos value={inputValue} onChange={changeInputValue} />;
+    } else if (title === "Programa") {
+      return <Programas value={inputValue} onChange={changeInputValue} />;
+    } else if (title === "Tema") {
+      return <Temas value={inputValue} onChange={changeInputValue} />;
+    } else if (title === "Status") {
+      return <Status value={inputValue} onChange={changeInputValue} />;
+    } else if (title === "Data Início") {
+      return <DatePicker value={inputValue} onChange={changeInputValue} />;
+    } else if (title === "Data Fim") {
+      return <DatePickerFim value={inputValue} onChange={changeInputValue} />;
+    }
+  };
+  
   const MySelector = () => {
     let selected = select
       .filter((el) =>
@@ -159,48 +194,62 @@ const EditItem = ({
         {subTitle ? <div className={classes.inputLabel}>{subTitle}</div> : null}
         {jsxValue ? (
           jsxValue
-        ) : (
+        ) : isAutocomplete ? (
           <ClickAwayListener onClickAway={() => setFocused(false)}>
-            <div onClick={onClick}>
-              <Input
-                value={inputValue}
-                inputProps={{
-                  style: { textDecoration: canceled ? "line-through" : "none" },
-                }}
-                className={classes.inputField}
-                classes={{ underline: classes.underline }}
-                onChange={changeInputValue}
-                disabled={canceled ? true : false}
-                onClick={() => setFocused(true)}
-                onBlur={disableBlur ? ()=>{} : onBlur}
-              />
-              {extraIcon ? (
-                <IconButton
-                  className={classes.extraIcon}
-                  onClick={extraIcon === "close" ? handleCanceled : onClick}
-                >
-                  {extraIcon === "forward" ? (
-                    <ArrowForwardIosIcon
-                      fontSize="small"
-                      classes={{ fontSizeSmall: classes.iconSmall }}
-                    />
-                  ) : null}
-                  {extraIcon === "close" ? (
-                    canceled ? (
-                      <UndoIcon />
-                    ) : (
-                      <CloseIcon />
-                    )
-                  ) : null}
-                </IconButton>
-              ) : null}
-              {focused && select.length ? <MySelector /> : null}
-            </div>
+            <div onClick={onClick}>{renderAutocompleteComponent()}</div>
           </ClickAwayListener>
+        ) : (
+          <Input
+          value={inputValue}
+          inputProps={{
+            style: { textDecoration: canceled ? "line-through" : "none" },
+            type: title === "Total Investido" || title === "Cariocas Atendidos" ? "number" : "text",
+          }}
+          className={classes.inputField}
+          classes={{ underline: classes.underline }}
+          onChange={(e) => {
+            if (title === "Total Investido" || title === "Cariocas Atendidos") {
+              const numericValue = e.target.value.replace(/\D/g, "");
+              setinputValue(numericValue);
+              if (onChange) onChange(numericValue);
+            } else {
+              setinputValue(e.target.value);
+              if (onChange) onChange(e.target.value);
+            }
+          }}
+          disabled={canceled ? true : false}
+          onClick={() => setFocused(true)}
+          onBlur={disableBlur ? () => {} : onBlur}
+        />
+        
         )}
+        {extraIcon ? (
+          <IconButton
+            className={classes.extraIcon}
+            onClick={extraIcon === "close" ? handleCanceled : onClick}
+          >
+            {extraIcon === "forward" ? (
+              <ArrowForwardIosIcon
+                fontSize="small"
+                classes={{ fontSizeSmall: classes.iconSmall }}
+              />
+            ) : null}
+            {extraIcon === "close" ? (
+              canceled ? (
+                <UndoIcon />
+              ) : (
+                <CloseIcon />
+              )
+            ) : null}
+          </IconButton>
+        ) : null}
+        {focused && select.length ? <MySelector /> : null}
       </div>
     </div>
   );
 };
+
+
+  
 
 export default EditItem;

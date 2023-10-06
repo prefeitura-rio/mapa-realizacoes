@@ -49,15 +49,15 @@ const MiddleMap = ({ coords, setCoords }) => {
         className={classes.middleMap}
         whenCreated={setMap}
       >
-        <TileLayer
-          url="https://api.mapbox.com/styles/v1/{id}/tiles/512/{z}/{x}/{y}?access_token={accessToken}"
-          attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-          id="mapbox/outdoors-v11"
-          accessToken="pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
-          maxZoom={18}
-          tileSize={512}
-          zoomOffset={-1}
-        />
+      <TileLayer
+        url="https://api.mapbox.com/styles/v1/{id}/tiles/512/{z}/{x}/{y}?access_token={accessToken}"
+        attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+        id="mapbox/outdoors-v11"
+        accessToken="pk.eyJ1IjoiZXNjcml0b3Jpb2RlZGFkb3MiLCJhIjoiY2t3bWdmcHpjMmJ2cTJucWJ4MGQ1Mm1kbiJ9.4hHJX-1pSevYoBbja7Pq4w"
+        maxZoom={18}
+        tileSize={512}
+        zoomOffset={-1}
+      />
       </MapContainer>
       <div className={classes.markerWrapper}>
         <img src={locIcon} alt="loc" className={classes.marker} />
