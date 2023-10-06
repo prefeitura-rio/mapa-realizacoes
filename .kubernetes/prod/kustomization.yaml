@@ -6,7 +6,3 @@ resources:
 - deployment.yaml
 - service.yaml
 - ingress.yaml
-images:
-- name: gcr.io/PROJECT_ID/IMAGE_NAME:TAG
-  newName: nginx
-  newTag: alpine
