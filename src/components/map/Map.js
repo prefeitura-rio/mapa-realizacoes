@@ -87,13 +87,13 @@ const Map = ({
           <Marker
             key={Object.values(point.coords).join("")}
             position={Object.values(point.coords)}
-            icon={getIcon("university")}
+            icon={getIcon("anyIcon")}
             eventHandlers={{
               click: (e) => onMarkerClick(point),
             }}
           >
             <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-              <span>{point.nome}</span>
+              <span>{point.id}</span>
             </Tooltip>
           </Marker>
         ))}

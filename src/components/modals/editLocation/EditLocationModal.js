@@ -120,7 +120,7 @@ const EditLocationModal = ({
           color="primary"
           className={classes.actionButton}
         >
-          Cancel
+          Cancelar
         </Button>
         <Button
           variant="contained"
@@ -130,7 +130,7 @@ const EditLocationModal = ({
           onClick={onDoneClick}
           className={classes.actionButton}
         >
-          DONE
+          Atualizar Localização
         </Button>
       </DialogActions>
     </>

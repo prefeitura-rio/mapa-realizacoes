@@ -4,12 +4,12 @@ export const emptyContent = {
   //header
   titulo: "Adicionar título",
   descricao:"Adicionar descrição",
-  status:"Adicionar status",
-  tema:"Adicionar tema",
+  status:[],
+  tema:[],
 
   //informações básicas
-  programa:"Adicionar programa",
-  orgao:"Adicionar órgao ",
+  programa:[],
+  orgao:[],
   bairro:"-",
   // endereco:"Adicionar endereço",
   subprefeitura:"-",
@@ -19,12 +19,11 @@ export const emptyContent = {
   cariocasAtendidos:"Adicionar total de cariocas atendidos",
 
   //data início + data fim
-  dataInicio:"Adicionar data de início",
-  dataFim:"Adicionar data de término",
 
 
 
-  endereco: "Adicionar Endereço",
+
+  // endereco: "Adicionar Endereço",
   // lastVisit: firestore.Timestamp.fromDate(
   //   new Date("March 1, 2021 at 12:00:00 AM UTC+8")
   // ),

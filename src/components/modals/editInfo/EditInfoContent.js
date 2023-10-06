@@ -27,7 +27,7 @@ import { editarRealizacao } from "../../../firebase";
 import clsx from "clsx";
 import MySchedule from "./MySchedule";
 import { getTileImage } from "../../../utils/getTileImage";
-
+import DatePickerFim from './DatePickerFim'; 
 const useStyles = makeStyles((theme) => ({
   root: {},
   dialog: {
@@ -311,7 +311,7 @@ const EditInfoModal = ({
         <EditItem
           title="Programa"
           IconComponent={StoreIcon}
-          value={content.programa}
+          value={JSON.stringify(content.programa)}
           onChange={onProgramaChange}
           isAutocomplete={true} 
         />
@@ -360,19 +360,21 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={content.dataInicio}
           onChange={onDataInicioChange}
+          isAutocomplete={true} 
         />
         <EditItem
           title="Data Fim"
           IconComponent={StoreIcon}
           value={content.dataFim}
           onChange={onDataFimChange}
+          isAutocomplete={true} 
         />
-        <EditItem
+        {/* <EditItem
           title="Localização"
           IconComponent={LocationOnIcon}
           value={content.endereco}
           onChange={onEnderecoChange}
-        />
+        /> */}
         <div className={classes.centerButton}>
           <Button
             variant="outlined"

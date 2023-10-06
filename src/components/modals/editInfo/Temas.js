@@ -11,8 +11,7 @@ export default function Temas({ value, onChange }) {
         multiple
         id="tags-standard"
         options={temas}
-        value={Array.isArray(value) ? value : []}  // Garante que o valor seja sempre um array
-        onChange={(event, newValue) => onChange(newValue)}
+        onChange={(event, newValue) => onChange(newValue.map(value => value.title))}
         getOptionLabel={(option) => option.title}
         renderInput={(params) => (
           <TextField

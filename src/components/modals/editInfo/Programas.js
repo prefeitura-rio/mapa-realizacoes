@@ -12,8 +12,7 @@ export default function Programas({ value, onChange }) {
         id="tags-standard"
     
         options={programas}
-        // value={value}  // Garante que o valor seja sempre um array
-        onChange={(event, newValue) => onChange(newValue)}
+        onChange={(event, newValue) => onChange(newValue ? newValue.title: "")}
         getOptionLabel={(option) => option.title}
         renderInput={(params) => (
           <TextField

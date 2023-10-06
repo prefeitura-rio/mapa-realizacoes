@@ -21,6 +21,8 @@ import Temas from './Temas';
 import Programas from './Programas';
 import Orgaos from './Orgaos';
 import Status from './Status';
+import DatePicker from './DatePicker';
+import DatePickerFim from "./DatePickerFim";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -87,6 +89,8 @@ const EditItem = ({
   select = [],
   disableBlur = false,
   isAutocomplete = false, // Adicione o novo prop "isAutocomplete" e defina como falso por padrão
+  disableBlur = false,
+  isAutocomplete = false, // Adicione o novo prop "isAutocomplete" e defina como falso por padrão
 }) => {
   const classes = useStyles();
 
@@ -98,6 +102,13 @@ const EditItem = ({
   const handleCanceled = () => {
     setCanceled(!canceled);
     onCancel();
+  };
+
+  const onCariocasAtendidosChange = (value) => {
+    // Remove qualquer caractere não numérico antes de atualizar o estado
+    const numericValue = value.replace(/\D/g, "");
+    setinputValue(numericValue);
+    if (onChange) onChange(numericValue);
   };
 
   const changeInputValue = (newValue) => {
@@ -126,6 +137,10 @@ const EditItem = ({
       return <Temas value={inputValue} onChange={changeInputValue} />;
     } else if (title === "Status") {
       return <Status value={inputValue} onChange={changeInputValue} />;
+    } else if (title === "Data Início") {
+      return <DatePicker value={inputValue} onChange={changeInputValue} />;
+    } else if (title === "Data Fim") {
+      return <DatePickerFim value={inputValue} onChange={changeInputValue} />;
     }
   };
   
