@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mapa-realizacoes-dev
+  namespace: mapa-realizacoes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mapa-realizacoes-dev
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: mapa-realizacoes-dev
+    spec:
+      containers:
+        - name: mapa-realizacoes-dev
+          image: gcr.io/PROJECT_ID/IMAGE_NAME:TAG
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "200m"
+      restartPolicy: Always
