@@ -51,9 +51,13 @@ const ListInfo = ({ content }) => {
   const [bairro, setBairro] = useState('');
   const [subprefeitura, setSubprefeitura] = useState('');
   const [openOrgaos, setOpenOrgaos] = useState(false); // Controla o menu suspenso dos órgãos
+  const [openTemas, setOpenTemas] = useState(false); // Controla o menu suspenso dos temas
 
   const handleClickOrgaos = () => {
     setOpenOrgaos(!openOrgaos); // Inverte o estado atual do menu suspenso dos órgãos
+  };
+  const handleClickTemas = () => {
+    setOpenTemas(!openTemas); // Inverte o estado atual do menu suspenso dos órgãos
   };
   const getBairro = async (latitude, longitude) => {
     try {
@@ -102,10 +106,12 @@ const ListInfo = ({ content }) => {
   }, [content]);
 
   const orgaos = content.orgao.map((orgao, index) => ({ text: orgao, iconComponent: PublicIcon }));
+  const temas = content.tema.map((tema, index) => ({ text: tema, iconComponent: PublicIcon }));
 
   const listInfo = [
     { text: content.programa, iconComponent: PublicIcon },
     { text: 'Órgãos', iconComponent: PublicIcon }, // Item clicável para mostrar os órgãos
+    { text: 'Temas', iconComponent: PublicIcon }, // Item clicável para mostrar os temas
     { text: bairro, iconComponent: PublicIcon },
     { text: subprefeitura, iconComponent: PublicIcon },
     { text: "R$ " + content.totalInvestido + ",00" + " investidos", iconComponent: PublicIcon },
@@ -123,7 +129,7 @@ const ListInfo = ({ content }) => {
               button
               classes={{ gutters: classes.listItemGutters }}
               key={item.text}
-              onClick={i === 1 ? handleClickOrgaos : null}
+              onClick={i === 1 ? handleClickOrgaos : i === 2 ? handleClickTemas : null}
             >
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
                 <item.iconComponent color="primary" />
@@ -133,16 +139,16 @@ const ListInfo = ({ content }) => {
                 primaryTypographyProps={{ variant: 'body2' }}
                 classes={{ root: classes.marginZero }}
               />
-              {i === 1 ? openOrgaos ? <ExpandLess /> : <ExpandMore /> : null}
+              {i === 1 ? (openOrgaos ? <ExpandLess /> : <ExpandMore />) : 
+               i === 2 ? (openTemas ? <ExpandLess /> : <ExpandMore />) : null}
             </ListItem>
           ) : null}
-          {/* Renderiza o componente Collapse apenas quando o item "Órgãos" estiver sendo renderizado */}
           {i === 1 && (
             <Collapse in={openOrgaos} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {content.orgao.map((orgao, index) => (
                   <ListItem button className={classes.nested} key={index}>
-                    <ListItemIcon>
+                     <ListItemIcon>
                       {/* <PublicIcon /> */}
                     </ListItemIcon>
                     <ListItemText primary={orgao} />
@@ -151,10 +157,25 @@ const ListInfo = ({ content }) => {
               </List>
             </Collapse>
           )}
+          {i === 2 && (
+            <Collapse in={openTemas} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {Array.isArray(content.tema) ? content.tema.map((tema, index) => (
+                  <ListItem button className={classes.nested} key={index}>
+                    <ListItemIcon>
+                      {/* <PublicIcon /> */}
+                    </ListItemIcon>
+                    <ListItemText primary={tema} />
+                  </ListItem>
+                )) : null}
+              </List>
+            </Collapse>
+          )}
         </React.Fragment>
       ))}
     </List>
   );
+  
   
 };
 export default ListInfo;
