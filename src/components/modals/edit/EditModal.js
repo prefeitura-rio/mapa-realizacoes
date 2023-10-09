@@ -96,7 +96,7 @@ const EditModal = ({ setOpenEdit, openEdit, setOpenEditInfo }) => {
                 primary="Alterar título ou outros detalhes"
                 primaryTypographyProps={{ variant: "subtitle2" }}
                 secondaryTypographyProps={{ variant: "body2" }}
-                secondary="Edite título, bairro, status, etc"
+                secondary="Edite informações da realização"
               />
             </ListItem>
             <Divider component="li" />
