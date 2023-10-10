@@ -46,6 +46,12 @@ function mapearSubprefeitura(bairro) {
   return subprefeituras[bairro] || "Subprefeitura não encontrada";
 }
 
+// Função que mapeia bairros para subprefeituras
+function mapearSubprefeitura(bairro) {
+  // Verifique se o bairro existe no mapeamento
+  return subprefeituras[bairro] || "Subprefeitura não encontrada";
+}
+
 const ListInfo = ({ content }) => {
   const classes = useStyles();
   const [bairro, setBairro] = useState('');
@@ -125,12 +131,28 @@ const ListInfo = ({ content }) => {
       {listInfo.map((item, i) => (
         <React.Fragment key={i}>
           {item.text ? (
+        <React.Fragment key={i}>
+          {item.text ? (
             <ListItem
               button
               classes={{ gutters: classes.listItemGutters }}
               key={item.text}
               onClick={i === 1 ? handleClickOrgaos : i === 2 ? handleClickTemas : null}
+              button
+              classes={{ gutters: classes.listItemGutters }}
+              key={item.text}
+              onClick={i === 1 ? handleClickOrgaos : i === 2 ? handleClickTemas : null}
             >
+              <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                <item.iconComponent color="primary" />
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{ variant: 'body2' }}
+                classes={{ root: classes.marginZero }}
+              />
+              {i === 1 ? (openOrgaos ? <ExpandLess /> : <ExpandMore />) : 
+               i === 2 ? (openTemas ? <ExpandLess /> : <ExpandMore />) : null}
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
                 <item.iconComponent color="primary" />
               </ListItemIcon>
@@ -173,8 +195,41 @@ const ListInfo = ({ content }) => {
           )}
         </React.Fragment>
       ))}
+          ) : null}
+          {i === 1 && (
+            <Collapse in={openOrgaos} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {content.orgao.map((orgao, index) => (
+                  <ListItem button className={classes.nested} key={index}>
+                     <ListItemIcon>
+                      {/* <PublicIcon /> */}
+                    </ListItemIcon>
+                    <ListItemText primary={orgao} />
+                  </ListItem>
+                ))}
+              </List>
+            </Collapse>
+          )}
+          {i === 2 && (
+            <Collapse in={openTemas} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {Array.isArray(content.tema) ? content.tema.map((tema, index) => (
+                  <ListItem button className={classes.nested} key={index}>
+                    <ListItemIcon>
+                      {/* <PublicIcon /> */}
+                    </ListItemIcon>
+                    <ListItemText primary={tema} />
+                  </ListItem>
+                )) : null}
+              </List>
+            </Collapse>
+          )}
+        </React.Fragment>
+      ))}
     </List>
   );
+  
+  
   
   
 };
