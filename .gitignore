@@ -28,3 +28,6 @@ yarn-error.log*
 
 # firebaseconfig.js -> Arquivos com as credenciais. NÃO REMOVER! 
 src/firebaseconfig.js
+src/API_KEY_GOOGLE.js
+src/components/inlines/converted_bairros2.js
+src/components/inlines/teste.py

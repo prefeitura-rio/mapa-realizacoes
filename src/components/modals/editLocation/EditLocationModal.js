@@ -86,7 +86,7 @@ const EditLocationModal = ({
       <DialogTitle className={classes.dialogTitle} onClose={onClose}>
         <div className={classes.title}>
           <Typography variant="h3" component="span">
-            Update location
+            Atualizar Localização
           </Typography>
           <Typography variant="body1" color="textSecondary" component="span">
             {content.name}

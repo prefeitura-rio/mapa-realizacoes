@@ -2,12 +2,14 @@ import firebase from "firebase";
 import "firebase/firestore";
 import firebaseCredentials from "./firebaseconfig";
 import { toSnakeCase, concatenaEmSnakeCase, obterSiglaOrgao } from './utils/formatFile';
+import * as turf from '@turf/turf';
+
 
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
   authDomain: firebaseCredentials.authDomain,
   projectId: firebaseCredentials.projectId,
-  storageBucket:firebaseCredentials.storageBucket,
+  storageBucket: firebaseCredentials.storageBucket,
   messagingSenderId: firebaseCredentials.messagingSenderId,
   appId: firebaseCredentials.appId
 };
@@ -77,17 +79,17 @@ export async function editarRealizacao(data) {
 
     if (content.coords) {
       for (let i = 0; i < content.tema.length; i++) {
-        const ref1 = db.collection("RealizacaoOrgao").doc(concatenaEmSnakeCase(content.titulo,obterSiglaOrgao(content.orgao[i]).toLowerCase()));
+        const ref1 = db.collection("RealizacaoOrgao").doc(concatenaEmSnakeCase(content.titulo, obterSiglaOrgao(content.orgao[i]).toLowerCase()));
         await ref1.set({
           id_orgao: obterSiglaOrgao(content.orgao[i]),
           id_realizacao: toSnakeCase(content.titulo)
-      });
-    }
+        });
+      }
 
       for (let i = 0; i < content.tema.length; i++) {
         // Criar uma referência para um novo documento usando o valor atual de content.tema[i]
         const ref2 = db.collection("RealizacaoTema").doc(concatenaEmSnakeCase(content.titulo, content.tema[i].toLowerCase()));
-        
+
         // Definir os dados para o novo documento
         await ref2.set({
           id_tema: toSnakeCase(content.tema[i]),
@@ -104,6 +106,37 @@ export async function editarRealizacao(data) {
           content.coords.longitude
         ),
       });
+      // Verifique em qual bairro a realização está localizada
+      const point = turf.point([content.coords.longitude, content.coords.latitude]);
+      const bairrosRef = db.collection("Bairros");
+      const bairrosSnapshot = await bairrosRef.get();
+
+      let bairroEncontrado = null;
+
+      bairrosSnapshot.forEach(doc => {
+        const bairroData = JSON.parse(JSON.stringify(doc.data()));
+        if (JSON.parse(bairroData.geo) && JSON.parse(bairroData.geo).geometry) {
+          try {
+            const polygon = turf.polygon(JSON.parse(bairroData.geo).geometry.coordinates);
+            if (turf.booleanPointInPolygon(point, polygon)) {
+              bairroEncontrado = bairroData.nome;
+              return;
+            }
+          } catch (e) {
+            console.error("Erro ao processar polígono pro bairro: ", bairroData.nome, e);
+          }
+        }
+      });
+
+      // Debugging console.log statements
+      if (bairroEncontrado) {
+        console.log("=======> Bairro encontrado:", bairroEncontrado);
+        await ref.update({
+          bairro: bairroEncontrado
+        });
+      } else {
+        console.log("=======> Bairro não foi encontrado.");
+      }
     }
 
     function compareContent(newCont, oldCont) {
@@ -150,56 +183,7 @@ export async function editarRealizacao(data) {
   } catch (e) {
     console.error("Error updating document: ", e);
   }
+
 }
-
-// export async function createComment(data) {
-//   //! if doc doesn exists ? if commets doesnt exists?
-//   var { place, author, value, photos, text, photoFolder } = data;
-
-//   try {
-//     if (photos) {
-//       var promises = photos.map((file) => uploadPhotoFirebase(file, photoFolder));
-//       photos = await Promise.all(promises);
-//     }
-
-//     const ref = db.collection("comments").doc(Date.now().toString());
-
-
-//     await ref.set({
-//       forPlace: photoFolder,
-//       author: {
-//         name: author.name,
-//         photoURL: author.photoURL || "/",
-//         email: author.email,
-//         reviewCount: author.reviewCount || 1,
-//       },
-//       date: firebase.firestore.Timestamp.fromDate(new Date()),
-//       value,
-//       text,
-//       photos: photos || [],
-//     });
-
-//     console.log("Document successfully written!");
-//   } catch (e) {
-//     console.error("Error writing document: ", e);
-//   }
-// }
-
-// export async function getComments({ data, limit }) {
-//   limit = limit || 3;
-//   try {
-//     const query = await db
-//       .collection("comments")
-//       .where("forPlace", "==", data)
-//       .orderBy("date", "desc")
-//       .limit(limit)
-//       .get();
-//     let result = [];
-//     query.forEach((doc) => result.push(doc.data()));
-//     return result;
-//   } catch (e) {
-//     console.error("Error getting document: ", e);
-//   }
-// }
 
 
