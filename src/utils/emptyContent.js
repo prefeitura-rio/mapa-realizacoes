@@ -17,8 +17,11 @@ export const emptyContent = {
   //total investido + cariocas atendidos
   totalInvestido:"Adicionar total investido",
   cariocasAtendidos:"Adicionar total de cariocas atendidos",
+
+  //data início + data fim
+
+
   imageUrl: null,
   coords: null,
-  //data início + data fim
 
 };

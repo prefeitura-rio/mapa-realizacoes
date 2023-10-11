@@ -100,18 +100,7 @@ const EditModal = ({ setOpenEdit, openEdit, setOpenEditInfo }) => {
               />
             </ListItem>
             <Divider component="li" />
-            {/* <ListItem button classes={{ gutters: classes.gutters }}>
-              <ListItemIcon>
-                <LocationOffIcon color="primary" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Close or remove"
-                primaryTypographyProps={{ variant: "subtitle2" }}
-                secondaryTypographyProps={{ variant: "body2" }}
-                secondary="Mark as closed, non-existent or duplicate"
-              />
-            </ListItem> */}
-            {/* <Divider component="li" /> */}
+           
           </List>
         </DialogContent>
       </Dialog>
