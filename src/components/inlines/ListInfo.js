@@ -8,15 +8,15 @@ import {
   Typography 
 } from "@material-ui/core";
 import React from 'react';
-import bairroIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/bairro.png';
-import cariocasAtendidosIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/cariocas_atendidos.png';
-import dataFimIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/data_fim.png';
-import dataInicioIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/data_inicio.png';
-import investimentoIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/investimento.png';
-import orgaoIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/orgao.png';
-import programaIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/programa.png';
-import subprefeituraIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/subprefeitura.png';
-import temaIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/tema.png';
+import bairroIcon from '../../icons/bairro.png';
+import cariocasAtendidosIcon from '../../icons/cariocas_atendidos.png';
+import dataFimIcon from '../../icons/data_fim.png';
+import dataInicioIcon from '../../icons/data_inicio.png';
+import investimentoIcon from '../../icons/investimento.png';
+import orgaoIcon from '../../icons/orgao.png';
+import programaIcon from '../../icons/programa.png';
+import subprefeituraIcon from '../../icons/subprefeitura.png';
+import temaIcon from '../../icons/tema.png';
 
 
 
