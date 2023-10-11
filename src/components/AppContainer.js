@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { useEffect } from "react"; // Importe o useEffect
 import firebase from "firebase";
 import "firebase/firestore";
+// import bairros from "./inlines/converted_bairros2";
 export const db = firebase.firestore();
+
 const AppContainer = (props) => {
 //   useEffect(() => {
 
@@ -94,79 +96,15 @@ const AppContainer = (props) => {
 // //
 // //
 
-// //
-// //
-// //                  INICIA INCLUSÃO EM MASSA DE BAIRROS
-// //
-// //
+//
+//
+//                  INICIA INCLUSÃO EM MASSA DE BAIRROS
+//
+//
 
-// // Função para adicionar bairros em massa
+// Função para adicionar bairros em massa
 // const adicionarBairrosEmMassa = async () => {
 //   try {
-//     // Array de objetos representando vários bairros
-//     const bairros = [
-//       {
-//         densidade_demografica: 0.0,
-//         domicilios: 0,
-//         habitantes: 0,
-//         id_subprefeitura: "subprefeitura_da_zona_sul",
-//         idh: 0.0,
-//         nome: "Leblon",
-//         id_bairro: "leblon",
-//         geo: JSON.stringify({  // Armazena o GeoJSON como uma string
-//           type: "Feature",
-//           geometry: {
-//             type: "Polygon",
-//             coordinates: [[
-//               [-43.20, -22.80],
-//               [-43.20, -22.71],
-//               [-43.24, -22.61]
-//             ]]
-//           }
-//         }), 
-//       },
-//       {
-//         densidade_demografica: 0.0,
-//         domicilios: 0,
-//         habitantes: 0,
-//         id_subprefeitura: "subprefeitura_da_zona_oeste",
-//         idh: 0.0,
-//         nome: "Campo Grande",
-//         id_bairro:"campo_grande",
-//         geo: JSON.stringify({
-//           type: "Feature",
-//           geometry: {
-//             type: "Polygon",
-//             coordinates: [[
-//               [-43.24, -22.91],
-//               [-43.24, -22.91],
-//               [-43.24, -22.91]
-//             ]]
-//           }
-//         }), 
-//       },
-//       {
-//         densidade_demografica: 0.0,
-//         domicilios: 0,
-//         habitantes: 0,
-//         id_subprefeitura: "subprefeitura_da_zona_norte",
-//         idh: 0.0,
-//         nome: "Vila Valqueire",
-//         id_bairro: "vila_valqueire",
-//         geo: JSON.stringify({
-//           type: "Feature",
-//           geometry: {
-//             type: "Polygon",
-//             coordinates: [[
-//               [-41.24, -22.91],
-//               [-42.24, -22.81],
-//               [-42.24, -22.71]
-//             ]]
-//           }
-//         }), 
-//       },
-//       // Adicionar mais objetos aqui para representar outros bairros
-//     ];
 
 //     // Use um loop for/of para iterar pelo array de bairros
 //     for (const bairro of bairros) {
@@ -179,7 +117,7 @@ const AppContainer = (props) => {
 //   }
 // };
 
-// // Chame a função para adicionar os bairros em massa
+// Chame a função para adicionar os bairros em massa
 // adicionarBairrosEmMassa();
 
 // //

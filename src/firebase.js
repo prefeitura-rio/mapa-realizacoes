@@ -9,7 +9,7 @@ const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
   authDomain: firebaseCredentials.authDomain,
   projectId: firebaseCredentials.projectId,
-  storageBucket:firebaseCredentials.storageBucket,
+  storageBucket: firebaseCredentials.storageBucket,
   messagingSenderId: firebaseCredentials.messagingSenderId,
   appId: firebaseCredentials.appId
 };
@@ -79,17 +79,17 @@ export async function editarRealizacao(data) {
 
     if (content.coords) {
       for (let i = 0; i < content.tema.length; i++) {
-        const ref1 = db.collection("RealizacaoOrgao").doc(concatenaEmSnakeCase(content.titulo,obterSiglaOrgao(content.orgao[i]).toLowerCase()));
+        const ref1 = db.collection("RealizacaoOrgao").doc(concatenaEmSnakeCase(content.titulo, obterSiglaOrgao(content.orgao[i]).toLowerCase()));
         await ref1.set({
           id_orgao: obterSiglaOrgao(content.orgao[i]),
           id_realizacao: toSnakeCase(content.titulo)
-      });
-    }
+        });
+      }
 
       for (let i = 0; i < content.tema.length; i++) {
         // Criar uma referência para um novo documento usando o valor atual de content.tema[i]
         const ref2 = db.collection("RealizacaoTema").doc(concatenaEmSnakeCase(content.titulo, content.tema[i].toLowerCase()));
-        
+
         // Definir os dados para o novo documento
         await ref2.set({
           id_tema: toSnakeCase(content.tema[i]),

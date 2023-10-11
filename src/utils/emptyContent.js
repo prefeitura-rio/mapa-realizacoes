@@ -10,9 +10,9 @@ export const emptyContent = {
   //informações básicas
   programa:[],
   orgao:[],
-  bairro:"-",
+  // bairro:"-",
   // endereco:"Adicionar endereço",
-  subprefeitura:"-",
+  // subprefeitura:"-",
 
   //total investido + cariocas atendidos
   totalInvestido:"Adicionar total investido",

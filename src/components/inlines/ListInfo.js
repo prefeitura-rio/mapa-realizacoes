@@ -29,6 +29,9 @@ import LabelOutlinedIcon from "@material-ui/icons/LabelOutlined";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import moment from "moment";
 
+import API_KEY_GOOGLE from "../../API_KEY_GOOGLE";
+import { subprefeituras } from "../../subprefeituras";
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   title: { 
@@ -51,8 +54,79 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Função que mapeia bairros para subprefeituras
+function mapearSubprefeitura(bairro) {
+  // Verifique se o bairro existe no mapeamento
+  return subprefeituras[bairro] || "Subprefeitura não encontrada";
+}
+
+// Função que mapeia bairros para subprefeituras
+function mapearSubprefeitura(bairro) {
+  // Verifique se o bairro existe no mapeamento
+  return subprefeituras[bairro] || "Subprefeitura não encontrada";
+}
+
 const ListInfo = ({ content }) => {
   const classes = useStyles();
+  const [bairro, setBairro] = useState('');
+  const [subprefeitura, setSubprefeitura] = useState('');
+  const [openOrgaos, setOpenOrgaos] = useState(false); // Controla o menu suspenso dos órgãos
+  const [openTemas, setOpenTemas] = useState(false); // Controla o menu suspenso dos temas
+
+  const handleClickOrgaos = () => {
+    setOpenOrgaos(!openOrgaos); // Inverte o estado atual do menu suspenso dos órgãos
+  };
+  const handleClickTemas = () => {
+    setOpenTemas(!openTemas); // Inverte o estado atual do menu suspenso dos órgãos
+  };
+  const getBairro = async (latitude, longitude) => {
+    try {
+      console.log('Iniciando busca de bairro...');
+      const apiKey = API_KEY_GOOGLE.apiKey;
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
+      );
+
+      const { results } = response.data;
+
+      if (results && results.length > 0) {
+        const enderecoComponents = results[0].address_components;
+        const bairroComponent = enderecoComponents.find(component =>
+          component.types.includes("sublocality_level_1") || component.types.includes("sublocality")
+        );
+
+        if (bairroComponent) {
+          const bairroEncontrado = bairroComponent.long_name;
+          setBairro(bairroEncontrado);
+          console.log('Bairro encontrado:', bairroEncontrado);
+
+          // Determine a subprefeitura com base no bairro
+          const subprefeituraEncontrada = mapearSubprefeitura(bairroEncontrado);
+          setSubprefeitura(subprefeituraEncontrada);
+          console.log('Subprefeitura:', subprefeituraEncontrada);
+        } else {
+          setBairro('Bairro não encontrado');
+          console.log('Nenhum bairro encontrado no endereço retornado.');
+        }
+      } else {
+        setBairro('Bairro não encontrado');
+        console.log('Nenhum resultado encontrado.');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o bairro:', error);
+      setBairro('Erro ao buscar o bairro');
+    }
+  };
+
+  useEffect(() => {
+    if (content.coords) {
+      const { latitude, longitude } = content.coords;
+      getBairro(latitude, longitude);
+    }
+  }, [content]);
+
+  // const orgaos = content.orgao.map((orgao, index) => ({ text: orgao, iconComponent: PublicIcon }));
+  // const temas = content.tema.map((tema, index) => ({ text: tema, iconComponent: PublicIcon }));
 
   const listInfo = [
   
@@ -110,18 +184,35 @@ const ListInfo = ({ content }) => {
             ))
         ) : item.text ? (
             <ListItem
-                button
-                classes={{ gutters: classes.listItemGutters }}
-                key={item.text}
+              button
+              classes={{ gutters: classes.listItemGutters }}
+              key={item.text}
+              onClick={i === 1 ? handleClickOrgaos : i === 2 ? handleClickTemas : null}
+              button
+              classes={{ gutters: classes.listItemGutters }}
+              key={item.text}
+              onClick={i === 1 ? handleClickOrgaos : i === 2 ? handleClickTemas : null}
             >
-                <ListItemIcon classes={{ root: classes.listItemIcon }}>
-                    <item.iconComponent color="primary" />
-                </ListItemIcon>
-                <ListItemText
-                    primary={item.text}
-                    primaryTypographyProps={{ variant: 'body2' }}
-                    classes={{ root: classes.marginZero }}
-                />
+              <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                <item.iconComponent color="primary" />
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{ variant: 'body2' }}
+                classes={{ root: classes.marginZero }}
+              />
+              {i === 1 ? (openOrgaos ? <ExpandLess /> : <ExpandMore />) : 
+               i === 2 ? (openTemas ? <ExpandLess /> : <ExpandMore />) : null}
+              <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                <item.iconComponent color="primary" />
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{ variant: 'body2' }}
+                classes={{ root: classes.marginZero }}
+              />
+              {i === 1 ? (openOrgaos ? <ExpandLess /> : <ExpandMore />) : 
+               i === 2 ? (openTemas ? <ExpandLess /> : <ExpandMore />) : null}
             </ListItem>
         ) : null}
     </React.Fragment>
@@ -130,5 +221,9 @@ const ListInfo = ({ content }) => {
     </List>
     </>
   );
+  
+  
+  
+  
 };
 export default ListInfo;
