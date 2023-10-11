@@ -13,8 +13,15 @@ const useStyles = makeStyles((theme) => ({
   basicInfo: {
     padding: "15px 25px",
   },
-  nonClickableButton: {
+  statusButton: {
     pointerEvents: "none",
+    borderRadius:"39px",
+    backgroundColor:"#007E7D",
+    color: "#FFFFFF"
+  },
+  titulo:{
+    fontSize:"25px",
+    fontWeight:"bold"
   }
   
 }));
@@ -24,39 +31,14 @@ const BasicInfo = ({ content }) => {
 
   return (
     <div className={classes.basicInfo}>
-      <Typography variant="h1">{content.titulo}</Typography>
+      <Typography  className={classes.titulo}>{content.titulo}</Typography>
       <br></br>
       <Typography variant="h2">{content.descricao}</Typography>
       <br></br>
-      <Button variant="contained" className={classes.nonClickableButton}>
+      <Button variant="contained" className={classes.statusButton}>
       {content.status}
     </Button>
 
-      {/* <Typography variant="h2" style={{ marginTop: "4px" }}>
-        {content.name}
-      </Typography> */}
-      {/* <Typography variant="body2" component="div" style={{ marginTop: "8px" }}> */}
-        {/* <div className={classes.rating}>
-          <Box mr="3px">{numeral(content.ratingValue).format("0.0")}</Box>
-          <Rating
-            name="read-only"
-            value={content.ratingValue || 5}
-            readOnly
-            size="small"
-          />
-          <Box ml="3px">
-            {numeral(content.ratingCount).format("0,0") + " rewiews"}
-          </Box>
-        </div> */}
-        {/* <Link
-          href="#"
-          onClick={(e) => e.preventDefault()}
-          variant="body2"
-          color="textSecondary"
-        >
-          {content.type}
-        </Link> */}
-      {/* </Typography> */}
     </div>
   );
 };

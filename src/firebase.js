@@ -2,6 +2,8 @@ import firebase from "firebase";
 import "firebase/firestore";
 import firebaseCredentials from "./firebaseconfig";
 import { toSnakeCase, concatenaEmSnakeCase, obterSiglaOrgao } from './utils/formatFile';
+import * as turf from '@turf/turf';
+import { mapearSubprefeitura } from "./components/inlines/subprefeituras";
 
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
@@ -104,6 +106,39 @@ export async function editarRealizacao(data) {
           content.coords.longitude
         ),
       });
+
+        // Verifique em qual bairro a realização está localizada
+        const point = turf.point([content.coords.longitude, content.coords.latitude]);
+        const bairrosRef = db.collection("Bairros");
+        const bairrosSnapshot = await bairrosRef.get();
+  
+        let bairroEncontrado = null;
+  
+        bairrosSnapshot.forEach(doc => {
+          const bairroData = JSON.parse(JSON.stringify(doc.data()));
+          if (JSON.parse(bairroData.geo) && JSON.parse(bairroData.geo).geometry) {
+            try {
+              const polygon = turf.polygon(JSON.parse(bairroData.geo).geometry.coordinates);
+              if (turf.booleanPointInPolygon(point, polygon)) {
+                bairroEncontrado = bairroData.nome;
+                return;
+              }
+            } catch (e) {
+              console.error("Erro ao processar polígono pro bairro: ", bairroData.nome, e);
+            }
+          }
+        });
+  
+        // Debugging console.log statements
+        if (bairroEncontrado) {
+          console.log("=======> Bairro encontrado:", bairroEncontrado);
+          await ref.update({
+            bairro: bairroEncontrado,
+            subprefeitura: mapearSubprefeitura(bairroEncontrado)
+          });
+        } else {
+          console.log("=======> Bairro não foi encontrado.");
+        }
     }
 
     function compareContent(newCont, oldCont) {
@@ -152,54 +187,6 @@ export async function editarRealizacao(data) {
   }
 }
 
-// export async function createComment(data) {
-//   //! if doc doesn exists ? if commets doesnt exists?
-//   var { place, author, value, photos, text, photoFolder } = data;
 
-//   try {
-//     if (photos) {
-//       var promises = photos.map((file) => uploadPhotoFirebase(file, photoFolder));
-//       photos = await Promise.all(promises);
-//     }
-
-//     const ref = db.collection("comments").doc(Date.now().toString());
-
-
-//     await ref.set({
-//       forPlace: photoFolder,
-//       author: {
-//         name: author.name,
-//         photoURL: author.photoURL || "/",
-//         email: author.email,
-//         reviewCount: author.reviewCount || 1,
-//       },
-//       date: firebase.firestore.Timestamp.fromDate(new Date()),
-//       value,
-//       text,
-//       photos: photos || [],
-//     });
-
-//     console.log("Document successfully written!");
-//   } catch (e) {
-//     console.error("Error writing document: ", e);
-//   }
-// }
-
-// export async function getComments({ data, limit }) {
-//   limit = limit || 3;
-//   try {
-//     const query = await db
-//       .collection("comments")
-//       .where("forPlace", "==", data)
-//       .orderBy("date", "desc")
-//       .limit(limit)
-//       .get();
-//     let result = [];
-//     query.forEach((doc) => result.push(doc.data()));
-//     return result;
-//   } catch (e) {
-//     console.error("Error getting document: ", e);
-//   }
-// }
 
 
