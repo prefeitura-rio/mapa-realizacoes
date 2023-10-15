@@ -115,7 +115,7 @@ export async function editarRealizacao(data) {
         let bairroEncontrado = null;
   
         bairrosSnapshot.forEach(doc => {
-          const bairroData = JSON.parse(JSON.stringify(doc.data()));
+          const bairroData = doc.data();
           if (JSON.parse(bairroData.geo) && JSON.parse(bairroData.geo).geometry) {
             try {
               const polygon = turf.polygon(JSON.parse(bairroData.geo).geometry.coordinates);
