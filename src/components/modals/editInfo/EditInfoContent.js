@@ -244,6 +244,13 @@ const EditInfoModal = ({
 
   // TODO remove event listener
 
+  const habilitaBotao = () => {
+    if(!(content.titulo&&content.descricao&&content.status)){
+      return true
+    }
+    return false
+  }
+
   return (
     <>
       <DialogTitle
@@ -393,7 +400,7 @@ const EditInfoModal = ({
           Cancelar
         </Button>
         <Button
-          disabled={disabled}
+          disabled={habilitaBotao()}
           variant="contained"
           disableElevation
           color="primary"
