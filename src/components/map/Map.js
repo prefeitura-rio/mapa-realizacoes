@@ -44,12 +44,19 @@ const Map = ({
     setContextCoords({ point: e.containerPoint, latlng: e.latlng });
   };
 
+  function toSnakeCase(str) {
+    return str
+        .trim()  // Remove espaços no início e fim da string
+        .toLowerCase()  // Converte tudo para lowercase
+        .replace(/\s+/g, '_');  // Substitui um ou mais espaços por underscore (_)
+  }
+  
   const onMarkerClick = (point) => {
     setUnderSearchBar(true);
     setDescriptionData(point.nome);
     setActiveBar(DESCRIPTION_BAR);
     loadData(point.id);
-    console.log(point)
+    console.log("point.id:\n",point.id,"\npoint.nome:\n",point.nome)
   };
 
   const [opened, setOpened] = useState(false);
