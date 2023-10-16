@@ -8,7 +8,7 @@ import "firebase/firestore";
 // import orgaos_bulk from "./bulk_insert_info/orgaos_bulk";
 // import programas_bulk from "./bulk_insert_info/programas_bulk";
 // import realizacoes_bulk from "./bulk_insert_info/realizacoes_bulk";
-// import bairros from "./inlines/converted_bairros2";
+
 export const db = firebase.firestore();
 
 const AppContainer = (props) => {
@@ -17,20 +17,20 @@ const AppContainer = (props) => {
 //     // Referência à coleção 'realizacao' no Firestore.
 // const db = firebase.firestore();
 
-// // Função para criar um Geopoint a partir de latitude e longitude
+// Função para criar um Geopoint a partir de latitude e longitude
 // const criarGeopoint = (latitude, longitude) => {
 //   return new firebase.firestore.GeoPoint(latitude, longitude);
 // };
 
-// // Função para adicionar realizações em massa
+// Função para adicionar realizações em massa
 // const adicionarRealizacoesEmMassa = async () => {
 //   try {
 
 //     // Use um loop for/of para iterar pelo array de realizações
 //     for (const realizacao of realizacoes_bulk) {
 //       const { id, latitude, longitude, data_fim, data_inicio, ...dados } = realizacao;
-//       dados.data_fim = firebase.firestore.Timestamp.fromDate(new Date(data_fim)); // Converter data_fim para timestamp
-//       dados.data_inicio = firebase.firestore.Timestamp.fromDate(new Date(data_inicio)); // Converter data_inicio para timestamp
+//       dados.data_fim = firebase.firestore.Timestamp.fromDate(new Date()); // Converter data_fim para timestamp
+//       dados.data_inicio = firebase.firestore.Timestamp.fromDate(new Date()); // Converter data_inicio para timestamp
 //       dados.localizacao = criarGeopoint(latitude, longitude); // Crie um campo 'localizacao' como Geopoint
 //       await db.collection("Realizacoes").doc(id).set(dados);
 //     }
