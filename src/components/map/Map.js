@@ -48,7 +48,7 @@ const Map = ({
     setUnderSearchBar(true);
     setDescriptionData(point.nome);
     setActiveBar(DESCRIPTION_BAR);
-    loadData(point.nome);
+    loadData(point.id);
     console.log(point)
   };
 
@@ -93,7 +93,7 @@ const Map = ({
             }}
           >
             <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-              <span>{point.id}</span>
+              <span>{point.nome}</span>
             </Tooltip>
           </Marker>
         ))}

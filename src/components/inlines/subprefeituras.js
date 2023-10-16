@@ -12,7 +12,6 @@ export async function obterSubprefeituraDoBairro(bairro) {
   try {
     const bairrosRef = db.collection("Bairros");
     const bairroDoc = await bairrosRef.doc(toSnakeCase(bairro)).get();
-    console.log("bairroDoc", bairroDoc)
 
     if (bairroDoc.exists) {
       const idSubprefeitura = bairroDoc.data().id_subprefeitura;

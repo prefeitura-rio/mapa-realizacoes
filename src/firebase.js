@@ -99,8 +99,8 @@ export async function editarRealizacao(data) {
 
       const ref3 = db.collection("Places").doc(toSnakeCase(content.titulo));
       await ref3.set({
-        id: content.titulo,
-        nome: toSnakeCase(content.titulo),
+        id:toSnakeCase(content.titulo) ,
+        nome: content.titulo,
         coords: new firebase.firestore.GeoPoint(
           content.coords.latitude,
           content.coords.longitude
