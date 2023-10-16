@@ -53,9 +53,9 @@ const Map = ({
   
   const onMarkerClick = (point) => {
     setUnderSearchBar(true);
-    setDescriptionData(point.nome);
+    setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
-    loadData(point.id);
+    loadData(toSnakeCase(point.nome));
     console.log("point.id:\n",point.id,"\npoint.nome:\n",point.nome)
   };
 
