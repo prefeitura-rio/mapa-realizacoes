@@ -158,9 +158,8 @@ const PlaceDescriptionBar = ({
           />
         ) : (
           <div className={classes.signInButton}>
-            <BottomButton onClick={login}>
-            Fazer login para editar informação
-            </BottomButton>
+            <BottomButton onClick={login}
+            title= "Faça login para editar"/>
           </div>
         )}
 
@@ -177,10 +176,8 @@ const PlaceDescriptionBar = ({
             onClick={handleOpenUploadPhoto}
           />
         ) : (
-          <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
-              Fazer login para adicionar uma foto
-            </Button>
+          <div className={classes.signInButton}>           
+            <BottomButton title="Faça login para editar" color="primary" variant="outlined" onClick={login}/>
           </div>
         )}
 
