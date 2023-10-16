@@ -121,14 +121,26 @@ export async function editarRealizacao(data) {
       const point = turf.point([content.coords.longitude, content.coords.latitude]);
       const bairrosRef = db.collection("Bairros");
       const bairrosSnapshot = await bairrosRef.get();
-
+      
       let bairroEncontrado = null;
-
+      
       bairrosSnapshot.forEach(doc => {
         const bairroData = doc.data();
         if (JSON.parse(bairroData.geo) && JSON.parse(bairroData.geo).geometry) {
           try {
-            const polygon = turf.polygon(JSON.parse(bairroData.geo).geometry.coordinates);
+            let coordinates = JSON.parse(bairroData.geo).geometry.coordinates;
+            
+            // !!!!!!! Verifica se o polígono ta fechado.
+            if (coordinates.length > 0 && coordinates[0].length > 0) {
+              const firstPoint = coordinates[0][0];
+              const lastPoint = coordinates[0][coordinates[0].length - 1];
+              
+              if (firstPoint[0] !== lastPoint[0] || firstPoint[1] !== lastPoint[1]) {
+                coordinates[0].push(firstPoint); // Adiciona o primeiro ponto ao final do array
+              }
+            }
+      
+            const polygon = turf.polygon(coordinates);
             if (turf.booleanPointInPolygon(point, polygon)) {
               bairroEncontrado = bairroData.nome;
               return;
@@ -138,6 +150,7 @@ export async function editarRealizacao(data) {
           }
         }
       });
+      
 
       // Debugging console.log statements
       if (bairroEncontrado) {

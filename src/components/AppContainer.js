@@ -6,6 +6,7 @@ import "firebase/firestore";
 import tema_bulk from "./bulk_insert_info/tema_bulk";
 import bairros_bulk from "./bulk_insert_info/bairros_bulk";
 import orgaos_bulk from "./bulk_insert_info/orgaos_bulk";
+import programas_bulk from "./bulk_insert_info/programas_bulk";
 // import bairros from "./inlines/converted_bairros2";
 export const db = firebase.firestore();
 
@@ -212,33 +213,16 @@ const AppContainer = (props) => {
 // //
 // //                  INICIA INCLUSÃO EM MASSA DE PROGRAMAS
 // //
-// //
-// // Função para adicionar órgãos em massa
+//
+// Função para adicionar órgãos em massa
 // const adicionarProgramasEmMassa = async () => {
 //   try {
 //     // Array de objetos representando vários órgãos
-//     const programas = [
-//       {
-//         descricao: "Descrição do Programa",
-//         nome: "Super Centro Carioca de Saúde",
-//         id_programa:"super_centro_carioca_de_saude"
-//       },
-//       {
-//         descricao: "Descrição do Programa",
-//         nome: "Clínicas da Família",
-//         id_programa:"clinicas_da_familia"
-//       },
-//       {
-//         descricao: "Descrição do Programa",
-//         nome: "Morar Carioca",
-//         id_programa:"morar_carioca"
-//       },
-//       // Adicione mais objetos aqui para representar outros programas
-//     ];
+   
 
 //     // Use um loop for/of para iterar pelo array de órgãos
 
-//     for (const programa of programas) {
+//     for (const programa of programas_bulk) {
 //       const { id_programa, ...dados } = programa;
 //       await db.collection("Programas").doc(id_programa).set(dados);
 //     }
