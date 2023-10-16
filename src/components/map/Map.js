@@ -44,12 +44,19 @@ const Map = ({
     setContextCoords({ point: e.containerPoint, latlng: e.latlng });
   };
 
+  function toSnakeCase(str) {
+    return str
+        .trim()  // Remove espaços no início e fim da string
+        .toLowerCase()  // Converte tudo para lowercase
+        .replace(/\s+/g, '_');  // Substitui um ou mais espaços por underscore (_)
+  }
+  
   const onMarkerClick = (point) => {
     setUnderSearchBar(true);
-    setDescriptionData(point.nome);
+    setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
-    loadData(point.nome);
-    console.log(point)
+    loadData(toSnakeCase(point.nome));
+    console.log("point.id:\n",point.id,"\npoint.nome:\n",point.nome)
   };
 
   const [opened, setOpened] = useState(false);
@@ -93,7 +100,7 @@ const Map = ({
             }}
           >
             <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-              <span>{point.id}</span>
+              <span>{point.nome}</span>
             </Tooltip>
           </Marker>
         ))}

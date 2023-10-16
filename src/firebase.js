@@ -3,7 +3,7 @@ import "firebase/firestore";
 import firebaseCredentials from "./firebaseconfig";
 import { toSnakeCase, concatenaEmSnakeCase, obterSiglaOrgao } from './utils/formatFile';
 import * as turf from '@turf/turf';
-import { mapearSubprefeitura } from "./components/inlines/subprefeituras";
+import { obterSubprefeituraDoBairro } from "./components/inlines/subprefeituras";
 
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
@@ -78,7 +78,7 @@ export async function editarRealizacao(data) {
     await ref.set(rest);
 
     if (content.coords) {
-      for (let i = 0; i < content.tema.length; i++) {
+      for (let i = 0; i < content.orgao.length; i++) {
         const ref1 = db.collection("RealizacaoOrgao").doc(concatenaEmSnakeCase(content.titulo, obterSiglaOrgao(content.orgao[i]).toLowerCase()));
         await ref1.set({
           id_orgao: obterSiglaOrgao(content.orgao[i]),
@@ -96,49 +96,82 @@ export async function editarRealizacao(data) {
           id_realizacao: toSnakeCase(content.titulo)
         });
       }
+    
+        // Criar uma referência para um novo documento usando o valor atual de content.tema[i]
+        const ref3 = db.collection("RealizacaoPrograma").doc(concatenaEmSnakeCase(content.titulo, content.programa.toLowerCase()));
 
-      const ref3 = db.collection("Places").doc(toSnakeCase(content.titulo));
-      await ref3.set({
-        id: content.titulo,
-        nome: toSnakeCase(content.titulo),
+        // Definir os dados para o novo documento
+        await ref3.set({
+          id_programa: toSnakeCase(content.programa),
+          id_realizacao: toSnakeCase(content.titulo)
+        });
+      
+
+      const ref4 = db.collection("Places").doc(toSnakeCase(content.titulo));
+      await ref4.set({
+        id:toSnakeCase(content.titulo) ,
+        nome: content.titulo,
         coords: new firebase.firestore.GeoPoint(
           content.coords.latitude,
           content.coords.longitude
         ),
       });
 
-        // Verifique em qual bairro a realização está localizada
-        const point = turf.point([content.coords.longitude, content.coords.latitude]);
-        const bairrosRef = db.collection("Bairros");
-        const bairrosSnapshot = await bairrosRef.get();
-  
-        let bairroEncontrado = null;
-  
-        bairrosSnapshot.forEach(doc => {
-          const bairroData = JSON.parse(JSON.stringify(doc.data()));
-          if (JSON.parse(bairroData.geo) && JSON.parse(bairroData.geo).geometry) {
-            try {
-              const polygon = turf.polygon(JSON.parse(bairroData.geo).geometry.coordinates);
-              if (turf.booleanPointInPolygon(point, polygon)) {
-                bairroEncontrado = bairroData.nome;
-                return;
+      // Verifique em qual bairro a realização está localizada
+      const point = turf.point([content.coords.longitude, content.coords.latitude]);
+      const bairrosRef = db.collection("Bairros");
+      const bairrosSnapshot = await bairrosRef.get();
+      
+      let bairroEncontrado = null;
+      
+      bairrosSnapshot.forEach(doc => {
+        const bairroData = doc.data();
+        if (JSON.parse(bairroData.geo) && JSON.parse(bairroData.geo).geometry) {
+          try {
+            let coordinates = JSON.parse(bairroData.geo).geometry.coordinates;
+            
+            // !!!!!!! Verifica se o polígono ta fechado.
+            if (coordinates.length > 0 && coordinates[0].length > 0) {
+              const firstPoint = coordinates[0][0];
+              const lastPoint = coordinates[0][coordinates[0].length - 1];
+              
+              if (firstPoint[0] !== lastPoint[0] || firstPoint[1] !== lastPoint[1]) {
+                coordinates[0].push(firstPoint); // Adiciona o primeiro ponto ao final do array
               }
-            } catch (e) {
-              console.error("Erro ao processar polígono pro bairro: ", bairroData.nome, e);
             }
+      
+            const polygon = turf.polygon(coordinates);
+            if (turf.booleanPointInPolygon(point, polygon)) {
+              bairroEncontrado = bairroData.nome;
+              return;
+            }
+          } catch (e) {
+            console.error("Erro ao processar polígono pro bairro: ", bairroData.nome, e);
           }
-        });
+        }
+      });
+      
+
+      // Debugging console.log statements
+      if (bairroEncontrado) {
+        console.log("=======> Bairro encontrado:", bairroEncontrado);
+
+        const subprefeitura = await obterSubprefeituraDoBairro(bairroEncontrado);
+
+        if (subprefeitura !== "Subprefeitura não encontrada") {
+          console.log("=======> Subprefeitura encontrada:", subprefeitura);
   
-        // Debugging console.log statements
-        if (bairroEncontrado) {
-          console.log("=======> Bairro encontrado:", bairroEncontrado);
+          // Espere a Promise ser resolvida antes de atualizar o documento
           await ref.update({
             bairro: bairroEncontrado,
-            subprefeitura: mapearSubprefeitura(bairroEncontrado)
+            subprefeitura: subprefeitura
           });
         } else {
-          console.log("=======> Bairro não foi encontrado.");
+          console.log("=======> Subprefeitura não foi encontrada.");
         }
+      } else {
+        console.log("=======> Bairro não foi encontrado.");
+      }
     }
 
     function compareContent(newCont, oldCont) {
@@ -175,6 +208,7 @@ export async function editarRealizacao(data) {
       await db.collection("Realizacoes").doc(toSnakeCase(contentSnapshot.titulo)).delete();
       await db.collection("RealizacaoOrgao").doc(toSnakeCase(contentSnapshot.titulo)).delete();
       await db.collection("RealizacaoTema").doc(toSnakeCase(contentSnapshot.titulo)).delete();
+      await db.collection("RealizacaoPrograma").doc(toSnakeCase(contentSnapshot.titulo)).delete();
       await db.collection("Places").doc(toSnakeCase(contentSnapshot.titulo)).delete();
       console.log("Document successfully moved!");
       console.log("contentSnapshot", contentSnapshot);

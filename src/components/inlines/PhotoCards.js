@@ -88,20 +88,6 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType }) => {
     setPhotoGallery(true);
   };
 
-  const itemData = () => {
-    var titles = ["All", "Latest", "Inside", "Street View", "Videos"];
-    return titles.map((title, i) => {
-      return {
-        img: images
-          ? images[i] ||
-            images[0] ||
-            "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"
-          : "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-        title,
-      };
-    });
-  };
-
   return (
     <div className={classes.photoCards}>
       <ImageList
@@ -111,19 +97,18 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType }) => {
             : classes.imageList
         }
         style={{ margin: 0 }}
-        rowHeight={150}
+        rowHeight={180} // Defina a altura desejada para as miniaturas aqui
         gap={8}
       >
-        {itemData().map((item, i) => (
+        {images.map((item, i) => (
           <ImageListItem
             key={i}
             classes={{ item: classes.imageListItem }}
-            style={{ width: "120px" }}
+            style={{ width: "220px" }} 
             onClick={onPhotoClick}
           >
-            <img src={item.img} alt={item.title} />
+            <img src={item || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"} alt={`Thumbnail ${i}`} />
             <ImageListItemBar
-              title={item.title}
               actionPosition="left"
               classes={{
                 root: classes.titleBar,

@@ -158,7 +158,7 @@ const PlaceDescriptionBar = ({
           />
         ) : (
           <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
+            <Button onClick={login}>
             Fazer login para editar informação
             </Button>
           </div>

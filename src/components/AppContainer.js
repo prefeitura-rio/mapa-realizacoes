@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import { useEffect } from "react"; // Importe o useEffect
 import firebase from "firebase";
 import "firebase/firestore";
+import tema_bulk from "./bulk_insert_info/tema_bulk";
+import bairros_bulk from "./bulk_insert_info/bairros_bulk";
+import orgaos_bulk from "./bulk_insert_info/orgaos_bulk";
+import programas_bulk from "./bulk_insert_info/programas_bulk";
 // import bairros from "./inlines/converted_bairros2";
 export const db = firebase.firestore();
 
@@ -107,7 +111,7 @@ const AppContainer = (props) => {
 //   try {
 
 //     // Use um loop for/of para iterar pelo array de bairros
-//     for (const bairro of bairros) {
+//     for (const bairro of bairros_bulk) {
 //       const { id_bairro, ...dados } = bairro;
 //       await db.collection("Bairros").doc(id_bairro).set(dados);
 //     }
@@ -117,7 +121,7 @@ const AppContainer = (props) => {
 //   }
 // };
 
-// Chame a função para adicionar os bairros em massa
+// // Chame a função para adicionar os bairros em massa
 // adicionarBairrosEmMassa();
 
 // //
@@ -131,32 +135,13 @@ const AppContainer = (props) => {
 // //                  INICIA INCLUSÃO EM MASSA DE ORGAOS
 // //
 // //
-// // Função para adicionar órgãos em massa
+// Função para adicionar órgãos em massa
 // const adicionarOrgaosEmMassa = async () => {
 //   try {
-//     // Array de objetos representando vários órgãos
-//     const orgaos = [
-//       {
-//         nome: "Secretaria Municipal de Saúde",
-//         sigla: "SMS",
-//         id_orgao:"sms"
-//       },
-//       {
-//         nome: "Gabinete do Prefeito",
-//         sigla: "GBP",
-//         id_orgao:"gbp"
-//       },
-//       {
-//         nome: "Secretaria Municipal de Educação",
-//         sigla: "SME",
-//         id_orgao:"sme"
-//       },
-//       // Adicione mais objetos aqui para representar outros órgãos
-//     ];
 
 //     // Use um loop for/of para iterar pelo array de órgãos
 
-//     for (const orgao of orgaos) {
+//     for (const orgao of orgaos_bulk) {
 //       const { id_orgao, ...dados } = orgao;
 //       await db.collection("Orgaos").doc(id_orgao).set(dados);
 //     }
@@ -228,33 +213,16 @@ const AppContainer = (props) => {
 // //
 // //                  INICIA INCLUSÃO EM MASSA DE PROGRAMAS
 // //
-// //
-// // Função para adicionar órgãos em massa
+//
+// Função para adicionar órgãos em massa
 // const adicionarProgramasEmMassa = async () => {
 //   try {
 //     // Array de objetos representando vários órgãos
-//     const programas = [
-//       {
-//         descricao: "Descrição do Programa",
-//         nome: "Super Centro Carioca de Saúde",
-//         id_programa:"super_centro_carioca_de_saude"
-//       },
-//       {
-//         descricao: "Descrição do Programa",
-//         nome: "Clínicas da Família",
-//         id_programa:"clinicas_da_familia"
-//       },
-//       {
-//         descricao: "Descrição do Programa",
-//         nome: "Morar Carioca",
-//         id_programa:"morar_carioca"
-//       },
-//       // Adicione mais objetos aqui para representar outros programas
-//     ];
+   
 
 //     // Use um loop for/of para iterar pelo array de órgãos
 
-//     for (const programa of programas) {
+//     for (const programa of programas_bulk) {
 //       const { id_programa, ...dados } = programa;
 //       await db.collection("Programas").doc(id_programa).set(dados);
 //     }
@@ -281,26 +249,9 @@ const AppContainer = (props) => {
 // // Função para adicionar temas em massa
 // const adicionarTemasEmMassa = async () => {
 //   try {
-//     // Array de objetos representando várias temas
-//     const temas = [
-//       {
-//         nome: "Educacao",
-//         id_tema: "educacao"
-//       },
-//       {
-//         nome: "Saude",
-//         id_tema: "saude"
-//       },
-//       {
-//         nome: "Infraestrutura",
-//         id_tema: "infraestrutura"
-//       },
-//       // Adicione mais objetos aqui para representar outras temas
-//     ];
-
 //     // Use um loop for/of para iterar pelo array de órgãos
 
-//     for (const tema of temas) {
+//     for (const tema of tema_bulk) {
 //       const { id_tema, ...dados } = tema;
 //       await db.collection("Temas").doc(id_tema).set(dados);
 //     }

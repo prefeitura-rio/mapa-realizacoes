@@ -90,7 +90,7 @@ const UploadPhotoContent = ({
         >
           <Tab disableRipple label="Carregar" />
           <Tab disableRipple label="Fotos do celular" />
-          <Tab disableRipple label="Syas fotos" />
+          <Tab disableRipple label="Suas fotos" />
         </Tabs>
         <DropzoneContainer />
       </DialogContent>
