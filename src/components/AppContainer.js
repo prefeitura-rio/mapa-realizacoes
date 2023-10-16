@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import { useEffect } from "react"; // Importe o useEffect
 import firebase from "firebase";
 import "firebase/firestore";
-import tema_bulk from "./bulk_insert_info/tema_bulk";
-import bairros_bulk from "./bulk_insert_info/bairros_bulk";
-import orgaos_bulk from "./bulk_insert_info/orgaos_bulk";
-import programas_bulk from "./bulk_insert_info/programas_bulk";
+// import tema_bulk from "./bulk_insert_info/tema_bulk";
+// import bairros_bulk from "./bulk_insert_info/bairros_bulk";
+// import orgaos_bulk from "./bulk_insert_info/orgaos_bulk";
+// import programas_bulk from "./bulk_insert_info/programas_bulk";
+// import realizacoes_bulk from "./bulk_insert_info/realizacoes_bulk";
 // import bairros from "./inlines/converted_bairros2";
 export const db = firebase.firestore();
 
@@ -24,61 +25,9 @@ const AppContainer = (props) => {
 // // Função para adicionar realizações em massa
 // const adicionarRealizacoesEmMassa = async () => {
 //   try {
-//     // Array de objetos representando várias realizações, com latitude e longitude
-//     const realizacoes = [
-//       {
-//         id: "clinica_da_familia_rogerio_rocco",
-//         cariocas_atendidos: 0,
-//         data_fim: "2019-01-01",
-//         data_inicio: "2020-01-01",
-//         descricao: "Descrição da Realização",
-//         id_bairro: "cosmos",
-//         id_programa: "super_centro_carioca_de_saude",
-//         id_status: "finalizada",
-//         id_orgao:"sms",
-//         id_subprefeitura:"subprefeitura_da_zona_oeste",
-//         investimento: 0.0,
-//         latitude: -22.123456, // Substitua com a latitude desejada
-//         longitude: -43.987654, // Substitua com a longitude desejada
-//         nome: "Clínica Da Família Rogério Rocco",
-//       },
-//       {
-//         id: "hospital_da_mulher_mariska_ribeiro",
-//         cariocas_atendidos: 0,
-//         data_fim: "2017-01-01",
-//         data_inicio: "2017-01-01",
-//         descricao: "Descrição da Realização",
-//         id_bairro: "bangu",
-//         id_programa: "clinicas_da_familia",
-//         id_status: "em_andamento",
-//         id_orgao:"sms",
-//         id_subprefeitura:"subprefeitura_da_zona_oeste",
-//         investimento: 0.0,
-//         latitude: -21.123456, // Substitua com a latitude desejada
-//         longitude: -42.987654, // Substitua com a longitude desejada
-//         nome: "Hospital Da Mulher Mariska Ribeiro",
-//       },
-//       {
-//         id: "centro_municipal_de_saude_nilza_rosa",
-//         cariocas_atendidos: 0,
-//         data_fim: "2017-01-01",
-//         data_inicio: "2020-01-01",
-//         descricao: "Descrição da Realização",
-//         id_bairro: "tijuca",
-//         id_programa: "super_centro_carioca_de_saude",
-//         id_status: "finalizada",
-//         id_orgao:"sms",
-//         id_subprefeitura:"subprefeitura_da_zona_norte",
-//         investimento: 0.0,
-//         latitude: -22.923456, // Substitua com a latitude desejada
-//         longitude: -41.087654, // Substitua com a longitude desejada
-//         nome: "Centro Municipal de Saúde Nilza Rosa",
-//       },
-      
-//     ];
 
 //     // Use um loop for/of para iterar pelo array de realizações
-//     for (const realizacao of realizacoes) {
+//     for (const realizacao of realizacoes_bulk) {
 //       const { id, latitude, longitude, data_fim, data_inicio, ...dados } = realizacao;
 //       dados.data_fim = firebase.firestore.Timestamp.fromDate(new Date(data_fim)); // Converter data_fim para timestamp
 //       dados.data_inicio = firebase.firestore.Timestamp.fromDate(new Date(data_inicio)); // Converter data_inicio para timestamp
