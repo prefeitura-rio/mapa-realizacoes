@@ -152,7 +152,7 @@ const PlaceDescriptionBar = ({
         {}
         {profile ? (
           <BottomButton
-            title="Editar informarções"
+            title="Editar informações"
             startIcon={CreateOutlinedIcon}
             onClick={handleOpenEdit}
           />
