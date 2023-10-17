@@ -9,12 +9,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "12px",
   },
   rectangularButton: {
-    backgroundColor: "#E6E6E6", 
+    backgroundColor: "#F5F5F5", 
     color: "#171717", 
     borderRadius: "0", 
     padding: "10px 120px", 
     "&:hover": {
-      backgroundColor: "#CCC", 
+      backgroundColor: "#CC", 
     },
   },
 }));
