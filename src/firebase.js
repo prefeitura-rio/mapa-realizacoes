@@ -253,8 +253,13 @@ export async function getBairro(coords) {
   throw new Error("Bairro não encontrado para as coordenadas informadas");
 }
 
-export function getRealizacao(id) {
-  return db.collection("realizacao").doc(id);
+
+export async function getRealizacao(document) {
+  return db
+  .collection("realizacao")
+  .doc(document)
+  .get()
+  .then((doc) => doc.data());;
 }
 
 export async function getRealizacoes() {

@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacoes, storageRef } from "../firebase";
+import { auth, getRealizacao, getRealizacoes, storageRef } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -55,7 +55,8 @@ import firebase from "firebase/app";
 function* workerLoadData(action) {
   try {
     yield put(requestData());
-    const data = yield call(getRealizacoes, action.payload);
+    const data = yield call(getRealizacao, action.payload);
+    console.log("workerLoadData: ", data)
     yield put(requestDataSuccess(data));
   } catch (error) {
     yield put(requestDataFailed());
@@ -163,6 +164,7 @@ function* workerLoadAllPoints() {
   try {
     yield put(requestAllPoints());
     const data = yield call(getRealizacoes);
+    console.log("data: ", data)
     yield put(requestAllPointsSuccess(data));
   } catch (error) {
     console.error("Erro2: "+error);
@@ -222,7 +224,6 @@ export function* rootSaga() {
     fork(watchLoadData),
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
-    // fork(watchLoadComments),
     fork(watchLoadAllPoints),
     fork(watchLogin),
     fork(watchLogOut),

@@ -67,17 +67,17 @@ const ListInfo = ({ content }) => {
     // { text: content.subprefeitura, iconComponent: PublicIcon},
     { text: content.subprefeitura, iconComponent: () => <img src={subprefeituraIcon} alt="Subprefeitura" style={{width: '20px', height: '20px'}}/> },
     // { text: "R$ " +  content.totalInvestido + " investidos", iconComponent: PublicIcon},
-    { text: "R$ " + content.totalInvestido + ",00 " + "investidos", iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/> },
+    { text: "R$ " + content.investimento + ",00 " + "investidos", iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/> },
     // { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: PublicIcon},
-    { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
+    { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     // { text: content.dataInicio + " início", iconComponent: PublicIcon},
-    { text: content.dataInicio + " inicio", iconComponent: () => <img src={dataInicioIcon} alt="Data Inicio" style={{width: '20px', height: '20px'}}/> },
+    { text: content.data_inicio + " inicio", iconComponent: () => <img src={dataInicioIcon} alt="Data Inicio" style={{width: '20px', height: '20px'}}/> },
     // { text: content.dataFim + " fim", iconComponent: PublicIcon},
-    { text: content.dataFim + " fim", iconComponent: () => <img src={dataFimIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/> },
+    { text: content.data_fim + " fim", iconComponent: () => <img src={dataFimIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/> },
    
   ];
 
-  console.log("listinfo", listInfo)
+  console.log("content: ", (content))
 
   return (
     <>
