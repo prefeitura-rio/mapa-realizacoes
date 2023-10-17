@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import PhotoPreviews from "./../PhotoPreviews";
 import { compress } from "../../../utils/compress";
 import { getPreviews } from "../../../utils/previews";
-import { editarRealizacao } from "../../../firebase";
+import { createUpdateRealizacao } from "../../../firebase";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -141,7 +141,7 @@ const MyDropzone = ({
       profile,
       contentSnapshot,
     };
-    await editarRealizacao(data);
+    await createUpdateRealizacao(data);
 
     setDropzoneState(dropStates.UPLOAD);
     onComplete();

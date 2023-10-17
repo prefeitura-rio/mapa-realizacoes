@@ -77,6 +77,8 @@ const ListInfo = ({ content }) => {
    
   ];
 
+  console.log("listinfo", listInfo)
+
   return (
     <>
      <Typography className={classes.title}>

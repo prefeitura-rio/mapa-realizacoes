@@ -10,13 +10,13 @@ A seguir é descrito o modelo de dados. Todos os documentos possuem identificado
 
 Campos:
 
-- `densidade_demografica`: densidade demográfica do bairro.
 - `domicilios`: número de domicílios do bairro.
-- `foto`: URL da foto do bairro.
+- `geo`: GeoJSON do bairro.
 - `habitantes`: número de habitantes do bairro.
 - `id_subprefeitura`: identificador da subprefeitura a qual o bairro pertence.
-- `idh`: IDH do bairro.
+- `ips`: Índice de Pobreza Social do bairro.
 - `nome`: nome do bairro.
+- `ranking_ips`: ranking do bairro em relação ao Índice de Pobreza Social.
 
 #### Exemplo
 
@@ -24,13 +24,13 @@ Campos:
 
 ```json
 {
-  "densidade_demografica": 0.0,
   "domicilios": 0,
-  "foto": "https://firebasestorage.googleapis.com/v0/b/realizacoes-rio.appspot.com/o/bairros%2Fvila_valqueire.jpg?alt=media&token=0b0f5b1a-7b9a-4b0a-8b0a-0b0b0b0b0b0b",
+  "geo": "{ \"type\": \"Polygon\",... }",
   "habitantes": 0,
   "id_subprefeitura": "jacarepagua",
-  "idh": 0.0,
-  "nome": "Vila Valqueire"
+  "ips": 0.0,
+  "nome": "Vila Valqueire",
+  "ranking_ips": 0
 }
 ```
 
@@ -113,8 +113,8 @@ Campos:
   "data_inicio": "2019-01-01",
   "descricao": "Descrição da Realização Um",
   "id_bairro": "vila_valqueire",
-  "id_programa": "programa_um",
   "id_status": "finalizada",
+  "image_url": "",
   "investimento": 0.0,
   "latitude": 0.0,
   "longitude": 0.0,
@@ -205,7 +205,6 @@ Campos:
 
 ```json
 {
-  "descricao": "Descrição do Tema Educação",
   "nome": "Educação"
 }
 ```

@@ -23,7 +23,7 @@ import EditItem from "./EditItem";
 import { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import AddPhotoBlock from "../nested/AddPhotoBlock";
-import { editarRealizacao } from "../../../firebase";
+import { createUpdateRealizacao } from "../../../firebase";
 import clsx from "clsx";
 import MySchedule from "./MySchedule";
 import { getTileImage } from "../../../utils/getTileImage";
@@ -163,7 +163,7 @@ const EditInfoModal = ({
       profile,
       contentSnapshot: contentSnapshot
     };
-    await editarRealizacao(data);
+    await createUpdateRealizacao(data);
 
     setOpenEditInfo(false);
     setDisabled(false);
@@ -296,7 +296,7 @@ const EditInfoModal = ({
         <EditItem
           title="Título da Realização"
           IconComponent={StoreIcon}
-          value={content.titulo}
+          value={content.nome}
           onChange={onTituloChange}
           
         />

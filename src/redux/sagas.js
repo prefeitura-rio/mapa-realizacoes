@@ -1,6 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, db, storageRef } from "../firebase";
-// import { auth, db, getComments, storageRef } from "../firebase";
+import { auth, getRealizacoes, storageRef } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -52,18 +51,11 @@ import {
 
 import firebase from "firebase/app";
 
-function fetchData(document) {
-  return db
-    .collection("Realizacoes")
-    .doc(document)
-    .get()
-    .then((doc) => doc.data());
-}
 
 function* workerLoadData(action) {
   try {
     yield put(requestData());
-    const data = yield call(fetchData, action.payload);
+    const data = yield call(getRealizacoes, action.payload);
     yield put(requestDataSuccess(data));
   } catch (error) {
     yield put(requestDataFailed());
@@ -151,18 +143,10 @@ export function* watchLoadPlaces() {
 
 // ----------------------------
 
-async function fetchAllPlaces() {
-  let res;
-  res = await db.collection("Realizacoes").get();
-  const data = res.docs.map((doc) => doc.data());
-  console.log("Data de fetchAllPlaces:", data); // Imprime o valor de "data" no console
-  return data;
-}
-
 function* workerLoadAllPlaces(action) {
   try {
     yield put(requestAllPlaces());
-    const data = yield call(fetchAllPlaces, action.payload);
+    const data = yield call(getRealizacoes, action.payload);
     console.log("Data em workerLoadAllPlaces:", data); // Imprime o valor de "data" no console
     yield put(requestAllPlacesSuccess(data));
   } catch (error) {
@@ -175,15 +159,10 @@ export function* watchLoadAllPlaces() {
   yield takeEvery(LOAD_ALL_PLACES, workerLoadAllPlaces);
 }
 
-async function fetchAllPoints(collection = "Places") {
-  var res = await db.collection(collection).get();
-  return res.docs.map((doc) => doc.data());
-}
-
 function* workerLoadAllPoints() {
   try {
     yield put(requestAllPoints());
-    const data = yield call(fetchAllPoints);
+    const data = yield call(getRealizacoes);
     yield put(requestAllPointsSuccess(data));
   } catch (error) {
     console.error("Erro2: "+error);
