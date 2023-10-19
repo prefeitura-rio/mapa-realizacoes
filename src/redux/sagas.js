@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacao, getRealizacoes, storageRef } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -55,7 +55,7 @@ import firebase from "firebase/app";
 function* workerLoadData(action) {
   try {
     yield put(requestData());
-    const data = yield call(getRealizacao, action.payload);
+    const data = yield call(getRealizacaoInfo, action.payload);
     console.log("workerLoadData: ", data)
     yield put(requestDataSuccess(data));
   } catch (error) {
@@ -147,7 +147,7 @@ export function* watchLoadPlaces() {
 function* workerLoadAllPlaces(action) {
   try {
     yield put(requestAllPlaces());
-    const data = yield call(getRealizacoes, action.payload);
+    const data = yield call(getListRealizacaoData, action.payload);
     console.log("Data em workerLoadAllPlaces:", data); // Imprime o valor de "data" no console
     yield put(requestAllPlacesSuccess(data));
   } catch (error) {
@@ -163,7 +163,7 @@ export function* watchLoadAllPlaces() {
 function* workerLoadAllPoints() {
   try {
     yield put(requestAllPoints());
-    const data = yield call(getRealizacoes);
+    const data = yield call(getListRealizacaoData);
     console.log("data: ", data)
     yield put(requestAllPointsSuccess(data));
   } catch (error) {

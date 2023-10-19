@@ -2,24 +2,20 @@ import { firestore } from "../firebase";
 
 export const emptyContent = {
   //header
-  titulo: "Adicionar título",
-  descricao:"Adicionar descrição",
-  status:[],
-  tema:[],
+  titulo: null,
+  descricao: null,
+  status: null,
+  tema: [],
 
   //informações básicas
-  programa:[],
-  orgao:[],
-  // bairro:"-",
-  // endereco:"Adicionar endereço",
-  // subprefeitura:"-",
+  programa: [],
+  orgao: [],
 
   //total investido + cariocas atendidos
-  totalInvestido:"Adicionar total investido",
-  cariocasAtendidos:"Adicionar total de cariocas atendidos",
+  totalInvestido: 0,
+  cariocasAtendidos: 0,
 
   //data início + data fim
-
 
   imageUrl: null,
   coords: null,

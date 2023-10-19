@@ -23,7 +23,7 @@ import EditItem from "./EditItem";
 import { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import AddPhotoBlock from "../nested/AddPhotoBlock";
-import { createUpdateRealizacao } from "../../../firebase";
+import { createUpdateRealizacaoFromForm } from "../../../firebase";
 import clsx from "clsx";
 import MySchedule from "./MySchedule";
 import { getTileImage } from "../../../utils/getTileImage";
@@ -163,7 +163,7 @@ const EditInfoModal = ({
       profile,
       contentSnapshot: contentSnapshot
     };
-    await createUpdateRealizacao(data);
+    await createUpdateRealizacaoFromForm(data);
 
     setOpenEditInfo(false);
     setDisabled(false);
@@ -250,6 +250,8 @@ const EditInfoModal = ({
     }
     return false
   }
+
+  console.log("content here", content)
 
   return (
     <>
