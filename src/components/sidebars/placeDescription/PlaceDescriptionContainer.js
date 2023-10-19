@@ -18,21 +18,21 @@ const PlaceDescriptionContainer = (props) => {
     <>
       {props.content && (
         <PlaceDescriptionBar
-          setActiveBar={props.setActiveBar}
-          setDescriptionData={props.setDescriptionData}
-          content={props.content}
-          images={props.images}
-          places={props.places}
-          comments={props.comments}
-          setAddComment={props.setAddComment}
-          setOpenEdit={props.setOpenEdit}
-          setOpenUploadPhoto={props.setOpenUploadPhoto}
-          loadComments={props.loadComments}
-          profile={props.profile}
-          login={props.login}
-          anyLoading={props.anyLoading}
-          setPhotoGallery={props.setPhotoGallery}
-          setImagesType={props.setImagesType}
+        setActiveBar={props.setActiveBar}
+        content={props.content}
+        images={props.images}
+        setOpenEdit={props.setOpenEdit}
+        setOpenUploadPhoto={props.setOpenUploadPhoto}
+        profile={props.profile}
+        login={props.login}
+        anyLoading={props.anyLoading}
+        setPhotoGallery={props.setPhotoGallery}
+        setImagesType={props.setImagesType}
+        // setDescriptionData={props.setDescriptionData}
+          // loadComments={props.loadComments}
+          // places={props.places}
+          // comments={props.comments}
+          // setAddComment={props.setAddComment}
         />
       )}
     </>
@@ -43,18 +43,18 @@ const mapStateToProps = (state) => {
   return {
     content: state.place.content,
     images: state.images.images,
-    places: state.places.places,
-    descriptionData: state.place.descriptionData,
-    comments: state.comments.all,
     openCompletePhoto: state.active.openCompletePhoto,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
+    // places: state.places.places,
+    // descriptionData: state.place.descriptionData,
+    // comments: state.comments.all,
   };
 };
 
 const mapDispatchToProps = {
   setActiveBar,
-  setDescriptionData,
+  // setDescriptionData,
   setAddComment,
   setOpenEdit,
   setOpenUploadPhoto,

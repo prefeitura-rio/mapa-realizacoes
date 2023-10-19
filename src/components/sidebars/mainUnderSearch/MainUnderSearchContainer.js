@@ -3,14 +3,26 @@ import { setUnderSearchBar } from "../../../redux/active/actions";
 import { connect } from "react-redux";
 import { setShownMore } from "./../../../redux/active/actions";
 import { Fade, Grow, Slide } from "@material-ui/core";
+import { setDescriptionData } from "./../../../redux/place/actions";
+import {
+  setOpenCompletePhoto, setActiveBar, setPhotoGallery
+} from "./../../../redux/active/actions";
 
 const MainUnderSearchContainer = (props) => {
   return (
       <MainUnderSearchBar
         underSearchBar={props.underSearchBar}
         setUnderSearchBar={props.setUnderSearchBar}
-        shownMore={props.shownMore}
-        setShownMore={props.setShownMore}
+        setDescriptionData={props.setDescriptionData}
+        content={props.content}
+        images={props.images}
+
+        // remove if not useful
+        profile={props.profile}
+        login={props.login}
+        anyLoading={props.anyLoading}
+        setPhotoGallery={props.setPhotoGallery}
+        setImagesType={props.setImagesType}
       />
   );
 };
@@ -19,13 +31,18 @@ const mapStateToProps = (state) => {
   return {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
-    shownMore: state.active.shownMore,
+    descriptionData: state.place.descriptionData,
+    content: state.place.content,
+    images: state.images.images,
+    profile: state.auth.profile,
+    anyLoading: state.places.loading || state.place.loading,
   };
 };
 
 const mapDispatchToProps = {
   setUnderSearchBar,
-  setShownMore,
+  setActiveBar,
+  setDescriptionData
 };
 
 export default connect(

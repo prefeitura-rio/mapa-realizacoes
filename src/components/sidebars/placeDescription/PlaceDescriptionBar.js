@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     objectFit: "cover",
     height: "235px",
+    borderRadius:"15px"
   },
 
   listInfo: {
@@ -86,23 +87,19 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     margin: "8px",
   },
+  bottomInfo:{
+    marginBottom:"30px"
+  }
 }));
 
 const PlaceDescriptionBar = ({
-  setActiveBar,
   content,
   images,
-  places,
-  comments,
-  setDescriptionData,
-  setAddComment,
   setOpenEdit,
   setOpenUploadPhoto,
-
   loadComments,
   profile,
   login,
-  anyLoading,
   setPhotoGallery,
   setImagesType
 }) => {
@@ -125,13 +122,6 @@ const PlaceDescriptionBar = ({
     setTopImgSrc(
       "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
     );
-  };
-
-  const [extended, setExtended] = useState(false);
-  const handleExtended = () => {
-    const limit = !extended ? 20 : 3;
-    setExtended((v) => !v);
-    loadComments(content.photoFolder || content.name, limit);
   };
 
   return (
@@ -182,90 +172,9 @@ const PlaceDescriptionBar = ({
         )}
 
       </div>
-
-      <Divider />
-      <div className={classes.directory}>
-        {/* <HeaderBar title="Directory" />
-        <div className={classes.directoryFilters}>
-          <Input
-            placeholder="Search for places"
-            className={classes.directoryInputWrapper}
-            inputProps={{
-              "aria-label": "description",
-              className: classes.directoryInput,
-            }}
-            disableUnderline
-          />
-          <Chips />
-        </div>
-        {places ? (
-          <div className={classes.directoryPlaces}>
-            <PlacesList
-              items={places}
-              maxCount={4}
-              short
-              setActiveBar={setActiveBar}
-              setDescriptionData={setDescriptionData}
-              loading={anyLoading}
-              data={content}
-            />
-          </div>
-        ) : null}
-        <BottomButton title="View all" textButton /> */}
-      </div>
-      {/* <Divider />
-      <div className={classes.review}>
-        <HeaderBar title="Comentários" />
-        <RatingReview content={content} />
-        {profile ? (
-          <BottomButton
-            onClick={() => setAddComment(true)}
-            title="Escreva um comentário"
-            startIcon={RateReviewOutlinedIcon}
-          />
-        ) : (
-          <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
-              Faça login para escrever um comentário
-            </Button>
-          </div>
-        )}
-      </div>
-      <Divider />
-      <ReviewModalContainer /> */}
-
-      {/* <div className={classes.comments}>
-        <HeaderBar
-          title="Reviews"
-          buttons={
-            <>
-              <Button
-                className={classes.subheaderButton}
-                variant="outlined"
-                style={{ padding: "7px 8px", marginRight: "5px" }}
-                onClick={handleExtended}
-              >
-                <SearchOutlinedIcon fontSize="small" color="primary" />
-              </Button>
-              <Button
-                variant="outlined"
-                className={classes.subheaderButton}
-                onClick={handleExtended}
-              >
-                <SortOutlinedIcon fontSize="small" color="primary" />
-                Sort
-              </Button>
-            </>
-          }
-        />
-
-        <Comments
-          comments={comments}
-          content={content}
-          handleExtended={handleExtended}
-          extended={extended}
-        />
-      </div> */}
+      {/* <div className={classes.bottomInfo}></div> */}
+      <Divider/>
+     
     </div>
   );
 };

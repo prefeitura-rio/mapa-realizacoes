@@ -40,6 +40,12 @@ import {
   requestAllPointsFailed,
   requestAllPointsSuccess,
 } from "./points/actions";
+import { 
+  LOAD_ALL_CIDADES, 
+  requestAllCidades, 
+  requestAllCidadesFailed, 
+  requestAllCidadesSuccess
+} from "./cidade/actions";
 import { byCategory } from "../components/modals/editCategory/categoryItems";
 import {
   LOGIN,
@@ -193,6 +199,27 @@ function* workerLoadAllPoints() {
 
 export function* watchLoadAllPoints() {
   yield takeEvery(LOAD_ALL_POINTS, workerLoadAllPoints);
+}
+
+async function fetchAllCidades(collection = "Cidades") {
+  var res = await db.collection(collection).get();
+  return res.docs.map((doc) => doc.data());
+}
+
+function* workerLoadAllCidades() {
+  try {
+    yield put(requestAllCidades());
+    const data = yield call(fetchAllCidades);
+    console.log(data)
+    yield put(requestAllCidadesSuccess(data));
+  } catch (error) {
+    console.error("Erro2: "+error);
+    yield put(requestAllCidadesFailed());
+  }
+}
+
+export function* watchLoadAllCidades() {
+  yield takeEvery(LOAD_ALL_CIDADES, workerLoadAllCidades);
 }
 
 async function loginFirebase() {

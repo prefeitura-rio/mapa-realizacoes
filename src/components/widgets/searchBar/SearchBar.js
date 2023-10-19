@@ -131,20 +131,6 @@ const SearchBar = ({
 
   const [inputValue, setinputValue] = useState("");
 
-  useEffect(() => {
-    let newHistoryItems = anyPlaces || [];
-    if (newHistoryItems.length) {
-      newHistoryItems = newHistoryItems
-        .filter((el) =>
-          el.name
-            .toLowerCase()
-            .startsWith(inputValue ? inputValue.toLowerCase() : "")
-        )
-        .slice(0, 3);
-      setHistoryItems(newHistoryItems);
-    }
-  }, [anyPlaces, inputValue]);
-
   return (
     <ClickAwayListener onClickAway={handleClickOutside}>
       <div className={classes.searchbar}>
@@ -167,10 +153,11 @@ const SearchBar = ({
             <MenuIcon />
           </IconButton>
           <InputBase
-            className={classes.input}
-            placeholder="Buscar por bairro"
-            inputRef={inputRef}
-            onChange={(e) => setinputValue(e.target.value)}
+             className={classes.input}
+             placeholder="Buscar por bairro"
+             inputRef={inputRef}
+             onClick={handleUnderSearchBar} 
+             onChange={(e) => setinputValue(e.target.value)}
           />
           <IconButton
             type="submit"
@@ -199,11 +186,6 @@ const SearchBar = ({
           </IconButton>
         </Paper>
 
-        <PromptBlock
-          searchPrompt={searchPrompt}
-          underSearchBar={underSearchBar}
-          handleUnderSearchBar={handleUnderSearchBar}
-        />
       </div>
     </ClickAwayListener>
   );

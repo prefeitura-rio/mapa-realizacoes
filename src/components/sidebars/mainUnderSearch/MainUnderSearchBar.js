@@ -1,31 +1,26 @@
 import {
-  Avatar,
+  Divider,
   Fab,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   makeStyles,
 } from "@material-ui/core";
-import { Paper } from "@material-ui/core";
-import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import WorkOutlinedIcon from "@material-ui/icons/WorkOutlined";
-import DriveEtaIcon from "@material-ui/icons/DriveEta";
-import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
+
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { green, grey } from "@material-ui/core/colors";
-import clsx from "clsx";
-
-import ExtrasContainer from "../../inlines/extras/ExtrasContainer";
-import ExtendedExtrasContainer from "../../inlines/extras/ExtendedExtrasContainer";
-import HistoryContainer from "../../inlines/history/HistoryContainer";
 import { forwardRef } from "react";
+import { useState } from "react";
+import BasicInfo from "../../inlines/BasicInfo";
 
 const useStyles = makeStyles((theme) => ({
   card: {
     width: "100%",
     marginBottom: "10px",
+  },
+  topImage: {
+    overflow: "hidden",
+    width: "100%",
+    objectFit: "cover",
+    height: "235px",
+    borderRadius:"15px"
   },
 
   extendedIcon: {
@@ -87,113 +82,49 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MainUnderSearchBar = forwardRef(
-  ({ underSearchBar, setUnderSearchBar, shownMore, setShownMore }, ref) => {
+  ({ underSearchBar, 
+    setUnderSearchBar, 
+    content,
+    images,
+    profile,
+    login,
+  }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
 
-    const myPlaces = [
-      { name: "Home", iconComponent: HomeOutlinedIcon },
-      { name: "Work", iconComponent: WorkOutlinedIcon },
-    ];
+    const [topImgSrc, setTopImgSrc] = useState(
+      // content.imageUrl ||
+        "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+    );
+  
+    const onTopImageError = () => {
+      setTopImgSrc(
+        "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+      );
+    };
 
     return (
       <div ref={ref}>
-        <Paper
-          square
-          variant="outlined"
-          className={clsx(classes.card, classes.outlined)}
-          style={{ height: "195px" }}
-        >
-          <div style={{ marginTop: "6px", marginLeft: "7px" }}>
-            <div style={{ height: "50px" }} />
-            <HistoryContainer />
-          </div>
-        </Paper>
-        {/* <Paper
-          square
-          variant="outlined"
-          className={clsx(classes.card, classes.outlined)}
-        > */}
-          {/* <List>
-            {myPlaces.map((item, index) => (
-              <div key={index}>
-                <ListItem button key={item.name}>
-                  <ListItemIcon>
-                    <Avatar className={classes.iconAvatar}>
-                      <item.iconComponent fontSize="medium" />
-                    </Avatar>
-                  </ListItemIcon>
-                  <div>
-                    <ListItemText primary={item.name} style={{ margin: 0 }} />
-                    <ListItemText
-                      secondary={"Add address"}
-                      style={{ margin: 0 }}
-                    />
-                  </div>
-                </ListItem>
-                {index < myPlaces.length - 1 ? (
-                  <div className={classes.divider}></div>
-                ) : null}
-              </div>
-            ))}
-          </List> */}
-        {/* </Paper> */}
-        {/* <Paper
-          square
-          variant="outlined"
-          className={clsx(classes.card, classes.outlined)}
-        > */}
-          {/* <List>
-            <ListItem button key={"Traffic"}>
-              <ListItemIcon>
-                <Avatar
-                  className={classes.iconAvatarSmall}
-                  style={{ backgroundColor: "#4caf50" }}
-                >
-                  <DriveEtaIcon
-                    fontSize="small"
-                    style={{ backgroundColor: "#4caf50", fill: "white" }}
-                  />
-                </Avatar>
-              </ListItemIcon>
-              <div>
-                <ListItemText
-                  primary={"There aren't any traffic jams"}
-                  classes={{ root: classes.marginZero }}
-                />
-                <ListItemText
-                  secondary={"Common traffic"}
-                  classes={{
-                    secondary: classes.textSmall,
-                    root: classes.marginZero,
-                  }}
-                />
-              </div>
-              <IconButton style={{ position: "absolute", right: "10px" }}>
-                <ArrowForwardIosRoundedIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-          </List> */}
-        {/* </Paper> */}
-        <Paper
-          square
-          variant="outlined"
-          className={clsx(classes.card, classes.outlined)}
-          style={{ margin: shownMore ? 0 : "inherit" }}
-        >
-          <ExtrasContainer />
-        </Paper>
-        {shownMore ? <ExtendedExtrasContainer /> : null}
         <div className={classes.fabContainer}>
+
+        {/* <div className={classes.searchShadow}></div> */}
+        <img
+          src={topImgSrc}
+          onError={onTopImageError}
+          alt="top image"
+          className={classes.topImage}
+        />
+      {/* <BasicInfo content={content} /> */}
+      <Divider />
+
           <Fab
             size="small"
             variant="extended"
             className={classes.fab}
             onClick={() => {
               handleUnderSearchBar();
-              setShownMore(false);
             }}
           >
             <ExpandLessIcon className={classes.extendedIcon} />
