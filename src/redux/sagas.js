@@ -270,7 +270,7 @@ export function* rootSaga() {
     fork(watchLoadData),
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
-    // fork(watchLoadComments),
+    fork(watchLoadAllCidades),
     fork(watchLoadAllPoints),
     fork(watchLogin),
     fork(watchLogOut),
