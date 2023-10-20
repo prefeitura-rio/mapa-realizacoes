@@ -5,6 +5,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, makeStyles } from '@material-ui/core';
+import ListInfoSumario from './ListInfoSumario';
 
 
 const useStyles = makeStyles(()=>({
@@ -53,6 +54,9 @@ export default function AccordionTemas() {
                 <img src={"https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"} alt="Imagem" />
               </div>
             </div>
+            
+            <ListInfoSumario />
+
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>

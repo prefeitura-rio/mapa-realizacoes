@@ -1,27 +1,16 @@
 //
 
-import { Divider, Input, makeStyles, Button } from "@material-ui/core";
+import { Divider, makeStyles } from "@material-ui/core";
 
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
-import SortOutlinedIcon from "@material-ui/icons/SortOutlined";
-import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 
-import clsx from "clsx";
 import { useState } from "react";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
-import PlacesList from "./../../inlines/PlacesList";
-import Comments from "./../../inlines/Comments";
-import Chips from "./../../inlines/Chips";
-import RatingReview from "./../../inlines/RatingReview";
 import PhotoCards from "./../../inlines/PhotoCards";
 import ListInfo from "./../../inlines/ListInfo";
-import ActionButtons from "./../../inlines/ActionButtons";
 import BasicInfo from "./../../inlines/BasicInfo";
 import HeaderBar from "./../../inlines/HeaderBar";
 import BottomButton from "./../../inlines/BottomButton";
-import ReviewModalContainer from "../../modals/review/ReviewModalContainer";
-
 
 const useStyles = makeStyles((theme) => ({
   topImage: {
@@ -97,7 +86,6 @@ const PlaceDescriptionBar = ({
   images,
   setOpenEdit,
   setOpenUploadPhoto,
-  loadComments,
   profile,
   login,
   setPhotoGallery,

@@ -150,8 +150,7 @@ export async function editarRealizacao(data) {
           }
         }
       });
-      
-
+  
       // Debugging console.log statements
       if (bairroEncontrado) {
         console.log("=======> Bairro encontrado:", bairroEncontrado);
@@ -201,7 +200,7 @@ export async function editarRealizacao(data) {
       doc: content.titulo,
       name: profile.name,
       email: profile.email,
-      date: firebase.firestore.Timestamp.fromDate(new Date()),
+      date: firebase.firestore.Timestamp.fromDate(new Date()),  
     });
 
     if (content.titulo !== contentSnapshot.titulo) {

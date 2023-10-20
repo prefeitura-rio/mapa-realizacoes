@@ -8,26 +8,10 @@ import {
   Typography 
 } from "@material-ui/core";
 import React from 'react';
-import bairroIcon from '../../icons/bairro.png';
 import cariocasAtendidosIcon from '../../icons/cariocas_atendidos.png';
-import dataFimIcon from '../../icons/data_fim.png';
-import dataInicioIcon from '../../icons/data_inicio.png';
-import investimentoIcon from '../../icons/investimento.png';
 import orgaoIcon from '../../icons/orgao.png';
-import programaIcon from '../../icons/programa.png';
 import subprefeituraIcon from '../../icons/subprefeitura.png';
-import temaIcon from '../../icons/tema.png';
 
-
-
-import TimelineOutlinedIcon from "@material-ui/icons/TimelineOutlined";
-import QueryBuilderOutlinedIcon from "@material-ui/icons/QueryBuilderOutlined";
-import PublicIcon from "@material-ui/icons/Public";
-import CallIcon from "@material-ui/icons/Call";
-import VerifiedUserOutlinedIcon from "@material-ui/icons/VerifiedUserOutlined";
-import LabelOutlinedIcon from "@material-ui/icons/LabelOutlined";
-import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
-import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
