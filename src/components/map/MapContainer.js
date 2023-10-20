@@ -14,7 +14,6 @@ const MapContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadAllPoints());
-    dispatch(loadAllCidades());
   }, []);
 
   return (

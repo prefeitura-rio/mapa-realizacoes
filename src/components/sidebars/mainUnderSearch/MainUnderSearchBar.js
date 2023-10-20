@@ -2,6 +2,9 @@ import {
   Divider,
   Fab,
   makeStyles,
+  Tab,
+  Tabs,
+  Typography,
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -9,48 +12,91 @@ import { green, grey } from "@material-ui/core/colors";
 import { forwardRef } from "react";
 import { useState } from "react";
 import BasicInfo from "../../inlines/BasicInfo";
+import BasicInfoCidade from "../../inlines/BasicInfoCidade";
+import ListInfoSumario from "../../inlines/ListInfoSumario";
+import HeaderBar from "../../inlines/HeaderBar";
+import PhotoCards from "../../inlines/PhotoCards";
+import ControlledAccordions from "../../inlines/AccordionTemas";
+import AccordionTemas from "../../inlines/AccordionTemas";
+import AccordionProgramas from "../../inlines/AccordionProgramas";
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    width: "100%",
-    marginBottom: "10px",
-  },
+
   topImage: {
     overflow: "hidden",
     width: "100%",
     objectFit: "cover",
     height: "235px",
-    borderRadius:"15px"
+    borderRadius: "15px"
   },
-
+  photos: {
+    // padding: "12px",
+  },
   extendedIcon: {
     marginRight: theme.spacing(1),
     fill: "#2196f3",
   },
-
-  outlined: {
-    borderLeft: "none",
-    borderRight: "none",
+  title: { 
+    // margin: theme.spacing(2, 0), 
+    // fontSize: '1.5em' 
+    padding: "4px 24px 9px 24px",
+    // paddingLeft: "24px",
+    fontSize:"15px",
+    fontWeight:"bold"
   },
 
-  iconAvatar: {
-    width: "35px",
-    height: "35px",
-    backgroundColor: grey[200],
-    color: "black",
+  tab: {
+    marginLeft: "10px",
+    minWidth: "120px",
+    width: "auto", // Definir a largura para "auto"
+  },
+  indicator: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  tabContainer: {
+    display: "flex",
+    justifyContent: "center",
   },
 
-  iconAvatarSmall: {
-    width: "25px",
-    height: "25px",
-    marginLeft: "5px",
-    backgroundColor: green[500],
-    color: "black",
+  listInfo: {
+    padding: "6px 0",
+  },
+
+  photos: {
+    // padding: "12px",
+  },
+
+
+  directoryInput: {
+    border: "1px solid",
+    boxSizing: "border-box",
+    borderRadius: "8px",
+    borderColor: "rgba(0, 0, 0, 0.23)",
+    padding: "0 16px",
+    marginBottom: "8px",
+    height: "36px",
+
+    "&:focus": {
+      border: "2px solid",
+      padding: "0 15px",
+      borderColor: theme.palette.primary.main,
+    },
+  },
+
+  directoryFilters: {
+    padding: "0 5%",
   },
   fabContainer: {
     display: "flex",
     justifyContent: "center",
   },
+
+
+  directoryInputWrapper: {
+    width: "97%",
+    margin: "0 1.5%",
+  },
+
 
   fab: {
     position: "fixed",
@@ -68,9 +114,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  divider: {
-    margin: "0 24px",
-    borderBottom: "1px solid #e8eaed",
+  searchShadow: {
+    position: "fixed",
+    width: "423px",
+    height: "80px",
+    background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
   },
 
   textSmall: {
@@ -79,11 +127,16 @@ const useStyles = makeStyles((theme) => ({
   marginZero: {
     margin: 0,
   },
+  bottomInfo: {
+    marginBottom: "30px"
+  }
+
 }));
 
 const MainUnderSearchBar = forwardRef(
-  ({ underSearchBar, 
-    setUnderSearchBar, 
+  ({ underSearchBar,
+    setUnderSearchBar,
+    cidades,
     content,
     images,
     profile,
@@ -93,32 +146,89 @@ const MainUnderSearchBar = forwardRef(
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
+    console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
 
+    const [tabValue, setTabValue] = useState(0);
     const [topImgSrc, setTopImgSrc] = useState(
       // content.imageUrl ||
-        "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+      "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
     );
-  
+
     const onTopImageError = () => {
       setTopImgSrc(
         "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
       );
     };
 
+    cidades = cidades || [];
+
+    function TabPanel(props) {
+      const { children, value, index, ...other } = props;
+
+      return (
+        <div
+          role="tabpanel"
+          hidden={value !== index}
+          id={`tabpanel-${index}`}
+          aria-labelledby={`tab-${index}`}
+          {...other}
+        >
+          {value === index && (
+            <div>{children}</div>
+          )}
+        </div>
+      );
+    }
+
+
     return (
       <div ref={ref}>
-        <div className={classes.fabContainer}>
 
-        {/* <div className={classes.searchShadow}></div> */}
         <img
           src={topImgSrc}
           onError={onTopImageError}
           alt="top image"
           className={classes.topImage}
         />
-      {/* <BasicInfo content={content} /> */}
-      <Divider />
+        {cidades && cidades.length > 0 && <BasicInfoCidade content={cidades[0]} />}
+        <Tabs
+          value={tabValue}
+          onChange={(e, i) => {
+            setTabValue(i);
+          }}
+          indicatorColor="primary"
+          textColor="primary"
+          className={classes.tabs}
+        >
+          <Tab label="Sumário" className={classes.tab} />
+          <Tab label="Temas" className={classes.tab} />
+          <Tab label="Programas" className={classes.tab} />
+        </Tabs>
 
+        <TabPanel value={tabValue} index={0}>
+          <br></br>
+          <br></br>
+          {cidades && cidades.length > 0 && <ListInfoSumario content={cidades[0]} />}
+
+          <Divider />
+      <div className={classes.photos}>
+        <br></br>
+      <Typography className={classes.title}>
+      Fotos
+     </Typography>
+        <PhotoCards images={images} />
+
+      </div>
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={1}>
+        <AccordionTemas></AccordionTemas>
+        </TabPanel>
+        <TabPanel value={tabValue} index={2}>
+        <AccordionProgramas></AccordionProgramas>
+        </TabPanel>
+        
+        <div className={classes.fabContainer}>
           <Fab
             size="small"
             variant="extended"
