@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -182,15 +182,11 @@ export function* watchLoadAllPoints() {
   yield takeEvery(LOAD_ALL_POINTS, workerLoadAllPoints);
 }
 
-async function fetchAllCidades(collection = "Cidades") {
-  var res = await db.collection(collection).get();
-  return res.docs.map((doc) => doc.data());
-}
 
 function* workerLoadAllCidades() {
   try {
     yield put(requestAllCidades());
-    const data = yield call(fetchAllCidades);
+    const data = yield call(getAllCidades);
     console.log(data)
     yield put(requestAllCidadesSuccess(data));
   } catch (error) {

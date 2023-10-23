@@ -18,7 +18,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
-import { db } from "../../../firebase";
+import { db, getRefBairro } from "../../../firebase";
 
 
 const useStyles = makeStyles((theme) => {
@@ -138,18 +138,25 @@ const SearchBar = ({
   const [neighborhoods, setNeighborhoods] = useState([]);
 
   useEffect(() => {
-    const fetchNeighborhoods = async () => {
+    const loadNeighborhoods = async () => {
       try {
-        const querySnapshot = await db.collection("bairro").get();
-        const neighborhoodNames = querySnapshot.docs.map((doc) => doc.data().nome);
-        setNeighborhoods(neighborhoodNames);
+        const neighborhoodRef = await getRefBairro(); 
+        const neighborhoodSnapshot = await neighborhoodRef.get();
+        if (neighborhoodSnapshot.exists) {
+          const neighborhoodData = neighborhoodSnapshot.data();
+          const neighborhoodNames = Object.keys(neighborhoodData);
+          setNeighborhoods(neighborhoodNames);
+        } else {
+          console.error("Nenhum bairro encontrado.");
+        }
       } catch (error) {
         console.error("Erro ao buscar nomes de bairros:", error);
       }
     };
-
-    fetchNeighborhoods();
+  
+    loadNeighborhoods();
   }, []);
+  
 
   return (
     <ClickAwayListener onClickAway={handleClickOutside}>

@@ -311,6 +311,11 @@ export async function getRefCidade(id) {
   return db.collection("cidade").doc(id);
 }
 
+export async function getAllCidades(collection = "Cidades") {
+  var res = await db.collection(collection).get();
+  return res.docs.map((doc) => doc.data());
+}
+
 export async function getRefOrgao(id) {
   return db.collection("orgao").doc(id);
 }
