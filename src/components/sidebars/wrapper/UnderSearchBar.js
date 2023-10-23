@@ -9,7 +9,7 @@ import {
 } from "../../../redux/active/actions";
 import MainUnderSearchContainer from "../mainUnderSearch/MainUnderSearchContainer";
 import PlaceDescriptionContainer from "../placeDescription/PlaceDescriptionContainer";
-import PlacesContainer from "../places/PlacesContainer";
+// import PlacesContainer from "../places/PlacesContainer";
 
 const useStyles = makeStyles((theme) => ({
   underSearch: {
@@ -38,8 +38,12 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
 
   const renderSwitch = (param) => {
     switch (param) {
-      case PLACES_BAR:
-        return <PlacesContainer />;
+      // case PLACES_BAR:
+      //   return <PlacesContainer />;
+      // case BAIRRO_DESCRIPTION_BAR:
+      //   return <BairroDescriptionContainer />;
+      // case PREFEITURA_DESCRIPTION_BAR:
+      //   return <PrefeituraDescriptionContainer />;
       case DESCRIPTION_BAR:
         return <PlaceDescriptionContainer />;
       default:
@@ -57,10 +61,6 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
       }
       elevation={underSearchBar ? 12 : 4}
       square={underSearchBar ? true : false}
-      style={{
-        backgroundColor:
-          activeBar !== MAIN_UNDERSEARCH_BAR ? "white" : "#f0f0f0",
-      }}
     >
       {renderSwitch(activeBar)}
     </Paper>

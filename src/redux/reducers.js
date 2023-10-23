@@ -10,6 +10,7 @@ import pointsReducer from "./points/reducers";
 import mapReducer from "./map/reducers";
 import authReducer from "./auth/reducers";
 import searchReducer from "./search/reducers";
+import cidadesReducer from "./cidade/reducers";
 
 const defaultState = {
   zoomDelta: 0,
@@ -35,6 +36,7 @@ export default combineReducers({
   places: placesReducer,
   images: imagesReducer,
   points: pointsReducer,
+  cidades: cidadesReducer,
   map: mapReducer,
   auth: authReducer,
   search: searchReducer,

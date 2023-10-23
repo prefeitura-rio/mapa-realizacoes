@@ -36,7 +36,7 @@ const defaultState = {
   openCompletePhoto: false,
   activeBar: MAIN_UNDERSEARCH_BAR,
   searchPrompt: false,
-  underSearchBar: false,
+  underSearchBar: true,
   bottomGallery: false,
   menuSidebar: false,
   photoGallery: false,

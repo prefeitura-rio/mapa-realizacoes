@@ -90,49 +90,7 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
           <CloseIcon />
         </IconButton>
       </div>
-      {/* <Divider />
-      <List>
-        <ListItem button>
-          <ListItemIcon>
-            <LayersOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText
-            classes={{ primary: classes.listItemText }}
-            primary={layersText}
-          />
-        </ListItem>
-      </List>
-      <Divider /> */}
-      {/* <List>
-        {componentsToText.map((data) => (
-          <ListItem button key={data.text}>
-            <ListItemIcon>
-              <data.iconComponent />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary={data.text}
-            />
-          </ListItem>
-        ))}
-      </List> */}
-      {/* <Divider />
-      <ListItem
-        button
-        onClick={() =>
-          window.open("prefeitura.rio", "_blank").focus()
-          // window.open("https://github.com/AlexanderBaikal", "_blank").focus()
-        }
-      >
-        <ListItemIcon>
-          <LinkIcon />
-        </ListItemIcon>
-        <ListItemText
-          classes={{ primary: classes.listItemText }}
-          primary={"prefeitura.rio"}
-          // primary={"github.com/AlexanderBaikal"}
-        />
-      </ListItem> */}
+    
       <Divider />
       <ListItem>
         <ListItemIcon>

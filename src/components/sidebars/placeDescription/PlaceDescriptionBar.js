@@ -1,27 +1,16 @@
 //
 
-import { Divider, Input, makeStyles, Button } from "@material-ui/core";
+import { Divider, makeStyles } from "@material-ui/core";
 
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
-import SortOutlinedIcon from "@material-ui/icons/SortOutlined";
-import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 
-import clsx from "clsx";
 import { useState } from "react";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
-import PlacesList from "./../../inlines/PlacesList";
-import Comments from "./../../inlines/Comments";
-import Chips from "./../../inlines/Chips";
-import RatingReview from "./../../inlines/RatingReview";
 import PhotoCards from "./../../inlines/PhotoCards";
 import ListInfo from "./../../inlines/ListInfo";
-import ActionButtons from "./../../inlines/ActionButtons";
 import BasicInfo from "./../../inlines/BasicInfo";
 import HeaderBar from "./../../inlines/HeaderBar";
 import BottomButton from "./../../inlines/BottomButton";
-import ReviewModalContainer from "../../modals/review/ReviewModalContainer";
-
 
 const useStyles = makeStyles((theme) => ({
   topImage: {
@@ -29,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     objectFit: "cover",
     height: "235px",
+    borderRadius:"15px"
   },
 
   listInfo: {
@@ -86,23 +76,18 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     margin: "8px",
   },
+  bottomInfo:{
+    marginBottom:"30px"
+  }
 }));
 
 const PlaceDescriptionBar = ({
-  setActiveBar,
   content,
   images,
-  places,
-  comments,
-  setDescriptionData,
-  setAddComment,
   setOpenEdit,
   setOpenUploadPhoto,
-
-  loadComments,
   profile,
   login,
-  anyLoading,
   setPhotoGallery,
   setImagesType
 }) => {
@@ -127,13 +112,6 @@ const PlaceDescriptionBar = ({
     );
   };
 
-  const [extended, setExtended] = useState(false);
-  const handleExtended = () => {
-    const limit = !extended ? 20 : 3;
-    setExtended((v) => !v);
-    loadComments(content.photoFolder || content.name, limit);
-  };
-
   return (
     <div className={classes.root}>
       <div className={classes.searchShadow}></div>
@@ -152,15 +130,14 @@ const PlaceDescriptionBar = ({
         {}
         {profile ? (
           <BottomButton
-            title="Editar informarções"
+            title="Editar informações"
             startIcon={CreateOutlinedIcon}
             onClick={handleOpenEdit}
           />
         ) : (
           <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
-            Fazer login para editar informação
-            </Button>
+            <BottomButton onClick={login}
+            title= "Faça login para editar"/>
           </div>
         )}
 
@@ -177,98 +154,15 @@ const PlaceDescriptionBar = ({
             onClick={handleOpenUploadPhoto}
           />
         ) : (
-          <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
-              Fazer login para adicionar uma foto
-            </Button>
+          <div className={classes.signInButton}>           
+            <BottomButton title="Faça login para editar" color="primary" variant="outlined" onClick={login}/>
           </div>
         )}
 
       </div>
-
-      <Divider />
-      <div className={classes.directory}>
-        {/* <HeaderBar title="Directory" />
-        <div className={classes.directoryFilters}>
-          <Input
-            placeholder="Search for places"
-            className={classes.directoryInputWrapper}
-            inputProps={{
-              "aria-label": "description",
-              className: classes.directoryInput,
-            }}
-            disableUnderline
-          />
-          <Chips />
-        </div>
-        {places ? (
-          <div className={classes.directoryPlaces}>
-            <PlacesList
-              items={places}
-              maxCount={4}
-              short
-              setActiveBar={setActiveBar}
-              setDescriptionData={setDescriptionData}
-              loading={anyLoading}
-              data={content}
-            />
-          </div>
-        ) : null}
-        <BottomButton title="View all" textButton /> */}
-      </div>
-      {/* <Divider />
-      <div className={classes.review}>
-        <HeaderBar title="Comentários" />
-        <RatingReview content={content} />
-        {profile ? (
-          <BottomButton
-            onClick={() => setAddComment(true)}
-            title="Escreva um comentário"
-            startIcon={RateReviewOutlinedIcon}
-          />
-        ) : (
-          <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
-              Faça login para escrever um comentário
-            </Button>
-          </div>
-        )}
-      </div>
-      <Divider />
-      <ReviewModalContainer /> */}
-
-      {/* <div className={classes.comments}>
-        <HeaderBar
-          title="Reviews"
-          buttons={
-            <>
-              <Button
-                className={classes.subheaderButton}
-                variant="outlined"
-                style={{ padding: "7px 8px", marginRight: "5px" }}
-                onClick={handleExtended}
-              >
-                <SearchOutlinedIcon fontSize="small" color="primary" />
-              </Button>
-              <Button
-                variant="outlined"
-                className={classes.subheaderButton}
-                onClick={handleExtended}
-              >
-                <SortOutlinedIcon fontSize="small" color="primary" />
-                Sort
-              </Button>
-            </>
-          }
-        />
-
-        <Comments
-          comments={comments}
-          content={content}
-          handleExtended={handleExtended}
-          extended={extended}
-        />
-      </div> */}
+      {/* <div className={classes.bottomInfo}></div> */}
+      <Divider/>
+     
     </div>
   );
 };

@@ -17,11 +17,16 @@ const useStyles = makeStyles((theme) => ({
     pointerEvents: "none",
     borderRadius:"39px",
     backgroundColor:"#007E7D",
-    color: "#FFFFFF"
+    color: "#FFFFFF",
+    padding:"1px 8px 1px 8px"
   },
   titulo:{
     fontSize:"25px",
-    fontWeight:"bold"
+    fontWeight:"bold",
+    marginBottom:"-15px"
+  },
+  descricao:{
+    lineHeight:"130%"
   }
   
 }));
@@ -33,7 +38,7 @@ const BasicInfo = ({ content }) => {
     <div className={classes.basicInfo}>
       <Typography  className={classes.titulo}>{content.nome}</Typography>
       <br></br>
-      <Typography variant="h2">{content.descricao}</Typography>
+      <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
       <br></br>
       <Button variant="contained" className={classes.statusButton}>
       {content.status}

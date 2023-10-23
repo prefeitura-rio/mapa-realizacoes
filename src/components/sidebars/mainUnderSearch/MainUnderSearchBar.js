@@ -1,60 +1,52 @@
 import {
-  Avatar,
   Fab,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   makeStyles,
 } from "@material-ui/core";
-import { Paper } from "@material-ui/core";
-import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import WorkOutlinedIcon from "@material-ui/icons/WorkOutlined";
-import DriveEtaIcon from "@material-ui/icons/DriveEta";
-import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { green, grey } from "@material-ui/core/colors";
-import clsx from "clsx";
 
-import ExtrasContainer from "../../inlines/extras/ExtrasContainer";
-import ExtendedExtrasContainer from "../../inlines/extras/ExtendedExtrasContainer";
-import HistoryContainer from "../../inlines/history/HistoryContainer";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef } from "react";
+import { useState } from "react";
+import DadosAgregados from "../../inlines/DadosAgregados";
+
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    width: "100%",
-    marginBottom: "10px",
+
+  listInfo: {
+    padding: "6px 0",
   },
 
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-    fill: "#2196f3",
+  photos: {
+    // padding: "12px",
   },
 
-  outlined: {
-    borderLeft: "none",
-    borderRight: "none",
+  directoryInput: {
+    border: "1px solid",
+    boxSizing: "border-box",
+    borderRadius: "8px",
+    borderColor: "rgba(0, 0, 0, 0.23)",
+    padding: "0 16px",
+    marginBottom: "8px",
+    height: "36px",
+
+    "&:focus": {
+      border: "2px solid",
+      padding: "0 15px",
+      borderColor: theme.palette.primary.main,
+    },
   },
 
-  iconAvatar: {
-    width: "35px",
-    height: "35px",
-    backgroundColor: grey[200],
-    color: "black",
-  },
-
-  iconAvatarSmall: {
-    width: "25px",
-    height: "25px",
-    marginLeft: "5px",
-    backgroundColor: green[500],
-    color: "black",
+  directoryFilters: {
+    padding: "0 5%",
   },
   fabContainer: {
     display: "flex",
     justifyContent: "center",
+  },
+
+
+  directoryInputWrapper: {
+    width: "97%",
+    margin: "0 1.5%",
   },
 
   fab: {
@@ -73,9 +65,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  divider: {
-    margin: "0 24px",
-    borderBottom: "1px solid #e8eaed",
+  searchShadow: {
+    position: "fixed",
+    width: "423px",
+    height: "80px",
+    background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
   },
 
   textSmall: {
@@ -84,108 +78,51 @@ const useStyles = makeStyles((theme) => ({
   marginZero: {
     margin: 0,
   },
+  bottomInfo: {
+    marginBottom: "30px"
+  }
+
 }));
 
 const MainUnderSearchBar = forwardRef(
-  ({ underSearchBar, setUnderSearchBar, shownMore, setShownMore }, ref) => {
+  ({ underSearchBar,
+    setUnderSearchBar,
+    cidades,
+    images,
+  }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
+    console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
 
-    const myPlaces = [
-      { name: "Home", iconComponent: HomeOutlinedIcon },
-      { name: "Work", iconComponent: WorkOutlinedIcon },
-    ];
+    const [tabValue, setTabValue] = useState(0);
+    const [topImgSrc, setTopImgSrc] = useState(
+      // content.imageUrl ||
+      "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+    );
+
+    const onTopImageError = () => {
+      setTopImgSrc(
+        "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+      );
+    };
+
+    cidades = cidades || [];
+
 
     return (
       <div ref={ref}>
-        <Paper
-          square
-          variant="outlined"
-          className={clsx(classes.card, classes.outlined)}
-          style={{ height: "195px" }}
-        >
-          <div style={{ marginTop: "6px", marginLeft: "7px" }}>
-            <div style={{ height: "50px" }} />
-            <HistoryContainer />
-          </div>
-        </Paper>
-        {/* <Paper
-          square
-          variant="outlined"
-          className={clsx(classes.card, classes.outlined)}
-        > */}
-          {/* <List>
-            {myPlaces.map((item, index) => (
-              <div key={index}>
-                <ListItem button key={item.name}>
-                  <ListItemIcon>
-                    <Avatar className={classes.iconAvatar}>
-                      <item.iconComponent fontSize="medium" />
-                    </Avatar>
-                  </ListItemIcon>
-                  <div>
-                    <ListItemText primary={item.name} style={{ margin: 0 }} />
-                    <ListItemText
-                      secondary={"Add address"}
-                      style={{ margin: 0 }}
-                    />
-                  </div>
-                </ListItem>
-                {index < myPlaces.length - 1 ? (
-                  <div className={classes.divider}></div>
-                ) : null}
-              </div>
-            ))}
-          </List> */}
-        {/* </Paper> */}
-        {/* <Paper
-          square
-          variant="outlined"
-          className={clsx(classes.card, classes.outlined)}
-        > */}
-          {/* <List>
-            <ListItem button key={"Traffic"}>
-              <ListItemIcon>
-                <Avatar
-                  className={classes.iconAvatarSmall}
-                  style={{ backgroundColor: "#4caf50" }}
-                >
-                  <DriveEtaIcon
-                    fontSize="small"
-                    style={{ backgroundColor: "#4caf50", fill: "white" }}
-                  />
-                </Avatar>
-              </ListItemIcon>
-              <div>
-                <ListItemText
-                  primary={"There aren't any traffic jams"}
-                  classes={{ root: classes.marginZero }}
-                />
-                <ListItemText
-                  secondary={"Common traffic"}
-                  classes={{
-                    secondary: classes.textSmall,
-                    root: classes.marginZero,
-                  }}
-                />
-              </div>
-              <IconButton style={{ position: "absolute", right: "10px" }}>
-                <ArrowForwardIosRoundedIcon fontSize="small" />
-              </IconButton>
-            </ListItem>
-          </List> */}
-        {/* </Paper> */}
-        <Paper
-          square
-          variant="outlined"
-          className={clsx(classes.card, classes.outlined)}
-          style={{ margin: shownMore ? 0 : "inherit" }}
-        >
-          <ExtrasContainer />
-        </Paper>
-        {shownMore ? <ExtendedExtrasContainer /> : null}
+
+        <DadosAgregados
+          topImgSrc={topImgSrc}
+          onTopImageError={onTopImageError}
+          cidades={cidades}
+          tabValue={tabValue}
+          setTabValue={setTabValue}
+          images={images}
+        />
+
         <div className={classes.fabContainer}>
           <Fab
             size="small"
@@ -193,7 +130,6 @@ const MainUnderSearchBar = forwardRef(
             className={classes.fab}
             onClick={() => {
               handleUnderSearchBar();
-              setShownMore(false);
             }}
           >
             <ExpandLessIcon className={classes.extendedIcon} />

@@ -68,7 +68,7 @@ const PromptBlock = ({
 }) => {
   const classes = useStyles();
 
-  console.log(underSearchBar);
+  console.log("aberto: "+underSearchBar);
 
   const promptText = "Filtros de pesquisa ...";
 
