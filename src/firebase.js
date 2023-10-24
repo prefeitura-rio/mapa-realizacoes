@@ -777,6 +777,17 @@ export function getListTemaName() {
   });
 }
 
+export async function getListBairroName() {
+  try {
+    const neighborhoodRef = db.collection('bairro');
+    const neighborhoodSnapshot = await neighborhoodRef.get();
+
+    return neighborhoodSnapshot;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getRealizacaoInfo(document) {
   let data = await db
     .collection("realizacao")

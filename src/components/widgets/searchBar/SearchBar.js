@@ -18,7 +18,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
-import { db, getRefBairro } from "../../../firebase";
+import { getListBairroName } from "../../../firebase";
 
 
 const useStyles = makeStyles((theme) => {
@@ -140,11 +140,15 @@ const SearchBar = ({
   useEffect(() => {
     const loadNeighborhoods = async () => {
       try {
-        const neighborhoodRef = await getRefBairro(); 
-        const neighborhoodSnapshot = await neighborhoodRef.get();
-        if (neighborhoodSnapshot.exists) {
-          const neighborhoodData = neighborhoodSnapshot.data();
-          const neighborhoodNames = Object.keys(neighborhoodData);
+        const neighborhoodRef = await getListBairroName(); 
+        if (!neighborhoodRef.empty) {
+          const neighborhoodNames = [];
+          neighborhoodRef.forEach((doc) => {
+            const neighborhoodData = doc.data();
+            const neighborhoodName = neighborhoodData.nome; 
+            neighborhoodNames.push(neighborhoodName);
+          });
+  
           setNeighborhoods(neighborhoodNames);
         } else {
           console.error("Nenhum bairro encontrado.");
@@ -156,6 +160,7 @@ const SearchBar = ({
   
     loadNeighborhoods();
   }, []);
+  
   
 
   return (
