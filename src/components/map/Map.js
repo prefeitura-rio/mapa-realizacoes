@@ -56,7 +56,6 @@ const Map = ({
     setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
     loadData(toSnakeCase(point.nome));
-    console.log("point.id:\n",point.id,"\npoint.nome:\n",point.nome)
   };
 
   const [opened, setOpened] = useState(false);

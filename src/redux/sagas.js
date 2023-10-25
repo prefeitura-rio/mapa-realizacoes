@@ -1,6 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, db, storageRef } from "../firebase";
-// import { auth, db, getComments, storageRef } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -40,6 +39,12 @@ import {
   requestAllPointsFailed,
   requestAllPointsSuccess,
 } from "./points/actions";
+import { 
+  LOAD_ALL_CIDADES, 
+  requestAllCidades, 
+  requestAllCidadesFailed, 
+  requestAllCidadesSuccess
+} from "./cidade/actions";
 import { byCategory } from "../components/modals/editCategory/categoryItems";
 import {
   LOGIN,
@@ -51,19 +56,14 @@ import {
 } from "./auth/actions";
 
 import firebase from "firebase/app";
+import { LOAD_ALL_BAIRROS, LOAD_BAIRRO_DATA, requestAllBAIRROSSuccess, requestAllBairros, requestAllBairrosFailed, requestBairroData, requestBairroDataFailed, requestBairroDataSuccess } from "./bairros/actions";
 
-function fetchData(document) {
-  return db
-    .collection("Realizacoes")
-    .doc(document)
-    .get()
-    .then((doc) => doc.data());
-}
 
 function* workerLoadData(action) {
   try {
     yield put(requestData());
-    const data = yield call(fetchData, action.payload);
+    const data = yield call(getRealizacaoInfo, action.payload);
+    console.log("workerLoadData: ", data)
     yield put(requestDataSuccess(data));
   } catch (error) {
     yield put(requestDataFailed());
@@ -151,18 +151,10 @@ export function* watchLoadPlaces() {
 
 // ----------------------------
 
-async function fetchAllPlaces() {
-  let res;
-  res = await db.collection("Realizacoes").get();
-  const data = res.docs.map((doc) => doc.data());
-  console.log("Data de fetchAllPlaces:", data); // Imprime o valor de "data" no console
-  return data;
-}
-
 function* workerLoadAllPlaces(action) {
   try {
     yield put(requestAllPlaces());
-    const data = yield call(fetchAllPlaces, action.payload);
+    const data = yield call(getListRealizacaoData, action.payload);
     console.log("Data em workerLoadAllPlaces:", data); // Imprime o valor de "data" no console
     yield put(requestAllPlacesSuccess(data));
   } catch (error) {
@@ -175,15 +167,11 @@ export function* watchLoadAllPlaces() {
   yield takeEvery(LOAD_ALL_PLACES, workerLoadAllPlaces);
 }
 
-async function fetchAllPoints(collection = "Places") {
-  var res = await db.collection(collection).get();
-  return res.docs.map((doc) => doc.data());
-}
-
 function* workerLoadAllPoints() {
   try {
     yield put(requestAllPoints());
-    const data = yield call(fetchAllPoints);
+    const data = yield call(getListRealizacaoData);
+    console.log("data: ", data)
     yield put(requestAllPointsSuccess(data));
   } catch (error) {
     console.error("Erro2: "+error);
@@ -193,6 +181,38 @@ function* workerLoadAllPoints() {
 
 export function* watchLoadAllPoints() {
   yield takeEvery(LOAD_ALL_POINTS, workerLoadAllPoints);
+}
+
+
+function* workerLoadAllCidades() {
+  try {
+    yield put(requestAllCidades());
+    const data = yield call(getAllCidades);
+    console.log(data)
+    yield put(requestAllCidadesSuccess(data));
+  } catch (error) {
+    console.error("Erro2: "+error);
+    yield put(requestAllCidadesFailed());
+  }
+}
+
+export function* watchLoadAllCidades() {
+  yield takeEvery(LOAD_ALL_CIDADES, workerLoadAllCidades);
+}
+
+function* workerLoadBairroData(action) {
+  try {
+    yield put(requestBairroData());
+    const data = yield call(getBairroInfo, action.payload);
+    console.log("BAIRRO_workerLoadData: ", data)
+    yield put(requestBairroDataSuccess(data));
+  } catch (error) {
+    yield put(requestBairroDataFailed());
+  }
+}
+
+export function* watchLoadBairroData() {
+  yield takeEvery(LOAD_BAIRRO_DATA, workerLoadBairroData);
 }
 
 async function loginFirebase() {
@@ -243,7 +263,8 @@ export function* rootSaga() {
     fork(watchLoadData),
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
-    // fork(watchLoadComments),
+    fork(watchLoadAllCidades),
+    fork(watchLoadBairroData),
     fork(watchLoadAllPoints),
     fork(watchLogin),
     fork(watchLogOut),

@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import React from 'react';
 import bairroIcon from '../../icons/bairro.png';
-import cariocasAtendidosIcon from '../../icons/cariocas_atendidos.png';
 import dataFimIcon from '../../icons/data_fim.png';
 import dataInicioIcon from '../../icons/data_inicio.png';
 import investimentoIcon from '../../icons/investimento.png';
@@ -17,17 +16,8 @@ import orgaoIcon from '../../icons/orgao.png';
 import programaIcon from '../../icons/programa.png';
 import subprefeituraIcon from '../../icons/subprefeitura.png';
 import temaIcon from '../../icons/tema.png';
+import cariocasAtendidosIcon from '../../icons/cariocas_atendidos.png';
 
-
-
-import TimelineOutlinedIcon from "@material-ui/icons/TimelineOutlined";
-import QueryBuilderOutlinedIcon from "@material-ui/icons/QueryBuilderOutlined";
-import PublicIcon from "@material-ui/icons/Public";
-import CallIcon from "@material-ui/icons/Call";
-import VerifiedUserOutlinedIcon from "@material-ui/icons/VerifiedUserOutlined";
-import LabelOutlinedIcon from "@material-ui/icons/LabelOutlined";
-import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
-import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -66,16 +56,18 @@ const ListInfo = ({ content }) => {
     { text: content.bairro, iconComponent: () => <img src={bairroIcon} alt="Bairro" style={{width: '20px', height: '20px'}}/> },
     // { text: content.subprefeitura, iconComponent: PublicIcon},
     { text: content.subprefeitura, iconComponent: () => <img src={subprefeituraIcon} alt="Subprefeitura" style={{width: '20px', height: '20px'}}/> },
-    // { text: "R$ " +  content.totalInvestido + " investidos", iconComponent: PublicIcon},
-    { text: "R$ " + content.totalInvestido + ",00 " + "investidos", iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/> },
-    // { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: PublicIcon},
-    { text: content.cariocasAtendidos + " cariocas atendidos", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
-    // { text: content.dataInicio + " início", iconComponent: PublicIcon},
-    { text: content.dataInicio + " inicio", iconComponent: () => <img src={dataInicioIcon} alt="Data Inicio" style={{width: '20px', height: '20px'}}/> },
-    // { text: content.dataFim + " fim", iconComponent: PublicIcon},
-    { text: content.dataFim + " fim", iconComponent: () => <img src={dataFimIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/> },
+    // { text: "R$ " +  content.investimento + " investidos", iconComponent: PublicIcon},
+    { text: "R$ " + content.investimento + ",00 " + "investidos", iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/> },
+    // { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: PublicIcon},
+    { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
+    // { text: content.data_inicio + " início", iconComponent: PublicIcon},
+    { text: content.data_inicio + " inicio", iconComponent: () => <img src={dataInicioIcon} alt="Data Inicio" style={{width: '20px', height: '20px'}}/> },
+    // { text: content.data_fim + " fim", iconComponent: PublicIcon},
+    { text: content.data_fim + " fim", iconComponent: () => <img src={dataFimIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/> },
    
   ];
+
+  console.log("content: ", (content))
 
   return (
     <>

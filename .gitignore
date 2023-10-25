@@ -29,3 +29,5 @@ yarn-error.log*
 # firebaseconfig.js -> Arquivos com as credenciais. NÃO REMOVER! 
 src/firebaseconfig.js
 src/components/bulk_insert_info
+
+scripts/

@@ -10,11 +10,16 @@ import {
   ClickAwayListener,
   CircularProgress,
 } from "@material-ui/core";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import CloseIcon from "@material-ui/icons/Close";
-import { MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
+import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
+import Orgaos from "../../modals/editInfo/Orgaos";
+import { getListBairroName } from "../../../firebase";
+
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -102,11 +107,17 @@ const SearchBar = ({
   setPlacesData,
   historyItems,
 }) => {
-  const handleUnderSearchBar = () => {
-    setUnderSearchBar(!underSearchBar);
-    if (!underSearchBar) {
-      inputRef.current.focus();
+
+  const handleBairroChange = (event, newValue) => {
+    if (newValue) {
+      console.log('Bairro selecionado:', newValue);
+      // Aqui, você pode realizar qualquer ação adicional que desejar com o nome do bairro selecionado.
     }
+    // setUnderSearchBar(!underSearchBar);
+    // if (!underSearchBar) {
+    //   inputRef.current.focus();
+    // }
+    setActiveBar(BAIRRO_DESCRIPTION_BAR);
   };
   const handleSearchPrompt = () => {
     setSearchPrompt();
@@ -129,21 +140,34 @@ const SearchBar = ({
   const inputRef = useRef(null);
   const classes = useStyles();
 
-  const [inputValue, setinputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [neighborhoods, setNeighborhoods] = useState([]);
 
   useEffect(() => {
-    let newHistoryItems = anyPlaces || [];
-    if (newHistoryItems.length) {
-      newHistoryItems = newHistoryItems
-        .filter((el) =>
-          el.name
-            .toLowerCase()
-            .startsWith(inputValue ? inputValue.toLowerCase() : "")
-        )
-        .slice(0, 3);
-      setHistoryItems(newHistoryItems);
-    }
-  }, [anyPlaces, inputValue]);
+    const loadNeighborhoods = async () => {
+      try {
+        const neighborhoodRef = await getListBairroName(); 
+        if (!neighborhoodRef.empty) {
+          const neighborhoodNames = [];
+          neighborhoodRef.forEach((doc) => {
+            const neighborhoodData = doc.data();
+            const neighborhoodName = neighborhoodData.nome; 
+            neighborhoodNames.push(neighborhoodName);
+          });
+  
+          setNeighborhoods(neighborhoodNames);
+        } else {
+          console.error("Nenhum bairro encontrado.");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar nomes de bairros:", error);
+      }
+    };
+  
+    loadNeighborhoods();
+  }, []);
+  
+  
 
   return (
     <ClickAwayListener onClickAway={handleClickOutside}>
@@ -166,11 +190,23 @@ const SearchBar = ({
           >
             <MenuIcon />
           </IconButton>
-          <InputBase
+         
+          <Autocomplete
+            freeSolo
             className={classes.input}
-            placeholder="Buscar por bairro"
-            inputRef={inputRef}
-            onChange={(e) => setinputValue(e.target.value)}
+            value={inputValue}
+            onChange={handleBairroChange}
+            disableClearable
+            options={neighborhoods} // Usando os nomes dos bairros obtidos do Firebase
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Buscar por bairro"
+                sx={{
+                  "& fieldset": { border: 'none' },
+                }}
+              />
+            )}
           />
           <IconButton
             type="submit"
@@ -198,12 +234,6 @@ const SearchBar = ({
             )}
           </IconButton>
         </Paper>
-
-        <PromptBlock
-          searchPrompt={searchPrompt}
-          underSearchBar={underSearchBar}
-          handleUnderSearchBar={handleUnderSearchBar}
-        />
       </div>
     </ClickAwayListener>
   );

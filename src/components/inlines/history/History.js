@@ -59,7 +59,7 @@ const History = ({
 
   return historyItems && historyItems.length ? (
     <List>
-      {historyItems.map((item) => (
+      {historyItems.map((item) => ( 
         <ListItem
           button
           key={item.nome}

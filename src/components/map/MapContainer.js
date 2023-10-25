@@ -8,6 +8,7 @@ import { loadAllPoints } from "../../redux/points/actions";
 import { setDescriptionData } from "./../../redux/place/actions";
 import { setActiveBar, setUnderSearchBar } from "./../../redux/active/actions";
 import { loadData } from "../../redux/place/actions";
+import { loadAllCidades } from "../../redux/cidade/actions";
 
 const MapContainer = (props) => {
   const dispatch = useDispatch();

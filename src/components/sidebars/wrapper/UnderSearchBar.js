@@ -3,13 +3,15 @@ import { Paper } from "@material-ui/core";
 import clsx from "clsx";
 import { forwardRef } from "react";
 import {
+  BAIRRO_DESCRIPTION_BAR,
   DESCRIPTION_BAR,
   MAIN_UNDERSEARCH_BAR,
   PLACES_BAR,
 } from "../../../redux/active/actions";
 import MainUnderSearchContainer from "../mainUnderSearch/MainUnderSearchContainer";
 import PlaceDescriptionContainer from "../placeDescription/PlaceDescriptionContainer";
-import PlacesContainer from "../places/PlacesContainer";
+import BairroDescriptionContainer from "../bairroDescription/BairroDescriptionContainer";
+// import PlacesContainer from "../places/PlacesContainer";
 
 const useStyles = makeStyles((theme) => ({
   underSearch: {
@@ -38,8 +40,12 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
 
   const renderSwitch = (param) => {
     switch (param) {
-      case PLACES_BAR:
-        return <PlacesContainer />;
+      // case PLACES_BAR:
+      //   return <PlacesContainer />;
+      case BAIRRO_DESCRIPTION_BAR:
+        return <BairroDescriptionContainer />;
+      // case PREFEITURA_DESCRIPTION_BAR:
+      //   return <PrefeituraDescriptionContainer />;
       case DESCRIPTION_BAR:
         return <PlaceDescriptionContainer />;
       default:
@@ -57,10 +63,6 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
       }
       elevation={underSearchBar ? 12 : 4}
       square={underSearchBar ? true : false}
-      style={{
-        backgroundColor:
-          activeBar !== MAIN_UNDERSEARCH_BAR ? "white" : "#f0f0f0",
-      }}
     >
       {renderSwitch(activeBar)}
     </Paper>

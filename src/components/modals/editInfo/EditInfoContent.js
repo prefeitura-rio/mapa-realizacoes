@@ -23,7 +23,7 @@ import EditItem from "./EditItem";
 import { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import AddPhotoBlock from "../nested/AddPhotoBlock";
-import { editarRealizacao } from "../../../firebase";
+import { createUpdateRealizacaoFromForm } from "../../../firebase";
 import clsx from "clsx";
 import MySchedule from "./MySchedule";
 import { getTileImage } from "../../../utils/getTileImage";
@@ -163,7 +163,7 @@ const EditInfoModal = ({
       profile,
       contentSnapshot: contentSnapshot
     };
-    await editarRealizacao(data);
+    await createUpdateRealizacaoFromForm(data);
 
     setOpenEditInfo(false);
     setDisabled(false);
@@ -193,13 +193,9 @@ const EditInfoModal = ({
     setLocationModal(true);
   };
 
-  const onEnderecoChange = (value) => {
-    setContent({ ...content, endereco: value });
-  };
-
   // --------------- INICIO ------------------
   const onTituloChange = (value) => {
-    setContent({ ...content, titulo: value });
+    setContent({ ...content, nome: value });
   };
   const onDescricaoChange = (value) => {
     setContent({ ...content, descricao: value });
@@ -216,23 +212,17 @@ const EditInfoModal = ({
   const onOrgaoChange = (value) => {
     setContent({ ...content, orgao: value });
   };
-  const onBairroChange = (value) => {
-    setContent({ ...content, bairro: value });
-  };
-  const onSubprefeituraChange = (value) => {
-    setContent({ ...content, subprefeitura: value });
-  };
   const onTotalInvestidoChange = (value) => {
-    setContent({ ...content, totalInvestido: value });
+    setContent({ ...content, investimento: value });
   };
   const onCariocasAtendidosChange = (value) => {
-    setContent({ ...content, cariocasAtendidos: value });
+    setContent({ ...content, cariocas_atendidos: value });
   };
   const onDataInicioChange = (value) => {
-    setContent({ ...content, dataInicio: value });
+    setContent({ ...content, data_inicio: value });
   };
   const onDataFimChange = (value) => {
-    setContent({ ...content, dataFim: value });
+    setContent({ ...content, data_fim: value });
   };
 
   //------------------FIM ----------------------
@@ -245,11 +235,13 @@ const EditInfoModal = ({
   // TODO remove event listener
 
   const habilitaBotao = () => {
-    if(!(content.titulo&&content.descricao&&content.status)){
+    if(!(content.nome && content.descricao && content.status)){
       return true
     }
     return false
   }
+
+  console.log("content here", content)
 
   return (
     <>
@@ -271,7 +263,7 @@ const EditInfoModal = ({
           Inclusão de Nova Realização
           </Typography>
           <Typography variant="body1" color="textSecondary" component="span">
-            {content.name}
+            {content.nome}
           </Typography>
         </div>
 
@@ -296,7 +288,7 @@ const EditInfoModal = ({
         <EditItem
           title="Título da Realização"
           IconComponent={StoreIcon}
-          value={content.titulo}
+          value={content.nome}
           onChange={onTituloChange}
           
         />
@@ -341,35 +333,29 @@ const EditInfoModal = ({
         <EditItem
           title="Total Investido"
           IconComponent={StoreIcon}
-          value={content.totalInvestido}
+          value={content.investimento}
           onChange={onTotalInvestidoChange}
         />
         <EditItem
           title="Cariocas Atendidos"
           IconComponent={StoreIcon}
-          value={content.cariocasAtendidos}
+          value={content.cariocas_atendidos}
           onChange={onCariocasAtendidosChange}
         />
         <EditItem
           title="Data Início"
           IconComponent={StoreIcon}
-          value={content.dataInicio}
+          value={content.data_inicio}
           onChange={onDataInicioChange}
           isAutocomplete={true} 
         />
         <EditItem
           title="Data Fim"
           IconComponent={StoreIcon}
-          value={content.dataFim}
+          value={content.data_fim}
           onChange={onDataFimChange}
           isAutocomplete={true} 
         />
-        {/* <EditItem
-          title="Localização"
-          IconComponent={LocationOnIcon}
-          value={content.endereco}
-          onChange={onEnderecoChange}
-        /> */}
         <div className={classes.centerButton}>
           <Button
             variant="outlined"

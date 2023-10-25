@@ -10,13 +10,13 @@ A seguir é descrito o modelo de dados. Todos os documentos possuem identificado
 
 Campos:
 
-- `densidade_demografica`: densidade demográfica do bairro.
 - `domicilios`: número de domicílios do bairro.
-- `foto`: URL da foto do bairro.
+- `geo`: GeoJSON do bairro.
 - `habitantes`: número de habitantes do bairro.
 - `id_subprefeitura`: identificador da subprefeitura a qual o bairro pertence.
-- `idh`: IDH do bairro.
+- `ips`: Índice de Pobreza Social do bairro.
 - `nome`: nome do bairro.
+- `ranking_ips`: ranking do bairro em relação ao Índice de Pobreza Social.
 
 #### Exemplo
 
@@ -24,13 +24,13 @@ Campos:
 
 ```json
 {
-  "densidade_demografica": 0.0,
   "domicilios": 0,
-  "foto": "https://firebasestorage.googleapis.com/v0/b/realizacoes-rio.appspot.com/o/bairros%2Fvila_valqueire.jpg?alt=media&token=0b0f5b1a-7b9a-4b0a-8b0a-0b0b0b0b0b0b",
+  "geo": "{ \"type\": \"Polygon\",... }",
   "habitantes": 0,
   "id_subprefeitura": "jacarepagua",
-  "idh": 0.0,
-  "nome": "Vila Valqueire"
+  "ips": 0.0,
+  "nome": "Vila Valqueire",
+  "ranking_ips": 0
 }
 ```
 
@@ -91,15 +91,15 @@ Campos:
 Campos:
 
 - `cariocas_atendidos`: número de cariocas atendidos pela realização.
+- `coords`: coordenadas da realização.
 - `data_fim`: data de fim da realização.
 - `data_inicio`: data de início da realização.
 - `descricao`: descrição da realização.
 - `id_bairro`: identificador do bairro onde a realização ocorreu.
-- `id_programa`: identificador do programa ao qual a realização pertence.
 - `id_status`: identificador do status da realização.
+- `id_tipo`: identificador do tipo da realização.
+- `image_folder`: nome da pasta onde as imagens da realização estão armazenadas.
 - `investimento`: investimento da realização.
-- `latitude`: latitude da realização.
-- `longitude`: longitude da realização.
 - `nome`: nome da realização.
 
 #### Exemplo
@@ -109,15 +109,15 @@ Campos:
 ```json
 {
   "cariocas_atendidos": 0,
+  "coords": "some-geopoint",
   "data_fim": "2019-01-01",
   "data_inicio": "2019-01-01",
   "descricao": "Descrição da Realização Um",
   "id_bairro": "vila_valqueire",
-  "id_programa": "programa_um",
   "id_status": "finalizada",
+  "id_tipo": "obra",
+  "image_folder": "realizacao_um",
   "investimento": 0.0,
-  "latitude": 0.0,
-  "longitude": 0.0,
   "nome": "Realização Um"
 }
 ```
@@ -136,6 +136,24 @@ Essa coleção é utilizada para fazer a relação muitos-para-muitos entre as c
 ```json
 {
   "id_orgao": "sme",
+  "id_realizacao": "realizacao_um"
+}
+```
+
+### Coleção `realizacao_programa`
+
+Essa coleção é utilizada para fazer a relação muitos-para-muitos entre as coleções `realizacao` e `programa`. O nome dos documentos dessa coleção é composto pelo identificador da realização e do programa, separados por dois underscores (`__`). Cada documento dessa coleção possui os seguintes campos:
+
+- `id_programa`: identificador do programa.
+- `id_realizacao`: identificador da realização.
+
+#### Exemplo
+
+- Documento `realizacao_um__programa_um`:
+
+```json
+{
+  "id_programa": "programa_um",
   "id_realizacao": "realizacao_um"
 }
 ```
@@ -196,7 +214,6 @@ Campos:
 
 Campos:
 
-- `descricao`: descrição do tema.
 - `nome`: nome do tema.
 
 #### Exemplo
@@ -205,8 +222,23 @@ Campos:
 
 ```json
 {
-  "descricao": "Descrição do Tema Educação",
   "nome": "Educação"
+}
+```
+
+### Coleção `tipo`
+
+Campos:
+
+- `nome`: nome do tipo.
+
+#### Exemplo
+
+- Documento `evento`:
+
+```json
+{
+  "nome": "Evento"
 }
 ```
 
