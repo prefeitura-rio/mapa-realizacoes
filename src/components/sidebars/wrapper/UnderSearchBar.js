@@ -3,12 +3,14 @@ import { Paper } from "@material-ui/core";
 import clsx from "clsx";
 import { forwardRef } from "react";
 import {
+  BAIRRO_DESCRIPTION_BAR,
   DESCRIPTION_BAR,
   MAIN_UNDERSEARCH_BAR,
   PLACES_BAR,
 } from "../../../redux/active/actions";
 import MainUnderSearchContainer from "../mainUnderSearch/MainUnderSearchContainer";
 import PlaceDescriptionContainer from "../placeDescription/PlaceDescriptionContainer";
+import BairroDescriptionContainer from "../bairroDescription/BairroDescriptionContainer";
 // import PlacesContainer from "../places/PlacesContainer";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,8 +42,8 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
     switch (param) {
       // case PLACES_BAR:
       //   return <PlacesContainer />;
-      // case BAIRRO_DESCRIPTION_BAR:
-      //   return <BairroDescriptionContainer />;
+      case BAIRRO_DESCRIPTION_BAR:
+        return <BairroDescriptionContainer />;
       // case PREFEITURA_DESCRIPTION_BAR:
       //   return <PrefeituraDescriptionContainer />;
       case DESCRIPTION_BAR:

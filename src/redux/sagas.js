@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -56,6 +56,7 @@ import {
 } from "./auth/actions";
 
 import firebase from "firebase/app";
+import { LOAD_ALL_BAIRROS, LOAD_BAIRRO_DATA, requestAllBAIRROSSuccess, requestAllBairros, requestAllBairrosFailed, requestBairroData, requestBairroDataFailed, requestBairroDataSuccess } from "./bairros/actions";
 
 
 function* workerLoadData(action) {
@@ -199,6 +200,21 @@ export function* watchLoadAllCidades() {
   yield takeEvery(LOAD_ALL_CIDADES, workerLoadAllCidades);
 }
 
+function* workerLoadBairroData(action) {
+  try {
+    yield put(requestBairroData());
+    const data = yield call(getBairroInfo, action.payload);
+    console.log("BAIRRO_workerLoadData: ", data)
+    yield put(requestBairroDataSuccess(data));
+  } catch (error) {
+    yield put(requestBairroDataFailed());
+  }
+}
+
+export function* watchLoadBairroData() {
+  yield takeEvery(LOAD_BAIRRO_DATA, workerLoadBairroData);
+}
+
 async function loginFirebase() {
   const provider = new firebase.auth.GoogleAuthProvider();
   const res = await auth.signInWithPopup(provider);
@@ -248,6 +264,7 @@ export function* rootSaga() {
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
     fork(watchLoadAllCidades),
+    fork(watchLoadBairroData),
     fork(watchLoadAllPoints),
     fork(watchLogin),
     fork(watchLogOut),

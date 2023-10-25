@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import CloseIcon from "@material-ui/icons/Close";
-import { MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
+import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
 import { getListBairroName } from "../../../firebase";
@@ -107,11 +107,17 @@ const SearchBar = ({
   setPlacesData,
   historyItems,
 }) => {
-  const handleUnderSearchBar = () => {
-    setUnderSearchBar(!underSearchBar);
-    if (!underSearchBar) {
-      inputRef.current.focus();
+
+  const handleBairroChange = (event, newValue) => {
+    if (newValue) {
+      console.log('Bairro selecionado:', newValue);
+      // Aqui, você pode realizar qualquer ação adicional que desejar com o nome do bairro selecionado.
     }
+    // setUnderSearchBar(!underSearchBar);
+    // if (!underSearchBar) {
+    //   inputRef.current.focus();
+    // }
+    setActiveBar(BAIRRO_DESCRIPTION_BAR);
   };
   const handleSearchPrompt = () => {
     setSearchPrompt();
@@ -188,9 +194,8 @@ const SearchBar = ({
           <Autocomplete
             freeSolo
             className={classes.input}
-            onClick={handleUnderSearchBar}
             value={inputValue}
-            onChange={(event, newValue) => setInputValue(newValue)}
+            onChange={handleBairroChange}
             disableClearable
             options={neighborhoods} // Usando os nomes dos bairros obtidos do Firebase
             renderInput={(params) => (

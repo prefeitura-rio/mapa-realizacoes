@@ -5,14 +5,14 @@ import { connect, useDispatch } from "react-redux";
 import { setDescriptionData } from "../../../redux/place/actions";
 import { setActiveBar } from "../../../redux/active/actions";
 import { useEffect } from "react";
-import { loadAllCidades } from "../../../redux/cidade/actions";
-import BairroDescriptionBar from "./BairroDescriptionBar";
+import { loadBairroData } from "../../../redux/bairros/actions";
 
-const MainUnderSearchContainer = (props) => {
+
+const BairroDescriptionContainer = (props) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadAllCidades());
+    dispatch(loadBairroData());
   }, []);
 
   return (
@@ -22,7 +22,7 @@ const MainUnderSearchContainer = (props) => {
         setDescriptionData={props.setDescriptionData}
         content={props.content}
         images={props.images}
-        cidades={props.cidades}
+        bairros={props.bairros}
 
         // remove if not useful
         profile={props.profile}
@@ -39,8 +39,8 @@ const mapStateToProps = (state) => {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
     descriptionData: state.place.descriptionData,
-    content: state.place.content,
-    cidades: state.cidades.all,
+    // content: state.place.content,
+    bairros: state.bairros.all,
     images: state.images.images,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
@@ -56,4 +56,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MainUnderSearchContainer);
+)(BairroDescriptionContainer);

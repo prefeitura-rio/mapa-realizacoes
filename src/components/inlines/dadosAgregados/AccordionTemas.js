@@ -4,10 +4,25 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Button, makeStyles } from '@material-ui/core';
+import ListInfoSumario from './ListInfoSumario';
+import ListInfoTema from './ListInfoTema';
 
-export default function AccordionProgramas() {
+
+const useStyles = makeStyles(()=>({
+  statusButton: {
+    pointerEvents: "none",
+    borderRadius:"39px",
+    backgroundColor:"#007E7D",
+    color: "#FFFFFF",
+    padding:"1px 8px 1px 8px"
+  },
+}))
+
+export default function AccordionTemas() {
     const [expanded, setExpanded] = React.useState(false);
   
+    const classes = useStyles();
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
     };
@@ -21,14 +36,28 @@ export default function AccordionProgramas() {
             id="panel1bh-header"
           >
             <Typography sx={{ width: '50%', flexShrink: 0 }}>
-              Bairro Maravilha
+              Saúde
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>47 entregas</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-             Saúde, conteúdo sobre saúde
-            </Typography>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ flex: 1 }}>
+                {/* Conteúdo do lado esquerdo */}
+                <Typography gutterBottom>
+                  Título da realização
+                </Typography>
+                <Button variant="contained" className={classes.statusButton}>
+                Em andamento
+                </Button>
+              </div>
+              <div>
+                <img src={"https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"} alt="Imagem" />
+              </div>
+            </div>
+            
+            <ListInfoTema />
+
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
@@ -37,7 +66,7 @@ export default function AccordionProgramas() {
             aria-controls="panel2bh-content"
             id="panel2bh-header"
           >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>Reviver Centro</Typography>
+            <Typography sx={{ width: '50%', flexShrink: 0 }}>Educação</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
             43 entregas
             </Typography>
@@ -55,7 +84,7 @@ export default function AccordionProgramas() {
             id="panel3bh-header"
           >
             <Typography sx={{ width: '50%', flexShrink: 0 }}>
-              Maravalley
+              Zeladoria
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
             41 entregas
@@ -73,7 +102,7 @@ export default function AccordionProgramas() {
             aria-controls="panel4bh-content"
             id="panel4bh-header"
           >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>Porto Maravilha</Typography>
+            <Typography sx={{ width: '50%', flexShrink: 0 }}>Segurança pública</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
             23 entregas
             </Typography>

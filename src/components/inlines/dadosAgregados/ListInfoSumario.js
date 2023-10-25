@@ -8,9 +8,9 @@ import {
   Typography 
 } from "@material-ui/core";
 import React from 'react';
-import cariocasAtendidosIcon from '../../icons/cariocas_atendidos.png';
-import orgaoIcon from '../../icons/orgao.png';
-import subprefeituraIcon from '../../icons/subprefeitura.png';
+import orgaoIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/bairro.png';
+import subprefeituraIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/subprefeitura.png';
+import cariocasAtendidosIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/cariocas_atendidos.png';
 
 
 const useStyles = makeStyles((theme) => ({

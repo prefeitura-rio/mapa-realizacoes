@@ -311,7 +311,7 @@ export async function getRefCidade(id) {
   return db.collection("cidade").doc(id);
 }
 
-export async function getAllCidades(collection = "Cidades") {
+export async function getAllCidades(collection = "cidade") {
   var res = await db.collection(collection).get();
   return res.docs.map((doc) => doc.data());
 }
@@ -847,6 +847,10 @@ export async function getRealizacaoInfo(document) {
   data.programa = programas;
   return data;
 }
+export async function getBairroInfo(document) {
+ 
+}
+
 
 export async function getRealizacaoOrgaos(idRealizacao) {
   return await db

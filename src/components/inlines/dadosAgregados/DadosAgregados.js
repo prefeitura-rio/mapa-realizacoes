@@ -12,7 +12,7 @@ import {
   import React from 'react';
 import BasicInfoCidade from "./BasicInfoCidade";
 import ListInfoSumario from "./ListInfoSumario";
-import PhotoCards from "./PhotoCards";
+import PhotoCards from "../PhotoCards";
 import AccordionTemas from "./AccordionTemas";
 import AccordionProgramas from "./AccordionProgramas";
   

@@ -4,8 +4,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ListInfoPrograma from './ListInfoPrograma';
 import { Button, makeStyles } from '@material-ui/core';
-import ListInfoSumario from './ListInfoSumario';
 
 
 const useStyles = makeStyles(()=>({
@@ -18,9 +18,9 @@ const useStyles = makeStyles(()=>({
   },
 }))
 
-export default function AccordionTemas() {
+
+export default function AccordionProgramas() {
     const [expanded, setExpanded] = React.useState(false);
-  
     const classes = useStyles();
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
@@ -35,7 +35,7 @@ export default function AccordionTemas() {
             id="panel1bh-header"
           >
             <Typography sx={{ width: '50%', flexShrink: 0 }}>
-              Saúde
+              Bairro Maravilha
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>47 entregas</Typography>
           </AccordionSummary>
@@ -55,7 +55,7 @@ export default function AccordionTemas() {
               </div>
             </div>
             
-            <ListInfoSumario />
+            <ListInfoPrograma/>
 
           </AccordionDetails>
         </Accordion>
@@ -65,7 +65,7 @@ export default function AccordionTemas() {
             aria-controls="panel2bh-content"
             id="panel2bh-header"
           >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>Educação</Typography>
+            <Typography sx={{ width: '50%', flexShrink: 0 }}>Reviver Centro</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
             43 entregas
             </Typography>
@@ -83,7 +83,7 @@ export default function AccordionTemas() {
             id="panel3bh-header"
           >
             <Typography sx={{ width: '50%', flexShrink: 0 }}>
-              Zeladoria
+              Maravalley
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
             41 entregas
@@ -101,7 +101,7 @@ export default function AccordionTemas() {
             aria-controls="panel4bh-content"
             id="panel4bh-header"
           >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>Segurança pública</Typography>
+            <Typography sx={{ width: '50%', flexShrink: 0 }}>Porto Maravilha</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
             23 entregas
             </Typography>

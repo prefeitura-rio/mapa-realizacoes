@@ -6,7 +6,7 @@ import {
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef } from "react";
 import { useState } from "react";
-import DadosAgregados from "../../inlines/DadosAgregados";
+import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -113,7 +113,9 @@ const BairroDescriptionBar = forwardRef(
 
     return (
       <div ref={ref}>
-
+        <br></br>
+        <br></br>
+       
         <DadosAgregados
           topImgSrc={topImgSrc}
           onTopImageError={onTopImageError}
@@ -122,6 +124,7 @@ const BairroDescriptionBar = forwardRef(
           setTabValue={setTabValue}
           images={images}
         />
+         <h3>CONTEÚDO DO BAIRRO</h3>
 
         <div className={classes.fabContainer}>
           <Fab
