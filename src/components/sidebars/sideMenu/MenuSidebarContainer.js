@@ -20,11 +20,11 @@ const MenuSidebarContainer = (props) => {
   useEffect(() => {
     if (
       props.content &&
-      props.content.photoFolder &&
-      props.content.name !== props.content.photoFolder
+      props.content.image_folder &&
+      props.content.nome !== props.content.image_folder
     ) {
-      dispatch(loadComments(props.content.photoFolder));
-      dispatch(loadImages(props.content.photoFolder));
+      dispatch(loadComments(props.content.image_folder));
+      dispatch(loadImages(props.content.image_folder));
     }
   }, [props.content, props.descriptionData]);
 

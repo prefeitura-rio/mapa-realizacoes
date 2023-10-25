@@ -462,14 +462,14 @@ export async function createUpdateRealizacaoFromForm(data) {
 
   // Assert that we have all required fields
   const requiredFields = [
-    "cariocasAtendidos",
+    "cariocas_atendidos",
     "coords",
-    "dataFim",
-    "dataInicio",
+    "data_fim",
+    "data_inicio",
     "descricao",
+    "investimento",
+    "nome",
     "status",
-    "totalInvestido",
-    "titulo",
   ]
   for (let field of requiredFields) {
     if (!content[field]) {
@@ -478,9 +478,9 @@ export async function createUpdateRealizacaoFromForm(data) {
   }
 
   // Sanity checks: title must be in expected format, photo folder must be set
-  content.titulo = toTitleCase(toSnakeCase(content.titulo));
-  content.photoFolder = content.photoFolder || content.titulo;
-  const idRealizacao = toSnakeCase(content.titulo);
+  content.nome = toTitleCase(toSnakeCase(content.nome));
+  content.photoFolder = content.photoFolder || content.nome;
+  const idRealizacao = toSnakeCase(content.nome);
 
   // Upload photos (if any)
   try {
@@ -519,20 +519,20 @@ export async function createUpdateRealizacaoFromForm(data) {
   try {
     // Build realizacao document
     const docContent = {
-      cariocas_atendidos: content.cariocasAtendidos,
+      cariocas_atendidos: content.cariocas_atendidos,
       coords: new firebase.firestore.GeoPoint(
         content.coords.latitude,
         content.coords.longitude,
       ),
-      data_fim: content.dataFim,
-      data_inicio: content.dataInicio,
+      data_fim: content.data_fim,
+      data_inicio: content.data_inicio,
       descricao: content.descricao,
       id_bairro: idBairro,
       id_status: idStatus,
       id_tipo: "obra", // TODO (future): add tipo to form
       image_folder: content.photoFolder,
-      investimento: content.totalInvestido,
-      nome: content.titulo,
+      investimento: content.investimento,
+      nome: content.nome,
     };
     await createUpdateRealizacao(docContent);
 
@@ -605,23 +605,23 @@ export async function createUpdateRealizacaoFromForm(data) {
       );
     }
     const oldDocContent = {
-      cariocas_atendidos: contentSnapshot.cariocasAtendidos,
+      cariocas_atendidos: contentSnapshot.cariocas_atendidos,
       coords: oldCoords,
-      data_fim: contentSnapshot.dataFim,
-      data_inicio: contentSnapshot.dataInicio,
+      data_fim: contentSnapshot.data_fim,
+      data_inicio: contentSnapshot.data_inicio,
       descricao: contentSnapshot.descricao,
       id_bairro: idBairroOld,
       id_status: idStatusOld,
       id_tipo: null, // TODO (future): add tipo to form
       image_folder: contentSnapshot.photoFolder,
-      investimento: contentSnapshot.totalInvestido,
-      nome: contentSnapshot.titulo,
+      investimento: contentSnapshot.investimento,
+      nome: contentSnapshot.nome,
     }
     createUserLog(docContent, oldDocContent, profile);
 
     // Delete old documents (if title changed)
-    if (contentSnapshot.titulo && content.titulo !== contentSnapshot.titulo) {
-      const oldDocId = toSnakeCase(contentSnapshot.titulo);
+    if (contentSnapshot.nome && content.nome !== contentSnapshot.nome) {
+      const oldDocId = toSnakeCase(contentSnapshot.nome);
       deleteRealizacao(oldDocId);
       const realizacaoOrgaos = await getRealizacaoOrgaos(oldDocId);
       for (let realizacaoOrgao of realizacaoOrgaos.docs) {
@@ -855,19 +855,22 @@ export async function getBairroInfo(document) {
 export async function getRealizacaoOrgaos(idRealizacao) {
   return await db
     .collection("realizacao_orgao")
-    .where("id_realizacao", "==", idRealizacao);
+    .where("id_realizacao", "==", idRealizacao)
+    .get();
 }
 
 export async function getRealizacaoProgramas(idRealizacao) {
   return await db
     .collection("realizacao_programa")
-    .where("id_realizacao", "==", idRealizacao);
+    .where("id_realizacao", "==", idRealizacao)
+    .get();
 }
 
 export async function getRealizacaoTemas(idRealizacao) {
   return await db
     .collection("realizacao_tema")
-    .where("id_realizacao", "==", idRealizacao);
+    .where("id_realizacao", "==", idRealizacao)
+    .get();
 }
 
 export async function uploadPhotoFirebase(file, keyword = "All") {
