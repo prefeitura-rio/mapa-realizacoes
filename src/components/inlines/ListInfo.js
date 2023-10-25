@@ -16,7 +16,7 @@ import orgaoIcon from '../../icons/orgao.png';
 import programaIcon from '../../icons/programa.png';
 import subprefeituraIcon from '../../icons/subprefeitura.png';
 import temaIcon from '../../icons/tema.png';
-import cariocasAtendidosIcon from 'C:/Users/Lucas S. Tavares/OneDrive/Área de Trabalho/MAPA REALIZACÕES/src/icons/cariocas_atendidos.png';
+import cariocasAtendidosIcon from '../../icons/cariocas_atendidos.png';
 
 
 const useStyles = makeStyles((theme) => ({
