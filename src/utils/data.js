@@ -5,7 +5,7 @@ export function compareContent(newCont, oldCont) {
         oldCont[key] &&
         JSON.stringify(newCont[key]) !== JSON.stringify(oldCont[key])
       ) {
-        if (key == "coords") {
+        if (key === "coords") {
           res.coords = `(${oldCont[key].latitude} ${oldCont[key].longitude}) -> (${newCont[key].latitude} ${newCont[key].longitude})`;
         }
         if (
