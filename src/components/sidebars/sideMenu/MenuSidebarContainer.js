@@ -12,7 +12,6 @@ const MenuSidebarContainer = (props) => {
   useEffect(() => {
     if (props.descriptionData) {
       dispatch(loadData(props.descriptionData));
-      dispatch(loadImages(props.descriptionData));
       dispatch(loadComments(props.descriptionData));
     }
   }, [props.descriptionData]);
@@ -20,10 +19,8 @@ const MenuSidebarContainer = (props) => {
   useEffect(() => {
     if (
       props.content &&
-      props.content.image_folder &&
-      props.content.nome !== props.content.image_folder
+      props.content.image_folder
     ) {
-      dispatch(loadComments(props.content.image_folder));
       dispatch(loadImages(props.content.image_folder));
     }
   }, [props.content, props.descriptionData]);

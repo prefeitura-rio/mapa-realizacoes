@@ -479,14 +479,14 @@ export async function createUpdateRealizacaoFromForm(data) {
 
   // Sanity checks: title must be in expected format, photo folder must be set
   content.nome = toTitleCase(toSnakeCase(content.nome));
-  content.photoFolder = content.photoFolder || content.nome;
+  content.image_folder = contentSnapshot.image_folder || content.nome;
   const idRealizacao = toSnakeCase(content.nome);
 
   // Upload photos (if any)
   try {
     if (photos) {
       var promises = photos.map((file) =>
-        uploadPhotoFirebase(file, content.photoFolder),
+        uploadPhotoFirebase(file, content.image_folder),
       );
       photos = await Promise.all(promises);
     }
@@ -530,7 +530,7 @@ export async function createUpdateRealizacaoFromForm(data) {
       id_bairro: idBairro,
       id_status: idStatus,
       id_tipo: "obra", // TODO (future): add tipo to form
-      image_folder: content.photoFolder,
+      image_folder: content.image_folder,
       investimento: content.investimento,
       nome: content.nome,
     };
@@ -613,7 +613,7 @@ export async function createUpdateRealizacaoFromForm(data) {
       id_bairro: idBairroOld,
       id_status: idStatusOld,
       id_tipo: null, // TODO (future): add tipo to form
-      image_folder: contentSnapshot.photoFolder,
+      image_folder: contentSnapshot.image_folder,
       investimento: contentSnapshot.investimento,
       nome: contentSnapshot.nome,
     }

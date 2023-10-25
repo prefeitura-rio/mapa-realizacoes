@@ -1,10 +1,9 @@
 //
-
+import { useEffect, useState } from "react";
 import { Divider, makeStyles } from "@material-ui/core";
 
 import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
 
-import { useState } from "react";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
 import PhotoCards from "./../../inlines/PhotoCards";
 import ListInfo from "./../../inlines/ListInfo";
@@ -91,7 +90,13 @@ const PlaceDescriptionBar = ({
   setPhotoGallery,
   setImagesType
 }) => {
+  const [imagesList, setImagesList] = useState(images);
   const classes = useStyles();
+
+  useEffect(() => {
+    setImagesList(images);
+    setTopImgSrc(imagesList[0] || "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
+  }, [images]);
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
@@ -102,7 +107,7 @@ const PlaceDescriptionBar = ({
   };
 
   const [topImgSrc, setTopImgSrc] = useState(
-    content.imageUrl ||
+    imagesList[0] ||
       "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
   );
 
@@ -146,7 +151,7 @@ const PlaceDescriptionBar = ({
       <Divider />
       <div className={classes.photos}>
         <HeaderBar title="Fotos" />
-        <PhotoCards images={images} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
+        <PhotoCards images={imagesList} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
         {profile ? (
           <BottomButton
             title="Adicionar uma foto"
