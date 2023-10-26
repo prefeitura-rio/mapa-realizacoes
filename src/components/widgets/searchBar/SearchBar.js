@@ -113,11 +113,12 @@ const SearchBar = ({
       console.log('Bairro selecionado:', newValue);
       // Aqui, você pode realizar qualquer ação adicional que desejar com o nome do bairro selecionado.
     }
-    // setUnderSearchBar(!underSearchBar);
-    // if (!underSearchBar) {
-    //   inputRef.current.focus();
-    // }
     setActiveBar(BAIRRO_DESCRIPTION_BAR);
+    setUnderSearchBar(!underSearchBar);
+    if (!underSearchBar) {
+      inputRef.current.focus();
+    }
+   
   };
   const handleSearchPrompt = () => {
     setSearchPrompt();
@@ -200,6 +201,7 @@ const SearchBar = ({
             options={neighborhoods} // Usando os nomes dos bairros obtidos do Firebase
             renderInput={(params) => (
               <TextField
+              inputRef={inputRef}
                 {...params}
                 label="Busque por bairro/subprefeitura"
                 sx={{

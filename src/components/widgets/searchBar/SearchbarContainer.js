@@ -27,6 +27,7 @@ const SearchbarContainer = (props) => {
       setSearchPrompt={props.setSearchPrompt}
       setContent={props.setContent}
       anyLoading={props.anyLoading}
+      // anyPlaces={props.anyPlaces}
       setHistoryItems={props.setHistoryItems}
       setPlacesData={props.setPlacesData}
       historyItems={props.historyItems}
