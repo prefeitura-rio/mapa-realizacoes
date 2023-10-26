@@ -304,7 +304,7 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={content.status}
           onChange={onStatusChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
        
         <EditItem
@@ -312,7 +312,7 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={JSON.stringify(content.programa)}
           onChange={onProgramaChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
 
        <EditItem
@@ -320,7 +320,7 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={content.tema}
           onChange={onTemaChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
                 
         <EditItem
@@ -328,7 +328,7 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={content.orgao}
           onChange={onOrgaoChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
         <EditItem
           title="Total Investido"
@@ -347,14 +347,14 @@ const EditInfoModal = ({
           IconComponent={StoreIcon}
           value={content.data_inicio}
           onChange={onDataInicioChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
         <EditItem
           title="Data Fim"
           IconComponent={StoreIcon}
           value={content.data_fim}
           onChange={onDataFimChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
         <div className={classes.centerButton}>
           <Button

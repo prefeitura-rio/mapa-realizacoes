@@ -7,6 +7,7 @@ import { setDescriptionData } from "./../../../redux/place/actions";
 import {
   setOpenCompletePhoto, setActiveBar, setPhotoGallery
 } from "./../../../redux/active/actions";
+import { setImagesType } from "../../../redux/images/actions";
 import { useEffect } from "react";
 import { loadAllCidades } from "../../../redux/cidade/actions";
 
@@ -23,7 +24,7 @@ const MainUnderSearchContainer = (props) => {
         setUnderSearchBar={props.setUnderSearchBar}
         setDescriptionData={props.setDescriptionData}
         content={props.content}
-        images={props.images}
+        images_cidade={props.images_cidade}
         cidades={props.cidades}
 
         // remove if not useful
@@ -43,16 +44,20 @@ const mapStateToProps = (state) => {
     descriptionData: state.place.descriptionData,
     content: state.place.content,
     cidades: state.cidades.all,
-    images: state.images.images,
+    images_cidade: state.images.allImagesCidade,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
+    openCompletePhoto: state.active.openCompletePhoto,
   };
 };
 
 const mapDispatchToProps = {
   setUnderSearchBar,
   setActiveBar,
-  setDescriptionData
+  setDescriptionData,
+  setPhotoGallery,
+  setImagesType,
+  setOpenCompletePhoto,
 };
 
 export default connect(

@@ -81,6 +81,8 @@ import AccordionProgramas from "./AccordionProgramas";
     tabValue,
     setTabValue,
     images,
+    setPhotoGallery,
+    setImagesType
   }) => {
     const classes = useStyles();
   
@@ -118,7 +120,7 @@ import AccordionProgramas from "./AccordionProgramas";
             <Typography className={classes.title}>
               Fotos
             </Typography>
-            <PhotoCards images={images} />
+            <PhotoCards images={images} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
 
           </div>
         </TabPanel>

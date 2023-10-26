@@ -9,7 +9,9 @@ import ArrowBackIosOutlinedIcon from "@material-ui/icons/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@material-ui/icons/ArrowForwardIosOutlined";
 import clsx from "clsx";
 import { useState } from "react";
-import { TYPE_PLACE } from "../../redux/images/actions";
+import { TYPE_ALL_PHOTOS, TYPE_PLACE } from "../../redux/images/actions";
+import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -70,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PhotoCards = ({ images, setPhotoGallery, setImagesType }) => {
+const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
   const classes = useStyles();
 
   const [shiftedEnd, setShiftedEnd] = useState(false);
@@ -84,8 +86,14 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType }) => {
   };
 
   const onPhotoClick = () => {
+    if(activeBar === MAIN_UNDERSEARCH_BAR){
+    setImagesType(TYPE_ALL_PHOTOS);
+    }
+    else if( activeBar === DESCRIPTION_BAR){
     setImagesType(TYPE_PLACE);
+    }
     setPhotoGallery(true);
+    console.log(activeBar)
   };
 
   return (
@@ -149,4 +157,11 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType }) => {
   );
 };
 
-export default PhotoCards;
+const mapStateToProps = (state) => {
+  return {
+    activeBar: state.active.activeBar, // Access imagesType from the Redux store
+    // Other props you need from the Redux store
+  };
+};
+
+export default connect(mapStateToProps)(PhotoCards);

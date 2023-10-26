@@ -12,7 +12,7 @@ import {
 
 const defaultState = {
   images: [],
-  allImages: [],
+  allImagesCidade: [],
   loading: false,
   error: false,
   imagesType: null,
@@ -45,21 +45,21 @@ const imagesReducer = (state = defaultState, action) => {
     case REQUEST_ALL_IMAGES:
       return {
         ...state,
-        allImages: [],
+        allImagesCidade: [],
         loading: true,
         error: false,
       };
     case REQUEST_ALL_IMAGES_SUCCESS:
       return {
         ...state,
-        allImages: action.payload,
+        allImagesCidade: action.payload,
         loading: false,
         error: false,
       };
     case REQUEST_ALL_IMAGES_FAILED:
       return {
         ...state,
-        allImages: [],
+        allImagesCidade: [],
         loading: false,
         error: true,
       };

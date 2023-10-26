@@ -173,23 +173,7 @@ const PhotoGallery = ({
           </IconButton>
         </DialogTitle>
         <Divider />
-        {/* <Tabs
-          value={tabValue}
-          onChange={(e, i) => {
-            setTabValue(i);
-          }}
-          indicatorColor="primary"
-          textColor="primary"
-          className={classes.tabs}
-          TabIndicatorProps={{ style: { width: "72px" } }}
-        >
-          <Tab label="All" className={classes.tab} />
-          <Tab label="Latest" className={classes.tab} />
-          <Tab label="Inside" className={classes.tab} />
-          <Tab label="360" className={classes.tab} />
-          <Tab label="Streetview" className={classes.tab} />
-    
-        </Tabs> */}
+      
         <div className={classes.gallery}>
           <ImageList
             rowHeight={200}

@@ -63,6 +63,7 @@ export const loadAllImages = (data) => {
 export const SET_IMAGES_TYPE = "SET_IMAGES_TYPE";
 export const TYPE_ALL = "TYPE_ALL";
 export const TYPE_PLACE = "TYPE_PLACE";
+export const TYPE_ALL_PHOTOS = "TYPE_ALL_PHOTOS";
 
 export const setImagesType = (data) => {
   return {

@@ -87,14 +87,14 @@ const EditItem = ({
   onCancel,
   select = [],
   disableBlur = false,
-  isAutocomplete = false,
+  MUIComponents = false,
 }) => {
   const classes = useStyles();
 
 
   const [inputValue, setinputValue] = useState(value || "");
   const [canceled, setCanceled] = useState(false);
-
+  
   const handleCanceled = () => {
     setCanceled(!canceled);
     onCancel();
@@ -195,7 +195,7 @@ const EditItem = ({
         {subTitle ? <div className={classes.inputLabel}>{subTitle}</div> : null}
         {jsxValue ? (
           jsxValue
-        ) : isAutocomplete ? (
+        ) : MUIComponents ? (
           <ClickAwayListener onClickAway={() => setFocused(false)}>
             <div onClick={onClick}>{renderAutocompleteComponent()}</div>
           </ClickAwayListener>

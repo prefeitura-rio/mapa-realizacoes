@@ -2,20 +2,20 @@ import { connect } from "react-redux";
 import PhotoGallery from "./PhotoGallery";
 import { setPhotoGallery } from "./../../redux/active/actions";
 import { setOpenUploadPhoto } from "../../redux/active/actions";
-import { setCurrentImg } from "../../redux/images/actions";
+import { TYPE_ALL_PHOTOS, setCurrentImg } from "../../redux/images/actions";
 import { TYPE_ALL } from "../../redux/images/actions";
 import { useEffect, useState } from "react";
 
 const PhotoGalleryContainer = (props) => {
-  const [images, setImages] = useState(props.allImages);
+  const [images, setImages] = useState(props.allImagesCidade);
   const [title, setTitle] = useState(props.title);
 
   useEffect(() => {
-    setImages(props.imagesType === TYPE_ALL ? props.allImages : props.images);
+    setImages(props.imagesType === TYPE_ALL_PHOTOS ? props.allImagesCidade : props.images);
     setTitle(props.imagesType === TYPE_ALL ? "All" : props.title);
   }, [props.imagesType, props.content, props.images]);
 
-  return ((props.content && props.images) || props.allImages) &&
+  return ((props.content && props.images) || props.allImagesCidade) &&
     props.photoGallery ? (
     <PhotoGallery
       title={title}
@@ -33,7 +33,7 @@ const mapStateToProps = (state) => {
   return {
     title: state.place.content?.nome,
     images: state.images.images,
-    allImages: state.images.allImages,
+    allImagesCidade: state.images.allImagesCidade,
     photoGallery: state.active.photoGallery,
     imagesType: state.images.imagesType,
     content: state.place.content,

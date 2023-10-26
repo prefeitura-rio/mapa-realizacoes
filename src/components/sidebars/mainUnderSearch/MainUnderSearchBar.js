@@ -4,9 +4,11 @@ import {
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
+import rio_cover from "../../assets/rio_cover.png"
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -88,25 +90,26 @@ const MainUnderSearchBar = forwardRef(
   ({ underSearchBar,
     setUnderSearchBar,
     cidades,
-    images,
+    images_cidade,
+    setPhotoGallery,
+    setImagesType
   }, ref) => {
+
+    const [imagesList, setImagesList] = useState(images_cidade);
+
     const classes = useStyles();
+
+    useEffect(() => {
+      setImagesList(images_cidade);
+    });
+    
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
     console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
 
     const [tabValue, setTabValue] = useState(0);
-    const [topImgSrc, setTopImgSrc] = useState(
-      // content.imageUrl ||
-      "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
-    );
-
-    const onTopImageError = () => {
-      setTopImgSrc(
-        "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
-      );
-    };
+  
 
     cidades = cidades || [];
 
@@ -115,12 +118,13 @@ const MainUnderSearchBar = forwardRef(
       <div ref={ref}>
 
         <DadosAgregados
-          topImgSrc={topImgSrc}
-          onTopImageError={onTopImageError}
+          topImgSrc={rio_cover}
           cidades={cidades}
           tabValue={tabValue}
           setTabValue={setTabValue}
-          images={images}
+          images={images_cidade}
+          setPhotoGallery={setPhotoGallery} 
+          setImagesType={setImagesType}
         />
 
         <div className={classes.fabContainer}>
