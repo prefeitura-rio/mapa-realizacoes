@@ -41,7 +41,7 @@ const BasicInfoCidade = ({ content }) => {
   return (
     <div className={classes.basicInfo}>
       <Typography  className={classes.titulo}>{content.nome}</Typography>
-      <Typography variant="h2" className={classes.subtitulo}> {"Municipio"} </Typography>
+      <Typography className={classes.subtitulo}> {"Município"} </Typography>
       <br></br>
       {/* <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
       <br></br>

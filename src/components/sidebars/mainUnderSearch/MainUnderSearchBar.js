@@ -1,6 +1,8 @@
 import {
   Fab,
   makeStyles,
+  ThemeProvider,
+  createTheme
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -86,6 +88,14 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#007E7D",
+    },
+  },
+});
+
 const MainUnderSearchBar = forwardRef(
   ({ underSearchBar,
     setUnderSearchBar,
@@ -116,17 +126,17 @@ const MainUnderSearchBar = forwardRef(
 
     return (
       <div ref={ref}>
-
-        <DadosAgregados
-          topImgSrc={rio_cover}
-          cidades={cidades}
-          tabValue={tabValue}
-          setTabValue={setTabValue}
-          images={images_cidade}
-          setPhotoGallery={setPhotoGallery} 
-          setImagesType={setImagesType}
-        />
-
+        <ThemeProvider theme={theme}>
+          <DadosAgregados
+            topImgSrc={rio_cover}
+            cidades={cidades}
+            tabValue={tabValue}
+            setTabValue={setTabValue}
+            images={images_cidade}
+            setPhotoGallery={setPhotoGallery} 
+            setImagesType={setImagesType}
+          />
+         </ThemeProvider>
         <div className={classes.fabContainer}>
           <Fab
             size="small"
