@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight:"bold",
     marginBottom:"-15px"
   },
+  subtitulo:{
+    marginTop: "15px", 
+    opacity:0.6
+  },
   descricao:{
     lineHeight:"130%"
   }
@@ -37,6 +41,7 @@ const BasicInfoCidade = ({ content }) => {
   return (
     <div className={classes.basicInfo}>
       <Typography  className={classes.titulo}>{content.nome}</Typography>
+      <Typography variant="h2" className={classes.subtitulo}> {"Municipio"} </Typography>
       <br></br>
       {/* <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
       <br></br>

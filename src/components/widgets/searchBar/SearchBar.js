@@ -201,7 +201,7 @@ const SearchBar = ({
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Buscar por bairro"
+                label="Busque por bairro/subprefeitura"
                 sx={{
                   "& fieldset": { border: 'none' },
                 }}
