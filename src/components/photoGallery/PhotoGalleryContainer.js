@@ -12,7 +12,7 @@ const PhotoGalleryContainer = (props) => {
 
   useEffect(() => {
     setImages(props.imagesType === TYPE_ALL_PHOTOS ? props.allImagesCidade : props.images);
-    setTitle(props.imagesType === TYPE_ALL ? "All" : props.title);
+    setTitle(props.imagesType === TYPE_ALL_PHOTOS ? "Realizações da cidade" : props.title);
   }, [props.imagesType, props.content, props.images]);
 
   return ((props.content && props.images) || props.allImagesCidade) &&
