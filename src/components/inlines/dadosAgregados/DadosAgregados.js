@@ -10,11 +10,11 @@ import {
     Typography 
   } from "@material-ui/core";
   import React from 'react';
-import BasicInfoCidade from "./BasicInfoCidade";
 import ListInfoSumario from "./ListInfoSumario";
 import PhotoCards from "../PhotoCards";
 import AccordionTemas from "./AccordionTemas";
 import AccordionProgramas from "./AccordionProgramas";
+import BasicInfo from "./BasicInfo";
   
   const useStyles = makeStyles((theme) => ({
     root: {},
@@ -95,6 +95,7 @@ import AccordionProgramas from "./AccordionProgramas";
     topImgSrc,
     onTopImageError,
     cidades,
+    bairro,
     tabValue,
     setTabValue,
     images,
@@ -111,7 +112,8 @@ import AccordionProgramas from "./AccordionProgramas";
           alt="top image"
           className={classes.topImage}
         />
-        {cidades && cidades.length > 0 && <BasicInfoCidade content={cidades[0]} />}
+        {cidades && cidades.length > 0 && <BasicInfo content={cidades[0]}  subtitulo={"Município"}/>}
+        {bairro && <BasicInfo content={bairro} subtitulo={"Bairro"}/>}
         <Tabs
           value={tabValue}
           onChange={(e, i) => {
@@ -138,7 +140,8 @@ import AccordionProgramas from "./AccordionProgramas";
         <TabPanel value={tabValue} index={0}>
           <br></br>
           <br></br>
-          {cidades && cidades.length > 0 && <ListInfoSumario content={cidades[0]} />}
+          {cidades && cidades.length > 0 && <ListInfoSumario cidadeInfo={cidades[0]} />}
+          {bairro && <ListInfoSumario bairroInfo={bairro} />}
 
           <Divider />
           <div className={classes.photos}>

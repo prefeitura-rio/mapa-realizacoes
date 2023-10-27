@@ -97,14 +97,14 @@ const theme = createTheme({
 const BairroDescriptionBar = forwardRef(
   ({ underSearchBar,
     setUnderSearchBar,
-    cidades,
+    bairro,
     images,
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
-    console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
+    console.log("=======> " + (bairro? bairro.nome : " Nenhum nome disponível"));
 
     const [tabValue, setTabValue] = useState(0);
     const [topImgSrc, setTopImgSrc] = useState(
@@ -118,7 +118,7 @@ const BairroDescriptionBar = forwardRef(
       );
     };
 
-    cidades = cidades || [];
+    bairro = bairro || [];
 
 
     return (
@@ -129,25 +129,12 @@ const BairroDescriptionBar = forwardRef(
           <DadosAgregados
             topImgSrc={topImgSrc}
             onTopImageError={onTopImageError}
-            cidades={cidades}
+            bairro={bairro}
             tabValue={tabValue}
             setTabValue={setTabValue}
             images={images}
           />
 
-        {/* <div className={classes.fabContainer}>
-          <Fab
-            size="small"
-            variant="extended"
-            className={classes.fab}
-            onClick={() => {
-              handleUnderSearchBar();
-            }}
-          >
-            <ExpandLessIcon className={classes.extendedIcon} />
-            <div style={{ marginRight: "8px", color: "#3C4043" }}>Ocultar</div>
-          </Fab>
-        </div> */}
       </div>
     );
   }

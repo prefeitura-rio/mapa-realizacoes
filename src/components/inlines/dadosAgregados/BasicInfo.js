@@ -35,22 +35,17 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
-const BasicInfoCidade = ({ content }) => {
+const BasicInfo = ({ content, subtitulo }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.basicInfo}>
       <Typography  className={classes.titulo}>{content.nome}</Typography>
-      <Typography className={classes.subtitulo}> {"Município"} </Typography>
+      <Typography className={classes.subtitulo}> {subtitulo} </Typography>
+      {/* <Typography className={classes.subtitulo}> {content.nome} </Typography> */}
       <br></br>
-      {/* <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
-      <br></br>
-      <Button variant="contained" className={classes.statusButton}>
-      {content.status}
-    </Button> */}
-
     </div>
   );
 };
 
-export default BasicInfoCidade;
+export default BasicInfo;

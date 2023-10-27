@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import React from 'react';
 import cariocasAtendidosIcon from '../../../icons/cariocas_atendidos.png';
-import orgaoIcon from '../../../icons/orgao.png';
+import domiciliosIcon from '../../../icons/domicilios.png';
 import subprefeituraIcon from '../../../icons/subprefeitura.png';
 
 
@@ -43,14 +43,14 @@ const ListInfoPrograma = ({ content }) => {
     // { text: content.programa, iconComponent: PublicIcon },
     // { text: content.programa, iconComponent: () => <img src={programaIcon} alt="Programa" style={{width: '20px', height: '20px'}}/> },
     // // { text: content.orgao, iconComponent: PublicIcon },
-    // { text: content.orgao, iconComponent: () => <img src={orgaoIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
+    // { text: content.orgao, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     // // { text: content.tema, iconComponent: PublicIcon },
     // { text: content.tema, iconComponent: () => <img src={temaIcon} alt="Tema" style={{width: '20px', height: '20px'}}/> },
     // // { text: content.bairro, iconComponent: PublicIcon },
     // { text: content.bairro, iconComponent: () => <img src={bairroIcon} alt="Bairro" style={{width: '20px', height: '20px'}}/> },
     // // { text: content.subprefeitura, iconComponent: PublicIcon},
     { text: "216 " + "obras em andamento", iconComponent: () => <img src={subprefeituraIcon} alt="Subprefeitura" style={{ width: '20px', height: '20px' }} /> },
-    { text: "865.578 " + "domicílios" + "em 2010", iconComponent: () => <img src={orgaoIcon} alt="Orgao" style={{ width: '20px', height: '20px' }} /> },
+    { text: "865.578 " + "domicílios" + "em 2010", iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{ width: '20px', height: '20px' }} /> },
     { text: "9999999" + " cariocas atendidos", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{ width: '20px', height: '20px' }} /> },
 
   ];

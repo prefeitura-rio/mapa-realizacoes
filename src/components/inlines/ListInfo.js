@@ -12,7 +12,7 @@ import bairroIcon from '../../icons/bairro.png';
 import dataFimIcon from '../../icons/data_fim.png';
 import dataInicioIcon from '../../icons/data_inicio.png';
 import investimentoIcon from '../../icons/investimento.png';
-import orgaoIcon from '../../icons/orgao.png';
+import domiciliosIcon from '../../icons/domicilios.png';
 import programaIcon from '../../icons/programa.png';
 import subprefeituraIcon from '../../icons/subprefeitura.png';
 import temaIcon from '../../icons/tema.png';
@@ -49,7 +49,7 @@ const ListInfo = ({ content }) => {
     // { text: content.programa, iconComponent: PublicIcon },
     { text: content.programa, iconComponent: () => <img src={programaIcon} alt="Programa" style={{width: '20px', height: '20px'}}/> },
     // { text: content.orgao, iconComponent: PublicIcon },
-    { text: content.orgao, iconComponent: () => <img src={orgaoIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
+    { text: content.orgao, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     // { text: content.tema, iconComponent: PublicIcon },
     { text: content.tema, iconComponent: () => <img src={temaIcon} alt="Tema" style={{width: '20px', height: '20px'}}/> },
     // { text: content.bairro, iconComponent: PublicIcon },

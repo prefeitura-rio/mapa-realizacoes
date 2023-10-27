@@ -22,7 +22,7 @@ const BairroDescriptionContainer = (props) => {
         setDescriptionData={props.setDescriptionData}
         content={props.content}
         images={props.images}
-        bairros={props.bairros}
+        bairro={props.bairro}
 
         // remove if not useful
         profile={props.profile}
@@ -40,7 +40,7 @@ const mapStateToProps = (state) => {
     activeBar: state.active.activeBar,
     descriptionData: state.place.descriptionData,
     // content: state.place.content,
-    bairros: state.bairros.all,
+    bairro: state.bairros.content,
     images: state.images.images,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
