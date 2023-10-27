@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => {
     searchbar: {
       position: "absolute",
       zIndex: 2,
-      left: "7px",
-      top: "7px",
+      left: "40px",
+      top: "40px",
     },
     paper: {
       width: "395px",
@@ -74,6 +74,12 @@ const useStyles = makeStyles((theme) => {
         display: "flex",
         alignItems: "center",
       },
+      searchbar: {
+        position: "absolute",
+        zIndex: 2,
+        top: "7px",
+        left: "7px",
+      },
     },
 
     "@media screen and (max-width: 410px)": {
@@ -86,6 +92,7 @@ const useStyles = makeStyles((theme) => {
         position: "absolute",
         zIndex: 2,
         top: "7px",
+        left: "7px",
       },
     },
   };

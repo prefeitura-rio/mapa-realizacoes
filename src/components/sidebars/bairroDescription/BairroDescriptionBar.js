@@ -125,7 +125,7 @@ const BairroDescriptionBar = forwardRef(
       <div ref={ref}>
         <br></br>
         <br></br>
-        <ThemeProvider theme={theme}>
+    
           <DadosAgregados
             topImgSrc={topImgSrc}
             onTopImageError={onTopImageError}
@@ -134,9 +134,8 @@ const BairroDescriptionBar = forwardRef(
             setTabValue={setTabValue}
             images={images}
           />
-         </ThemeProvider>
 
-        <div className={classes.fabContainer}>
+        {/* <div className={classes.fabContainer}>
           <Fab
             size="small"
             variant="extended"
@@ -148,7 +147,7 @@ const BairroDescriptionBar = forwardRef(
             <ExpandLessIcon className={classes.extendedIcon} />
             <div style={{ marginRight: "8px", color: "#3C4043" }}>Ocultar</div>
           </Fab>
-        </div>
+        </div> */}
       </div>
     );
   }

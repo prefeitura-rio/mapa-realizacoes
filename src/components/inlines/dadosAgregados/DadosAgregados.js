@@ -40,12 +40,28 @@ import AccordionProgramas from "./AccordionProgramas";
         fontSize: "15px",
         fontWeight: "bold"
       },
-      
-        tab: {
-            marginLeft: "10px",
-            minWidth: "120px",
-            width: "auto", // Definir a largura para "auto"
+      tabs: {
+        "& .MuiTabs-indicator": {
+          backgroundColor: "#007E7D", 
         },
+      },
+      
+      tab: {
+        fontSize: "18px",
+        marginLeft: "10px",
+        minWidth: "120px",
+        width: "auto",
+        color: theme.palette.text.primary,
+        "&$selected": {
+          color: "#007E7D",
+          opacity: 1, // Opacidade completa para a aba selecionada
+        },
+      },
+      unselectedTab: {
+        opacity: 0.6, // Opacidade de 0.6 para as abas não selecionadas
+      },
+      selected: {},
+            
         indicator: {
             backgroundColor: theme.palette.primary.main,
         },
@@ -57,6 +73,7 @@ import AccordionProgramas from "./AccordionProgramas";
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
+    const classes = useStyles();
 
     return (
       <div
@@ -104,9 +121,18 @@ import AccordionProgramas from "./AccordionProgramas";
           textColor="primary"
           className={classes.tabs}
         >
-          <Tab label="Sumário" className={classes.tab} />
-          <Tab label="Temas" className={classes.tab} />
-          <Tab label="Programas" className={classes.tab} />
+            <Tab
+              label="Sumário"
+              className={`${classes.tab} ${tabValue === 0 ? classes.selected : classes.unselectedTab}`}
+            />
+            <Tab
+              label="Temas"
+              className={`${classes.tab} ${tabValue === 1 ? classes.selected : classes.unselectedTab}`}
+            />
+            <Tab
+              label="Programas"
+              className={`${classes.tab} ${tabValue === 2 ? classes.selected : classes.unselectedTab}`}
+            />
         </Tabs>
 
         <TabPanel value={tabValue} index={0}>

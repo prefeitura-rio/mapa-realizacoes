@@ -14,12 +14,6 @@ import BairroDescriptionContainer from "../bairroDescription/BairroDescriptionCo
 // import PlacesContainer from "../places/PlacesContainer";
 
 const useStyles = makeStyles((theme) => ({
-  underSearch: {
-    position: "relative",
-    height: "100vh",
-    width: "423px",
-    overflow: "auto",
-  },
 
   visible: {
     display: "block",
@@ -30,7 +24,30 @@ const useStyles = makeStyles((theme) => ({
   },
   "@media screen and (max-width: 540px)": {
     underSearch: {
+      height: "100vh",
       width: "100vw",
+      overflow: "auto",
+      position: "relative",
+    },
+  },
+  "@media screen and (min-width: 1024px)": {
+    underSearch: {
+      position: "fixed",
+      top: "30px",
+      bottom: "30px",
+      left: "30px",
+      width: "423px",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+       display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
     },
   },
 }));

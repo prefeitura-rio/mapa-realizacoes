@@ -126,7 +126,7 @@ const MainUnderSearchBar = forwardRef(
 
     return (
       <div ref={ref}>
-        <ThemeProvider theme={theme}>
+      
           <DadosAgregados
             topImgSrc={rio_cover}
             cidades={cidades}
@@ -136,7 +136,7 @@ const MainUnderSearchBar = forwardRef(
             setPhotoGallery={setPhotoGallery} 
             setImagesType={setImagesType}
           />
-         </ThemeProvider>
+
         <div className={classes.fabContainer}>
           <Fab
             size="small"
