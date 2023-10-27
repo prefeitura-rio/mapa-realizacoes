@@ -37,7 +37,7 @@ const mapStateToProps = (state) => {
   return {
     menuSidebar: state.active.menuSidebar,
     descriptionData: state.bairros.descriptionData,
-    content: state.bairros.content,
+    content: state.place.content,
   };
 };
 
