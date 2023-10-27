@@ -18,7 +18,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
-import { getListBairroName } from "../../../firebase";
+import { getListBairroName, getListSubprefeituraName } from "../../../firebase";
 
 
 const useStyles = makeStyles((theme) => {
@@ -149,21 +149,30 @@ const SearchBar = ({
   const classes = useStyles();
 
   const [inputValue, setInputValue] = useState("");
-  const [neighborhoods, setNeighborhoods] = useState([]);
+  const [bairros, setBairros] = useState([]);
 
   useEffect(() => {
-    const loadNeighborhoods = async () => {
+    const loadBairros = async () => {
       try {
-        const neighborhoodRef = await getListBairroName(); 
-        if (!neighborhoodRef.empty) {
-          const neighborhoodNames = [];
-          neighborhoodRef.forEach((doc) => {
-            const neighborhoodData = doc.data();
-            const neighborhoodName = neighborhoodData.nome; 
-            neighborhoodNames.push(neighborhoodName);
+        const bairroRef = await getListBairroName();
+        const subprefeituraRef = await getListSubprefeituraName(); // Obter os nomes das subprefeituras
+  
+        if (!bairroRef.empty) {
+          const bairroNames = [];
+          bairroRef.forEach((doc) => {
+            const bairroData = doc.data();
+            const bairroName = bairroData.nome;
+            bairroNames.push(bairroName);
           });
   
-          setNeighborhoods(neighborhoodNames);
+          // Incluir os nomes das subprefeituras na lista de bairros
+          subprefeituraRef.forEach((doc) => {
+            const subprefeituraData = doc.data();
+            const subprefeituraName = subprefeituraData.nome;
+            bairroNames.push(subprefeituraName);
+          });
+  
+          setBairros(bairroNames);
         } else {
           console.error("Nenhum bairro encontrado.");
         }
@@ -172,7 +181,7 @@ const SearchBar = ({
       }
     };
   
-    loadNeighborhoods();
+    loadBairros();
   }, []);
   
   
@@ -205,7 +214,7 @@ const SearchBar = ({
             value={inputValue}
             onChange={handleBairroChange}
             disableClearable
-            options={neighborhoods} // Usando os nomes dos bairros obtidos do Firebase
+            options={bairros} // Usando os nomes dos bairros obtidos do Firebase
             renderInput={(params) => (
               <TextField
               // inputRef={inputRef}

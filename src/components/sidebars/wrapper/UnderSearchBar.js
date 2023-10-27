@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
       position: "relative",
     },
   },
-  "@media screen and (min-width: 1024px)": {
+  "@media screen and (min-width: 540px)": {
     underSearch: {
       position: "fixed",
       top: "30px",

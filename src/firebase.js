@@ -788,6 +788,17 @@ export async function getListBairroName() {
   }
 }
 
+export async function getListSubprefeituraName() {
+  try {
+    const subprefeitura = db.collection('subprefeitura');
+    const subprefeituraSnapshot = await subprefeitura.get();
+
+    return subprefeituraSnapshot;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getRealizacaoInfo(document) {
   let data = await db
     .collection("realizacao")
