@@ -8,7 +8,9 @@ import { connect } from "react-redux";
 import { loadAllPlaces } from "./../../../redux/places/actions";
 import { setHistoryItems } from "../../../redux/search/actions";
 import { setPlacesData } from "./../../../redux/places/actions";
+import { setBairroData } from "./../../../redux/bairros/actions";
 import { useEffect } from "react";
+
 
 const SearchbarContainer = (props) => {
   useEffect(() => {
@@ -27,7 +29,7 @@ const SearchbarContainer = (props) => {
       setSearchPrompt={props.setSearchPrompt}
       setContent={props.setContent}
       anyLoading={props.anyLoading}
-      // anyPlaces={props.anyPlaces}
+      setBairroData={props.setBairroData}
       setHistoryItems={props.setHistoryItems}
       setPlacesData={props.setPlacesData}
       historyItems={props.historyItems}
@@ -56,6 +58,7 @@ const mapDispatchToProps = {
   loadAllPlaces,
   setHistoryItems,
   setPlacesData,
+  setBairroData 
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchbarContainer);

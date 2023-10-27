@@ -46,4 +46,15 @@ export const setBairroContentSnapshot = (data) => {
   };
 };
 
+export const SET_BAIRRO_DATA = "SET_BAIRRO_DATA";
+
+export const setBairroData = (data) => {
+  return {
+    type: SET_BAIRRO_DATA,
+    payload: data,
+  };
+};
+
+
+
 

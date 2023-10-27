@@ -3,7 +3,8 @@ import {
   REQUEST_BAIRRO_DATA_FAILED,
   REQUEST_BAIRRO_DATA_SUCCESS,
   SET_BAIRRO_CONTENT,
-  SET_BAIRRO_CONTENT_SNAPSHOT
+  SET_BAIRRO_CONTENT_SNAPSHOT,
+  SET_BAIRRO_DATA
 } from "./actions";
 
 const defaultState = {
@@ -51,6 +52,12 @@ const placeReducer = (state = defaultState, action) => {
         ...state,
         contentSnapshot: action.payload,
       };
+      case SET_BAIRRO_DATA:
+        return {
+          ...state,
+          descriptionData: action.payload,
+        };
+      
   }
   return state;
 };

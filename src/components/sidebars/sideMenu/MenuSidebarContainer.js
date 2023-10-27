@@ -2,17 +2,17 @@ import { connect, useDispatch } from "react-redux";
 import MenuSidebar from "./MenuSidebar";
 import { setMenuSidebar } from "../../../redux/active/actions";
 import { loadData } from "../../../redux/place/actions";
-import { loadComments } from "../../../redux/comments/actions";
 import { loadImages } from "../../../redux/images/actions";
 import { useEffect } from "react";
+import { loadBairroData } from "../../../redux/bairros/actions";
 
 const MenuSidebarContainer = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (props.descriptionData) {
-      dispatch(loadData(props.descriptionData));
-      dispatch(loadComments(props.descriptionData));
+      dispatch(loadBairroData(props.descriptionData));
+      // dispatch(loadComments(props.descriptionData));
     }
   }, [props.descriptionData]);
 
@@ -36,8 +36,8 @@ const MenuSidebarContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     menuSidebar: state.active.menuSidebar,
-    descriptionData: state.place.descriptionData,
-    content: state.place.content,
+    descriptionData: state.bairros.descriptionData,
+    content: state.bairros.content,
   };
 };
 

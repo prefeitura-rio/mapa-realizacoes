@@ -109,17 +109,16 @@ const SearchBar = ({
   setSearchPrompt,
   setContent,
   anyLoading,
-  anyPlaces,
-  setHistoryItems,
+  setBairroData,
   setPlacesData,
   historyItems,
 }) => {
 
-  const handleBairroChange = (event, newValue) => {
-    if (newValue) {
-      console.log('Bairro selecionado:', newValue);
-      // Aqui, você pode realizar qualquer ação adicional que desejar com o nome do bairro selecionado.
+  const handleBairroChange = (event, name) => {
+    if (name) {
+      console.log('Bairro/subprefeitura selecionado(a):', name);
     }
+    setBairroData(name);
     setActiveBar(BAIRRO_DESCRIPTION_BAR);
     // setUnderSearchBar(!underSearchBar);
     // if (!underSearchBar) {
@@ -214,7 +213,7 @@ const SearchBar = ({
             value={inputValue}
             onChange={handleBairroChange}
             disableClearable
-            options={bairros} // Usando os nomes dos bairros obtidos do Firebase
+            options={bairros}
             renderInput={(params) => (
               <TextField
               // inputRef={inputRef}

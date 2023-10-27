@@ -859,7 +859,11 @@ export async function getRealizacaoInfo(document) {
   return data;
 }
 export async function getBairroInfo(document) {
- 
+ return await db
+ .collection("bairro")
+ .doc(document)
+ .get()
+ .then((doc) => doc.data());
 }
 
 

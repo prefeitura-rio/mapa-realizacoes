@@ -57,6 +57,7 @@ import {
 
 import firebase from "firebase/app";
 import { LOAD_ALL_BAIRROS, LOAD_BAIRRO_DATA, requestAllBAIRROSSuccess, requestAllBairros, requestAllBairrosFailed, requestBairroData, requestBairroDataFailed, requestBairroDataSuccess } from "./bairros/actions";
+import { toSnakeCase } from "../utils/formatFile";
 
 
 function* workerLoadData(action) {
@@ -203,8 +204,8 @@ export function* watchLoadAllCidades() {
 function* workerLoadBairroData(action) {
   try {
     yield put(requestBairroData());
-    const data = yield call(getBairroInfo, action.payload);
-    console.log("BAIRRO_workerLoadData: ", data)
+    const data = yield call(getBairroInfo, toSnakeCase(action.payload));
+    console.log("action.payload: ", data)
     yield put(requestBairroDataSuccess(data));
   } catch (error) {
     yield put(requestBairroDataFailed());
