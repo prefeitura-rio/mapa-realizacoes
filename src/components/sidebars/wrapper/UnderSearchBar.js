@@ -7,10 +7,12 @@ import {
   DESCRIPTION_BAR,
   MAIN_UNDERSEARCH_BAR,
   PLACES_BAR,
+  SUBPREFEITURA_DESCRIPTION_BAR,
 } from "../../../redux/active/actions";
 import MainUnderSearchContainer from "../mainUnderSearch/MainUnderSearchContainer";
 import PlaceDescriptionContainer from "../placeDescription/PlaceDescriptionContainer";
 import BairroDescriptionContainer from "../bairroDescription/BairroDescriptionContainer";
+import SubrefeituraDescriptionContainer from "../subprefeituraDescription/SubprefeituraDescriptionContainer";
 // import PlacesContainer from "../places/PlacesContainer";
 
 const useStyles = makeStyles((theme) => ({
@@ -61,8 +63,8 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
       //   return <PlacesContainer />;
       case BAIRRO_DESCRIPTION_BAR:
         return <BairroDescriptionContainer />;
-      // case PREFEITURA_DESCRIPTION_BAR:
-      //   return <PrefeituraDescriptionContainer />;
+      case SUBPREFEITURA_DESCRIPTION_BAR:
+        return <SubrefeituraDescriptionContainer />;
       case DESCRIPTION_BAR:
         return <PlaceDescriptionContainer />;
       default:

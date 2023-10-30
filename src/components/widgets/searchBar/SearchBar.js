@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import CloseIcon from "@material-ui/icons/Close";
-import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
+import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, SUBPREFEITURA_DESCRIPTION_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
 import { getListBairroName, getListSubprefeituraName } from "../../../firebase";
@@ -110,22 +110,36 @@ const SearchBar = ({
   setContent,
   anyLoading,
   setBairroData,
+  setSubprefeituraData,
   setPlacesData,
+  setEhBairro,
   historyItems,
 }) => {
 
-  const handleBairroChange = (event, name) => {
+  const handleBairroSubprefeituraChange = (event, name) => {
     if (name) {
-      console.log('Bairro/subprefeitura selecionado(a):', name);
+      console.log('Bairro/prefeitura selecionado(a):', name);
     }
-    setBairroData(name);
-    setActiveBar(BAIRRO_DESCRIPTION_BAR);
-    // setUnderSearchBar(!underSearchBar);
-    // if (!underSearchBar) {
-    //   inputRef.current.focus();
-    // }
-   
+    
+  
+    // Check if name is a prefeitura
+    if (bairros.includes(name)) {
+      setBairroData(name);
+      setActiveBar(BAIRRO_DESCRIPTION_BAR);
+      setEhBairro(true);
+      console.log('Bairro selecionado: ', name);
+    } 
+    else if (prefeituras.includes(name)){
+      setSubprefeituraData(name);
+      setActiveBar(SUBPREFEITURA_DESCRIPTION_BAR);
+      setEhBairro(false);
+      console.log('Subprefeitura selecionada: ', name);
+    }
+    else {
+      console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
+    }
   };
+  
   const handleSearchPrompt = () => {
     setSearchPrompt();
   };
@@ -148,35 +162,44 @@ const SearchBar = ({
   const classes = useStyles();
 
   const [inputValue, setInputValue] = useState("");
+  const [bairrosSubSubprefeituras, setBairrosSubprefeituras] = useState([]);
+  const [prefeituras, setSubprefeituras] = useState([]);
   const [bairros, setBairros] = useState([]);
 
   useEffect(() => {
     const loadBairros = async () => {
       try {
         const bairroRef = await getListBairroName();
-        const subprefeituraRef = await getListSubprefeituraName(); // Obter os nomes das subprefeituras
+        const prefeituraRef = await getListSubprefeituraName(); // Obter os nomes das prefeituras
   
         if (!bairroRef.empty) {
-          const bairroNames = [];
+          const bairrosSubSubprefeituras = [];
+          const bairrosName = [];
           bairroRef.forEach((doc) => {
-            const bairroData = doc.data();
-            const bairroName = bairroData.nome;
-            bairroNames.push(bairroName);
+            const bairrosData = doc.data();
+            const bairroName = bairrosData.nome;
+            bairrosSubSubprefeituras.push(bairroName);
+            bairrosName.push(bairroName);
           });
+          setBairros(bairrosName);
   
-          // Incluir os nomes das subprefeituras na lista de bairros
-          subprefeituraRef.forEach((doc) => {
-            const subprefeituraData = doc.data();
-            const subprefeituraName = subprefeituraData.nome;
-            bairroNames.push(subprefeituraName);
+          // Incluir os nomes das prefeituras na lista de bairros
+          const prefeiturasNames = [];
+          prefeituraRef.forEach((doc) => {
+            const prefeiturasData = doc.data();
+            const prefeituraName = prefeiturasData.nome;
+            bairrosSubSubprefeituras.push(prefeituraName);
+            prefeiturasNames.push(prefeituraName);
           });
-  
-          setBairros(bairroNames);
+          setSubprefeituras(prefeiturasNames);
+
+
+          setBairrosSubprefeituras(bairrosSubSubprefeituras);
         } else {
-          console.error("Nenhum bairro encontrado.");
+          console.error("Nenhum bairro/prefeitura encontrado.");
         }
       } catch (error) {
-        console.error("Erro ao buscar nomes de bairros:", error);
+        console.error("Erro ao buscar nomes de bairros/prefeituras:", error);
       }
     };
   
@@ -211,14 +234,14 @@ const SearchBar = ({
             freeSolo
             className={classes.input}
             value={inputValue}
-            onChange={handleBairroChange}
+            onChange={handleBairroSubprefeituraChange}
             disableClearable
-            options={bairros}
+            options={bairrosSubSubprefeituras}
             renderInput={(params) => (
               <TextField
               // inputRef={inputRef}
                 {...params}
-                label="Busque por bairro/subprefeitura"
+                label="Busque por bairro/prefeitura"
                 sx={{
                   "& fieldset": { border: 'none' },
                 }}

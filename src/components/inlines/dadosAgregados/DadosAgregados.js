@@ -96,6 +96,7 @@ import BasicInfo from "./BasicInfo";
     onTopImageError,
     cidades,
     bairro,
+    subprefeitura,
     tabValue,
     setTabValue,
     images,
@@ -103,7 +104,6 @@ import BasicInfo from "./BasicInfo";
     setImagesType
   }) => {
     const classes = useStyles();
-  
     return (
       <>
       <img
@@ -114,6 +114,7 @@ import BasicInfo from "./BasicInfo";
         />
         {cidades && cidades.length > 0 && <BasicInfo content={cidades[0]}  subtitulo={"Município"}/>}
         {bairro && <BasicInfo content={bairro} subtitulo={"Bairro"}/>}
+        {subprefeitura && <BasicInfo content={subprefeitura} subtitulo={"Subprefeitura"}/>}
         <Tabs
           value={tabValue}
           onChange={(e, i) => {

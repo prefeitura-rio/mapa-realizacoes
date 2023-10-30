@@ -20,7 +20,6 @@ const BairroDescriptionContainer = (props) => {
         underSearchBar={props.underSearchBar}
         setUnderSearchBar={props.setUnderSearchBar}
         setDescriptionData={props.setDescriptionData}
-        content={props.content}
         images={props.images}
         bairro={props.bairro}
 
@@ -38,7 +37,7 @@ const mapStateToProps = (state) => {
   return {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
-    descriptionData: state.place.descriptionData,
+    descriptionData: state.bairros.descriptionData,
     // content: state.place.content,
     bairro: state.bairros.content,
     images: state.images.images,

@@ -12,6 +12,7 @@ import {
   MAIN_UNDERSEARCH_BAR,
   BAIRRO_DESCRIPTION_BAR,
   SET_ACTIVE_BAR,
+  SET_EH_BAIRRO,
   SET_SEARCH_PROMPT,
   SET_UNDERSEARCH_BAR,
   SET_BOTTOM_GALLERY,
@@ -110,6 +111,12 @@ export const activeReducer = (state = defaultState, action) => {
       return {
         ...state,
         activeBar: action.payload,
+      };
+
+    case SET_EH_BAIRRO:
+      return {
+        ...state,
+        ehBairro: action.payload,
       };
     case SET_SEARCH_PROMPT:
       return {

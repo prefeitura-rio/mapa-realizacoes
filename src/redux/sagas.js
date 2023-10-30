@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -58,6 +58,7 @@ import {
 import firebase from "firebase/app";
 import { LOAD_ALL_BAIRROS, LOAD_BAIRRO_DATA, requestAllBAIRROSSuccess, requestAllBairros, requestAllBairrosFailed, requestBairroData, requestBairroDataFailed, requestBairroDataSuccess } from "./bairros/actions";
 import { toSnakeCase } from "../utils/formatFile";
+import { LOAD_SUBPREFEITURA_DATA, requestSubprefeituraData, requestSubprefeituraDataFailed, requestSubprefeituraDataSuccess } from "./subprefeituras/actions";
 
 
 function* workerLoadData(action) {
@@ -205,7 +206,7 @@ function* workerLoadBairroData(action) {
   try {
     yield put(requestBairroData());
     const data = yield call(getBairroInfo, toSnakeCase(action.payload));
-    console.log("action.payload: ", data)
+    // console.log("action.payload: ", data)
     yield put(requestBairroDataSuccess(data));
   } catch (error) {
     yield put(requestBairroDataFailed());
@@ -214,6 +215,22 @@ function* workerLoadBairroData(action) {
 
 export function* watchLoadBairroData() {
   yield takeEvery(LOAD_BAIRRO_DATA, workerLoadBairroData);
+}
+
+
+function* workerLoadSubprefeituraData(action) {
+  try {
+    yield put(requestSubprefeituraData());
+    const data = yield call(getSubprefeituraInfo, toSnakeCase(action.payload));
+    console.log("agora action.payload: ", data)
+    yield put(requestSubprefeituraDataSuccess(data));
+  } catch (error) {
+    yield put(requestSubprefeituraDataFailed());
+  }
+}
+
+export function* watchLoadSubprefeituraData() {
+  yield takeEvery(LOAD_SUBPREFEITURA_DATA, workerLoadSubprefeituraData);
 }
 
 async function loginFirebase() {
@@ -266,6 +283,7 @@ export function* rootSaga() {
     fork(watchLoadAllPlaces),
     fork(watchLoadAllCidades),
     fork(watchLoadBairroData),
+    fork(watchLoadSubprefeituraData),
     fork(watchLoadAllPoints),
     fork(watchLogin),
     fork(watchLogOut),

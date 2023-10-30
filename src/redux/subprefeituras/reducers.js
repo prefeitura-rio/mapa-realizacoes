@@ -1,10 +1,10 @@
 import {
-  REQUEST_BAIRRO_DATA,
-  REQUEST_BAIRRO_DATA_FAILED,
-  REQUEST_BAIRRO_DATA_SUCCESS,
-  SET_BAIRRO_CONTENT,
-  SET_BAIRRO_CONTENT_SNAPSHOT,
-  SET_BAIRRO_DATA
+  REQUEST_SUBPREFEITURA_DATA,
+  REQUEST_SUBPREFEITURA_DATA_FAILED,
+  REQUEST_SUBPREFEITURA_DATA_SUCCESS,
+  SET_SUBPREFEITURA_CONTENT,
+  SET_SUBPREFEITURA_CONTENT_SNAPSHOT,
+  SET_SUBPREFEITURA_DATA
 } from "./actions";
 
 const defaultState = {
@@ -15,9 +15,9 @@ const defaultState = {
   descriptionData: null,
 };
 
-const bairrosReducer = (state = defaultState, action) => {
+const subprefeiturasReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case REQUEST_BAIRRO_DATA:
+    case REQUEST_SUBPREFEITURA_DATA:
       return {
         ...state,
         content: null,
@@ -25,7 +25,7 @@ const bairrosReducer = (state = defaultState, action) => {
         loading: true,
         error: false,
       };
-    case REQUEST_BAIRRO_DATA_SUCCESS:
+    case REQUEST_SUBPREFEITURA_DATA_SUCCESS:
       return {
         ...state,
         content: action.payload,
@@ -33,7 +33,7 @@ const bairrosReducer = (state = defaultState, action) => {
         loading: false,
         error: false,
       };
-    case REQUEST_BAIRRO_DATA_FAILED:
+    case REQUEST_SUBPREFEITURA_DATA_FAILED:
       return {
         ...state,
         content: null,
@@ -41,18 +41,18 @@ const bairrosReducer = (state = defaultState, action) => {
         loading: false,
         error: true,
       };
-    case SET_BAIRRO_CONTENT:
+    case SET_SUBPREFEITURA_CONTENT:
       return {
         ...state,
         content: action.payload,
       };
 
-    case SET_BAIRRO_CONTENT_SNAPSHOT:
+    case SET_SUBPREFEITURA_CONTENT_SNAPSHOT:
       return {
         ...state,
         contentSnapshot: action.payload,
       };
-      case SET_BAIRRO_DATA:
+      case SET_SUBPREFEITURA_DATA:
         return {
           ...state,
           descriptionData: action.payload,
@@ -62,4 +62,4 @@ const bairrosReducer = (state = defaultState, action) => {
   return state;
 };
 
-export default bairrosReducer;
+export default subprefeiturasReducer;

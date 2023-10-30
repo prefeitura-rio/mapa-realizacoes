@@ -866,6 +866,14 @@ export async function getBairroInfo(document) {
  .then((doc) => doc.data());
 }
 
+export async function getSubprefeituraInfo(document) {
+ return await db
+ .collection("subprefeitura")
+ .doc(document)
+ .get()
+ .then((doc) => doc.data());
+}
+
 
 export async function getRealizacaoOrgaos(idRealizacao) {
   return await db

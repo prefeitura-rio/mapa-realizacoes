@@ -1,12 +1,14 @@
 import {
   Fab,
   makeStyles,
+  ThemeProvider,
+  createTheme
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef } from "react";
 import { useState } from "react";
-import DadosAgregados from "../../inlines/DadosAgregados";
+import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -84,17 +86,25 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const PrefeituraDescriptionBar = forwardRef(
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#007E7D",
+    },
+  },
+});
+
+const SubprefeituraDescriptionBar = forwardRef(
   ({ underSearchBar,
     setUnderSearchBar,
-    cidades,
+    subprefeitura,
     images,
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
-    console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
+    console.log("=======> " + (subprefeitura? subprefeitura.nome : " Nenhum nome disponível"));
 
     const [tabValue, setTabValue] = useState(0);
     const [topImgSrc, setTopImgSrc] = useState(
@@ -108,36 +118,25 @@ const PrefeituraDescriptionBar = forwardRef(
       );
     };
 
-    cidades = cidades || [];
+    subprefeitura = subprefeitura || [];
 
 
     return (
       <div ref={ref}>
+        <br></br>
+        <br></br>
+    
+          <DadosAgregados
+            topImgSrc={topImgSrc}
+            onTopImageError={onTopImageError}
+            subprefeitura={subprefeitura}
+            tabValue={tabValue}
+            setTabValue={setTabValue}
+            images={images}
+          />
 
-        <DadosAgregados
-          topImgSrc={topImgSrc}
-          onTopImageError={onTopImageError}
-          cidades={cidades}
-          tabValue={tabValue}
-          setTabValue={setTabValue}
-          images={images}
-        />
-
-        <div className={classes.fabContainer}>
-          <Fab
-            size="small"
-            variant="extended"
-            className={classes.fab}
-            onClick={() => {
-              handleUnderSearchBar();
-            }}
-          >
-            <ExpandLessIcon className={classes.extendedIcon} />
-            <div style={{ marginRight: "8px", color: "#3C4043" }}>Ocultar</div>
-          </Fab>
-        </div>
       </div>
     );
   }
 );
-export default PrefeituraDescriptionBar;
+export default SubprefeituraDescriptionBar;
