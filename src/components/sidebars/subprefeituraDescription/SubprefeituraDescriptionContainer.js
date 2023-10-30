@@ -6,6 +6,7 @@ import { setDescriptionData } from "../../../redux/place/actions";
 import { setActiveBar } from "../../../redux/active/actions";
 import { useEffect } from "react";
 import { loadSubprefeituraData } from "../../../redux/subprefeituras/actions";
+import { loadAllImagesSubprefeitura } from "../../../redux/images/actions";
 
 
 const SubprefeituraDescriptionContainer = (props) => {
@@ -13,6 +14,7 @@ const SubprefeituraDescriptionContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadSubprefeituraData());
+    dispatch(loadAllImagesSubprefeitura());
   }, []);
 
   return (
@@ -20,7 +22,7 @@ const SubprefeituraDescriptionContainer = (props) => {
         underSearchBar={props.underSearchBar}
         setUnderSearchBar={props.setUnderSearchBar}
         setDescriptionData={props.setDescriptionData}
-        images={props.images}
+        images_subprefeitura={props.images_subprefeitura}
         subprefeitura={props.subprefeitura}
 
         // remove if not useful
@@ -39,7 +41,7 @@ const mapStateToProps = (state) => {
     activeBar: state.active.activeBar,
     descriptionData: state.subprefeituras.descriptionData,
     subprefeitura: state.subprefeituras.content,
-    images: state.images.images,
+    images_subprefeitura: state.images.allImagesSubprefeitura,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
   };

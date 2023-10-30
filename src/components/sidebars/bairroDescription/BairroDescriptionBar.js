@@ -98,7 +98,7 @@ const BairroDescriptionBar = forwardRef(
   ({ underSearchBar,
     setUnderSearchBar,
     bairro,
-    images,
+    images_bairro,
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
@@ -119,6 +119,7 @@ const BairroDescriptionBar = forwardRef(
     };
 
     bairro = bairro || [];
+    images_bairro = images_bairro || [];
 
 
     return (
@@ -132,7 +133,7 @@ const BairroDescriptionBar = forwardRef(
             bairro={bairro}
             tabValue={tabValue}
             setTabValue={setTabValue}
-            images={images}
+            images={images_bairro}
           />
 
       </div>

@@ -98,7 +98,7 @@ const SubprefeituraDescriptionBar = forwardRef(
   ({ underSearchBar,
     setUnderSearchBar,
     subprefeitura,
-    images,
+    images_subprefeitura,
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
@@ -119,6 +119,7 @@ const SubprefeituraDescriptionBar = forwardRef(
     };
 
     subprefeitura = subprefeitura || [];
+    images_subprefeitura = images_subprefeitura || [];
 
 
     return (
@@ -132,7 +133,7 @@ const SubprefeituraDescriptionBar = forwardRef(
             subprefeitura={subprefeitura}
             tabValue={tabValue}
             setTabValue={setTabValue}
-            images={images}
+            images={images_subprefeitura}
           />
 
       </div>

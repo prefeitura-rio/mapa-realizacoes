@@ -6,6 +6,7 @@ import { setDescriptionData } from "../../../redux/place/actions";
 import { setActiveBar } from "../../../redux/active/actions";
 import { useEffect } from "react";
 import { loadBairroData } from "../../../redux/bairros/actions";
+import { loadAllImagesBairro } from "../../../redux/images/actions";
 
 
 const BairroDescriptionContainer = (props) => {
@@ -13,6 +14,7 @@ const BairroDescriptionContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadBairroData());
+    dispatch(loadAllImagesBairro());
   }, []);
 
   return (
@@ -20,7 +22,7 @@ const BairroDescriptionContainer = (props) => {
         underSearchBar={props.underSearchBar}
         setUnderSearchBar={props.setUnderSearchBar}
         setDescriptionData={props.setDescriptionData}
-        images={props.images}
+        images_bairro={props.images_bairro}
         bairro={props.bairro}
 
         // remove if not useful
@@ -40,7 +42,7 @@ const mapStateToProps = (state) => {
     descriptionData: state.bairros.descriptionData,
     // content: state.place.content,
     bairro: state.bairros.content,
-    images: state.images.images,
+    images_bairro: state.images.allImagesBairro,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
   };

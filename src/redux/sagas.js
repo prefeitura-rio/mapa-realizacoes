@@ -21,6 +21,8 @@ import {
   requestAllImages,
   requestAllImagesFailed,
   requestAllImagesSuccess,
+  LOAD_ALL_IMAGES_BAIRRO,
+  LOAD_ALL_IMAGES_SUBPREFEITURA,
 } from "./images/actions";
 import {
   loadPlaces,
@@ -104,6 +106,22 @@ function* workerLoadAllImages() {
 
 export function* watchLoadAllImages() {
   yield takeEvery(LOAD_ALL_IMAGES, workerLoadAllImages);
+}
+
+function* workerLoadAllImagesBairro() {
+ // ... código omitido
+}
+
+export function* watchLoadAllImagesBairro() {
+  yield takeEvery(LOAD_ALL_IMAGES_BAIRRO, workerLoadAllImagesBairro);
+}
+
+function* workerLoadAllImagesSubprefeitura() {
+ // ... código omitido
+}
+
+export function* watchLoadAllImagesSubprefeitura() {
+  yield takeEvery(LOAD_ALL_IMAGES_SUBPREFEITURA, workerLoadAllImagesSubprefeitura);
 }
 
 async function fetchImages(keyword) {
