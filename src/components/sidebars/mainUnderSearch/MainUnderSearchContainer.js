@@ -30,10 +30,10 @@ const MainUnderSearchContainer = (props) => {
         content={props.content}
         images_cidade={props.images_cidade}
         cidades={props.cidades}
-        dadosAgregadosTema={props.dadosAgregadosTema}
-        dadosAgregadosProgramas={props.dadosAgregadosProgramas}
-        dadosAgregadosInfoBasicaSumario={props.dadosAgregadosInfoBasicaSumario}
-        dadosAgregadosStatusEntregasSumario={props.dadosAgregadosStatusEntregasSumario}
+        dadosAgregadosAbaTemaCidade={props.dadosAgregadosAbaTemaCidade}
+        dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
+        dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
+        dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
 
         // remove if not useful
         profile={props.profile}
@@ -52,10 +52,10 @@ const mapStateToProps = (state) => {
     descriptionData: state.place.descriptionData,
     content: state.place.content,
     cidades: state.cidades.all,
-    dadosAgregadosTema: state.cidades.dadosAgregadosAbaTemaCidade,
-    dadosAgregadosProgramas: state.cidades.dadosAgregadosAbaProgramasCidade,
-    dadosAgregadosInfoBasicaSumario: state.cidades.dadosAgregadosAbaSumarioInfoBasicas,
-    dadosAgregadosStatusEntregasSumario: state.cidades.dadosAgregadosAbaSumarioStatusEntregas,
+    dadosAgregadosAbaTemaCidade: state.cidades.dadosAgregadosAbaTemaCidade,
+    dadosAgregadosAbaProgramasCidade: state.cidades.dadosAgregadosAbaProgramasCidade,
+    dadosAgregadosAbaSumarioInfoBasicasCidade: state.cidades.dadosAgregadosAbaSumarioInfoBasicasCidade,
+    dadosAgregadosAbaSumarioStatusEntregasCidade: state.cidades.dadosAgregadosAbaSumarioStatusEntregasCidade,
     images_cidade: state.images.allImagesCidade,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,

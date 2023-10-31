@@ -55,6 +55,72 @@ export const setBairroData = (data) => {
   };
 };
 
+// Dados agregados aba tema BAIRRO
+export const LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO = "LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO";
+
+export const loadDadosAgregadosAbaTemaBairro = () => {
+  return {
+    type: LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO_SUCCESS = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO_SUCCESS";
+
+export const requestDadosAgregadosAbaTemaBairroSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO_FAILED = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO_FAILED";
+
+export const requestDadosAgregadosAbaTemaBairroFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO";
+
+export const requestDadosAgregadosAbaTemaBairro = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO,
+  };
+};
 
 
+// Dados agregados aba sumário status das entregas do bairro
+export const LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO = "LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO";
+
+export const loadDadosAgregadosAbaSumarioStatusEntregasBairro = () => {
+  return {
+    type: LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO_SUCCESS = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO_SUCCESS";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasBairroSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO_FAILED = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO_FAILED";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasBairroFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasBairro = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO,
+  };
+};
 

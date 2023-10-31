@@ -24,7 +24,7 @@ const useStyles = makeStyles(()=>({
   }
 }))
 
-export default function AccordionTemas({dadosAgregadosTema}) {
+export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregadosAbaTemaBairro }) {
   const [expanded, setExpanded] = useState(false);
   const [data, setData] = useState([]);
 
@@ -34,9 +34,18 @@ export default function AccordionTemas({dadosAgregadosTema}) {
     setExpanded(isExpanded ? panel : false);
   };
 
+  let dataToRender = [];
+
+  if (dadosAgregadosAbaTemaCidade) {
+    dataToRender = dadosAgregadosAbaTemaCidade;
+  } else if (dadosAgregadosAbaTemaBairro) {
+    dataToRender = dadosAgregadosAbaTemaBairro;
+  }
+
+
   return (
     <div>
-      {dadosAgregadosTema.map((item) => (
+      {dataToRender.map((item) => (
         <Accordion key={item.id} expanded={expanded === item.id} onChange={handleChange(item.id)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${item.id}-content`} id={`${item.id}-header`}>
             <Typography style={{ paddingLeft: 20 }} sx={{ width: '50%', flexShrink: 0 }}>

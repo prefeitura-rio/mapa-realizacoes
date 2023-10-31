@@ -100,10 +100,11 @@ const MainUnderSearchBar = forwardRef(
   ({ underSearchBar,
     setUnderSearchBar,
     cidades,
-    dadosAgregadosTema,
-    dadosAgregadosProgramas,
-    dadosAgregadosInfoBasicaSumario,
-    dadosAgregadosStatusEntregasSumario,
+    dadosAgregadosAbaTemaCidade,
+    dadosAgregadosAbaTemaBairro,
+    dadosAgregadosAbaProgramasCidade,
+    dadosAgregadosAbaSumarioInfoBasicasCidade,
+    dadosAgregadosAbaSumarioStatusEntregasCidade,
     images_cidade,
     setPhotoGallery,
     setImagesType
@@ -126,20 +127,22 @@ const MainUnderSearchBar = forwardRef(
   
 
     cidades = cidades || [];
-    dadosAgregadosTema = dadosAgregadosTema || [];
-    dadosAgregadosProgramas = dadosAgregadosProgramas || [];
-    dadosAgregadosInfoBasicaSumario = dadosAgregadosInfoBasicaSumario || [];
-    dadosAgregadosStatusEntregasSumario = dadosAgregadosStatusEntregasSumario || [];
+    dadosAgregadosAbaTemaCidade = dadosAgregadosAbaTemaCidade || [];
+    dadosAgregadosAbaTemaBairro = dadosAgregadosAbaTemaBairro || [];
+    dadosAgregadosAbaProgramasCidade = dadosAgregadosAbaProgramasCidade || [];
+    dadosAgregadosAbaSumarioInfoBasicasCidade = dadosAgregadosAbaSumarioInfoBasicasCidade || [];
+    dadosAgregadosAbaSumarioStatusEntregasCidade = dadosAgregadosAbaSumarioStatusEntregasCidade || [];
 
 
     return (
       <div ref={ref}>
       
           <DadosAgregados
-            dadosAgregadosTema={dadosAgregadosTema}
-            dadosAgregadosProgramas={dadosAgregadosProgramas}
-            dadosAgregadosInfoBasicaSumario={dadosAgregadosInfoBasicaSumario}
-            dadosAgregadosStatusEntregasSumario={dadosAgregadosStatusEntregasSumario}
+            dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade}
+            dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}
+            dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade}
+            dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade}
+            dadosAgregadosAbaSumarioStatusEntregasCidade={dadosAgregadosAbaSumarioStatusEntregasCidade}
             cidades={cidades}
             topImgSrc={rio_cover}
             tabValue={tabValue}

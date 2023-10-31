@@ -24,7 +24,7 @@ const useStyles = makeStyles(()=>({
   }
 }))
 
-export default function AccordionProgramas({dadosAgregadosProgramas}) {
+export default function AccordionProgramas({dadosAgregadosAbaProgramasCidade}) {
   const [expanded, setExpanded] = useState(false);
   const [data, setData] = useState([]);
 
@@ -36,7 +36,7 @@ export default function AccordionProgramas({dadosAgregadosProgramas}) {
 
   return (
     <div>
-      {dadosAgregadosProgramas.map((item) => (
+      {dadosAgregadosAbaProgramasCidade.map((item) => (
         <Accordion key={item.id} expanded={expanded === item.id} onChange={handleChange(item.id)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${item.id}-content`} id={`${item.id}-header`}>
             <Typography style={{ paddingLeft: 20 }} sx={{ width: '50%', flexShrink: 0 }}>

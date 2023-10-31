@@ -2,18 +2,18 @@ import {
   REQUEST_ALL_CIDADES,
   REQUEST_ALL_CIDADES_FAILED,
   REQUEST_ALL_CIDADES_SUCCESS,
-  REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE,
-  REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_FAILED,
-  REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_SUCCESS,
-  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS,
-  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_FAILED,
-  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_SUCCESS,
-  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS,
-  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_FAILED,
-  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_SUCCESS,
-  REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE,
-  REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED,
-  REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE,
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE,
+  REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_SUCCESS,
 } from "./actions";
 
 const defaultState = {
@@ -46,42 +46,42 @@ const cidadesReducer = (state = defaultState, action) => {
         error: true,
       };
 
-    case REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE:
+    case REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE:
       return {
         ...state,
         dadosAgregadosAbaTemaCidade: null,
         loading: true,
         error: false,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS:
+    case REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_SUCCESS:
       return {
         ...state,
         dadosAgregadosAbaTemaCidade: action.payload,
         loading: false,
         error: false,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED:
+    case REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED:
       return {
         ...state,
         dadosAgregadosAbaTemaCidade: null,
         loading: false,
         error: true,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE:
+    case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE:
       return {
         ...state,
         dadosAgregadosAbaProgramasCidade: null,
         loading: true,
         error: false,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_SUCCESS:
+    case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE_SUCCESS:
       return {
         ...state,
         dadosAgregadosAbaProgramasCidade: action.payload,
         loading: false,
         error: false,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_FAILED:
+    case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE_FAILED:
       return {
         ...state,
         dadosAgregadosAbaProgramasCidade: null,
@@ -89,46 +89,46 @@ const cidadesReducer = (state = defaultState, action) => {
         error: true,
       };
 
-    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS:
+    case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE:
       return {
         ...state,
-        dadosAgregadosAbaSumarioInfoBasicas: null,
+        dadosAgregadosAbaSumarioInfoBasicasCidade: null,
         loading: true,
         error: false,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_SUCCESS:
+    case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE_SUCCESS:
       return {
         ...state,
-        dadosAgregadosAbaSumarioInfoBasicas: action.payload,
+        dadosAgregadosAbaSumarioInfoBasicasCidade: action.payload,
         loading: false,
         error: false,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_FAILED:
+    case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE_FAILED:
       return {
         ...state,
-        dadosAgregadosAbaSumarioInfoBasicas: null,
+        dadosAgregadosAbaSumarioInfoBasicasCidade: null,
         loading: false,
         error: true,
       };
       
-    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS:
+    case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE:
       return {
         ...state,
-        dadosAgregadosAbaSumarioStatusEntregas: null,
+        dadosAgregadosAbaSumarioStatusEntregasCidade: null,
         loading: true,
         error: false,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_SUCCESS:
+    case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE_SUCCESS:
       return {
         ...state,
-        dadosAgregadosAbaSumarioStatusEntregas: action.payload,
+        dadosAgregadosAbaSumarioStatusEntregasCidade: action.payload,
         loading: false,
         error: false,
       };
-    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_FAILED:
+    case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE_FAILED:
       return {
         ...state,
-        dadosAgregadosAbaSumarioStatusEntregas: null,
+        dadosAgregadosAbaSumarioStatusEntregasCidade: null,
         loading: false,
         error: true,
       };

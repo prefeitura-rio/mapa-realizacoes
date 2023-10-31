@@ -102,10 +102,12 @@ import BasicInfo from "./BasicInfo";
     images,
     setPhotoGallery,
     setImagesType,
-    dadosAgregadosTema,
-    dadosAgregadosProgramas,
-    dadosAgregadosInfoBasicaSumario,
-    dadosAgregadosStatusEntregasSumario
+    dadosAgregadosAbaTemaCidade,
+    dadosAgregadosAbaTemaBairro,
+    dadosAgregadosAbaProgramasCidade,
+    dadosAgregadosAbaSumarioInfoBasicasCidade,
+    dadosAgregadosAbaSumarioStatusEntregasBairro,
+    dadosAgregadosAbaSumarioStatusEntregasCidade
   }) => {
     const classes = useStyles();
     return (
@@ -145,8 +147,8 @@ import BasicInfo from "./BasicInfo";
         <TabPanel value={tabValue} index={0}>
           <br></br>
           <br></br>
-          {cidades && cidades.length > 0 && <ListInfoSumario dadosAgregadosStatusEntregasSumario={dadosAgregadosStatusEntregasSumario} dadosAgregadosInfoBasicaSumario={dadosAgregadosInfoBasicaSumario} cidadeInfo={cidades[0]} />}
-          {bairro && <ListInfoSumario bairroInfo={bairro} />}
+          {cidades && cidades.length > 0 && <ListInfoSumario dadosAgregadosAbaSumarioStatusEntregasCidade={dadosAgregadosAbaSumarioStatusEntregasCidade} dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade} cidadeInfo={cidades[0]} />}
+          {bairro && <ListInfoSumario dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro} bairroInfo={bairro} />}
 
           <Divider />
           <div className={classes.photos}>
@@ -160,10 +162,10 @@ import BasicInfo from "./BasicInfo";
         </TabPanel>
 
         <TabPanel value={tabValue} index={1}>
-          <AccordionTemas dadosAgregadosTema={dadosAgregadosTema}></AccordionTemas>
+          <AccordionTemas dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade} dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}></AccordionTemas>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <AccordionProgramas dadosAgregadosProgramas={dadosAgregadosProgramas}></AccordionProgramas>
+          <AccordionProgramas dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade}></AccordionProgramas>
         </TabPanel>
     
     </>

@@ -998,6 +998,82 @@ export async function getDadosAgregadosAbaProgramasCidade() {
 
   return res;
 }
+export async function getDadosAgregadosAbaTemaBairro() {
+  var res = [
+    {
+      id: 'panel1',
+      tema: 'Saúde',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 1',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 2',
+          status: 'Concluído',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+    {
+      id: 'panel2',
+      tema: 'Educação',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 3',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 4',
+          status: 'Cancelada',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+  ];
+
+  return res;
+}
+export async function getDadosAgregadosAbaProgramasBairro() {
+  var res = [
+    {
+      id: 'panel1',
+      tema: 'Bairro Maravilha',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 5',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 6',
+          status: 'Concluído',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+    {
+      id: 'panel2',
+      tema: 'Reviver Centro',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 7',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 8',
+          status: 'Cancelada',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+  ];
+
+  return res;
+}
 
 // @gabriel-gazola como eu não sei como você vai trazer as informações do fb, 
 // eu to buscando direto de lá, então os dados não estão "mockados" aqui.
@@ -1042,6 +1118,66 @@ export async function getDadosAgregadosAbaSumarioInfoBasicasCidade() {
 
 
 export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
+  var realizacoes = [
+    {
+      titulo: 'Título da realização 5',
+      status: 'Em andamento',
+    },
+    {
+      titulo: 'Título da realização 6',
+      status: 'Concluída',
+    },
+    {
+      titulo: 'Título da realização 7',
+      status: 'Em andamento',
+    },
+    {
+      titulo: 'Título da realização 8',
+      status: 'Cancelada',
+    },
+    {
+      titulo: 'Título da realização 9',
+      status: 'Cancelada',
+    },
+    {
+      titulo: 'Título da realização 10',
+      status: 'Interrompida',
+    },
+    {
+      titulo: 'Título da realização 11',
+      status: 'Em licitação',
+    },
+    // array com todas as realizções da cidade 
+  ]
+   const contagemStatus = {
+    em_andamento: 0,
+    concluida: 0,
+    interrompida: 0,
+    em_licitacao:0,
+  };
+
+  realizacoes.forEach((realizacao) => {
+    switch (realizacao.status) {
+      case 'Em andamento':
+        contagemStatus.em_andamento++;
+        break;
+      case 'Concluída':
+        contagemStatus.concluida++;
+        break;
+      case 'Cancelada':
+        contagemStatus.interrompida++;
+        break;
+      case 'Em licitação':
+        contagemStatus.em_licitacao++;
+        break;
+      default:
+        break;
+    }
+  });
+
+  return contagemStatus;
+}
+export async function getDadosAgregadosAbaSumarioStatusEntregasBairro() {
   var realizacoes = [
     {
       titulo: 'Título da realização 5',

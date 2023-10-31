@@ -37,28 +37,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListInfoSumario = ({ dadosAgregadosInfoBasicaSumario,dadosAgregadosStatusEntregasSumario, bairroInfo }) => {
+const ListInfoSumario = ({ 
+  dadosAgregadosAbaSumarioInfoBasicasCidade,
+  dadosAgregadosAbaSumarioStatusEntregasBairro, 
+  dadosAgregadosAbaSumarioStatusEntregasCidade, 
+  bairroInfo, 
+}) => {
+
   const classes = useStyles();
 
   const listInfoSumario = [
   
-   
-    { text:  dadosAgregadosInfoBasicaSumario? dadosAgregadosInfoBasicaSumario.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
-    { text:  dadosAgregadosInfoBasicaSumario? dadosAgregadosInfoBasicaSumario.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
+   //municipio
+    { text:  dadosAgregadosAbaSumarioInfoBasicasCidade? dadosAgregadosAbaSumarioInfoBasicasCidade.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
+    { text:  dadosAgregadosAbaSumarioInfoBasicasCidade? dadosAgregadosAbaSumarioInfoBasicasCidade.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     
+    //bairro
     { text:  bairroInfo? bairroInfo.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.ips + " IPS" : undefined, iconComponent: () => <img src={ipsIcon} alt="ips" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.ranking_ips + "°" + " no rank IPS": undefined, iconComponent: () => <img src={ipsIcon} alt="rank ips" style={{width: '20px', height: '20px'}}/> },
    
+    //subprefeitura
+
   ];
 
    const statusList = [
-    // Adicione os itens para sua nova lista aqui
-    { text: dadosAgregadosStatusEntregasSumario.concluida? "Concluído " + dadosAgregadosStatusEntregasSumario.concluida + " obras" : undefined},
-    { text: dadosAgregadosStatusEntregasSumario.em_andamento? "Em andamento " + dadosAgregadosStatusEntregasSumario.em_andamento  + " obras" : undefined},
-    { text: dadosAgregadosStatusEntregasSumario.interrompida? "Interrompida " + dadosAgregadosStatusEntregasSumario.interrompida  + " obras" : undefined},
-    { text: dadosAgregadosStatusEntregasSumario.em_licitacao? "Em licitação " + dadosAgregadosStatusEntregasSumario.em_licitacao  + " obras" : undefined},
+
+    //municipio
+   
+    { text: dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida? "Concluído " + dadosAgregadosAbaSumarioStatusEntregasCidade.concluida + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento  + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida? "Interrompida " + dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida  + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao? "Em licitação " + dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao  + " obras" : undefined},
+ 
+    //bairro
+   
+    { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Concluído " + dadosAgregadosAbaSumarioStatusEntregasBairro.concluida + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento  + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Interrompida " + dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida  + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Em licitação " + dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao  + " obras" : undefined},
  
   ];
 
@@ -118,25 +136,27 @@ const ListInfoSumario = ({ dadosAgregadosInfoBasicaSumario,dadosAgregadosStatusE
      <Divider />
      <br></br>
     
-    <Typography className={classes.title}>
-      Status das entregas
-    </Typography>
-    <List>
-      {/* Conteúdo da nova sessão "Novos Status" aqui (sem ícones) */}
-      {statusList.map((item, i) => (
-        <ListItem
-          button
-          classes={{ gutters: classes.listItemGutters }}
-          key={i}
-        >
-          <ListItemText
-            primary={item.text}
-            primaryTypographyProps={{ variant: 'body2' }}
-            classes={{ root: classes.marginZero }}
-          />
-        </ListItem>
-      ))}
-    </List>
+     <Typography className={classes.title}>
+  Status das entregas
+</Typography>
+<List>
+  {/* Conteúdo da nova sessão "Novos Status" aqui (sem ícones) */}
+  {statusList
+    .filter((item) => item.text !== undefined) // Filtra os itens com text definido
+    .map((item, i) => (
+      <ListItem
+        button
+        classes={{ gutters: classes.listItemGutters }}
+        key={i}
+      >
+        <ListItemText
+          primary={item.text}
+          primaryTypographyProps={{ variant: 'body2' }}
+          classes={{ root: classes.marginZero }}
+        />
+      </ListItem>
+    ))}
+</List>
   </>
   );
 };
