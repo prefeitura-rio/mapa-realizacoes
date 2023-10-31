@@ -4,19 +4,25 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, Divider, makeStyles } from '@material-ui/core';
 import ListInfoSumario from './ListInfoSumario';
 import ListInfoTema from './ListInfoTema';
 
 
 const useStyles = makeStyles(()=>({
   statusButton: {
+    marginLeft: "20px",
     pointerEvents: "none",
     borderRadius:"39px",
     backgroundColor:"#007E7D",
     color: "#FFFFFF",
     padding:"1px 8px 1px 8px"
   },
+  thumbnail:{
+  width:"120px",
+  height:"100px", 
+  borderRadius:"15px",
+  }
 }))
 
 export default function AccordionTemas() {
@@ -35,29 +41,45 @@ export default function AccordionTemas() {
             aria-controls="panel1bh-content"
             id="panel1bh-header"
           >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>
+            <Typography style={{paddingLeft:20}} sx={{ width: '50%', flexShrink: 0 }}>
               Saúde
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>47 entregas</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex' }}>
               <div style={{ flex: 1 }}>
                 {/* Conteúdo do lado esquerdo */}
-                <Typography gutterBottom>
-                  Título da realização
+                <Typography style={{paddingLeft:20}} gutterBottom>
+                Título da realização Título da realização Título da realização
                 </Typography>
                 <Button variant="contained" className={classes.statusButton}>
                 Em andamento
                 </Button>
               </div>
               <div>
-                <img src={"https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"} alt="Imagem" />
+                <img src={"https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"}className={classes.thumbnail} alt="Imagem" />
               </div>
             </div>
-            
-            <ListInfoTema />
-
+                {/* <ListInfoTema  showBasicInfo={false}/> */}
+          </AccordionDetails>
+          <Divider></Divider>
+          <AccordionDetails>
+            <div style={{ display: 'flex' }}>
+              <div style={{ flex: 1 }}>
+                {/* Conteúdo do lado esquerdo */}
+                <Typography style={{paddingLeft:20}} gutterBottom>
+                Título da realização Título da realização Título da realização
+                </Typography>
+                <Button variant="contained" className={classes.statusButton}>
+                Em andamento
+                </Button>
+              </div>
+              <div>
+                <img src={"https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"}className={classes.thumbnail} alt="Imagem" />
+              </div>
+            </div>
+                {/* <ListInfoTema  showBasicInfo={false}/> */}
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
@@ -66,7 +88,7 @@ export default function AccordionTemas() {
             aria-controls="panel2bh-content"
             id="panel2bh-header"
           >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>Educação</Typography>
+            <Typography style={{paddingLeft:20}} sx={{ width: '50%', flexShrink: 0 }}>Educação</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
             43 entregas
             </Typography>
@@ -83,7 +105,7 @@ export default function AccordionTemas() {
             aria-controls="panel3bh-content"
             id="panel3bh-header"
           >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>
+            <Typography style={{paddingLeft:20}} sx={{ width: '50%', flexShrink: 0 }}>
               Zeladoria
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
@@ -102,7 +124,7 @@ export default function AccordionTemas() {
             aria-controls="panel4bh-content"
             id="panel4bh-header"
           >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>Segurança pública</Typography>
+            <Typography style={{paddingLeft:20}} sx={{ width: '50%', flexShrink: 0 }}>Segurança pública</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
             23 entregas
             </Typography>
