@@ -29,37 +29,3 @@ export const requestAllCidades = () => {
     type: REQUEST_ALL_CIDADES,
   };
 };
-
-// Dados agregados aba tema cidade
-export const LOAD_DADOS_AGREGAGOS_ABA_TEMA_CIDADE = "LOAD_DADOS_AGREGAGOS_ABA_TEMA_CIDADE";
-
-export const loadDadosAgregadosAbaTemaCidade = () => {
-  return {
-    type: LOAD_DADOS_AGREGAGOS_ABA_TEMA_CIDADE,
-  };
-};
-
-export const REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS = "REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS";
-
-export const requestDadosAgregadosAbaTemaCidadeSuccess = (dataFromServer) => {
-  return {
-    type: REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS,
-    payload: dataFromServer,
-  };
-};
-
-export const REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED = "REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED";
-
-export const requestDadosAgregadosAbaTemaCidadeFailed = () => {
-  return {
-    type: REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED,
-  };
-};
-
-export const REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE = "REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE";
-
-export const requestDadosAgregadosAbaTemaCidade = () => {
-  return {
-    type: REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE,
-  };
-};

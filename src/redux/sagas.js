@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -43,13 +43,9 @@ import {
 } from "./points/actions";
 import { 
   LOAD_ALL_CIDADES, 
-  LOAD_DADOS_AGREGAGOS_ABA_TEMA_CIDADE, 
   requestAllCidades, 
   requestAllCidadesFailed, 
-  requestAllCidadesSuccess,
-  requestDadosAgregadosAbaTemaCidade,
-  requestDadosAgregadosAbaTemaCidadeFailed,
-  requestDadosAgregadosAbaTemaCidadeSuccess
+  requestAllCidadesSuccess
 } from "./cidade/actions";
 import { byCategory } from "../components/modals/editCategory/categoryItems";
 import {
@@ -198,7 +194,7 @@ function* workerLoadAllPoints() {
     console.log("data: ", data)
     yield put(requestAllPointsSuccess(data));
   } catch (error) {
-    console.error("Erro: "+error);
+    console.error("Erro2: "+error);
     yield put(requestAllPointsFailed());
   }
 }
@@ -215,7 +211,7 @@ function* workerLoadAllCidades() {
     console.log(data)
     yield put(requestAllCidadesSuccess(data));
   } catch (error) {
-    console.error("Erro: "+error);
+    console.error("Erro2: "+error);
     yield put(requestAllCidadesFailed());
   }
 }
@@ -223,23 +219,6 @@ function* workerLoadAllCidades() {
 export function* watchLoadAllCidades() {
   yield takeEvery(LOAD_ALL_CIDADES, workerLoadAllCidades);
 }
-
-function* workerLoadDadosAgregadosAbaTemaCidade() {
-  try {
-    yield put(requestDadosAgregadosAbaTemaCidade());
-    const data = yield call(getDadosAgregadosAbaTemaCidade);
-    console.log("dados aba cidade: ", data)
-    yield put(requestDadosAgregadosAbaTemaCidadeSuccess(data));
-  } catch (error) {
-    console.error("Erro: "+ error);
-    yield put(requestDadosAgregadosAbaTemaCidadeFailed());
-  }
-}
-
-export function* watchLoadDadosAgregadosAbaTemaCidade() {
-  yield takeEvery(LOAD_DADOS_AGREGAGOS_ABA_TEMA_CIDADE, workerLoadDadosAgregadosAbaTemaCidade);
-}
-
 
 function* workerLoadBairroData(action) {
   try {
@@ -321,7 +300,6 @@ export function* rootSaga() {
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
     fork(watchLoadAllCidades),
-    fork(watchLoadDadosAgregadosAbaTemaCidade),
     fork(watchLoadBairroData),
     fork(watchLoadSubprefeituraData),
     fork(watchLoadAllPoints),
