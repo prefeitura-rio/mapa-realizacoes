@@ -63,3 +63,37 @@ export const requestDadosAgregadosAbaTemaCidade = () => {
     type: REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE,
   };
 };
+
+// Dados agregados aba programas cidade
+export const LOAD_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE = "LOAD_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE";
+
+export const loadDadosAgregadosAbaProgramasCidade = () => {
+  return {
+    type: LOAD_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_SUCCESS = "REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_SUCCESS";
+
+export const requestDadosAgregadosAbaProgramasCidadeSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_FAILED = "REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_FAILED";
+
+export const requestDadosAgregadosAbaProgramasCidadeFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE = "REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE";
+
+export const requestDadosAgregadosAbaProgramasCidade = () => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE,
+  };
+};

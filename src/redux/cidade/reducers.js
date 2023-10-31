@@ -2,6 +2,9 @@ import {
   REQUEST_ALL_CIDADES,
   REQUEST_ALL_CIDADES_FAILED,
   REQUEST_ALL_CIDADES_SUCCESS,
+  REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE,
+  REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_FAILED,
+  REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_SUCCESS,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS,
@@ -55,6 +58,27 @@ const cidadesReducer = (state = defaultState, action) => {
       return {
         ...state,
         dadosAgregadosAbaTemaCidade: null,
+        loading: false,
+        error: true,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE:
+      return {
+        ...state,
+        dadosAgregadosAbaProgramasCidade: null,
+        loading: true,
+        error: false,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_SUCCESS:
+      return {
+        ...state,
+        dadosAgregadosAbaProgramasCidade: action.payload,
+        loading: false,
+        error: false,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_FAILED:
+      return {
+        ...state,
+        dadosAgregadosAbaProgramasCidade: null,
         loading: false,
         error: true,
       };

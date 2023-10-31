@@ -5,10 +5,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, Divider, makeStyles } from '@material-ui/core';
-import ListInfoSumario from './ListInfoSumario';
-import ListInfoTema from './ListInfoTema';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 
 const useStyles = makeStyles(()=>({

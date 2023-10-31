@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade, getDadosAgregadosAbaProgramasCidade } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -43,10 +43,14 @@ import {
 } from "./points/actions";
 import { 
   LOAD_ALL_CIDADES, 
+  LOAD_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE, 
   LOAD_DADOS_AGREGAGOS_ABA_TEMA_CIDADE, 
   requestAllCidades, 
   requestAllCidadesFailed, 
   requestAllCidadesSuccess,
+  requestDadosAgregadosAbaProgramasCidade,
+  requestDadosAgregadosAbaProgramasCidadeFailed,
+  requestDadosAgregadosAbaProgramasCidadeSuccess,
   requestDadosAgregadosAbaTemaCidade,
   requestDadosAgregadosAbaTemaCidadeFailed,
   requestDadosAgregadosAbaTemaCidadeSuccess
@@ -240,6 +244,22 @@ export function* watchLoadDadosAgregadosAbaTemaCidade() {
   yield takeEvery(LOAD_DADOS_AGREGAGOS_ABA_TEMA_CIDADE, workerLoadDadosAgregadosAbaTemaCidade);
 }
 
+function* workerLoadDadosAgregadosAbaProgramasCidade() {
+  try {
+    yield put(requestDadosAgregadosAbaProgramasCidade());
+    const data = yield call(getDadosAgregadosAbaProgramasCidade);
+    console.log("dados aba cidade: ", data)
+    yield put(requestDadosAgregadosAbaProgramasCidadeSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaProgramasCidadeFailed());
+  }
+}
+
+export function* watchLoadDadosAgregadosAbaProgramasCidade() {
+  yield takeEvery(LOAD_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE, workerLoadDadosAgregadosAbaProgramasCidade);
+}
+
 
 function* workerLoadBairroData(action) {
   try {
@@ -322,6 +342,7 @@ export function* rootSaga() {
     fork(watchLoadAllPlaces),
     fork(watchLoadAllCidades),
     fork(watchLoadDadosAgregadosAbaTemaCidade),
+    fork(watchLoadDadosAgregadosAbaProgramasCidade),
     fork(watchLoadBairroData),
     fork(watchLoadSubprefeituraData),
     fork(watchLoadAllPoints),

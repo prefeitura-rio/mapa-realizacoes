@@ -960,3 +960,41 @@ export async function getDadosAgregadosAbaTemaCidade() {
 
   return res;
 }
+export async function getDadosAgregadosAbaProgramasCidade() {
+  var res =  [
+    {
+      id: 'panel1',
+      tema: 'Bairro Maravilha',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 5',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 6',
+          status: 'Concluído',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+    {
+      id: 'panel2',
+      tema: 'Reviver Centro',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 7',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 8',
+          status: 'Cancelada',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+  ];
+
+  return res;
+}
