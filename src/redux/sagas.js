@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade, getDadosAgregadosAbaProgramasCidade } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade, getDadosAgregadosAbaProgramasCidade, getDadosAgregadosAbaSumarioInfoBasicasCidade } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -44,6 +44,7 @@ import {
 import { 
   LOAD_ALL_CIDADES, 
   LOAD_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE, 
+  LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS, 
   LOAD_DADOS_AGREGAGOS_ABA_TEMA_CIDADE, 
   requestAllCidades, 
   requestAllCidadesFailed, 
@@ -51,6 +52,9 @@ import {
   requestDadosAgregadosAbaProgramasCidade,
   requestDadosAgregadosAbaProgramasCidadeFailed,
   requestDadosAgregadosAbaProgramasCidadeSuccess,
+  requestDadosAgregadosAbaSumarioInfoBasicasCidade,
+  requestDadosAgregadosAbaSumarioInfoBasicasCidadeFailed,
+  requestDadosAgregadosAbaSumarioInfoBasicasCidadeSuccess,
   requestDadosAgregadosAbaTemaCidade,
   requestDadosAgregadosAbaTemaCidadeFailed,
   requestDadosAgregadosAbaTemaCidadeSuccess
@@ -260,12 +264,28 @@ export function* watchLoadDadosAgregadosAbaProgramasCidade() {
   yield takeEvery(LOAD_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE, workerLoadDadosAgregadosAbaProgramasCidade);
 }
 
+function* workerLoadDadosAgregadosAbaSumarioInfoBasicasCidade() {
+  try {
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasCidade());
+    const data = yield call(getDadosAgregadosAbaSumarioInfoBasicasCidade);
+    console.log("dados aba cidade info basica: ", data)
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasCidadeSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasCidadeFailed());
+  }
+}
+
+export function* watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade() {
+  yield takeEvery(LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS, workerLoadDadosAgregadosAbaSumarioInfoBasicasCidade);
+}
+
 
 function* workerLoadBairroData(action) {
   try {
     yield put(requestBairroData());
     const data = yield call(getBairroInfo, toSnakeCase(action.payload));
-    // console.log("action.payload: ", data)
+    console.log("action.payload: ", data)
     yield put(requestBairroDataSuccess(data));
   } catch (error) {
     yield put(requestBairroDataFailed());
@@ -343,6 +363,7 @@ export function* rootSaga() {
     fork(watchLoadAllCidades),
     fork(watchLoadDadosAgregadosAbaTemaCidade),
     fork(watchLoadDadosAgregadosAbaProgramasCidade),
+    fork(watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade),
     fork(watchLoadBairroData),
     fork(watchLoadSubprefeituraData),
     fork(watchLoadAllPoints),

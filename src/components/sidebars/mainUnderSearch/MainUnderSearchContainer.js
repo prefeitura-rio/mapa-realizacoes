@@ -9,13 +9,15 @@ import {
 } from "./../../../redux/active/actions";
 import { setImagesType } from "../../../redux/images/actions";
 import { useEffect } from "react";
-import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
+import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaSumarioInfoBasicasCidade, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
 
 const MainUnderSearchContainer = (props) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadAllCidades());
+    dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
+    // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
     dispatch(loadDadosAgregadosAbaTemaCidade());
     dispatch(loadDadosAgregadosAbaProgramasCidade());
   }, []);
@@ -30,6 +32,7 @@ const MainUnderSearchContainer = (props) => {
         cidades={props.cidades}
         dadosAgregadosTema={props.dadosAgregadosTema}
         dadosAgregadosProgramas={props.dadosAgregadosProgramas}
+        dadosAgregadosInfoBasicaSumario={props.dadosAgregadosInfoBasicaSumario}
 
         // remove if not useful
         profile={props.profile}
@@ -50,6 +53,7 @@ const mapStateToProps = (state) => {
     cidades: state.cidades.all,
     dadosAgregadosTema: state.cidades.dadosAgregadosAbaTemaCidade,
     dadosAgregadosProgramas: state.cidades.dadosAgregadosAbaProgramasCidade,
+    dadosAgregadosInfoBasicaSumario: state.cidades.dadosAgregadosAbaSumarioInfoBasicas,
     images_cidade: state.images.allImagesCidade,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,

@@ -859,19 +859,19 @@ export async function getRealizacaoInfo(document) {
   return data;
 }
 export async function getBairroInfo(document) {
- return await db
- .collection("bairro")
- .doc(document)
- .get()
- .then((doc) => doc.data());
+  return await db
+    .collection("bairro")
+    .doc(document)
+    .get()
+    .then((doc) => doc.data());
 }
 
 export async function getSubprefeituraInfo(document) {
- return await db
- .collection("subprefeitura")
- .doc(document)
- .get()
- .then((doc) => doc.data());
+  return await db
+    .collection("subprefeitura")
+    .doc(document)
+    .get()
+    .then((doc) => doc.data());
 }
 
 
@@ -923,7 +923,7 @@ export async function uploadPhotoFirebase(file, keyword = "All") {
 // MOCK DATA
 
 export async function getDadosAgregadosAbaTemaCidade() {
-  var res =  [
+  var res = [
     {
       id: 'panel1',
       tema: 'Saúde',
@@ -961,7 +961,7 @@ export async function getDadosAgregadosAbaTemaCidade() {
   return res;
 }
 export async function getDadosAgregadosAbaProgramasCidade() {
-  var res =  [
+  var res = [
     {
       id: 'panel1',
       tema: 'Bairro Maravilha',
@@ -997,4 +997,68 @@ export async function getDadosAgregadosAbaProgramasCidade() {
   ];
 
   return res;
+}
+
+// @gabriel-gazola como eu não sei como você vai trazer as informações do fb, 
+// eu to buscando direto de lá, então os dados não estão "mockados" aqui.
+
+
+export async function getBairros() {
+  try {
+    const bairrosCollection = db.collection('bairro');
+
+    const querySnapshot = await bairrosCollection.get();
+    const bairrosArray = [];
+
+    querySnapshot.forEach((doc) => {
+      const bairroData = doc.data();
+      bairrosArray.push(bairroData);
+    });
+
+    return bairrosArray;
+  } catch (error) {
+    console.error('Erro ao obter bairros do Firebase:', error);
+    throw error;
+  }
+}
+
+export async function getDadosAgregadosAbaSumarioInfoBasicasCidade() {
+  try {
+    const bairros = await getBairros(); 
+
+    // Faza soma dos domicílios e habitantes dos bairros.
+    const resultado = bairros.reduce((acumulador, bairro) => {
+      acumulador.domicilios += bairro.domicilios;
+      acumulador.habitantes += bairro.habitantes;
+      return acumulador;
+    }, { domicilios: 0, habitantes: 0 });
+
+    return resultado;
+  } catch (error) {
+    console.error('Erro ao obter dados agregados da cidade:', error);
+    throw error;
+  }
+}
+
+
+export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
+  var realizacoes = [
+    {
+      titulo: 'Título da realização 5',
+      status: 'Em andamento',
+    },
+    {
+      titulo: 'Título da realização 6',
+      status: 'Concluído',
+    },
+    {
+      titulo: 'Título da realização 7',
+      status: 'Em andamento',
+    },
+    {
+      titulo: 'Título da realização 8',
+      status: 'Cancelada',
+    }
+  ]
+  return realizacoes;
 }

@@ -37,21 +37,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListInfoSumario = ({ cidadeInfo, bairroInfo }) => {
+const ListInfoSumario = ({ dadosAgregadosInfoBasicaSumario, bairroInfo }) => {
   const classes = useStyles();
 
   const listInfoSumario = [
   
-    // { text: content.programa, iconComponent: PublicIcon },
-    // { text: bairroInfo? bairroInfo.nome : undefined, iconComponent: () => <img src={programaIcon} alt="Programa" style={{width: '20px', height: '20px'}}/> },
-    // // { text: content.orgao, iconComponent: PublicIcon },
-    // { text: content.orgao, iconComponent: () => <img src={orgaoIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
-    // // { text: content.tema, iconComponent: PublicIcon },
-    // { text: content.tema, iconComponent: () => <img src={temaIcon} alt="Tema" style={{width: '20px', height: '20px'}}/> },
-    // // { text: content.bairro, iconComponent: PublicIcon },
-    // { text: content.bairro, iconComponent: () => <img src={bairroIcon} alt="Bairro" style={{width: '20px', height: '20px'}}/> },
-    // // { text: content.subprefeitura, iconComponent: PublicIcon},
-    // { text: "216 " + "obras em andamento", iconComponent: () => <img src={subprefeituraIcon} alt="Subprefeitura" style={{width: '20px', height: '20px'}}/> },
+   
+    { text:  dadosAgregadosInfoBasicaSumario? dadosAgregadosInfoBasicaSumario.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
+    { text:  dadosAgregadosInfoBasicaSumario? dadosAgregadosInfoBasicaSumario.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
+    
     { text:  bairroInfo? bairroInfo.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.ips + " IPS" : undefined, iconComponent: () => <img src={ipsIcon} alt="ips" style={{width: '20px', height: '20px'}}/> },

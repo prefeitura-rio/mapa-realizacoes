@@ -102,6 +102,7 @@ const MainUnderSearchBar = forwardRef(
     cidades,
     dadosAgregadosTema,
     dadosAgregadosProgramas,
+    dadosAgregadosInfoBasicaSumario,
     images_cidade,
     setPhotoGallery,
     setImagesType
@@ -126,6 +127,7 @@ const MainUnderSearchBar = forwardRef(
     cidades = cidades || [];
     dadosAgregadosTema = dadosAgregadosTema || [];
     dadosAgregadosProgramas = dadosAgregadosProgramas || [];
+    dadosAgregadosInfoBasicaSumario = dadosAgregadosInfoBasicaSumario || [];
 
 
     return (
@@ -134,6 +136,7 @@ const MainUnderSearchBar = forwardRef(
           <DadosAgregados
             dadosAgregadosTema={dadosAgregadosTema}
             dadosAgregadosProgramas={dadosAgregadosProgramas}
+            dadosAgregadosInfoBasicaSumario={dadosAgregadosInfoBasicaSumario}
             topImgSrc={rio_cover}
             cidades={cidades}
             tabValue={tabValue}

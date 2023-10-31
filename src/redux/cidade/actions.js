@@ -97,3 +97,37 @@ export const requestDadosAgregadosAbaProgramasCidade = () => {
     type: REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE,
   };
 };
+
+// Dados agregados aba sumário informações básicas cidade
+export const LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS = "LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS";
+
+export const loadDadosAgregadosAbaSumarioInfoBasicasCidade = () => {
+  return {
+    type: LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_SUCCESS = "REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_SUCCESS";
+
+export const requestDadosAgregadosAbaSumarioInfoBasicasCidadeSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_FAILED = "REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_FAILED";
+
+export const requestDadosAgregadosAbaSumarioInfoBasicasCidadeFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS = "REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS";
+
+export const requestDadosAgregadosAbaSumarioInfoBasicasCidade = () => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS,
+  };
+};

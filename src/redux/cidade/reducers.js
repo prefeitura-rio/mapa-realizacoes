@@ -5,6 +5,9 @@ import {
   REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE,
   REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_FAILED,
   REQUEST_DADOS_AGREGAGOS_ABA_PROGRAMAS_CIDADE_SUCCESS,
+  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS,
+  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_FAILED,
+  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_SUCCESS,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS,
@@ -79,6 +82,28 @@ const cidadesReducer = (state = defaultState, action) => {
       return {
         ...state,
         dadosAgregadosAbaProgramasCidade: null,
+        loading: false,
+        error: true,
+      };
+
+    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS:
+      return {
+        ...state,
+        dadosAgregadosAbaSumarioInfoBasicas: null,
+        loading: true,
+        error: false,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_SUCCESS:
+      return {
+        ...state,
+        dadosAgregadosAbaSumarioInfoBasicas: action.payload,
+        loading: false,
+        error: false,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_FAILED:
+      return {
+        ...state,
+        dadosAgregadosAbaSumarioInfoBasicas: null,
         loading: false,
         error: true,
       };
