@@ -104,6 +104,7 @@ import BasicInfo from "./BasicInfo";
     setImagesType,
     dadosAgregadosAbaTemaCidade,
     dadosAgregadosAbaTemaBairro,
+    dadosAgregadosAbaProgramaBairro,
     dadosAgregadosAbaProgramasCidade,
     dadosAgregadosAbaSumarioInfoBasicasCidade,
     dadosAgregadosAbaSumarioStatusEntregasBairro,
@@ -165,7 +166,7 @@ import BasicInfo from "./BasicInfo";
           <AccordionTemas dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade} dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}></AccordionTemas>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <AccordionProgramas dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade}></AccordionProgramas>
+          <AccordionProgramas dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade} dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}></AccordionProgramas>
         </TabPanel>
     
     </>

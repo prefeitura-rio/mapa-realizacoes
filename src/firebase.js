@@ -1036,7 +1036,7 @@ export async function getDadosAgregadosAbaTemaBairro() {
 
   return res;
 }
-export async function getDadosAgregadosAbaProgramasBairro() {
+export async function getDadosAgregadosAbaProgramaBairro() {
   var res = [
     {
       id: 'panel1',

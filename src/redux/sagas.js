@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade, getDadosAgregadosAbaTemaBairro, getDadosAgregadosAbaProgramasCidade, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregasCidade, getDadosAgregadosAbaSumarioStatusEntregasBairro } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade, getDadosAgregadosAbaTemaBairro, getDadosAgregadosAbaProgramasCidade, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregasCidade, getDadosAgregadosAbaSumarioStatusEntregasBairro, getDadosAgregadosAbaProgramasBairro, getDadosAgregadosAbaProgramaBairro } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -73,7 +73,7 @@ import {
 } from "./auth/actions";
 
 import firebase from "firebase/app";
-import { LOAD_ALL_BAIRROS, LOAD_BAIRRO_DATA, LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO, LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO, requestAllBAIRROSSuccess, requestAllBairros, requestAllBairrosFailed, requestBairroData, requestBairroDataFailed, requestBairroDataSuccess, requestDadosAgregadosAbaSumarioStatusEntregasBairro, requestDadosAgregadosAbaSumarioStatusEntregasBairroFailed, requestDadosAgregadosAbaSumarioStatusEntregasBairroSuccess,requestDadosAgregadosAbaTemaBairro, requestDadosAgregadosAbaTemaBairroFailed, requestDadosAgregadosAbaTemaBairroSuccess } from "./bairros/actions";
+import { LOAD_ALL_BAIRROS, LOAD_BAIRRO_DATA, LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO, LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO, LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO, requestAllBAIRROSSuccess, requestAllBairros, requestAllBairrosFailed, requestBairroData, requestBairroDataFailed, requestBairroDataSuccess, requestDadosAgregadosAbaProgramaBairro, requestDadosAgregadosAbaProgramaBairroFailed, requestDadosAgregadosAbaProgramaBairroSuccess, requestDadosAgregadosAbaSumarioStatusEntregasBairro, requestDadosAgregadosAbaSumarioStatusEntregasBairroFailed, requestDadosAgregadosAbaSumarioStatusEntregasBairroSuccess,requestDadosAgregadosAbaTemaBairro, requestDadosAgregadosAbaTemaBairroFailed, requestDadosAgregadosAbaTemaBairroSuccess } from "./bairros/actions";
 import { toSnakeCase } from "../utils/formatFile";
 import { LOAD_SUBPREFEITURA_DATA, requestSubprefeituraData, requestSubprefeituraDataFailed, requestSubprefeituraDataSuccess } from "./subprefeituras/actions";
 
@@ -254,7 +254,7 @@ function* workerLoadDadosAgregadosAbaTemaBairro() {
   try {
     yield put(requestDadosAgregadosAbaTemaBairro());
     const data = yield call(getDadosAgregadosAbaTemaBairro);
-    console.log("dados aba cidade: ", data)
+    console.log("dados aba tema bairro: ", data)
     yield put(requestDadosAgregadosAbaTemaBairroSuccess(data));
   } catch (error) {
     console.error("Erro: "+ error);
@@ -266,11 +266,27 @@ export function* watchLoadDadosAgregadosAbaTemaBairro() {
   yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO, workerLoadDadosAgregadosAbaTemaBairro);
 }
 
+function* workerLoadDadosAgregadosAbaProgramaBairro() {
+  try {
+    yield put(requestDadosAgregadosAbaProgramaBairro());
+    const data = yield call(getDadosAgregadosAbaProgramaBairro);
+    console.log("dados aba bairro programa: ", data)
+    yield put(requestDadosAgregadosAbaProgramaBairroSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaProgramaBairroFailed());
+  }
+}
+
+export function* watchLoadDadosAgregadosAbaProgramaBairro() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO, workerLoadDadosAgregadosAbaProgramaBairro);
+}
+
 function* workerLoadDadosAgregadosAbaProgramasCidade() {
   try {
     yield put(requestDadosAgregadosAbaProgramasCidade());
     const data = yield call(getDadosAgregadosAbaProgramasCidade);
-    console.log("dados aba cidade: ", data)
+    console.log("dados aba bairro programa cidade: ", data)
     yield put(requestDadosAgregadosAbaProgramasCidadeSuccess(data));
   } catch (error) {
     console.error("Erro: "+ error);
@@ -413,6 +429,7 @@ export function* rootSaga() {
     fork(watchLoadAllCidades),
     fork(watchLoadDadosAgregadosAbaTemaCidade),
     fork(watchLoadDadosAgregadosAbaTemaBairro),
+    fork(watchLoadDadosAgregadosAbaProgramaBairro),
     fork(watchLoadDadosAgregadosAbaProgramasCidade),
     fork(watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade),
     fork(watchLoadDadosAgregadosAbaSumarioStatusEntregasCidade),

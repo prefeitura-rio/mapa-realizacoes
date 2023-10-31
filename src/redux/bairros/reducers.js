@@ -3,6 +3,9 @@ import {
   REQUEST_BAIRRO_DATA,
   REQUEST_BAIRRO_DATA_FAILED,
   REQUEST_BAIRRO_DATA_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO,
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_SUCCESS,
   REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO,
   REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO_FAILED,
   REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO_SUCCESS,
@@ -102,6 +105,27 @@ const bairrosReducer = (state = defaultState, action) => {
         return {
           ...state,
           dadosAgregadosAbaTemaBairro: null,
+          loading: false,
+          error: true,
+        };
+      case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO:
+        return {
+          ...state,
+          dadosAgregadosAbaProgramaBairro: null,
+          loading: true,
+          error: false,
+        };
+      case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_SUCCESS:
+        return {
+          ...state,
+          dadosAgregadosAbaProgramaBairro: action.payload,
+          loading: false,
+          error: false,
+        };
+      case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_FAILED:
+        return {
+          ...state,
+          dadosAgregadosAbaProgramaBairro: null,
           loading: false,
           error: true,
         };

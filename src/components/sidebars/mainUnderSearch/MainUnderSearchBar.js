@@ -128,7 +128,6 @@ const MainUnderSearchBar = forwardRef(
 
     cidades = cidades || [];
     dadosAgregadosAbaTemaCidade = dadosAgregadosAbaTemaCidade || [];
-    dadosAgregadosAbaTemaBairro = dadosAgregadosAbaTemaBairro || [];
     dadosAgregadosAbaProgramasCidade = dadosAgregadosAbaProgramasCidade || [];
     dadosAgregadosAbaSumarioInfoBasicasCidade = dadosAgregadosAbaSumarioInfoBasicasCidade || [];
     dadosAgregadosAbaSumarioStatusEntregasCidade = dadosAgregadosAbaSumarioStatusEntregasCidade || [];
@@ -139,7 +138,6 @@ const MainUnderSearchBar = forwardRef(
       
           <DadosAgregados
             dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade}
-            dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}
             dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade}
             dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade}
             dadosAgregadosAbaSumarioStatusEntregasCidade={dadosAgregadosAbaSumarioStatusEntregasCidade}

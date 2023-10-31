@@ -88,6 +88,39 @@ export const requestDadosAgregadosAbaTemaBairro = () => {
     type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_BAIRRO,
   };
 };
+// Dados agregados aba programa BAIRRO
+export const LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO = "LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO";
+
+export const loadDadosAgregadosAbaProgramaBairro = () => {
+  return {
+    type: LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_SUCCESS = "REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_SUCCESS";
+
+export const requestDadosAgregadosAbaProgramaBairroSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_FAILED = "REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_FAILED";
+
+export const requestDadosAgregadosAbaProgramaBairroFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO = "REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO";
+
+export const requestDadosAgregadosAbaProgramaBairro = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO,
+  };
+};
 
 
 // Dados agregados aba sumário status das entregas do bairro

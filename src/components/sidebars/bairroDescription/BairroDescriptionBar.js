@@ -100,7 +100,8 @@ const BairroDescriptionBar = forwardRef(
     bairro,
     images_bairro,
     dadosAgregadosAbaSumarioStatusEntregasBairro,
-    dadosAgregadosAbaTemaBairro
+    dadosAgregadosAbaTemaBairro,
+    dadosAgregadosAbaProgramaBairro
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
@@ -124,6 +125,7 @@ const BairroDescriptionBar = forwardRef(
     images_bairro = images_bairro || [];
     dadosAgregadosAbaSumarioStatusEntregasBairro = dadosAgregadosAbaSumarioStatusEntregasBairro || [];
     dadosAgregadosAbaTemaBairro = dadosAgregadosAbaTemaBairro || [];
+    dadosAgregadosAbaProgramaBairro = dadosAgregadosAbaProgramaBairro || [];
 
 
     return (
@@ -140,6 +142,7 @@ const BairroDescriptionBar = forwardRef(
             images={images_bairro}
             dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro}
             dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}
+            dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}
           />
 
       </div>

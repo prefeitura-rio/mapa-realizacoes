@@ -5,7 +5,7 @@ import { connect, useDispatch } from "react-redux";
 import { setDescriptionData } from "../../../redux/place/actions";
 import { setActiveBar } from "../../../redux/active/actions";
 import { useEffect } from "react";
-import { loadBairroData, loadDadosAgregadosAbaSumarioStatusEntregasBairro, loadDadosAgregadosAbaTemaBairro } from "../../../redux/bairros/actions";
+import { loadBairroData, loadDadosAgregadosAbaProgramaBairro, loadDadosAgregadosAbaSumarioStatusEntregasBairro, loadDadosAgregadosAbaTemaBairro } from "../../../redux/bairros/actions";
 import { loadAllImagesBairro } from "../../../redux/images/actions";
 
 
@@ -16,6 +16,7 @@ const BairroDescriptionContainer = (props) => {
     dispatch(loadBairroData());
     dispatch(loadAllImagesBairro());
     dispatch(loadDadosAgregadosAbaTemaBairro());
+    dispatch(loadDadosAgregadosAbaProgramaBairro());
     dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro());
   }, []);
 
@@ -28,6 +29,7 @@ const BairroDescriptionContainer = (props) => {
         bairro={props.bairro}
         dadosAgregadosAbaSumarioStatusEntregasBairro={props.dadosAgregadosAbaSumarioStatusEntregasBairro}
         dadosAgregadosAbaTemaBairro={props.dadosAgregadosAbaTemaBairro}
+        dadosAgregadosAbaProgramaBairro={props.dadosAgregadosAbaProgramaBairro}
 
         // remove if not useful
         profile={props.profile}
@@ -48,6 +50,7 @@ const mapStateToProps = (state) => {
     dadosAgregadosAbaSumarioStatusEntregasBairro: state.bairros.dadosAgregadosAbaSumarioStatusEntregasBairro,
     images_bairro: state.images.allImagesBairro,
     dadosAgregadosAbaTemaBairro: state.bairros.dadosAgregadosAbaTemaBairro,
+    dadosAgregadosAbaProgramaBairro: state.bairros.dadosAgregadosAbaProgramaBairro,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
   };
