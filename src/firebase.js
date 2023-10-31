@@ -918,3 +918,45 @@ export async function uploadPhotoFirebase(file, keyword = "All") {
     console.error(e);
   }
 }
+
+
+// MOCK DATA
+
+export async function getDadosAgregadosAbaTemaCidade() {
+  var res =  [
+    {
+      id: 'panel1',
+      tema: 'Saúde',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 1',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 2',
+          status: 'Concluído',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+    {
+      id: 'panel2',
+      tema: 'Educação',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 3',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 4',
+          status: 'Cancelada',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+  ];
+
+  return res;
+}

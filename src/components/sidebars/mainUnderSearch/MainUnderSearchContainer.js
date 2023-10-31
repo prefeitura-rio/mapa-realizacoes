@@ -9,13 +9,14 @@ import {
 } from "./../../../redux/active/actions";
 import { setImagesType } from "../../../redux/images/actions";
 import { useEffect } from "react";
-import { loadAllCidades } from "../../../redux/cidade/actions";
+import { loadAllCidades, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
 
 const MainUnderSearchContainer = (props) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadAllCidades());
+    dispatch(loadDadosAgregadosAbaTemaCidade());
   }, []);
 
   return (
@@ -26,6 +27,7 @@ const MainUnderSearchContainer = (props) => {
         content={props.content}
         images_cidade={props.images_cidade}
         cidades={props.cidades}
+        dadosAgregadosTema={props.dadosAgregadosTema}
 
         // remove if not useful
         profile={props.profile}
@@ -44,6 +46,7 @@ const mapStateToProps = (state) => {
     descriptionData: state.place.descriptionData,
     content: state.place.content,
     cidades: state.cidades.all,
+    dadosAgregadosTema: state.cidades.dadosAgregadosAbaTemaCidade,
     images_cidade: state.images.allImagesCidade,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,

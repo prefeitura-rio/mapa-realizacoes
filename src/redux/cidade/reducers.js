@@ -2,6 +2,9 @@ import {
   REQUEST_ALL_CIDADES,
   REQUEST_ALL_CIDADES_FAILED,
   REQUEST_ALL_CIDADES_SUCCESS,
+  REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE,
+  REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED,
+  REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS,
 } from "./actions";
 
 const defaultState = {
@@ -30,6 +33,28 @@ const cidadesReducer = (state = defaultState, action) => {
       return {
         ...state,
         all: null,
+        loading: false,
+        error: true,
+      };
+
+    case REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE:
+      return {
+        ...state,
+        dadosAgregadosAbaTemaCidade: null,
+        loading: true,
+        error: false,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS:
+      return {
+        ...state,
+        dadosAgregadosAbaTemaCidade: action.payload,
+        loading: false,
+        error: false,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED:
+      return {
+        ...state,
+        dadosAgregadosAbaTemaCidade: null,
         loading: false,
         error: true,
       };

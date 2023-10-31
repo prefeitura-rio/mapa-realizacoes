@@ -7,6 +7,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, Divider, makeStyles } from '@material-ui/core';
 import ListInfoSumario from './ListInfoSumario';
 import ListInfoTema from './ListInfoTema';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 
 const useStyles = makeStyles(()=>({
@@ -25,116 +27,46 @@ const useStyles = makeStyles(()=>({
   }
 }))
 
-export default function AccordionTemas() {
-    const [expanded, setExpanded] = React.useState(false);
-  
-    const classes = useStyles();
-    const handleChange = (panel) => (event, isExpanded) => {
-      setExpanded(isExpanded ? panel : false);
-    };
-  
-    return (
-      <div>
-        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
-          >
-            <Typography style={{paddingLeft:20}} sx={{ width: '50%', flexShrink: 0 }}>
-              Saúde
+export default function AccordionTemas({dadosAgregadosTema}) {
+  const [expanded, setExpanded] = useState(false);
+  const [data, setData] = useState([]);
+
+  const classes = useStyles();
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  return (
+    <div>
+      {dadosAgregadosTema.map((item) => (
+        <Accordion key={item.id} expanded={expanded === item.id} onChange={handleChange(item.id)}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${item.id}-content`} id={`${item.id}-header`}>
+            <Typography style={{ paddingLeft: 20 }} sx={{ width: '50%', flexShrink: 0 }}>
+              {item.tema}
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>47 entregas</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>{item.realizacoes.length} entregas</Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <div style={{ display: 'flex' }}>
-              <div style={{ flex: 1 }}>
-                {/* Conteúdo do lado esquerdo */}
-                <Typography style={{paddingLeft:20}} gutterBottom>
-                Título da realização Título da realização Título da realização
-                </Typography>
-                <Button variant="contained" className={classes.statusButton}>
-                Em andamento
-                </Button>
+          {item.realizacoes.map((realizacao, index) => (
+            <AccordionDetails key={index}>
+              <div style={{ display: 'flex' }}>
+                <div style={{ flex: 1 }}>
+                  <Typography style={{ paddingLeft: 20 }} gutterBottom>
+                    {realizacao.titulo}
+                  </Typography>
+                  <Button variant="contained" className={classes.statusButton}>
+                    {realizacao.status}
+                  </Button>
+                </div>
+                <div>
+                  <img src={realizacao.imageUrl} className={classes.thumbnail} alt="Imagem" />
+                </div>
               </div>
-              <div>
-                <img src={"https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"}className={classes.thumbnail} alt="Imagem" />
-              </div>
-            </div>
-                {/* <ListInfoTema  showBasicInfo={false}/> */}
-          </AccordionDetails>
-          <Divider></Divider>
-          <AccordionDetails>
-            <div style={{ display: 'flex' }}>
-              <div style={{ flex: 1 }}>
-                {/* Conteúdo do lado esquerdo */}
-                <Typography style={{paddingLeft:20}} gutterBottom>
-                Título da realização Título da realização Título da realização
-                </Typography>
-                <Button variant="contained" className={classes.statusButton}>
-                Em andamento
-                </Button>
-              </div>
-              <div>
-                <img src={"https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"}className={classes.thumbnail} alt="Imagem" />
-              </div>
-            </div>
-                {/* <ListInfoTema  showBasicInfo={false}/> */}
-          </AccordionDetails>
+            </AccordionDetails>
+          ))}
+          <Divider />
         </Accordion>
-        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2bh-content"
-            id="panel2bh-header"
-          >
-            <Typography style={{paddingLeft:20}} sx={{ width: '50%', flexShrink: 0 }}>Educação</Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-            43 entregas
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-            Educação, conteúdo sobre Educação
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3bh-content"
-            id="panel3bh-header"
-          >
-            <Typography style={{paddingLeft:20}} sx={{ width: '50%', flexShrink: 0 }}>
-              Zeladoria
-            </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-            41 entregas
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-            Zeladoria, conteúdo sobre zeladoria
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel4bh-content"
-            id="panel4bh-header"
-          >
-            <Typography style={{paddingLeft:20}} sx={{ width: '50%', flexShrink: 0 }}>Segurança pública</Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-            23 entregas
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-            Segurança pública, conteúdo sobre segurança pública
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      </div>
-    );
-  }
+      ))}
+    </div>
+  );
+}
