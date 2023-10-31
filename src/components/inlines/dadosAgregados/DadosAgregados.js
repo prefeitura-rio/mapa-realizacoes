@@ -101,7 +101,8 @@ import BasicInfo from "./BasicInfo";
     setTabValue,
     images,
     setPhotoGallery,
-    setImagesType
+    setImagesType,
+    dadosAgregadosTema
   }) => {
     const classes = useStyles();
     return (
@@ -156,10 +157,10 @@ import BasicInfo from "./BasicInfo";
         </TabPanel>
 
         <TabPanel value={tabValue} index={1}>
-          <AccordionTemas></AccordionTemas>
+          <AccordionTemas dadosAgregadosTema={dadosAgregadosTema}></AccordionTemas>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <AccordionProgramas></AccordionProgramas>
+          <AccordionProgramas ></AccordionProgramas>
         </TabPanel>
     
     </>
