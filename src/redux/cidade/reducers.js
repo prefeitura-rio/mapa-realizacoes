@@ -8,6 +8,9 @@ import {
   REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS,
   REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_FAILED,
   REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS_SUCCESS,
+  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS,
+  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_FAILED,
+  REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_SUCCESS,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_FAILED,
   REQUEST_DADOS_AGREGAGOS_ABA_TEMA_CIDADE_SUCCESS,
@@ -104,6 +107,28 @@ const cidadesReducer = (state = defaultState, action) => {
       return {
         ...state,
         dadosAgregadosAbaSumarioInfoBasicas: null,
+        loading: false,
+        error: true,
+      };
+      
+    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS:
+      return {
+        ...state,
+        dadosAgregadosAbaSumarioStatusEntregas: null,
+        loading: true,
+        error: false,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_SUCCESS:
+      return {
+        ...state,
+        dadosAgregadosAbaSumarioStatusEntregas: action.payload,
+        loading: false,
+        error: false,
+      };
+    case REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_FAILED:
+      return {
+        ...state,
+        dadosAgregadosAbaSumarioStatusEntregas: null,
         loading: false,
         error: true,
       };

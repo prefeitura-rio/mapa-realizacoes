@@ -1049,7 +1049,7 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
     },
     {
       titulo: 'Título da realização 6',
-      status: 'Concluído',
+      status: 'Concluída',
     },
     {
       titulo: 'Título da realização 7',
@@ -1058,7 +1058,46 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
     {
       titulo: 'Título da realização 8',
       status: 'Cancelada',
-    }
+    },
+    {
+      titulo: 'Título da realização 9',
+      status: 'Cancelada',
+    },
+    {
+      titulo: 'Título da realização 10',
+      status: 'Interrompida',
+    },
+    {
+      titulo: 'Título da realização 11',
+      status: 'Em licitação',
+    },
+    // array com todas as realizções da cidade 
   ]
-  return realizacoes;
+   const contagemStatus = {
+    em_andamento: 0,
+    concluida: 0,
+    interrompida: 0,
+    em_licitacao:0,
+  };
+
+  realizacoes.forEach((realizacao) => {
+    switch (realizacao.status) {
+      case 'Em andamento':
+        contagemStatus.em_andamento++;
+        break;
+      case 'Concluída':
+        contagemStatus.concluida++;
+        break;
+      case 'Cancelada':
+        contagemStatus.interrompida++;
+        break;
+      case 'Em licitação':
+        contagemStatus.em_licitacao++;
+        break;
+      default:
+        break;
+    }
+  });
+
+  return contagemStatus;
 }

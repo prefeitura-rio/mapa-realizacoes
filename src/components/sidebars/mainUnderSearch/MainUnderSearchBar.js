@@ -103,6 +103,7 @@ const MainUnderSearchBar = forwardRef(
     dadosAgregadosTema,
     dadosAgregadosProgramas,
     dadosAgregadosInfoBasicaSumario,
+    dadosAgregadosStatusEntregasSumario,
     images_cidade,
     setPhotoGallery,
     setImagesType
@@ -128,6 +129,7 @@ const MainUnderSearchBar = forwardRef(
     dadosAgregadosTema = dadosAgregadosTema || [];
     dadosAgregadosProgramas = dadosAgregadosProgramas || [];
     dadosAgregadosInfoBasicaSumario = dadosAgregadosInfoBasicaSumario || [];
+    dadosAgregadosStatusEntregasSumario = dadosAgregadosStatusEntregasSumario || [];
 
 
     return (
@@ -137,8 +139,9 @@ const MainUnderSearchBar = forwardRef(
             dadosAgregadosTema={dadosAgregadosTema}
             dadosAgregadosProgramas={dadosAgregadosProgramas}
             dadosAgregadosInfoBasicaSumario={dadosAgregadosInfoBasicaSumario}
-            topImgSrc={rio_cover}
+            dadosAgregadosStatusEntregasSumario={dadosAgregadosStatusEntregasSumario}
             cidades={cidades}
+            topImgSrc={rio_cover}
             tabValue={tabValue}
             setTabValue={setTabValue}
             images={images_cidade}

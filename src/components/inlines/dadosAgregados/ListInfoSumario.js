@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListInfoSumario = ({ dadosAgregadosInfoBasicaSumario, bairroInfo }) => {
+const ListInfoSumario = ({ dadosAgregadosInfoBasicaSumario,dadosAgregadosStatusEntregasSumario, bairroInfo }) => {
   const classes = useStyles();
 
   const listInfoSumario = [
@@ -55,10 +55,10 @@ const ListInfoSumario = ({ dadosAgregadosInfoBasicaSumario, bairroInfo }) => {
 
    const statusList = [
     // Adicione os itens para sua nova lista aqui
-    { text: "Concluído " + "999 " + "obras" },
-    { text: "Em andamento " + "42 " + "obras"},
-    { text: "Interrompida " + "10 " + "obras" },
-    { text: "Em licitação " + "5 " + "obras" },
+    { text: dadosAgregadosStatusEntregasSumario.concluida? "Concluído " + dadosAgregadosStatusEntregasSumario.concluida + " obras" : undefined},
+    { text: dadosAgregadosStatusEntregasSumario.em_andamento? "Em andamento " + dadosAgregadosStatusEntregasSumario.em_andamento  + " obras" : undefined},
+    { text: dadosAgregadosStatusEntregasSumario.interrompida? "Interrompida " + dadosAgregadosStatusEntregasSumario.interrompida  + " obras" : undefined},
+    { text: dadosAgregadosStatusEntregasSumario.em_licitacao? "Em licitação " + dadosAgregadosStatusEntregasSumario.em_licitacao  + " obras" : undefined},
  
   ];
 

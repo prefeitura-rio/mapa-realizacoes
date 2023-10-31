@@ -131,3 +131,37 @@ export const requestDadosAgregadosAbaSumarioInfoBasicasCidade = () => {
     type: REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS,
   };
 };
+
+// Dados agregados aba sumário status das entregas da cidade
+export const LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS = "LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS";
+
+export const loadDadosAgregadosAbaSumarioStatusEntregasCidade = () => {
+  return {
+    type: LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_SUCCESS = "REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_SUCCESS";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasCidadeSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_FAILED = "REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_FAILED";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasCidadeFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS = "REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasCidade = () => {
+  return {
+    type: REQUEST_DADOS_AGREGAGOS_ABA_SUMARIO_STATUS_ENTREGAS,
+  };
+};

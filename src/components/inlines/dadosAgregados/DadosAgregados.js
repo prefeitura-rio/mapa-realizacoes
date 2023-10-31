@@ -104,7 +104,8 @@ import BasicInfo from "./BasicInfo";
     setImagesType,
     dadosAgregadosTema,
     dadosAgregadosProgramas,
-    dadosAgregadosInfoBasicaSumario
+    dadosAgregadosInfoBasicaSumario,
+    dadosAgregadosStatusEntregasSumario
   }) => {
     const classes = useStyles();
     return (
@@ -144,7 +145,7 @@ import BasicInfo from "./BasicInfo";
         <TabPanel value={tabValue} index={0}>
           <br></br>
           <br></br>
-          {cidades && cidades.length > 0 && <ListInfoSumario dadosAgregadosInfoBasicaSumario={dadosAgregadosInfoBasicaSumario} cidadeInfo={cidades[0]} />}
+          {cidades && cidades.length > 0 && <ListInfoSumario dadosAgregadosStatusEntregasSumario={dadosAgregadosStatusEntregasSumario} dadosAgregadosInfoBasicaSumario={dadosAgregadosInfoBasicaSumario} cidadeInfo={cidades[0]} />}
           {bairro && <ListInfoSumario bairroInfo={bairro} />}
 
           <Divider />

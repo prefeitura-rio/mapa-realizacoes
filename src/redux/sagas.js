@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade, getDadosAgregadosAbaProgramasCidade, getDadosAgregadosAbaSumarioInfoBasicasCidade } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade, getDadosAgregadosAbaProgramasCidade, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregasCidade } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -55,6 +55,9 @@ import {
   requestDadosAgregadosAbaSumarioInfoBasicasCidade,
   requestDadosAgregadosAbaSumarioInfoBasicasCidadeFailed,
   requestDadosAgregadosAbaSumarioInfoBasicasCidadeSuccess,
+  requestDadosAgregadosAbaSumarioStatusEntregasCidade,
+  requestDadosAgregadosAbaSumarioStatusEntregasCidadeFailed,
+  requestDadosAgregadosAbaSumarioStatusEntregasCidadeSuccess,
   requestDadosAgregadosAbaTemaCidade,
   requestDadosAgregadosAbaTemaCidadeFailed,
   requestDadosAgregadosAbaTemaCidadeSuccess
@@ -280,6 +283,22 @@ export function* watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade() {
   yield takeEvery(LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS, workerLoadDadosAgregadosAbaSumarioInfoBasicasCidade);
 }
 
+function* workerLoadDadosAgregadosAbaSumarioStatusEntregasCidade() {
+  try {
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasCidade());
+    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregasCidade);
+    console.log("dados aba cidade status entregas: ", data)
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasCidadeSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasCidadeFailed());
+  }
+}
+
+export function* watchLoadDadosAgregadosAbaSumarioStatusEntregasCidade() {
+  yield takeEvery(LOAD_DADOS_AGREGAGOS_ABA_SUMARIO_INFO_BASICAS, workerLoadDadosAgregadosAbaSumarioStatusEntregasCidade);
+}
+
 
 function* workerLoadBairroData(action) {
   try {
@@ -364,6 +383,7 @@ export function* rootSaga() {
     fork(watchLoadDadosAgregadosAbaTemaCidade),
     fork(watchLoadDadosAgregadosAbaProgramasCidade),
     fork(watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade),
+    fork(watchLoadDadosAgregadosAbaSumarioStatusEntregasCidade),
     fork(watchLoadBairroData),
     fork(watchLoadSubprefeituraData),
     fork(watchLoadAllPoints),

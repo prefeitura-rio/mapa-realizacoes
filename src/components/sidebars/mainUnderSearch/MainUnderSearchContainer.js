@@ -9,7 +9,7 @@ import {
 } from "./../../../redux/active/actions";
 import { setImagesType } from "../../../redux/images/actions";
 import { useEffect } from "react";
-import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaSumarioInfoBasicasCidade, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
+import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaSumarioInfoBasicasCidade, loadDadosAgregadosAbaSumarioStatusEntregasCidade, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
 
 const MainUnderSearchContainer = (props) => {
 
@@ -17,7 +17,7 @@ const MainUnderSearchContainer = (props) => {
   useEffect(() => {
     dispatch(loadAllCidades());
     dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
-    // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
+    dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
     dispatch(loadDadosAgregadosAbaTemaCidade());
     dispatch(loadDadosAgregadosAbaProgramasCidade());
   }, []);
@@ -33,6 +33,7 @@ const MainUnderSearchContainer = (props) => {
         dadosAgregadosTema={props.dadosAgregadosTema}
         dadosAgregadosProgramas={props.dadosAgregadosProgramas}
         dadosAgregadosInfoBasicaSumario={props.dadosAgregadosInfoBasicaSumario}
+        dadosAgregadosStatusEntregasSumario={props.dadosAgregadosStatusEntregasSumario}
 
         // remove if not useful
         profile={props.profile}
@@ -54,6 +55,7 @@ const mapStateToProps = (state) => {
     dadosAgregadosTema: state.cidades.dadosAgregadosAbaTemaCidade,
     dadosAgregadosProgramas: state.cidades.dadosAgregadosAbaProgramasCidade,
     dadosAgregadosInfoBasicaSumario: state.cidades.dadosAgregadosAbaSumarioInfoBasicas,
+    dadosAgregadosStatusEntregasSumario: state.cidades.dadosAgregadosAbaSumarioStatusEntregas,
     images_cidade: state.images.allImagesCidade,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
