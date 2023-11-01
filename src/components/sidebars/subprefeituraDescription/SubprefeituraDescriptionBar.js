@@ -99,6 +99,10 @@ const SubprefeituraDescriptionBar = forwardRef(
     setUnderSearchBar,
     subprefeitura,
     images_subprefeitura,
+    dadosAgregadosAbaTemaSubprefeitura,
+    dadosAgregadosAbaProgramasSubprefeitura,
+    dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
+    dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
@@ -120,6 +124,10 @@ const SubprefeituraDescriptionBar = forwardRef(
 
     subprefeitura = subprefeitura || [];
     images_subprefeitura = images_subprefeitura || [];
+    dadosAgregadosAbaTemaSubprefeitura = dadosAgregadosAbaTemaSubprefeitura || [];
+    dadosAgregadosAbaProgramasSubprefeitura = dadosAgregadosAbaProgramasSubprefeitura || [];
+    dadosAgregadosAbaSumarioInfoBasicasSubprefeitura = dadosAgregadosAbaSumarioInfoBasicasSubprefeitura || [];
+    dadosAgregadosAbaSumarioStatusEntregasSubprefeitura = dadosAgregadosAbaSumarioStatusEntregasSubprefeitura || [];
 
 
     return (

@@ -5,7 +5,7 @@ import { connect, useDispatch } from "react-redux";
 import { setDescriptionData } from "../../../redux/place/actions";
 import { setActiveBar } from "../../../redux/active/actions";
 import { useEffect } from "react";
-import { loadSubprefeituraData } from "../../../redux/subprefeituras/actions";
+import { loadDadosAgregadosAbaProgramasSubprefeitura, loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura, loadDadosAgregadosAbaTemaSubprefeitura, loadSubprefeituraData } from "../../../redux/subprefeituras/actions";
 import { loadAllImagesSubprefeitura } from "../../../redux/images/actions";
 
 
@@ -15,6 +15,10 @@ const SubprefeituraDescriptionContainer = (props) => {
   useEffect(() => {
     dispatch(loadSubprefeituraData());
     dispatch(loadAllImagesSubprefeitura());
+    dispatch(loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura());
+    dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura());
+    dispatch(loadDadosAgregadosAbaTemaSubprefeitura());
+    dispatch(loadDadosAgregadosAbaProgramasSubprefeitura());
   }, []);
 
   return (
@@ -24,6 +28,10 @@ const SubprefeituraDescriptionContainer = (props) => {
         setDescriptionData={props.setDescriptionData}
         images_subprefeitura={props.images_subprefeitura}
         subprefeitura={props.subprefeitura}
+        dadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaTemaSubprefeitura}
+        dadosAgregadosAbaProgramasSubdadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaProgramasSubdadosAgregadosAbaTemaSubprefeitura}
+        dadosAgregadosAbaSumarioInfoBasicasSubdadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaSumarioInfoBasicasSubdadosAgregadosAbaTemaSubprefeitura}
+        dadosAgregadosAbaSumarioStatusEntregasSubdadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaSumarioStatusEntregasSubdadosAgregadosAbaTemaSubprefeitura}
 
         // remove if not useful
         profile={props.profile}
@@ -44,6 +52,11 @@ const mapStateToProps = (state) => {
     images_subprefeitura: state.images.allImagesSubprefeitura,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
+    dadosAgregadosAbaTemaSubprefeitura: state.subprefeituras.dadosAgregadosAbaTemaSubprefeitura,
+    dadosAgregadosAbaProgramasSubprefeitura: state.subprefeituras.dadosAgregadosAbaProgramasSubprefeitura,
+    dadosAgregadosAbaSumarioInfoBasicasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
+    dadosAgregadosAbaSumarioStatusEntregasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
+    
   };
 };
 

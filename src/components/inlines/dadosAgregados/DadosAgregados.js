@@ -102,13 +102,18 @@ import BasicInfo from "./BasicInfo";
     images,
     setPhotoGallery,
     setImagesType,
-    dadosAgregadosAbaTemaCidade,
     dadosAgregadosAbaTemaBairro,
     dadosAgregadosAbaProgramaBairro,
+    dadosAgregadosAbaSumarioStatusEntregasBairro,
+    dadosAgregadosAbaTemaCidade,
     dadosAgregadosAbaProgramasCidade,
     dadosAgregadosAbaSumarioInfoBasicasCidade,
-    dadosAgregadosAbaSumarioStatusEntregasBairro,
-    dadosAgregadosAbaSumarioStatusEntregasCidade
+    dadosAgregadosAbaSumarioStatusEntregasCidade,
+    dadosAgregadosAbaTemaSubprefeitura,
+    dadosAgregadosAbaProgramasSubprefeitura,
+    dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
+    dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
+
   }) => {
     const classes = useStyles();
     return (
@@ -163,10 +168,10 @@ import BasicInfo from "./BasicInfo";
         </TabPanel>
 
         <TabPanel value={tabValue} index={1}>
-          <AccordionTemas dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade} dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}></AccordionTemas>
+          <AccordionTemas dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade} dadosAgregadosAbaTemaSubprefeitura={dadosAgregadosAbaTemaSubprefeitura} dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}></AccordionTemas>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <AccordionProgramas dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade} dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}></AccordionProgramas>
+          <AccordionProgramas dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade} dadosAgregadosAbaProgramasSubprefeitura={dadosAgregadosAbaProgramasSubprefeitura} dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}></AccordionProgramas>
         </TabPanel>
     
     </>

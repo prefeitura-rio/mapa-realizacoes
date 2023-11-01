@@ -38,10 +38,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ListInfoSumario = ({ 
-  dadosAgregadosAbaSumarioInfoBasicasCidade,
-  dadosAgregadosAbaSumarioStatusEntregasBairro, 
-  dadosAgregadosAbaSumarioStatusEntregasCidade, 
   bairroInfo, 
+  dadosAgregadosAbaSumarioStatusEntregasBairro, 
+  dadosAgregadosAbaSumarioInfoBasicasCidade,
+  dadosAgregadosAbaSumarioStatusEntregasCidade, 
+  dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
+  dadosAgregadosAbaSumarioStatusEntregasSubprefeitura, 
 }) => {
 
   const classes = useStyles();
@@ -52,13 +54,17 @@ const ListInfoSumario = ({
     { text:  dadosAgregadosAbaSumarioInfoBasicasCidade? dadosAgregadosAbaSumarioInfoBasicasCidade.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     { text:  dadosAgregadosAbaSumarioInfoBasicasCidade? dadosAgregadosAbaSumarioInfoBasicasCidade.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     
+   //subprefeitura
+    { text:  dadosAgregadosAbaSumarioInfoBasicasSubprefeitura? dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
+    { text:  dadosAgregadosAbaSumarioInfoBasicasSubprefeitura? dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
+    
     //bairro
     { text:  bairroInfo? bairroInfo.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.ips + " IPS" : undefined, iconComponent: () => <img src={ipsIcon} alt="ips" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.ranking_ips + "°" + " no rank IPS": undefined, iconComponent: () => <img src={ipsIcon} alt="rank ips" style={{width: '20px', height: '20px'}}/> },
    
-    //subprefeitura
+    
 
   ];
 
@@ -77,6 +83,13 @@ const ListInfoSumario = ({
     { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento  + " obras" : undefined},
     { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Interrompida " + dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida  + " obras" : undefined},
     { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Em licitação " + dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao  + " obras" : undefined},
+ 
+    //subprefeitura
+   
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Concluído " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento  + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Interrompida " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida  + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Em licitação " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao  + " obras" : undefined},
  
   ];
 

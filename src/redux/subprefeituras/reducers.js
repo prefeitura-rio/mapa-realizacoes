@@ -1,4 +1,16 @@
 import {
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA,
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA,
+  REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_FAILED,
+  REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_SUCCESS,
   REQUEST_SUBPREFEITURA_DATA,
   REQUEST_SUBPREFEITURA_DATA_FAILED,
   REQUEST_SUBPREFEITURA_DATA_SUCCESS,
@@ -57,6 +69,92 @@ const subprefeiturasReducer = (state = defaultState, action) => {
           ...state,
           descriptionData: action.payload,
         };
+        case REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA:
+          return {
+            ...state,
+            dadosAgregadosAbaTemaSubprefeitura: null,
+            loading: true,
+            error: false,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_SUCCESS:
+          return {
+            ...state,
+            dadosAgregadosAbaTemaSubprefeitura: action.payload,
+            loading: false,
+            error: false,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_FAILED:
+          return {
+            ...state,
+            dadosAgregadosAbaTemaSubprefeitura: null,
+            loading: false,
+            error: true,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA:
+          return {
+            ...state,
+            dadosAgregadosAbaProgramasSubprefeitura: null,
+            loading: true,
+            error: false,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_SUCCESS:
+          return {
+            ...state,
+            dadosAgregadosAbaProgramasSubprefeitura: action.payload,
+            loading: false,
+            error: false,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_FAILED:
+          return {
+            ...state,
+            dadosAgregadosAbaProgramasSubprefeitura: null,
+            loading: false,
+            error: true,
+          };
+    
+        case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA:
+          return {
+            ...state,
+            dadosAgregadosAbaSumarioInfoBasicasSubprefeitura: null,
+            loading: true,
+            error: false,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_SUCCESS:
+          return {
+            ...state,
+            dadosAgregadosAbaSumarioInfoBasicasSubprefeitura: action.payload,
+            loading: false,
+            error: false,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_FAILED:
+          return {
+            ...state,
+            dadosAgregadosAbaSumarioInfoBasicasSubprefeitura: null,
+            loading: false,
+            error: true,
+          };
+          
+        case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA:
+          return {
+            ...state,
+            dadosAgregadosAbaSumarioStatusEntregasSubprefeitura: null,
+            loading: true,
+            error: false,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_SUCCESS:
+          return {
+            ...state,
+            dadosAgregadosAbaSumarioStatusEntregasSubprefeitura: action.payload,
+            loading: false,
+            error: false,
+          };
+        case REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_FAILED:
+          return {
+            ...state,
+            dadosAgregadosAbaSumarioStatusEntregasSubprefeitura: null,
+            loading: false,
+            error: true,
+          };
       
   }
   return state;

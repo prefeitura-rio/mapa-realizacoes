@@ -24,7 +24,7 @@ const useStyles = makeStyles(()=>({
   }
 }))
 
-export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregadosAbaTemaBairro }) {
+export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregadosAbaTemaSubprefeitura, dadosAgregadosAbaTemaBairro }) {
   const [expanded, setExpanded] = useState(false);
   const [data, setData] = useState([]);
 
@@ -40,7 +40,7 @@ export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregad
     dataToRender = dadosAgregadosAbaTemaCidade;
   } else if (dadosAgregadosAbaTemaBairro) {
     dataToRender = dadosAgregadosAbaTemaBairro;
-  }
+  } else dataToRender = dadosAgregadosAbaTemaSubprefeitura;
 
 
   return (

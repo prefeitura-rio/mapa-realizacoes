@@ -24,7 +24,7 @@ const useStyles = makeStyles(()=>({
   }
 }))
 
-export default function AccordionProgramas({dadosAgregadosAbaProgramasCidade, dadosAgregadosAbaProgramaBairro}) {
+export default function AccordionProgramas({dadosAgregadosAbaProgramasCidade,dadosAgregadosAbaProgramasSubprefeitura, dadosAgregadosAbaProgramaBairro}) {
   const [expanded, setExpanded] = useState(false);
   const [data, setData] = useState([]);
 
@@ -39,7 +39,7 @@ export default function AccordionProgramas({dadosAgregadosAbaProgramasCidade, da
     dataToRender = dadosAgregadosAbaProgramasCidade;
   } else if (dadosAgregadosAbaProgramaBairro) {
     dataToRender = dadosAgregadosAbaProgramaBairro;
-  }
+  } else dataToRender = dadosAgregadosAbaProgramasSubprefeitura;
 
   return (
     <div>

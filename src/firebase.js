@@ -922,6 +922,84 @@ export async function uploadPhotoFirebase(file, keyword = "All") {
 
 // MOCK DATA
 
+// Município
+export async function getDadosAgregadosAbaSumarioInfoBasicasCidade() {
+  try {
+    const bairros = await getBairros(); 
+
+    // Faza soma dos domicílios e habitantes dos bairros.
+    const resultado = bairros.reduce((acumulador, bairro) => {
+      acumulador.domicilios += bairro.domicilios;
+      acumulador.habitantes += bairro.habitantes;
+      return acumulador;
+    }, { domicilios: 0, habitantes: 0 });
+
+    return resultado;
+  } catch (error) {
+    console.error('Erro ao obter dados agregados da cidade:', error);
+    throw error;
+  }
+}
+export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
+  var realizacoes = [
+    {
+      titulo: 'Título da realização 5',
+      status: 'Em andamento',
+    },
+    {
+      titulo: 'Título da realização 6',
+      status: 'Concluída',
+    },
+    {
+      titulo: 'Título da realização 7',
+      status: 'Em andamento',
+    },
+    {
+      titulo: 'Título da realização 8',
+      status: 'Cancelada',
+    },
+    {
+      titulo: 'Título da realização 9',
+      status: 'Cancelada',
+    },
+    {
+      titulo: 'Título da realização 10',
+      status: 'Interrompida',
+    },
+    {
+      titulo: 'Título da realização 11',
+      status: 'Em licitação',
+    },
+    // array com todas as realizções da cidade 
+  ]
+   const contagemStatus = {
+    em_andamento: 0,
+    concluida: 0,
+    interrompida: 0,
+    em_licitacao:0,
+  };
+
+  realizacoes.forEach((realizacao) => {
+    switch (realizacao.status) {
+      case 'Em andamento':
+        contagemStatus.em_andamento++;
+        break;
+      case 'Concluída':
+        contagemStatus.concluida++;
+        break;
+      case 'Cancelada':
+        contagemStatus.interrompida++;
+        break;
+      case 'Em licitação':
+        contagemStatus.em_licitacao++;
+        break;
+      default:
+        break;
+    }
+  });
+
+  return contagemStatus;
+}
 export async function getDadosAgregadosAbaTemaCidade() {
   var res = [
     {
@@ -997,6 +1075,68 @@ export async function getDadosAgregadosAbaProgramasCidade() {
   ];
 
   return res;
+}
+
+// Bairro
+export async function getDadosAgregadosAbaSumarioStatusEntregasBairro() {
+  var realizacoes = [
+    {
+      titulo: 'Título da realização 5',
+      status: 'Em andamento',
+    },
+    {
+      titulo: 'Título da realização 6',
+      status: 'Concluída',
+    },
+    {
+      titulo: 'Título da realização 7',
+      status: 'Em andamento',
+    },
+    {
+      titulo: 'Título da realização 8',
+      status: 'Cancelada',
+    },
+    {
+      titulo: 'Título da realização 9',
+      status: 'Cancelada',
+    },
+    {
+      titulo: 'Título da realização 10',
+      status: 'Interrompida',
+    },
+    {
+      titulo: 'Título da realização 11',
+      status: 'Em licitação',
+    },
+    // array com todas as realizções da cidade 
+  ]
+   const contagemStatus = {
+    em_andamento: 0,
+    concluida: 0,
+    interrompida: 0,
+    em_licitacao:0,
+  };
+
+  realizacoes.forEach((realizacao) => {
+    switch (realizacao.status) {
+      case 'Em andamento':
+        contagemStatus.em_andamento++;
+        break;
+      case 'Concluída':
+        contagemStatus.concluida++;
+        break;
+      case 'Cancelada':
+        contagemStatus.interrompida++;
+        break;
+      case 'Em licitação':
+        contagemStatus.em_licitacao++;
+        break;
+      default:
+        break;
+    }
+  });
+
+  return contagemStatus;
 }
 export async function getDadosAgregadosAbaTemaBairro() {
   var res = [
@@ -1074,11 +1214,8 @@ export async function getDadosAgregadosAbaProgramaBairro() {
 
   return res;
 }
-
 // @gabriel-gazola como eu não sei como você vai trazer as informações do fb, 
-// eu to buscando direto de lá, então os dados não estão "mockados" aqui.
-
-
+// eu to buscando direto de lá nesse caso aqui, então os dados não estão "mockados" aqui para esta função.
 export async function getBairros() {
   try {
     const bairrosCollection = db.collection('bairro');
@@ -1098,142 +1235,13 @@ export async function getBairros() {
   }
 }
 
-export async function getDadosAgregadosAbaSumarioInfoBasicasCidade() {
-  try {
-    const bairros = await getBairros(); 
 
-    // Faza soma dos domicílios e habitantes dos bairros.
-    const resultado = bairros.reduce((acumulador, bairro) => {
-      acumulador.domicilios += bairro.domicilios;
-      acumulador.habitantes += bairro.habitantes;
-      return acumulador;
-    }, { domicilios: 0, habitantes: 0 });
-
-    return resultado;
-  } catch (error) {
-    console.error('Erro ao obter dados agregados da cidade:', error);
-    throw error;
-  }
+// Subprefeitura
+export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
 }
-
-
-export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
-  var realizacoes = [
-    {
-      titulo: 'Título da realização 5',
-      status: 'Em andamento',
-    },
-    {
-      titulo: 'Título da realização 6',
-      status: 'Concluída',
-    },
-    {
-      titulo: 'Título da realização 7',
-      status: 'Em andamento',
-    },
-    {
-      titulo: 'Título da realização 8',
-      status: 'Cancelada',
-    },
-    {
-      titulo: 'Título da realização 9',
-      status: 'Cancelada',
-    },
-    {
-      titulo: 'Título da realização 10',
-      status: 'Interrompida',
-    },
-    {
-      titulo: 'Título da realização 11',
-      status: 'Em licitação',
-    },
-    // array com todas as realizções da cidade 
-  ]
-   const contagemStatus = {
-    em_andamento: 0,
-    concluida: 0,
-    interrompida: 0,
-    em_licitacao:0,
-  };
-
-  realizacoes.forEach((realizacao) => {
-    switch (realizacao.status) {
-      case 'Em andamento':
-        contagemStatus.em_andamento++;
-        break;
-      case 'Concluída':
-        contagemStatus.concluida++;
-        break;
-      case 'Cancelada':
-        contagemStatus.interrompida++;
-        break;
-      case 'Em licitação':
-        contagemStatus.em_licitacao++;
-        break;
-      default:
-        break;
-    }
-  });
-
-  return contagemStatus;
+export async function getDadosAgregadosAbaSumarioStatusEntregasSubprefeitura() {
 }
-export async function getDadosAgregadosAbaSumarioStatusEntregasBairro() {
-  var realizacoes = [
-    {
-      titulo: 'Título da realização 5',
-      status: 'Em andamento',
-    },
-    {
-      titulo: 'Título da realização 6',
-      status: 'Concluída',
-    },
-    {
-      titulo: 'Título da realização 7',
-      status: 'Em andamento',
-    },
-    {
-      titulo: 'Título da realização 8',
-      status: 'Cancelada',
-    },
-    {
-      titulo: 'Título da realização 9',
-      status: 'Cancelada',
-    },
-    {
-      titulo: 'Título da realização 10',
-      status: 'Interrompida',
-    },
-    {
-      titulo: 'Título da realização 11',
-      status: 'Em licitação',
-    },
-    // array com todas as realizções da cidade 
-  ]
-   const contagemStatus = {
-    em_andamento: 0,
-    concluida: 0,
-    interrompida: 0,
-    em_licitacao:0,
-  };
-
-  realizacoes.forEach((realizacao) => {
-    switch (realizacao.status) {
-      case 'Em andamento':
-        contagemStatus.em_andamento++;
-        break;
-      case 'Concluída':
-        contagemStatus.concluida++;
-        break;
-      case 'Cancelada':
-        contagemStatus.interrompida++;
-        break;
-      case 'Em licitação':
-        contagemStatus.em_licitacao++;
-        break;
-      default:
-        break;
-    }
-  });
-
-  return contagemStatus;
+export async function getDadosAgregadosAbaTemaSubprefeitura() {
+}
+export async function getDadosAgregadosAbaProgramaSubprefeitura() {
 }

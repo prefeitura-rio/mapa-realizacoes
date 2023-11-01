@@ -55,6 +55,139 @@ export const setSubprefeituraData = (data) => {
   };
 };
 
+// Dados agregados aba sumário informações básicas subprefeitura
+export const LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA = "LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA";
+
+export const loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura = () => {
+  return {
+    type: LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_SUCCESS = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_SUCCESS";
+
+export const requestDadosAgregadosAbaSumarioInfoBasicasSubprefeituraSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_FAILED = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_FAILED";
+
+export const requestDadosAgregadosAbaSumarioInfoBasicasSubprefeituraFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA";
+
+export const requestDadosAgregadosAbaSumarioInfoBasicasSubprefeitura = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA,
+  };
+};
 
 
+// Dados agregados aba sumário status das entregas da subprefeitura
+export const LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA = "LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA";
 
+export const loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura = () => {
+  return {
+    type: LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_SUCCESS = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_SUCCESS";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasSubprefeituraSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_FAILED = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_FAILED";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasSubprefeituraFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA = "REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA";
+
+export const requestDadosAgregadosAbaSumarioStatusEntregasSubprefeitura = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA,
+  };
+};
+
+// Dados agregados aba tema subprefeitura
+export const LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA = "LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA";
+
+export const loadDadosAgregadosAbaTemaSubprefeitura = () => {
+  return {
+    type: LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_SUCCESS = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_SUCCESS";
+
+export const requestDadosAgregadosAbaTemaSubprefeituraSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_FAILED = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_FAILED";
+
+export const requestDadosAgregadosAbaTemaSubprefeituraFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA";
+
+export const requestDadosAgregadosAbaTemaSubprefeitura = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA,
+  };
+};
+
+// Dados agregados aba programas subprefeitura
+export const LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA = "LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA";
+
+export const loadDadosAgregadosAbaProgramasSubprefeitura = () => {
+  return {
+    type: LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_SUCCESS = "REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_SUCCESS";
+
+export const requestDadosAgregadosAbaProgramasSubprefeituraSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_FAILED = "REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_FAILED";
+
+export const requestDadosAgregadosAbaProgramasSubprefeituraFailed = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA_FAILED,
+  };
+};
+
+export const REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA = "REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA";
+
+export const requestDadosAgregadosAbaProgramasSubprefeitura = () => {
+  return {
+    type: REQUEST_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA,
+  };
+};
