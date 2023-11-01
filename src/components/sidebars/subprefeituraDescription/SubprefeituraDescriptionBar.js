@@ -97,7 +97,7 @@ const theme = createTheme({
 const SubprefeituraDescriptionBar = forwardRef(
   ({ underSearchBar,
     setUnderSearchBar,
-    subprefeitura,
+    subprefeituras,
     images_subprefeitura,
     dadosAgregadosAbaTemaSubprefeitura,
     dadosAgregadosAbaProgramasSubprefeitura,
@@ -108,7 +108,7 @@ const SubprefeituraDescriptionBar = forwardRef(
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
-    console.log("=======> " + (subprefeitura? subprefeitura.nome : " Nenhum nome disponível"));
+    console.log("=======> " + (subprefeituras? subprefeituras.nome : " Nenhum nome disponível"));
 
     const [tabValue, setTabValue] = useState(0);
     const [topImgSrc, setTopImgSrc] = useState(
@@ -122,7 +122,7 @@ const SubprefeituraDescriptionBar = forwardRef(
       );
     };
 
-    subprefeitura = subprefeitura || [];
+    subprefeituras = subprefeituras || [];
     images_subprefeitura = images_subprefeitura || [];
     dadosAgregadosAbaTemaSubprefeitura = dadosAgregadosAbaTemaSubprefeitura || [];
     dadosAgregadosAbaProgramasSubprefeitura = dadosAgregadosAbaProgramasSubprefeitura || [];
@@ -138,10 +138,14 @@ const SubprefeituraDescriptionBar = forwardRef(
           <DadosAgregados
             topImgSrc={topImgSrc}
             onTopImageError={onTopImageError}
-            subprefeitura={subprefeitura}
             tabValue={tabValue}
             setTabValue={setTabValue}
             images={images_subprefeitura}
+            dadosAgregadosAbaTemaSubprefeitura={dadosAgregadosAbaTemaSubprefeitura}
+            dadosAgregadosAbaProgramasSubprefeitura={dadosAgregadosAbaProgramasSubprefeitura}
+            dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}
+            dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={dadosAgregadosAbaSumarioStatusEntregasSubprefeitura}
+            subprefeituras = {subprefeituras}
           />
 
       </div>

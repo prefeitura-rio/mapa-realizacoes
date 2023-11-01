@@ -925,7 +925,7 @@ export async function uploadPhotoFirebase(file, keyword = "All") {
 // Município
 export async function getDadosAgregadosAbaSumarioInfoBasicasCidade() {
   try {
-    const bairros = await getBairros(); 
+    const bairros = await getBairros();
 
     // Faza soma dos domicílios e habitantes dos bairros.
     const resultado = bairros.reduce((acumulador, bairro) => {
@@ -941,7 +941,8 @@ export async function getDadosAgregadosAbaSumarioInfoBasicasCidade() {
   }
 }
 export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
-  var realizacoes = [
+  try {
+  const realizacoes = [
     {
       titulo: 'Título da realização 5',
       status: 'Em andamento',
@@ -972,11 +973,11 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
     },
     // array com todas as realizções da cidade 
   ]
-   const contagemStatus = {
+  const contagemStatus = {
     em_andamento: 0,
     concluida: 0,
     interrompida: 0,
-    em_licitacao:0,
+    em_licitacao: 0,
   };
 
   realizacoes.forEach((realizacao) => {
@@ -999,9 +1000,14 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
   });
 
   return contagemStatus;
+} catch (error) {
+  console.error('Erro ao obter dados agregados de programa/bairro:', error);
+  throw error;
+}
 }
 export async function getDadosAgregadosAbaTemaCidade() {
-  var res = [
+  try {
+  const res = [
     {
       id: 'panel1',
       tema: 'Saúde',
@@ -1037,9 +1043,14 @@ export async function getDadosAgregadosAbaTemaCidade() {
   ];
 
   return res;
+} catch (error) {
+  console.error('Erro ao obter dados agregados de programa/bairro:', error);
+  throw error;
+}
 }
 export async function getDadosAgregadosAbaProgramasCidade() {
-  var res = [
+  try {
+  const res = [
     {
       id: 'panel1',
       tema: 'Bairro Maravilha',
@@ -1075,11 +1086,16 @@ export async function getDadosAgregadosAbaProgramasCidade() {
   ];
 
   return res;
+} catch (error) {
+  console.error('Erro ao obter dados agregados de programa/bairro:', error);
+  throw error;
+}
 }
 
 // Bairro
 export async function getDadosAgregadosAbaSumarioStatusEntregasBairro() {
-  var realizacoes = [
+  try {
+  const realizacoes = [
     {
       titulo: 'Título da realização 5',
       status: 'Em andamento',
@@ -1110,11 +1126,11 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasBairro() {
     },
     // array com todas as realizções da cidade 
   ]
-   const contagemStatus = {
+  const contagemStatus = {
     em_andamento: 0,
     concluida: 0,
     interrompida: 0,
-    em_licitacao:0,
+    em_licitacao: 0,
   };
 
   realizacoes.forEach((realizacao) => {
@@ -1137,9 +1153,14 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasBairro() {
   });
 
   return contagemStatus;
+} catch (error) {
+  console.error('Erro ao obter dados agregados de programa/bairro:', error);
+  throw error;
+}
 }
 export async function getDadosAgregadosAbaTemaBairro() {
-  var res = [
+  try {
+  const res = [
     {
       id: 'panel1',
       tema: 'Saúde',
@@ -1175,9 +1196,14 @@ export async function getDadosAgregadosAbaTemaBairro() {
   ];
 
   return res;
+} catch (error) {
+  console.error('Erro ao obter dados agregados de programa/bairro:', error);
+  throw error;
+}
 }
 export async function getDadosAgregadosAbaProgramaBairro() {
-  var res = [
+  try {
+  const res = [
     {
       id: 'panel1',
       tema: 'Bairro Maravilha',
@@ -1213,6 +1239,10 @@ export async function getDadosAgregadosAbaProgramaBairro() {
   ];
 
   return res;
+} catch (error) {
+  console.error('Erro ao obter dados agregados de programa/bairro:', error);
+  throw error;
+}
 }
 // @gabriel-gazola como eu não sei como você vai trazer as informações do fb, 
 // eu to buscando direto de lá nesse caso aqui, então os dados não estão "mockados" aqui para esta função.
@@ -1238,10 +1268,192 @@ export async function getBairros() {
 
 // Subprefeitura
 export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
+
+  try {
+
+    const bairrosDaSubprefeitura = [
+      {
+        id_bairro: "campo_grande",
+        habitantes: 10000,
+        domicilios: 9999
+      },
+      {
+        id_bairro: "barra_da_tijuca",
+        habitantes: 20000,
+        domicilios: 88888
+      },
+      {
+        id_bairro: "bangu",
+        habitantes: 30000,
+        domicilios: 7777
+      },
+      // ...
+    ]
+
+    // Faza soma dos domicílios e habitantes dos bairros da subprefeitura.
+    const resultado = bairrosDaSubprefeitura.reduce((acumulador, bairro) => {
+      acumulador.domicilios += bairro.domicilios;
+      acumulador.habitantes += bairro.habitantes;
+      return acumulador;
+    }, { domicilios: 0, habitantes: 0 });
+
+    return resultado;
+  } catch (error) {
+    console.error('Erro ao obter dados agregados da subprefeitura:', error);
+    throw error;
+  }
 }
+
 export async function getDadosAgregadosAbaSumarioStatusEntregasSubprefeitura() {
+  try {
+    const realizacoes = [
+      {
+        titulo: 'Título da realização 5',
+        status: 'Em andamento',
+      },
+      {
+        titulo: 'Título da realização 6',
+        status: 'Concluída',
+      },
+      {
+        titulo: 'Título da realização 7',
+        status: 'Em andamento',
+      },
+      {
+        titulo: 'Título da realização 8',
+        status: 'Cancelada',
+      },
+      {
+        titulo: 'Título da realização 9',
+        status: 'Cancelada',
+      },
+      {
+        titulo: 'Título da realização 10',
+        status: 'Interrompida',
+      },
+      {
+        titulo: 'Título da realização 11',
+        status: 'Em licitação',
+      },
+      // array c/ todas as realizções da cidade 
+    ]
+    const contagemStatus = {
+      em_andamento: 0,
+      concluida: 0,
+      interrompida: 0,
+      em_licitacao: 0,
+    };
+
+    realizacoes.forEach((realizacao) => {
+      switch (realizacao.status) {
+        case 'Em andamento':
+          contagemStatus.em_andamento++;
+          break;
+        case 'Concluída':
+          contagemStatus.concluida++;
+          break;
+        case 'Cancelada':
+          contagemStatus.interrompida++;
+          break;
+        case 'Em licitação':
+          contagemStatus.em_licitacao++;
+          break;
+        default:
+          break;
+      }
+
+    });
+
+    return contagemStatus;
+
+  } catch (error) {
+    console.error('Erro ao obter dados agregados da subprefeitura:', error);
+    throw error;
+  }
 }
 export async function getDadosAgregadosAbaTemaSubprefeitura() {
+  try {
+     const res = [
+    {
+      id: 'panel1',
+      tema: 'Saúde',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 12',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 2',
+          status: 'Concluído',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+    {
+      id: 'panel2',
+      tema: 'Educação',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 13',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 14',
+          status: 'Cancelada',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+  ];
+
+  return res;
+} catch (error) {
+  console.error('Erro ao obter dados agregados da subprefeitura:', error);
+  throw error;
+}
 }
 export async function getDadosAgregadosAbaProgramaSubprefeitura() {
+  try {
+     const res = [
+    {
+      id: 'panel1',
+      tema: 'Bairro Maravilha',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 9',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 10',
+          status: 'Concluído',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+    {
+      id: 'panel2',
+      tema: 'Reviver Centro',
+      realizacoes: [
+        {
+          titulo: 'Título da realização 11',
+          status: 'Em andamento',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+        {
+          titulo: 'Título da realização 12',
+          status: 'Cancelada',
+          imageUrl: 'https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png',
+        },
+      ],
+    },
+  ];
+
+  return res;
+} catch (error) {
+  console.error('Erro ao obter dados agregados da subprefeitura:', error);
+  throw error;
+}
 }

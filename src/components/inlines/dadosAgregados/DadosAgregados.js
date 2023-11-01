@@ -96,7 +96,7 @@ import BasicInfo from "./BasicInfo";
     onTopImageError,
     cidades,
     bairro,
-    subprefeitura,
+    subprefeituras,
     tabValue,
     setTabValue,
     images,
@@ -126,7 +126,7 @@ import BasicInfo from "./BasicInfo";
         />
         {cidades && cidades.length > 0 && <BasicInfo content={cidades[0]}  subtitulo={"Município"}/>}
         {bairro && <BasicInfo content={bairro} subtitulo={"Bairro"}/>}
-        {subprefeitura && <BasicInfo content={subprefeitura} subtitulo={"Subprefeitura"}/>}
+        {subprefeituras && <BasicInfo content={subprefeituras} subtitulo={"Subprefeitura"}/>}
         <Tabs
           value={tabValue}
           onChange={(e, i) => {
@@ -155,6 +155,7 @@ import BasicInfo from "./BasicInfo";
           <br></br>
           {cidades && cidades.length > 0 && <ListInfoSumario dadosAgregadosAbaSumarioStatusEntregasCidade={dadosAgregadosAbaSumarioStatusEntregasCidade} dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade} cidadeInfo={cidades[0]} />}
           {bairro && <ListInfoSumario dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro} bairroInfo={bairro} />}
+          {subprefeituras && <ListInfoSumario dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}  dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={dadosAgregadosAbaSumarioStatusEntregasSubprefeitura} bairroInfo={bairro} />}
 
           <Divider />
           <div className={classes.photos}>

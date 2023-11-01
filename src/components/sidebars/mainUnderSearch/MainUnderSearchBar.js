@@ -101,7 +101,6 @@ const MainUnderSearchBar = forwardRef(
     setUnderSearchBar,
     cidades,
     dadosAgregadosAbaTemaCidade,
-    dadosAgregadosAbaTemaBairro,
     dadosAgregadosAbaProgramasCidade,
     dadosAgregadosAbaSumarioInfoBasicasCidade,
     dadosAgregadosAbaSumarioStatusEntregasCidade,

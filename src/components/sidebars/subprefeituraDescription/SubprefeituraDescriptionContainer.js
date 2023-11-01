@@ -27,12 +27,12 @@ const SubprefeituraDescriptionContainer = (props) => {
         setUnderSearchBar={props.setUnderSearchBar}
         setDescriptionData={props.setDescriptionData}
         images_subprefeitura={props.images_subprefeitura}
-        subprefeitura={props.subprefeitura}
+        subprefeituras={props.subprefeituras}
         dadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaTemaSubprefeitura}
-        dadosAgregadosAbaProgramasSubdadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaProgramasSubdadosAgregadosAbaTemaSubprefeitura}
-        dadosAgregadosAbaSumarioInfoBasicasSubdadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaSumarioInfoBasicasSubdadosAgregadosAbaTemaSubprefeitura}
-        dadosAgregadosAbaSumarioStatusEntregasSubdadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaSumarioStatusEntregasSubdadosAgregadosAbaTemaSubprefeitura}
-
+        dadosAgregadosAbaProgramasSubprefeitura={props.dadosAgregadosAbaProgramasSubprefeitura}
+        dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={props.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}
+        dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={props.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura}
+       
         // remove if not useful
         profile={props.profile}
         login={props.login}
@@ -48,7 +48,7 @@ const mapStateToProps = (state) => {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
     descriptionData: state.subprefeituras.descriptionData,
-    subprefeitura: state.subprefeituras.content,
+    subprefeituras: state.subprefeituras.content,
     images_subprefeitura: state.images.allImagesSubprefeitura,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,

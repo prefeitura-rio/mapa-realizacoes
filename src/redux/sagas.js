@@ -331,7 +331,6 @@ function* workerLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
   try {
     yield put(requestDadosAgregadosAbaSumarioInfoBasicasSubprefeitura());
     const data = yield call(getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura);
-    console.log("dados aba cidade info basica: ", data)
     yield put(requestDadosAgregadosAbaSumarioInfoBasicasSubprefeituraSuccess(data));
   } catch (error) {
     console.error("Erro: "+ error);
