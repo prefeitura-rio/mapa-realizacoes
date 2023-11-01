@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import { FormControlLabel } from '@material-ui/core';
 
-const DropdownButtons = () => {
+const DropdownButtons = ({ button1Array, button2Array, button3Array }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState([]);
 
@@ -18,44 +18,62 @@ const DropdownButtons = () => {
     setAnchorEl(null);
   };
 
+  const buttonContainerStyle = {
+    display: 'flex',
+    gap: '20px',
+  };
+
+  const buttonStyle = {
+    backgroundColor: 'white',
+    color: 'black',
+    borderRadius: '20px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
+  };
+
   return (
     <div>
-      <Button
-        variant="contained"
-        onClick={(e) => handleButtonClick(e, ['Option 1', 'Option 2', 'Option 3'])}
-      >
-        Button 1
-      </Button>
-      <Button
-        variant="contained"
-        onClick={(e) => handleButtonClick(e, ['Option A', 'Option B', 'Option C'])}
-      >
-        Button 2
-      </Button>
-      <Button
-        variant="contained"
-        onClick={(e) => handleButtonClick(e, ['Choice X', 'Choice Y', 'Choice Z'])}
-      >
-        Button 3
-      </Button>
+      <div style={buttonContainerStyle}>
+        <Button
+          variant="contained"
+          onClick={(e) => handleButtonClick(e, button1Array)}
+          style={buttonStyle} // Apply the button style
+        >
+          Button 1
+        </Button>
+        <Button
+          variant="contained"
+          onClick={(e) => handleButtonClick(e, button2Array)}
+          style={buttonStyle} // Apply the button style
+        >
+          Button 2
+        </Button>
+        <Button
+          variant="contained"
+          onClick={(e) => handleButtonClick(e, button3Array)}
+          style={buttonStyle} // Apply the button style
+        >
+          Button 3
+        </Button>
+      </div>
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'center',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'center',
+          horizontal: 'left',
         }}
       >
-         <Box p={2}>
+        <Box p={2}>
           {options.map((option, index) => (
             <div key={index}>
               <FormControlLabel
-                control={<Checkbox style={{ color: '#007E7D' }} />} 
+                control={<Checkbox style={{ color: '#007E7D' }} />}
                 label={option}
               />
             </div>

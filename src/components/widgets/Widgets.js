@@ -109,7 +109,9 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
       </div>
       <div className={classes.filters}>
         
-        <FiltrosBotoes></FiltrosBotoes>
+        <FiltrosBotoes  button1Array={['Option 1', 'Option 2', 'Option 3']}
+  button2Array={['Option AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Option B', 'Option C']}
+  button3Array={['Choice X', 'Choice Y', 'Choice Z']}></FiltrosBotoes>
       </div>
     </div>
   );
