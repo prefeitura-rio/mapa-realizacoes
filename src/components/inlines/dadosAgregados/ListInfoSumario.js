@@ -51,14 +51,17 @@ const ListInfoSumario = ({
   const listInfoSumario = [
   
    //municipio
+    { text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento  + " obras" : undefined, iconComponent: () => <img src={subprefeituraIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/>},
     { text:  dadosAgregadosAbaSumarioInfoBasicasCidade? dadosAgregadosAbaSumarioInfoBasicasCidade.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     { text:  dadosAgregadosAbaSumarioInfoBasicasCidade? dadosAgregadosAbaSumarioInfoBasicasCidade.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     
    //subprefeitura
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_andamento? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento  + " obras" : undefined, iconComponent: () => <img src={subprefeituraIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/>},
     { text:  dadosAgregadosAbaSumarioInfoBasicasSubprefeitura? dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     { text:  dadosAgregadosAbaSumarioInfoBasicasSubprefeitura? dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     
     //bairro
+    { text: dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento  + " obras" : undefined, iconComponent: () => <img src={subprefeituraIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/>},
     { text:  bairroInfo? bairroInfo.domicilios + " domicílios" + " em 2010" : undefined, iconComponent: () => <img src={domiciliosIcon} alt="Orgao" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.habitantes + " habitantes" : undefined, iconComponent: () => <img src={habitantesIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     { text:  bairroInfo? bairroInfo.ips + " IPS" : undefined, iconComponent: () => <img src={ipsIcon} alt="ips" style={{width: '20px', height: '20px'}}/> },
@@ -77,6 +80,14 @@ const ListInfoSumario = ({
     { text: dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida? "Interrompida " + dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida  + " obras" : undefined},
     { text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao? "Em licitação " + dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao  + " obras" : undefined},
  
+    //subprefeitura
+   
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Concluído " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento  + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Interrompida " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida  + " obras" : undefined},
+    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Em licitação " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao  + " obras" : undefined},
+    
+    
     //bairro
    
     { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Concluído " + dadosAgregadosAbaSumarioStatusEntregasBairro.concluida + " obras" : undefined},
@@ -84,12 +95,6 @@ const ListInfoSumario = ({
     { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Interrompida " + dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida  + " obras" : undefined},
     { text: dadosAgregadosAbaSumarioStatusEntregasBairro? "Em licitação " + dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao  + " obras" : undefined},
  
-    //subprefeitura
-   
-    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Concluído " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida + " obras" : undefined},
-    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Em andamento " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento  + " obras" : undefined},
-    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Interrompida " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida  + " obras" : undefined},
-    { text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura? "Em licitação " + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao  + " obras" : undefined},
  
   ];
 

@@ -155,7 +155,7 @@ import BasicInfo from "./BasicInfo";
           <br></br>
           {cidades && cidades.length > 0 && <ListInfoSumario dadosAgregadosAbaSumarioStatusEntregasCidade={dadosAgregadosAbaSumarioStatusEntregasCidade} dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade} cidadeInfo={cidades[0]} />}
           {bairro && <ListInfoSumario dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro} bairroInfo={bairro} />}
-          {subprefeituras && <ListInfoSumario dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}  dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={dadosAgregadosAbaSumarioStatusEntregasSubprefeitura} bairroInfo={bairro} />}
+          {subprefeituras && <ListInfoSumario dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}  dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={dadosAgregadosAbaSumarioStatusEntregasSubprefeitura} />}
 
           <Divider />
           <div className={classes.photos}>
