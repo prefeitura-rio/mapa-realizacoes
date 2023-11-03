@@ -11,14 +11,16 @@ import { loadAllImagesSubprefeitura } from "../../../redux/images/actions";
 
 const SubprefeituraDescriptionContainer = (props) => {
 
+  console.log("SubprefeituraDescriptionContainer.js props: ", props)
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadSubprefeituraData());
-    dispatch(loadAllImagesSubprefeitura());
-    dispatch(loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura());
-    dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura());
-    dispatch(loadDadosAgregadosAbaTemaSubprefeitura());
-    dispatch(loadDadosAgregadosAbaProgramasSubprefeitura());
+    dispatch(loadSubprefeituraData(props.descriptionData));
+    dispatch(loadAllImagesSubprefeitura(props.descriptionData));
+    dispatch(loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(props.descriptionData));
+    dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(props.descriptionData));
+    dispatch(loadDadosAgregadosAbaTemaSubprefeitura(props.descriptionData));
+    dispatch(loadDadosAgregadosAbaProgramasSubprefeitura(props.descriptionData));
   }, []);
 
   return (

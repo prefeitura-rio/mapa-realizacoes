@@ -58,9 +58,10 @@ export const setBairroData = (data) => {
 // Dados agregados aba tema BAIRRO
 export const LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO = "LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO";
 
-export const loadDadosAgregadosAbaTemaBairro = () => {
+export const loadDadosAgregadosAbaTemaBairro = (data) => {
   return {
     type: LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO,
+    payload: data,
   };
 };
 
@@ -91,9 +92,10 @@ export const requestDadosAgregadosAbaTemaBairro = () => {
 // Dados agregados aba programa BAIRRO
 export const LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO = "LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO";
 
-export const loadDadosAgregadosAbaProgramaBairro = () => {
+export const loadDadosAgregadosAbaProgramaBairro = (data) => {
   return {
     type: LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO,
+    payload: data,
   };
 };
 
@@ -126,9 +128,10 @@ export const requestDadosAgregadosAbaProgramaBairro = () => {
 // Dados agregados aba sumário status das entregas do bairro
 export const LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO = "LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO";
 
-export const loadDadosAgregadosAbaSumarioStatusEntregasBairro = () => {
+export const loadDadosAgregadosAbaSumarioStatusEntregasBairro = (data) => {
   return {
     type: LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO,
+    payload: data,
   };
 };
 

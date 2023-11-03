@@ -1,6 +1,3 @@
-// TODO (revisar com Lucas):
-// - Funções de dados agregados / abas não possuem parâmetros para filtragem (ex: cidade, bairro, subpref)
-// - Adicionando parâmetros de filtragem, a função pode virar uma só, reutilizando código
 import firebase from "firebase";
 import "firebase/firestore";
 import firebaseCredentials from "./firebaseconfig";
@@ -691,6 +688,30 @@ export async function getBairroFromCoords(coords) {
   throw new Error("Bairro não encontrado para as coordenadas informadas");
 }
 
+export async function getIdBairro(name) {
+  // query the collection "Bairros" for where the field "nome" is equal to the name
+  const bairrosRef = db.collection("bairro");
+  const bairrosSnapshot = await bairrosRef.where("nome", "==", name).get();
+  // if there are documents, return the first document's id
+  if (!bairrosSnapshot.empty) {
+    return bairrosSnapshot.docs[0].id;
+  }
+  // otherwise, raise an error
+  throw new Error("Bairro não encontrado");
+}
+
+export async function getIdCidade(name) {
+  // query the collection "Cidades" for where the field "nome" is equal to the name
+  const cidadesRef = db.collection("cidade");
+  const cidadesSnapshot = await cidadesRef.where("nome", "==", name).get();
+  // if there are documents, return the first document's id
+  if (!cidadesSnapshot.empty) {
+    return cidadesSnapshot.docs[0].id;
+  }
+  // otherwise, raise an error
+  throw new Error("Cidade não encontrada");
+}
+
 export async function getIdOrgao(name) {
   // query the collection "Orgaos" for where the field "nome" is equal to the name
   const orgaosRef = db.collection("orgao");
@@ -726,6 +747,20 @@ export async function getIdStatus(name) {
   }
   // otherwise, raise an error
   throw new Error("Status não encontrado");
+}
+
+export async function getIdSubprefeitura(name) {
+  // query the collection "Subprefeituras" for where the field "nome" is equal to the name
+  const subprefeiturasRef = db.collection("subprefeitura");
+  const subprefeiturasSnapshot = await subprefeiturasRef
+    .where("nome", "==", name)
+    .get();
+  // if there are documents, return the first document's id
+  if (!subprefeiturasSnapshot.empty) {
+    return subprefeiturasSnapshot.docs[0].id;
+  }
+  // otherwise, raise an error
+  throw new Error("Subprefeitura não encontrada");
 }
 
 export async function getIdTema(name) {
@@ -807,8 +842,34 @@ export function getListTemaName() {
   });
 }
 
-export async function getListBairroData() {
-  var res = await db.collection("bairro").get();
+export async function getListBairroData(filters = {id_subprefeitura: null, id_cidade: null}) {
+  let inputFilters = {
+    id_subprefeitura: null,
+    id_cidade: null,
+    ...filters
+  }
+  if (inputFilters.id_subprefeitura) {
+    var res = await db
+      .collection("bairro")
+      .where("id_subprefeitura", "==", inputFilters.id_subprefeitura)
+      .get();
+  }
+  else if (inputFilters.id_cidade) {
+    var subpref_ids = await db
+      .collection("subprefeitura")
+      .where("id_cidade", "==", inputFilters.id_cidade)
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => doc.id);
+      });
+    var res = await db
+      .collection("bairro")
+      .where("id_subprefeitura", "in", subpref_ids)
+      .get();
+  }
+  else {
+    var res = await db.collection("bairro").get();
+  }
   return res.docs.map((doc) => {
     return { ...doc.data(), id: doc.id };
   });
@@ -1025,7 +1086,30 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
   }
 }
 
-export async function getDadosAgregadosAbaTemaCidade() {
+export async function getDadosAgregadosAbaTema(filters = {
+  id_cidade: null,
+  id_bairro: null,
+  id_subprefeitura: null,
+  name_cidade: null,
+  name_bairro: null,
+  name_subprefeitura: null,
+}
+) {
+  if (filters.name_cidade) {
+    filters.id_cidade = await getIdCidade(filters.name_cidade);
+  }
+  if (filters.name_bairro) {
+    filters.id_bairro = await getIdBairro(filters.name_bairro);
+  }
+  if (filters.name_subprefeitura) {
+    filters.id_subprefeitura = await getIdSubprefeitura(filters.name_subprefeitura);
+  }
+  let inputFilters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    ...filters
+  }
   try {
     const themeData = await getListTemaData();
     const statusData = await getListStatusData();
@@ -1044,15 +1128,37 @@ export async function getDadosAgregadosAbaTemaCidade() {
         if (realizacoesThemeDocs.length === 0) {
           return;
         }
-        // Otherwise, initialize this theme's aggregate data
-        if (!aggregateRealizacaoTheme[theme.nome]) {
-          aggregateRealizacaoTheme[theme.nome] = [];
-        }
         // Append each realizacao to this theme's aggregate data
         const realizacoesIds = realizacoesThemeDocs.map((realizacao) => {
           return realizacao.data().id_realizacao;
         });
-        const realizacoes = await getListRealizacaoData(realizacoesIds);
+        let realizacoes = await getListRealizacaoData(realizacoesIds);
+        // Check for filters
+        if (inputFilters.id_cidade) {
+          const bairros = await getListBairroData({id_cidade: inputFilters.id_cidade});
+          const bairroIds = bairros.map((bairro) => bairro.id);
+          realizacoes = realizacoes.filter((realizacao) => {
+            return bairroIds.includes(realizacao.id_bairro);
+          });
+        }
+        if (inputFilters.id_subprefeitura) {
+          const bairros = await getListBairroData({id_subprefeitura: inputFilters.id_subprefeitura});
+          const bairroIds = bairros.map((bairro) => bairro.id);
+          realizacoes = realizacoes.filter((realizacao) => {
+            return bairroIds.includes(realizacao.id_bairro);
+          });
+        }
+        if (inputFilters.id_bairro) {
+          realizacoes = realizacoes.filter((realizacao) => realizacao.id_bairro === inputFilters.id_bairro);
+        }
+        // If we don't have any realizacoes left, skip this theme
+        if (realizacoes.length === 0) {
+          return;
+        }
+        // Initialize this theme's aggregate data
+        if (!aggregateRealizacaoTheme[theme.nome]) {
+          aggregateRealizacaoTheme[theme.nome] = [];
+        }
         realizacoes.forEach((realizacao) => {
           const realizacaoTheme = {
             titulo: realizacao.nome,
@@ -1081,7 +1187,31 @@ export async function getDadosAgregadosAbaTemaCidade() {
   }
 }
 
-export async function getDadosAgregadosAbaProgramasCidade() {
+export async function getDadosAgregadosAbaProgramas(filters = {
+  id_cidade: null,
+  id_bairro: null,
+  id_subprefeitura: null,
+  name_cidade: null,
+  name_bairro: null,
+  name_subprefeitura: null,
+}
+) {
+  if (filters.name_cidade) {
+    filters.id_cidade = await getIdCidade(filters.name_cidade);
+  }
+  if (filters.name_bairro) {
+    filters.id_bairro = await getIdBairro(filters.name_bairro);
+  }
+  if (filters.name_subprefeitura) {
+    filters.id_subprefeitura = await getIdSubprefeitura(filters.name_subprefeitura);
+  }
+  let inputFilters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    ...filters
+  }
+  console.log("inputFilters", inputFilters)
   try {
     const programaData = await getListProgramaData();
     const statusData = await getListStatusData();
@@ -1096,20 +1226,41 @@ export async function getDadosAgregadosAbaProgramasCidade() {
         // Look for realizacoes that have this programa
         const realizacoesPrograma = await getRealizacoesPrograma(programa.id);
         const realizacoesProgramaDocs = realizacoesPrograma.docs;
-        console.log("realizacoesProgramaDocs", realizacoesProgramaDocs);
         // If length is 0, skip this programa
         if (realizacoesProgramaDocs.length === 0) {
           return;
-        }
-        // Otherwise, initialize this programa's aggregate data
-        if (!aggregateRealizacaoPrograma[programa.nome]) {
-          aggregateRealizacaoPrograma[programa.nome] = [];
         }
         // Append each realizacao to this programa's aggregate data
         const realizacoesIds = realizacoesProgramaDocs.map((realizacao) => {
           return realizacao.data().id_realizacao;
         });
-        const realizacoes = await getListRealizacaoData(realizacoesIds);
+        let realizacoes = await getListRealizacaoData(realizacoesIds);
+        // Check for filters
+        if (inputFilters.id_cidade) {
+          const bairros = await getListBairroData({id_cidade: inputFilters.id_cidade});
+          const bairroIds = bairros.map((bairro) => bairro.id);
+          realizacoes = realizacoes.filter((realizacao) => {
+            return bairroIds.includes(realizacao.id_bairro);
+          });
+        }
+        if (inputFilters.id_subprefeitura) {
+          const bairros = await getListBairroData({id_subprefeitura: inputFilters.id_subprefeitura});
+          const bairroIds = bairros.map((bairro) => bairro.id);
+          realizacoes = realizacoes.filter((realizacao) => {
+            return bairroIds.includes(realizacao.id_bairro);
+          });
+        }
+        if (inputFilters.id_bairro) {
+          realizacoes = realizacoes.filter((realizacao) => realizacao.id_bairro === inputFilters.id_bairro);
+        }
+        // If we don't have any realizacoes left, skip this theme
+        if (realizacoes.length === 0) {
+          return;
+        }
+        // Initialize this theme's aggregate data
+        if (!aggregateRealizacaoPrograma[programa.nome]) {
+          aggregateRealizacaoPrograma[programa.nome] = [];
+        }
         realizacoes.forEach((realizacao) => {
           const realizacaoPrograma = {
             titulo: realizacao.nome,
@@ -1131,7 +1282,6 @@ export async function getDadosAgregadosAbaProgramasCidade() {
       });
       panelId++;
     }
-    console.log("res", res);
     return res;
   } catch (error) {
     console.error("Erro ao obter dados agregados de programa/cidade:", error);
@@ -1201,102 +1351,6 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasBairro() {
     });
 
     return contagemStatus;
-  } catch (error) {
-    console.error("Erro ao obter dados agregados de programa/bairro:", error);
-    throw error;
-  }
-}
-export async function getDadosAgregadosAbaTemaBairro() {
-  // TODO: implement
-  try {
-    const res = [
-      {
-        id: "panel1",
-        tema: "Saúde",
-        realizacoes: [
-          {
-            titulo: "Título da realização 1",
-            status: "Em andamento",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-          {
-            titulo: "Título da realização 2",
-            status: "Concluído",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-        ],
-      },
-      {
-        id: "panel2",
-        tema: "Educação",
-        realizacoes: [
-          {
-            titulo: "Título da realização 3",
-            status: "Em andamento",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-          {
-            titulo: "Título da realização 4",
-            status: "Cancelada",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-        ],
-      },
-    ];
-
-    return res;
-  } catch (error) {
-    console.error("Erro ao obter dados agregados de programa/bairro:", error);
-    throw error;
-  }
-}
-export async function getDadosAgregadosAbaProgramaBairro() {
-  // TODO: implement
-  try {
-    const res = [
-      {
-        id: "panel1",
-        tema: "Bairro Maravilha",
-        realizacoes: [
-          {
-            titulo: "Título da realização 5",
-            status: "Em andamento",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-          {
-            titulo: "Título da realização 6",
-            status: "Concluído",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-        ],
-      },
-      {
-        id: "panel2",
-        tema: "Reviver Centro",
-        realizacoes: [
-          {
-            titulo: "Título da realização 7",
-            status: "Em andamento",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-          {
-            titulo: "Título da realização 8",
-            status: "Cancelada",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-        ],
-      },
-    ];
-
-    return res;
   } catch (error) {
     console.error("Erro ao obter dados agregados de programa/bairro:", error);
     throw error;
@@ -1404,102 +1458,6 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasSubprefeitura() {
     });
 
     return contagemStatus;
-  } catch (error) {
-    console.error("Erro ao obter dados agregados da subprefeitura:", error);
-    throw error;
-  }
-}
-export async function getDadosAgregadosAbaTemaSubprefeitura() {
-  // TODO: implement
-  try {
-    const res = [
-      {
-        id: "panel1",
-        tema: "Saúde",
-        realizacoes: [
-          {
-            titulo: "Título da realização 12",
-            status: "Em andamento",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-          {
-            titulo: "Título da realização 2",
-            status: "Concluído",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-        ],
-      },
-      {
-        id: "panel2",
-        tema: "Educação",
-        realizacoes: [
-          {
-            titulo: "Título da realização 13",
-            status: "Em andamento",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-          {
-            titulo: "Título da realização 14",
-            status: "Cancelada",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-        ],
-      },
-    ];
-
-    return res;
-  } catch (error) {
-    console.error("Erro ao obter dados agregados da subprefeitura:", error);
-    throw error;
-  }
-}
-export async function getDadosAgregadosAbaProgramaSubprefeitura() {
-  // TODO: implement
-  try {
-    const res = [
-      {
-        id: "panel1",
-        tema: "Bairro Maravilha",
-        realizacoes: [
-          {
-            titulo: "Título da realização 9",
-            status: "Em andamento",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-          {
-            titulo: "Título da realização 10",
-            status: "Concluído",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-        ],
-      },
-      {
-        id: "panel2",
-        tema: "Reviver Centro",
-        realizacoes: [
-          {
-            titulo: "Título da realização 11",
-            status: "Em andamento",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-          {
-            titulo: "Título da realização 12",
-            status: "Cancelada",
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          },
-        ],
-      },
-    ];
-
-    return res;
   } catch (error) {
     console.error("Erro ao obter dados agregados da subprefeitura:", error);
     throw error;

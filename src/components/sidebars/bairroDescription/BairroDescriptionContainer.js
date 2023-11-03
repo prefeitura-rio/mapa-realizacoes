@@ -11,13 +11,15 @@ import { loadAllImagesBairro } from "../../../redux/images/actions";
 
 const BairroDescriptionContainer = (props) => {
 
+  console.log("BairroDescriptionContainer.js props: ", props)
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadBairroData());
-    dispatch(loadAllImagesBairro());
-    dispatch(loadDadosAgregadosAbaTemaBairro());
-    dispatch(loadDadosAgregadosAbaProgramaBairro());
-    dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro());
+    dispatch(loadBairroData(props.descriptionData));
+    dispatch(loadAllImagesBairro(props.descriptionData));
+    dispatch(loadDadosAgregadosAbaTemaBairro(props.descriptionData));
+    dispatch(loadDadosAgregadosAbaProgramaBairro(props.descriptionData));
+    dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(props.descriptionData));
   }, []);
 
   return (

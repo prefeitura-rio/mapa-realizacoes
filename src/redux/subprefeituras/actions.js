@@ -127,9 +127,10 @@ export const requestDadosAgregadosAbaSumarioStatusEntregasSubprefeitura = () => 
 // Dados agregados aba tema subprefeitura
 export const LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA = "LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA";
 
-export const loadDadosAgregadosAbaTemaSubprefeitura = () => {
+export const loadDadosAgregadosAbaTemaSubprefeitura = (data) => {
   return {
     type: LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA,
+    payload: data,
   };
 };
 
@@ -161,9 +162,10 @@ export const requestDadosAgregadosAbaTemaSubprefeitura = () => {
 // Dados agregados aba programas subprefeitura
 export const LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA = "LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA";
 
-export const loadDadosAgregadosAbaProgramasSubprefeitura = () => {
+export const loadDadosAgregadosAbaProgramasSubprefeitura = (data) => {
   return {
     type: LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA,
+    payload: data,
   };
 };
 
