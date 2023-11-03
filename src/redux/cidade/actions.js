@@ -67,9 +67,10 @@ export const requestDadosAgregadosAbaTemaCidade = () => {
 // Dados agregados aba programas cidade
 export const LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE = "LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE";
 
-export const loadDadosAgregadosAbaProgramasCidade = () => {
+export const loadDadosAgregadosAbaProgramasCidade = (data) => {
   return {
     type: LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE,
+    payload: data,
   };
 };
 

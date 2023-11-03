@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTemaCidade, getDadosAgregadosAbaTemaBairro, getDadosAgregadosAbaProgramasCidade, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregasCidade, getDadosAgregadosAbaSumarioStatusEntregasBairro, getDadosAgregadosAbaProgramasBairro, getDadosAgregadosAbaProgramaBairro, getDadosAgregadosAbaTemaSubprefeitura, getDadosAgregadosAbaProgramaSubprefeitura, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, getDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTema, getDadosAgregadosAbaProgramas, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregasCidade, getDadosAgregadosAbaSumarioStatusEntregasBairro, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, getDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -239,8 +239,8 @@ export function* watchLoadAllCidades() {
 function* workerLoadDadosAgregadosAbaTemaCidade() {
   try {
     yield put(requestDadosAgregadosAbaTemaCidade());
-    const data = yield call(getDadosAgregadosAbaTemaCidade);
-    console.log("dados aba cidade: ", data)
+    const data = yield call(getDadosAgregadosAbaTema, {id_cidade: "rio_de_janeiro"});
+    console.log("dados aba tema cidade: ", data)
     yield put(requestDadosAgregadosAbaTemaCidadeSuccess(data));
   } catch (error) {
     console.error("Erro: "+ error);
@@ -254,7 +254,7 @@ export function* watchLoadDadosAgregadosAbaTemaCidade() {
 function* workerLoadDadosAgregadosAbaProgramasCidade() {
   try {
     yield put(requestDadosAgregadosAbaProgramasCidade());
-    const data = yield call(getDadosAgregadosAbaProgramasCidade);
+    const data = yield call(getDadosAgregadosAbaProgramas, {id_cidade: "rio_de_janeiro"});
     console.log("dados aba bairro programa cidade: ", data)
     yield put(requestDadosAgregadosAbaProgramasCidadeSuccess(data));
   } catch (error) {
@@ -297,10 +297,10 @@ export function* watchLoadDadosAgregadosAbaSumarioStatusEntregasCidade() {
 }
 
 // Subprefeitura
-function* workerLoadDadosAgregadosAbaTemaSubprefeitura() {
+function* workerLoadDadosAgregadosAbaTemaSubprefeitura(action) {
   try {
     yield put(requestDadosAgregadosAbaTemaSubprefeitura());
-    const data = yield call(getDadosAgregadosAbaTemaSubprefeitura);
+    const data = yield call(getDadosAgregadosAbaTema, {name_subprefeitura: action.payload});
     console.log("dados aba cidade: ", data)
     yield put(requestDadosAgregadosAbaTemaSubprefeituraSuccess(data));
   } catch (error) {
@@ -312,11 +312,11 @@ export function* watchLoadDadosAgregadosAbaTemaSubprefeitura() {
   yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA, workerLoadDadosAgregadosAbaTemaSubprefeitura);
 }
 
-function* workerLoadDadosAgregadosAbaProgramasSubprefeitura() {
+function* workerLoadDadosAgregadosAbaProgramasSubprefeitura(action) {
   try {
     yield put(requestDadosAgregadosAbaProgramasSubprefeitura());
-    const data = yield call(getDadosAgregadosAbaProgramaSubprefeitura);
-    console.log("dados aba bairro programa cidade: ", data)
+    const data = yield call(getDadosAgregadosAbaProgramas, {name_subprefeitura: action.payload});
+    console.log("dados aba bairro programa subprefeitura: ", data)
     yield put(requestDadosAgregadosAbaProgramasSubprefeituraSuccess(data));
   } catch (error) {
     console.error("Erro: "+ error);
@@ -359,10 +359,10 @@ export function* watchLoadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura() 
 
 // Bairro
 
-function* workerLoadDadosAgregadosAbaTemaBairro() {
+function* workerLoadDadosAgregadosAbaTemaBairro(action) {
   try {
     yield put(requestDadosAgregadosAbaTemaBairro());
-    const data = yield call(getDadosAgregadosAbaTemaBairro);
+    const data = yield call(getDadosAgregadosAbaTema, {name_bairro: action.payload});
     console.log("dados aba tema bairro: ", data)
     yield put(requestDadosAgregadosAbaTemaBairroSuccess(data));
   } catch (error) {
@@ -374,10 +374,10 @@ export function* watchLoadDadosAgregadosAbaTemaBairro() {
   yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO, workerLoadDadosAgregadosAbaTemaBairro);
 }
 
-function* workerLoadDadosAgregadosAbaProgramaBairro() {
+function* workerLoadDadosAgregadosAbaProgramaBairro(action) {
   try {
     yield put(requestDadosAgregadosAbaProgramaBairro());
-    const data = yield call(getDadosAgregadosAbaProgramaBairro);
+    const data = yield call(getDadosAgregadosAbaProgramas, {name_bairro: action.payload});
     console.log("dados aba bairro programa: ", data)
     yield put(requestDadosAgregadosAbaProgramaBairroSuccess(data));
   } catch (error) {
