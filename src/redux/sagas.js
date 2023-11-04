@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTema, getDadosAgregadosAbaProgramas, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregasCidade, getDadosAgregadosAbaSumarioStatusEntregasBairro, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, getDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTema, getDadosAgregadosAbaProgramas, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregas, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -284,7 +284,7 @@ export function* watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade() {
 function* workerLoadDadosAgregadosAbaSumarioStatusEntregasCidade() {
   try {
     yield put(requestDadosAgregadosAbaSumarioStatusEntregasCidade());
-    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregasCidade);
+    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregas, {id_cidade: "rio_de_janeiro"});
     console.log("dados aba cidade status entregas: ", data)
     yield put(requestDadosAgregadosAbaSumarioStatusEntregasCidadeSuccess(data));
   } catch (error) {
@@ -341,10 +341,10 @@ export function* watchLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
   yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA, workerLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura);
 }
 
-function* workerLoadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura() {
+function* workerLoadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(action) {
   try {
     yield put(requestDadosAgregadosAbaSumarioStatusEntregasSubprefeitura());
-    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregasSubprefeitura);
+    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregas, {name_subprefeitura: action.payload});
     console.log("dados aba cidade status entregas: ", data)
     yield put(requestDadosAgregadosAbaSumarioStatusEntregasSubprefeituraSuccess(data));
   } catch (error) {
@@ -389,10 +389,10 @@ export function* watchLoadDadosAgregadosAbaProgramaBairro() {
   yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO, workerLoadDadosAgregadosAbaProgramaBairro);
 }
 
-function* workerLoadDadosAgregadosAbaSumarioStatusEntregasBairro() {
+function* workerLoadDadosAgregadosAbaSumarioStatusEntregasBairro(action) {
   try {
     yield put(requestDadosAgregadosAbaSumarioStatusEntregasBairro());
-    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregasBairro);
+    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregas, {name_bairro: action.payload});
     console.log("dados aba bairro status entregas: ", data)
     yield put(requestDadosAgregadosAbaSumarioStatusEntregasBairroSuccess(data));
   } catch (error) {
