@@ -327,10 +327,10 @@ export function* watchLoadDadosAgregadosAbaProgramasSubprefeitura() {
   yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA, workerLoadDadosAgregadosAbaProgramasSubprefeitura);
 }
 
-function* workerLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
+function* workerLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(action) {
   try {
     yield put(requestDadosAgregadosAbaSumarioInfoBasicasSubprefeitura());
-    const data = yield call(getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura);
+    const data = yield call(getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, action.payload);
     yield put(requestDadosAgregadosAbaSumarioInfoBasicasSubprefeituraSuccess(data));
   } catch (error) {
     console.error("Erro: "+ error);
