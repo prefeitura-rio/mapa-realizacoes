@@ -842,19 +842,20 @@ export function getListTemaName() {
   });
 }
 
-export async function getListBairroData(filters = {id_subprefeitura: null, id_cidade: null}) {
+export async function getListBairroData(
+  filters = { id_subprefeitura: null, id_cidade: null },
+) {
   let inputFilters = {
     id_subprefeitura: null,
     id_cidade: null,
-    ...filters
-  }
+    ...filters,
+  };
   if (inputFilters.id_subprefeitura) {
     var res = await db
       .collection("bairro")
       .where("id_subprefeitura", "==", inputFilters.id_subprefeitura)
       .get();
-  }
-  else if (inputFilters.id_cidade) {
+  } else if (inputFilters.id_cidade) {
     var subpref_ids = await db
       .collection("subprefeitura")
       .where("id_cidade", "==", inputFilters.id_cidade)
@@ -866,8 +867,7 @@ export async function getListBairroData(filters = {id_subprefeitura: null, id_ci
       .collection("bairro")
       .where("id_subprefeitura", "in", subpref_ids)
       .get();
-  }
-  else {
+  } else {
     var res = await db.collection("bairro").get();
   }
   return res.docs.map((doc) => {
@@ -1086,14 +1086,15 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
   }
 }
 
-export async function getDadosAgregadosAbaTema(filters = {
-  id_cidade: null,
-  id_bairro: null,
-  id_subprefeitura: null,
-  name_cidade: null,
-  name_bairro: null,
-  name_subprefeitura: null,
-}
+export async function getDadosAgregadosAbaTema(
+  filters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
 ) {
   if (filters.name_cidade) {
     filters.id_cidade = await getIdCidade(filters.name_cidade);
@@ -1102,14 +1103,16 @@ export async function getDadosAgregadosAbaTema(filters = {
     filters.id_bairro = await getIdBairro(filters.name_bairro);
   }
   if (filters.name_subprefeitura) {
-    filters.id_subprefeitura = await getIdSubprefeitura(filters.name_subprefeitura);
+    filters.id_subprefeitura = await getIdSubprefeitura(
+      filters.name_subprefeitura,
+    );
   }
   let inputFilters = {
     id_cidade: null,
     id_bairro: null,
     id_subprefeitura: null,
-    ...filters
-  }
+    ...filters,
+  };
   try {
     const themeData = await getListTemaData();
     const statusData = await getListStatusData();
@@ -1135,21 +1138,27 @@ export async function getDadosAgregadosAbaTema(filters = {
         let realizacoes = await getListRealizacaoData(realizacoesIds);
         // Check for filters
         if (inputFilters.id_cidade) {
-          const bairros = await getListBairroData({id_cidade: inputFilters.id_cidade});
+          const bairros = await getListBairroData({
+            id_cidade: inputFilters.id_cidade,
+          });
           const bairroIds = bairros.map((bairro) => bairro.id);
           realizacoes = realizacoes.filter((realizacao) => {
             return bairroIds.includes(realizacao.id_bairro);
           });
         }
         if (inputFilters.id_subprefeitura) {
-          const bairros = await getListBairroData({id_subprefeitura: inputFilters.id_subprefeitura});
+          const bairros = await getListBairroData({
+            id_subprefeitura: inputFilters.id_subprefeitura,
+          });
           const bairroIds = bairros.map((bairro) => bairro.id);
           realizacoes = realizacoes.filter((realizacao) => {
             return bairroIds.includes(realizacao.id_bairro);
           });
         }
         if (inputFilters.id_bairro) {
-          realizacoes = realizacoes.filter((realizacao) => realizacao.id_bairro === inputFilters.id_bairro);
+          realizacoes = realizacoes.filter(
+            (realizacao) => realizacao.id_bairro === inputFilters.id_bairro,
+          );
         }
         // If we don't have any realizacoes left, skip this theme
         if (realizacoes.length === 0) {
@@ -1187,14 +1196,15 @@ export async function getDadosAgregadosAbaTema(filters = {
   }
 }
 
-export async function getDadosAgregadosAbaProgramas(filters = {
-  id_cidade: null,
-  id_bairro: null,
-  id_subprefeitura: null,
-  name_cidade: null,
-  name_bairro: null,
-  name_subprefeitura: null,
-}
+export async function getDadosAgregadosAbaProgramas(
+  filters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
 ) {
   if (filters.name_cidade) {
     filters.id_cidade = await getIdCidade(filters.name_cidade);
@@ -1203,15 +1213,17 @@ export async function getDadosAgregadosAbaProgramas(filters = {
     filters.id_bairro = await getIdBairro(filters.name_bairro);
   }
   if (filters.name_subprefeitura) {
-    filters.id_subprefeitura = await getIdSubprefeitura(filters.name_subprefeitura);
+    filters.id_subprefeitura = await getIdSubprefeitura(
+      filters.name_subprefeitura,
+    );
   }
   let inputFilters = {
     id_cidade: null,
     id_bairro: null,
     id_subprefeitura: null,
-    ...filters
-  }
-  console.log("inputFilters", inputFilters)
+    ...filters,
+  };
+  console.log("inputFilters", inputFilters);
   try {
     const programaData = await getListProgramaData();
     const statusData = await getListStatusData();
@@ -1237,21 +1249,27 @@ export async function getDadosAgregadosAbaProgramas(filters = {
         let realizacoes = await getListRealizacaoData(realizacoesIds);
         // Check for filters
         if (inputFilters.id_cidade) {
-          const bairros = await getListBairroData({id_cidade: inputFilters.id_cidade});
+          const bairros = await getListBairroData({
+            id_cidade: inputFilters.id_cidade,
+          });
           const bairroIds = bairros.map((bairro) => bairro.id);
           realizacoes = realizacoes.filter((realizacao) => {
             return bairroIds.includes(realizacao.id_bairro);
           });
         }
         if (inputFilters.id_subprefeitura) {
-          const bairros = await getListBairroData({id_subprefeitura: inputFilters.id_subprefeitura});
+          const bairros = await getListBairroData({
+            id_subprefeitura: inputFilters.id_subprefeitura,
+          });
           const bairroIds = bairros.map((bairro) => bairro.id);
           realizacoes = realizacoes.filter((realizacao) => {
             return bairroIds.includes(realizacao.id_bairro);
           });
         }
         if (inputFilters.id_bairro) {
-          realizacoes = realizacoes.filter((realizacao) => realizacao.id_bairro === inputFilters.id_bairro);
+          realizacoes = realizacoes.filter(
+            (realizacao) => realizacao.id_bairro === inputFilters.id_bairro,
+          );
         }
         // If we don't have any realizacoes left, skip this theme
         if (realizacoes.length === 0) {
