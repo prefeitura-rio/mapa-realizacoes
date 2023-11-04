@@ -93,9 +93,10 @@ export const requestDadosAgregadosAbaSumarioInfoBasicasSubprefeitura = () => {
 // Dados agregados aba sumário status das entregas da subprefeitura
 export const LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA = "LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA";
 
-export const loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura = () => {
+export const loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura = (data) => {
   return {
     type: LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_SUBPREFEITURA,
+    payload: data,
   };
 };
 

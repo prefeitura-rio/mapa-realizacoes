@@ -799,17 +799,160 @@ export function getListProgramaName() {
 }
 
 export async function getListRealizacaoData(ids = null) {
+  let results = [];
+  let idsChunks = [];
   if (ids) {
-    var res = await db
-      .collection("realizacao")
-      .where(firebase.firestore.FieldPath.documentId(), "in", ids)
-      .get();
+    if (ids.length === 0) {
+      return [];
+    }
+    else if (ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < ids.length; i += 10) {
+        idsChunks.push(ids.slice(i, i + 10));
+      }
+    } else {
+      idsChunks = [ids];
+    }
+    for (let i = 0; i < idsChunks.length; i++) {
+      if (idsChunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("realizacao")
+        .where(firebase.firestore.FieldPath.documentId(), "in", idsChunks[i])
+        .get();
+      results.push(...res.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      }));
+    }
   } else {
     var res = await db.collection("realizacao").get();
+    results = res.docs.map((doc) => {
+      return { ...doc.data(), id: doc.id };
+    });
   }
-  return res.docs.map((doc) => {
-    return { ...doc.data(), id: doc.id };
-  });
+  return results;
+}
+
+export async function getListRealizacaoIds(
+  filters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
+) {
+  let inputFilters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+    ...filters,
+  };
+  if (inputFilters.name_cidade) {
+    inputFilters.id_cidade = await getIdCidade(inputFilters.name_cidade);
+  }
+  if (inputFilters.name_subprefeitura) {
+    inputFilters.id_subprefeitura = await getIdSubprefeitura(
+      inputFilters.name_subprefeitura,
+    );
+  }
+  if (inputFilters.name_bairro) {
+    inputFilters.id_bairro = await getIdBairro(inputFilters.name_bairro);
+  }
+  let results = [];
+  if (inputFilters.id_cidade) {
+    // Get list of id_subprefeitura, then a list of id_bairro, then a list of id_realizacao
+    var subpref_ids = await db
+      .collection("subprefeitura")
+      .where("id_cidade", "==", inputFilters.id_cidade)
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => doc.id);
+      });
+    let bairro_ids = [];
+    let subpref_ids_chunks = [];
+    if (subpref_ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < subpref_ids.length; i += 10) {
+        subpref_ids_chunks.push(subpref_ids.slice(i, i + 10));
+      }
+    } else {
+      subpref_ids_chunks = [subpref_ids];
+    }
+    for (let i = 0; i < subpref_ids_chunks.length; i++) {
+      if (subpref_ids_chunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("bairro")
+        .where("id_subprefeitura", "in", subpref_ids_chunks[i])
+        .get();
+      bairro_ids.push(...res.docs.map((doc) => doc.id));
+    }
+    let bairro_ids_chunks = [];
+    if (bairro_ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < bairro_ids.length; i += 10) {
+        bairro_ids_chunks.push(bairro_ids.slice(i, i + 10));
+      }
+    } else {
+      bairro_ids_chunks = [bairro_ids];
+    }
+    for (let i = 0; i < bairro_ids_chunks.length; i++) {
+      if (bairro_ids_chunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("realizacao")
+        .where("id_bairro", "in", bairro_ids_chunks[i])
+        .get();
+      results.push(...res.docs.map((doc) => doc.id));
+    }
+  } else if (inputFilters.id_subprefeitura) {
+    // Get list of id_bairro, then a list of id_realizacao
+    var bairro_ids = await db
+      .collection("bairro")
+      .where("id_subprefeitura", "==", inputFilters.id_subprefeitura)
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => doc.id);
+      });
+    let bairro_ids_chunks = [];
+    if (bairro_ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < bairro_ids.length; i += 10) {
+        bairro_ids_chunks.push(bairro_ids.slice(i, i + 10));
+      }
+    } else {
+      bairro_ids_chunks = [bairro_ids];
+    }
+    for (let i = 0; i < bairro_ids_chunks.length; i++) {
+      if (bairro_ids_chunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("realizacao")
+        .where("id_bairro", "in", bairro_ids_chunks[i])
+        .get();
+      results.push(...res.docs.map((doc) => doc.id));
+    }
+  } else if (inputFilters.id_bairro) {
+    // Get list of id_realizacao
+    var res = await db
+      .collection("realizacao")
+      .where("id_bairro", "==", inputFilters.id_bairro)
+      .get();
+    results.push(...res.docs.map((doc) => doc.id));
+  } else {
+    var res = await db.collection("realizacao").get();
+    results = res.docs.map((doc) => doc.id);
+  }
+  return results;
 }
 
 export async function getListStatusData() {
@@ -850,11 +993,16 @@ export async function getListBairroData(
     id_cidade: null,
     ...filters,
   };
+  let results = [];
   if (inputFilters.id_subprefeitura) {
     var res = await db
       .collection("bairro")
       .where("id_subprefeitura", "==", inputFilters.id_subprefeitura)
       .get();
+    results.push(...res.docs.map((doc) => {
+      return { ...doc.data(), id: doc.id };
+    }
+    ));
   } else if (inputFilters.id_cidade) {
     var subpref_ids = await db
       .collection("subprefeitura")
@@ -863,16 +1011,32 @@ export async function getListBairroData(
       .then((querySnapshot) => {
         return querySnapshot.docs.map((doc) => doc.id);
       });
-    var res = await db
-      .collection("bairro")
-      .where("id_subprefeitura", "in", subpref_ids)
-      .get();
+    let subpref_ids_chunks = [];
+    if (subpref_ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < subpref_ids.length; i += 10) {
+        subpref_ids_chunks.push(subpref_ids.slice(i, i + 10));
+      }
+    }
+    for (let i = 0; i < subpref_ids_chunks.length; i++) {
+      if (subpref_ids_chunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("bairro")
+        .where("id_subprefeitura", "in", subpref_ids_chunks[i])
+        .get();
+      results.push(...res.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      }));
+    }
   } else {
     var res = await db.collection("bairro").get();
+    results = res.docs.map((doc) => {
+      return { ...doc.data(), id: doc.id };
+    });
   }
-  return res.docs.map((doc) => {
-    return { ...doc.data(), id: doc.id };
-  });
+  return results;
 }
 
 export async function getListBairroName() {
@@ -1052,9 +1216,36 @@ export async function getDadosAgregadosAbaSumarioInfoBasicasCidade() {
   }
 }
 
-export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
+export async function getDadosAgregadosAbaSumarioStatusEntregas(
+  filters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
+) {
+  if (filters.name_cidade) {
+    filters.id_cidade = await getIdCidade(filters.name_cidade);
+  }
+  if (filters.name_bairro) {
+    filters.id_bairro = await getIdBairro(filters.name_bairro);
+  }
+  if (filters.name_subprefeitura) {
+    filters.id_subprefeitura = await getIdSubprefeitura(
+      filters.name_subprefeitura,
+    );
+  }
+  let inputFilters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    ...filters,
+  };
   try {
-    const data = await getListRealizacaoData();
+    const realizacaoIds = await getListRealizacaoIds(inputFilters);
+    const data = await getListRealizacaoData(realizacaoIds);
     const contagemStatus = {
       em_andamento: 0,
       concluida: 0,
@@ -1081,7 +1272,7 @@ export async function getDadosAgregadosAbaSumarioStatusEntregasCidade() {
     });
     return contagemStatus;
   } catch (error) {
-    console.error("Erro ao obter dados agregados de programa/bairro:", error);
+    console.error("Erro ao obter dados agregados (informações básicas):", error);
     throw error;
   }
 }
@@ -1307,74 +1498,6 @@ export async function getDadosAgregadosAbaProgramas(
   }
 }
 
-// Bairro
-export async function getDadosAgregadosAbaSumarioStatusEntregasBairro() {
-  // TODO: implement
-  try {
-    const realizacoes = [
-      {
-        titulo: "Título da realização 5",
-        status: "Em andamento",
-      },
-      {
-        titulo: "Título da realização 6",
-        status: "Concluída",
-      },
-      {
-        titulo: "Título da realização 7",
-        status: "Em andamento",
-      },
-      {
-        titulo: "Título da realização 8",
-        status: "Cancelada",
-      },
-      {
-        titulo: "Título da realização 9",
-        status: "Cancelada",
-      },
-      {
-        titulo: "Título da realização 10",
-        status: "Interrompida",
-      },
-      {
-        titulo: "Título da realização 11",
-        status: "Em licitação",
-      },
-      // array com todas as realizções da cidade
-    ];
-    const contagemStatus = {
-      em_andamento: 0,
-      concluida: 0,
-      interrompida: 0,
-      em_licitacao: 0,
-    };
-
-    realizacoes.forEach((realizacao) => {
-      switch (realizacao.status) {
-        case "Em andamento":
-          contagemStatus.em_andamento++;
-          break;
-        case "Concluída":
-          contagemStatus.concluida++;
-          break;
-        case "Cancelada":
-          contagemStatus.interrompida++;
-          break;
-        case "Em licitação":
-          contagemStatus.em_licitacao++;
-          break;
-        default:
-          break;
-      }
-    });
-
-    return contagemStatus;
-  } catch (error) {
-    console.error("Erro ao obter dados agregados de programa/bairro:", error);
-    throw error;
-  }
-}
-
 // Subprefeitura
 export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
   // TODO: implement
@@ -1409,73 +1532,6 @@ export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
     );
 
     return resultado;
-  } catch (error) {
-    console.error("Erro ao obter dados agregados da subprefeitura:", error);
-    throw error;
-  }
-}
-
-export async function getDadosAgregadosAbaSumarioStatusEntregasSubprefeitura() {
-  // TODO: implement
-  try {
-    const realizacoes = [
-      {
-        titulo: "Título da realização 5",
-        status: "Em andamento",
-      },
-      {
-        titulo: "Título da realização 6",
-        status: "Concluída",
-      },
-      {
-        titulo: "Título da realização 7",
-        status: "Em andamento",
-      },
-      {
-        titulo: "Título da realização 8",
-        status: "Cancelada",
-      },
-      {
-        titulo: "Título da realização 9",
-        status: "Cancelada",
-      },
-      {
-        titulo: "Título da realização 10",
-        status: "Interrompida",
-      },
-      {
-        titulo: "Título da realização 11",
-        status: "Em licitação",
-      },
-      // array c/ todas as realizções da cidade
-    ];
-    const contagemStatus = {
-      em_andamento: 0,
-      concluida: 0,
-      interrompida: 0,
-      em_licitacao: 0,
-    };
-
-    realizacoes.forEach((realizacao) => {
-      switch (realizacao.status) {
-        case "Em andamento":
-          contagemStatus.em_andamento++;
-          break;
-        case "Concluída":
-          contagemStatus.concluida++;
-          break;
-        case "Cancelada":
-          contagemStatus.interrompida++;
-          break;
-        case "Em licitação":
-          contagemStatus.em_licitacao++;
-          break;
-        default:
-          break;
-      }
-    });
-
-    return contagemStatus;
   } catch (error) {
     console.error("Erro ao obter dados agregados da subprefeitura:", error);
     throw error;
