@@ -771,6 +771,48 @@ export async function getIdTema(name) {
   throw new Error("Tema não encontrado");
 }
 
+export async function getListImageUrls(
+  filters = {
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
+) {
+  let inputFilters = {
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+    ...filters,
+  };
+  if (inputFilters.name_bairro) {
+    inputFilters.id_bairro = await getIdBairro(inputFilters.name_bairro);
+  }
+  if (inputFilters.name_subprefeitura) {
+    inputFilters.id_subprefeitura = await getIdSubprefeitura(
+      inputFilters.name_subprefeitura,
+    );
+  }
+  let realizacaoIds = await getListRealizacaoIds(inputFilters);
+  let realizacoes = await getListRealizacaoData(realizacaoIds);
+  let realizacoesNomes = realizacoes.map((realizacao) => realizacao.nome);
+  let result = [];
+  let res = await storageRef.listAll();
+  res = res.prefixes.filter((folderRef) =>
+    realizacoesNomes.includes(folderRef.name),
+  );
+  let promises = res.map((folderRef) => folderRef.listAll());
+  const folders = await Promise.all(promises);
+  for (var folder of folders) {
+    for (var item of folder.items) {
+      result.push(item);
+    }
+  }
+  promises = result.map((imageRef) => imageRef.getDownloadURL());
+  return await Promise.all(promises);
+}
+
 export function getListOrgaoName() {
   // return a list of all orgao names
   const orgaoRef = db.collection("orgao");
@@ -800,8 +842,7 @@ export async function getListRealizacaoData(ids = null) {
   if (ids) {
     if (ids.length === 0) {
       return [];
-    }
-    else if (ids.length > 10) {
+    } else if (ids.length > 10) {
       // Firestore only allows 10 ids per query
       for (let i = 0; i < ids.length; i += 10) {
         idsChunks.push(ids.slice(i, i + 10));
@@ -817,9 +858,11 @@ export async function getListRealizacaoData(ids = null) {
         .collection("realizacao")
         .where(firebase.firestore.FieldPath.documentId(), "in", idsChunks[i])
         .get();
-      results.push(...res.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
-      }));
+      results.push(
+        ...res.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        }),
+      );
     }
   } else {
     var res = await db.collection("realizacao").get();
@@ -995,10 +1038,11 @@ export async function getListBairroData(
       .collection("bairro")
       .where("id_subprefeitura", "==", inputFilters.id_subprefeitura)
       .get();
-    results.push(...res.docs.map((doc) => {
-      return { ...doc.data(), id: doc.id };
-    }
-    ));
+    results.push(
+      ...res.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      }),
+    );
   } else if (inputFilters.id_cidade) {
     var subpref_ids = await db
       .collection("subprefeitura")
@@ -1022,9 +1066,11 @@ export async function getListBairroData(
         .collection("bairro")
         .where("id_subprefeitura", "in", subpref_ids_chunks[i])
         .get();
-      results.push(...res.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
-      }));
+      results.push(
+        ...res.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        }),
+      );
     }
   } else {
     var res = await db.collection("bairro").get();
@@ -1267,7 +1313,10 @@ export async function getDadosAgregadosAbaSumarioStatusEntregas(
     });
     return contagemStatus;
   } catch (error) {
-    console.error("Erro ao obter dados agregados (informações básicas):", error);
+    console.error(
+      "Erro ao obter dados agregados (informações básicas):",
+      error,
+    );
     throw error;
   }
 }
@@ -1493,7 +1542,9 @@ export async function getDadosAgregadosAbaProgramas(
 }
 
 // Subprefeitura
-export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(name_subprefeitura) {
+export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(
+  name_subprefeitura,
+) {
   try {
     let id_subprefeitura = await getIdSubprefeitura(name_subprefeitura);
     const bairros = await getListBairroData({ id_subprefeitura });

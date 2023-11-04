@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTema, getDadosAgregadosAbaProgramas, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregas, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTema, getDadosAgregadosAbaProgramas, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregas, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, getListImageUrls } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -21,6 +21,12 @@ import {
   requestAllImages,
   requestAllImagesFailed,
   requestAllImagesSuccess,
+  requestAllImagesBairro,
+  requestAllImagesBairroFailed,
+  requestAllImagesBairroSuccess,
+  requestAllImagesSubprefeitura,
+  requestAllImagesSubprefeituraFailed,
+  requestAllImagesSubprefeituraSuccess,
   LOAD_ALL_IMAGES_BAIRRO,
   LOAD_ALL_IMAGES_SUBPREFEITURA,
 } from "./images/actions";
@@ -95,24 +101,10 @@ export function* watchLoadData() {
 
 // ----------------------------
 
-async function fetchAllImages() {
-  let result = [];
-  let res = await storageRef.listAll();
-  let promises = res.prefixes.map((folderRef) => folderRef.listAll());
-  const folders = await Promise.all(promises);
-  for (var folder of folders) {
-    for (var item of folder.items) {
-      result.push(item);
-    }
-  }
-  promises = result.map((imageRef) => imageRef.getDownloadURL());
-  return await Promise.all(promises);
-}
-
 function* workerLoadAllImages() {
   try {
     yield put(requestAllImages());
-    const data = yield call(fetchAllImages);
+    const data = yield call(getListImageUrls);
     yield put(requestAllImagesSuccess(data));
   } catch (error) {
     yield put(requestAllImagesFailed());
@@ -123,16 +115,28 @@ export function* watchLoadAllImages() {
   yield takeEvery(LOAD_ALL_IMAGES, workerLoadAllImages);
 }
 
-function* workerLoadAllImagesBairro() {
- // ... código omitido
+function* workerLoadAllImagesBairro(action) {
+  try {
+    yield put(requestAllImagesBairro());
+    const data = yield call(getListImageUrls, {name_bairro: action.payload});
+    yield put(requestAllImagesBairroSuccess(data));
+  } catch (error) {
+    yield put(requestAllImagesBairroFailed());
+  }
 }
 
 export function* watchLoadAllImagesBairro() {
   yield takeEvery(LOAD_ALL_IMAGES_BAIRRO, workerLoadAllImagesBairro);
 }
 
-function* workerLoadAllImagesSubprefeitura() {
- // ... código omitido
+function* workerLoadAllImagesSubprefeitura(action) {
+  try {
+    yield put(requestAllImagesSubprefeitura());
+    const data = yield call(getListImageUrls, {name_subprefeitura: action.payload});
+    yield put(requestAllImagesSubprefeituraSuccess(data));
+  } catch (error) {
+    yield put(requestAllImagesSubprefeituraFailed());
+  }
 }
 
 export function* watchLoadAllImagesSubprefeitura() {
@@ -481,6 +485,8 @@ export function* rootSaga() {
   yield all([
     fork(watchLoadImages),
     fork(watchLoadAllImages),
+    fork(watchLoadAllImagesBairro),
+    fork(watchLoadAllImagesSubprefeitura),
     fork(watchLoadData),
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
