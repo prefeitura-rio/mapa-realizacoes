@@ -58,9 +58,10 @@ export const setSubprefeituraData = (data) => {
 // Dados agregados aba sumário informações básicas subprefeitura
 export const LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA = "LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA";
 
-export const loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura = () => {
+export const loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura = (data) => {
   return {
     type: LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA,
+    payload: data,
   };
 };
 

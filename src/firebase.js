@@ -82,7 +82,6 @@ export async function createUpdatePrograma(data) {
 }
 
 export async function createUpdateRealizacao(data) {
-  console.log("createUpdateRealizacao(data)", data);
   if (!data.nome) {
     throw new Error("Nome da realização não pode ser vazio");
   }
@@ -633,8 +632,6 @@ export async function createUpdateRealizacaoFromForm(data) {
         deleteRealizacaoTema(realizacaoTema.id);
       }
     }
-
-    console.log("Document successfully updated!");
   } catch (e) {
     throw new Error("Error updating document: ", e);
   }
@@ -737,7 +734,6 @@ export async function getIdPrograma(name) {
 }
 
 export async function getIdStatus(name) {
-  console.log("getIdStatus, name=", name);
   // query the collection "Status" for where the field "nome" is equal to the name
   const statusRef = db.collection("status");
   const statusSnapshot = await statusRef.where("nome", "==", name).get();
@@ -1187,7 +1183,6 @@ export async function uploadPhotoFirebase(file, keyword = "All") {
     } else {
       res = await storageRef.child(`${keyword}/uid`).listAll();
     }
-    console.log("Done", res);
     return await fileRef.getDownloadURL();
   } catch (e) {
     console.error(e);
@@ -1414,7 +1409,6 @@ export async function getDadosAgregadosAbaProgramas(
     id_subprefeitura: null,
     ...filters,
   };
-  console.log("inputFilters", inputFilters);
   try {
     const programaData = await getListProgramaData();
     const statusData = await getListStatusData();
@@ -1499,28 +1493,17 @@ export async function getDadosAgregadosAbaProgramas(
 }
 
 // Subprefeitura
-export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
-  // TODO: implement
+export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(name_subprefeitura) {
   try {
-    const bairrosDaSubprefeitura = [
-      {
-        id_bairro: "campo_grande",
-        habitantes: 10000,
-        domicilios: 9999,
-      },
-      {
-        id_bairro: "barra_da_tijuca",
-        habitantes: 20000,
-        domicilios: 88888,
-      },
-      {
-        id_bairro: "bangu",
-        habitantes: 30000,
-        domicilios: 7777,
-      },
-      // ...
-    ];
-
+    let id_subprefeitura = await getIdSubprefeitura(name_subprefeitura);
+    const bairros = await getListBairroData({ id_subprefeitura });
+    const bairrosDaSubprefeitura = bairros.map((bairro) => {
+      return {
+        id_bairro: bairro.id,
+        habitantes: bairro.habitantes,
+        domicilios: bairro.domicilios,
+      };
+    });
     // Faza soma dos domicílios e habitantes dos bairros da subprefeitura.
     const resultado = bairrosDaSubprefeitura.reduce(
       (acumulador, bairro) => {
