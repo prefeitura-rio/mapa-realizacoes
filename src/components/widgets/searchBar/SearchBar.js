@@ -19,6 +19,9 @@ import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, SUBPREFEITURA_DESCRIPTION
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
 import { getListBairroName, getListSubprefeituraName } from "../../../firebase";
+import { useDispatch } from "react-redux";
+import { loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../../../redux/subprefeituras/actions";
+import { loadDadosAgregadosAbaSumarioStatusEntregasBairro } from "../../../redux/bairros/actions";
 
 
 const useStyles = makeStyles((theme) => {
@@ -115,7 +118,7 @@ const SearchBar = ({
   setEhBairro,
   historyItems,
 }) => {
-
+  const dispatch = useDispatch();
   const handleBairroSubprefeituraChange = (event, name) => {
     if (name) {
       console.log('Bairro/prefeitura selecionado(a):', name);
@@ -128,12 +131,14 @@ const SearchBar = ({
       setActiveBar(BAIRRO_DESCRIPTION_BAR);
       setEhBairro(true);
       console.log('Bairro selecionado: ', name);
+      dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
     } 
     else if (prefeituras.includes(name)){
       setSubprefeituraData(name);
       setActiveBar(SUBPREFEITURA_DESCRIPTION_BAR);
       setEhBairro(false);
       console.log('Subprefeitura selecionada: ', name);
+      dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(name));
     }
     else {
       console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
