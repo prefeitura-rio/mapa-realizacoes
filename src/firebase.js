@@ -1058,6 +1058,9 @@ export async function getListBairroData(
         subpref_ids_chunks.push(subpref_ids.slice(i, i + 10));
       }
     }
+    else {
+      subpref_ids_chunks = [subpref_ids];
+    }
     for (let i = 0; i < subpref_ids_chunks.length; i++) {
       if (subpref_ids_chunks.length === 0) {
         break;
