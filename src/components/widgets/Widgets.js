@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { ButtonBase, makeStyles } from "@material-ui/core";
 import UnderSearchContainer from "../sidebars/wrapper/UnderSearchContainer";
 import HorizontalContainer from "./horizontalWidget/HorizontalContainer";
 // import MinimapWidget from "./minimapWidget/MinimapWidget";
@@ -7,6 +7,7 @@ import UserWidget from "./userWidget/UserWidget";
 import VerticalContainer from "./verticalWidget/VerticalContainer";
 import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
+import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
 
 const useStyles = makeStyles({
   bottomRightWidgets: {
@@ -42,6 +43,14 @@ const useStyles = makeStyles({
     position: "absolute",
     display: "flex",
     zIndex: 500,
+  },
+  filters: {
+    top: "50px",
+    left: "500px",
+    position: "absolute",
+    display: "flex",
+    zIndex: 503,
+   
   },
 
   tools: {
@@ -97,6 +106,12 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
       <div className={classes.topRightWidgets}>
         {/* <InfoWidget/> */}
         <UserWidget profile={profile} />
+      </div>
+      <div className={classes.filters}>
+        
+        <FiltrosBotoes  button1Array={['Option 1', 'Option 2', 'Option 3']}
+  button2Array={['Option AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Option B', 'Option C']}
+  button3Array={['Choice X', 'Choice Y', 'Choice Z']}></FiltrosBotoes>
       </div>
     </div>
   );
