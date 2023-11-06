@@ -4,24 +4,48 @@ import Popover from '@mui/material/Popover';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import { FormControlLabel } from '@material-ui/core';
-import { SvgIcon } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { SvgIcon, Typography } from '@mui/material';
 
-// const RoundedCheckbox = (props) => (
-//   <SvgIcon {...props}>
-//     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
-//   </SvgIcon>
-//  );
+const NonSelectedIconComponent = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle opacity="0.6" cx="8" cy="8" r="7.5" stroke="#001717" />
+  </svg>
+);
+
+const SelectedIconComponent = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle opacity="0.6" cx="8" cy="8" r="7.5" fill="#007E7D" stroke="#007E7D" />
+  </svg>
+);
 
 const DropdownButtons = ({ button1Array, button2Array, button3Array }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [currentButtonName, setCurrentButtonName] = useState(null);
 
-  const handleButtonClick = (event, buttonOptions) => {
+  const handleButtonClick = (event, buttonName, buttonOptions) => {
     setAnchorEl(event.currentTarget);
-    setOptions(buttonOptions);
+    setCurrentButtonName(buttonName);
+    setOptions(buttonOptions); 
+    if (!selectedOptions[buttonName]) {
+      setSelectedOptions(prevState => ({ ...prevState, [buttonName]: [] }));
+    }
   };
+
+
+
+  const handleOptionChange = (buttonName, option) => {
+    setSelectedOptions(prevState => {
+      if (prevState[buttonName]?.includes(option)) {
+        return { ...prevState, [buttonName]: prevState[buttonName].filter(o => o !== option) };
+      } else {
+        return { ...prevState, [buttonName]: [...prevState[buttonName] || [], option] };
+      }
+    });
+  };
+
+
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -45,25 +69,26 @@ const DropdownButtons = ({ button1Array, button2Array, button3Array }) => {
       <div style={buttonContainerStyle}>
         <Button
           variant="contained"
-          onClick={(e) => handleButtonClick(e, button1Array)}
-          style={buttonStyle} // Apply the button style
+          onClick={(e) => handleButtonClick(e, 'button1', button1Array)}
+          style={buttonStyle} 
         >
-          Button 1
+          Órgão
         </Button>
         <Button
           variant="contained"
-          onClick={(e) => handleButtonClick(e, button2Array)}
-          style={buttonStyle} // Apply the button style
+          onClick={(e) => handleButtonClick(e, 'button2', button2Array)}
+          style={buttonStyle} 
         >
-          Button 2
+          Tema
         </Button>
         <Button
           variant="contained"
-          onClick={(e) => handleButtonClick(e, button3Array)}
-          style={buttonStyle} // Apply the button style
+          onClick={(e) => handleButtonClick(e, 'button3', button3Array)}
+          style={buttonStyle} 
         >
-          Button 3
+          Programa
         </Button>
+
       </div>
       <Popover
         open={Boolean(anchorEl)}
@@ -78,13 +103,25 @@ const DropdownButtons = ({ button1Array, button2Array, button3Array }) => {
           horizontal: 'left',
         }}
       >
-        <Box p={2}>
+        <Box p={2} style={{ marginTop: '5px' }}>
           {options.map((option, index) => (
-            <div key={index}>
-               <FormControlLabel
-               control={<Checkbox icon={<AddCircleOutlineIcon />} checkedIcon={<CheckCircleIcon />} style={{ color: '#007E7D' }} />}
-               label={option}
-             />
+            <div key={index} >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    icon={<NonSelectedIconComponent sx={{ fontSize: '16px' }} />}
+                    checkedIcon={<SelectedIconComponent sx={{ fontSize: '15px' }} />}
+                    style={{ color: '#007E7D', }}
+                    checked={selectedOptions[currentButtonName]?.includes(option)}
+                    onChange={() => handleOptionChange(currentButtonName, option)}
+                  />
+                }
+                label={<Typography fontSize="14.5px">{option}</Typography>}
+                style={{ marginRight: '3px', marginTop: '-10px' }}
+              />
+
+
+
             </div>
           ))}
         </Box>
