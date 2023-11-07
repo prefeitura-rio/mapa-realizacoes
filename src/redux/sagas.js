@@ -194,10 +194,10 @@ function* workerLoadAllPlaces(action) {
   try {
     yield put(requestAllPlaces());
     const data = yield call(getListRealizacaoData, action.payload);
-    console.log("Data em workerLoadAllPlaces:", data); // Imprime o valor de "data" no console
+    console.log("Data em workerLoadAllPlaces:", data); 
     yield put(requestAllPlacesSuccess(data));
   } catch (error) {
-    console.log("Erro em workerLoadAllPlaces:", error); // Imprime o erro no console
+    console.log("Erro em workerLoadAllPlaces:", error); 
     yield put(requestAllPlacesFailed());
   }
 }
@@ -206,21 +206,21 @@ export function* watchLoadAllPlaces() {
   yield takeEvery(LOAD_ALL_PLACES, workerLoadAllPlaces);
 }
 
-function* workerLoadAllPoints() {
-  try {
-    yield put(requestAllPoints());
-    const data = yield call(getListRealizacaoData);
-    console.log("data: ", data)
-    yield put(requestAllPointsSuccess(data));
-  } catch (error) {
-    console.error("Erro: "+error);
-    yield put(requestAllPointsFailed());
-  }
-}
+// function* workerLoadAllPoints() {
+//   try {
+//     yield put(requestAllPoints());
+//     const data = yield call(getListRealizacaoData);
+//     console.log("dataaa: ", data)
+//     yield put(requestAllPointsSuccess(data));
+//   } catch (error) {
+//     console.error("Erro: "+error);
+//     yield put(requestAllPointsFailed());
+//   }
+// }
 
-export function* watchLoadAllPoints() {
-  yield takeEvery(LOAD_ALL_POINTS, workerLoadAllPoints);
-}
+// export function* watchLoadAllPoints() {
+//   yield takeEvery(LOAD_ALL_POINTS, workerLoadAllPoints);
+// }
 
 
 function* workerLoadAllCidades() {
@@ -504,7 +504,7 @@ export function* rootSaga() {
     fork(watchLoadDadosAgregadosAbaSumarioStatusEntregaBairro),
     fork(watchLoadBairroData),
     fork(watchLoadSubprefeituraData),
-    fork(watchLoadAllPoints),
+    // fork(watchLoadAllPoints),
     fork(watchLogin),
     fork(watchLogOut),
   ]);

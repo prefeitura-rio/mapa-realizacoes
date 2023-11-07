@@ -9,11 +9,12 @@ import { setDescriptionData } from "./../../redux/place/actions";
 import { setActiveBar, setUnderSearchBar } from "./../../redux/active/actions";
 import { loadData } from "../../redux/place/actions";
 import { loadAllCidades } from "../../redux/cidade/actions";
+import { loadAllPlaces } from "../../redux/places/actions";
 
 const MapContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadAllPoints());
+    dispatch(loadAllPlaces());
   }, []);
 
   return (
@@ -37,7 +38,7 @@ const MapContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     zoomDelta: state.app.zoomDelta,
-    points: state.points.all,
+    points: state.places.allPlaces,
     currentCoords: state.map.coords,
     profile: state.auth.profile
   };
