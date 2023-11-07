@@ -813,6 +813,18 @@ export async function getListImageUrls(
   return await Promise.all(promises);
 }
 
+export async function getRealizacaoFirstImageUrl(name_realizacao) {
+  try {
+    const folderRef = storageRef.child(name_realizacao);
+    const res = await folderRef.listAll();
+    const imageRef = res.items[0];
+    return await imageRef.getDownloadURL();  
+  }
+  catch (e) {
+    return null;
+  }
+}
+
 export function getListOrgaoName() {
   // return a list of all orgao names
   const orgaoRef = db.collection("orgao");
@@ -1405,15 +1417,16 @@ export async function getDadosAgregadosAbaTema(
         if (!aggregateRealizacaoTheme[theme.nome]) {
           aggregateRealizacaoTheme[theme.nome] = [];
         }
-        realizacoes.forEach((realizacao) => {
-          const realizacaoTheme = {
-            titulo: realizacao.nome,
-            status: statusDataMap[realizacao.id_status],
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          };
-          aggregateRealizacaoTheme[theme.nome].push(realizacaoTheme);
-        });
+        await Promise.all(
+          realizacoes.map(async (realizacao) => {
+            const realizacaoTheme = {
+              titulo: realizacao.nome,
+              status: statusDataMap[realizacao.id_status],
+              imageUrl: await getRealizacaoFirstImageUrl(realizacao.nome) || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
+            };
+            aggregateRealizacaoTheme[theme.nome].push(realizacaoTheme);
+          })
+        );
       }),
     );
     let panelId = 1;
@@ -1515,15 +1528,16 @@ export async function getDadosAgregadosAbaProgramas(
         if (!aggregateRealizacaoPrograma[programa.nome]) {
           aggregateRealizacaoPrograma[programa.nome] = [];
         }
-        realizacoes.forEach((realizacao) => {
-          const realizacaoPrograma = {
-            titulo: realizacao.nome,
-            status: statusDataMap[realizacao.id_status],
-            imageUrl:
-              "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-          };
-          aggregateRealizacaoPrograma[programa.nome].push(realizacaoPrograma);
-        });
+        await Promise.all(
+          realizacoes.map(async (realizacao) => {
+            const realizacaoPrograma = {
+              titulo: realizacao.nome,
+              status: statusDataMap[realizacao.id_status],
+              imageUrl: await getRealizacaoFirstImageUrl(realizacao.nome) || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
+            };
+            aggregateRealizacaoPrograma[programa.nome].push(realizacaoPrograma);
+          })
+        );
       }),
     );
     let panelId = 1;
