@@ -206,23 +206,6 @@ export function* watchLoadAllPlaces() {
   yield takeEvery(LOAD_ALL_PLACES, workerLoadAllPlaces);
 }
 
-// function* workerLoadAllPoints() {
-//   try {
-//     yield put(requestAllPoints());
-//     const data = yield call(getListRealizacaoData);
-//     console.log("dataaa: ", data)
-//     yield put(requestAllPointsSuccess(data));
-//   } catch (error) {
-//     console.error("Erro: "+error);
-//     yield put(requestAllPointsFailed());
-//   }
-// }
-
-// export function* watchLoadAllPoints() {
-//   yield takeEvery(LOAD_ALL_POINTS, workerLoadAllPoints);
-// }
-
-
 function* workerLoadAllCidades() {
   try {
     yield put(requestAllCidades());
@@ -504,7 +487,6 @@ export function* rootSaga() {
     fork(watchLoadDadosAgregadosAbaSumarioStatusEntregaBairro),
     fork(watchLoadBairroData),
     fork(watchLoadSubprefeituraData),
-    // fork(watchLoadAllPoints),
     fork(watchLogin),
     fork(watchLogOut),
   ]);
