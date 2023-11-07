@@ -8,6 +8,9 @@ import VerticalContainer from "./verticalWidget/VerticalContainer";
 import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
 import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
+import { getListBairroName, getListOrgaoName, getListProgramaName, getListTemaName } from "../../firebase";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   bottomRightWidgets: {
@@ -50,7 +53,7 @@ const useStyles = makeStyles({
     position: "absolute",
     display: "flex",
     zIndex: 503,
-   
+
   },
 
   tools: {
@@ -84,6 +87,32 @@ const useStyles = makeStyles({
 const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
   const classes = useStyles({ underSearchBar, bottomGallery });
 
+  const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
+  const [temasNameFilter, setTemasNameFilter] = useState([]);
+  const [programasNameFilter, setProgramasNameFilter] = useState([]);
+
+  useEffect(() => {
+
+    const loadFiltrosInfo = async () => {
+      try {
+        const orgaoRef = await getListOrgaoName();
+        const temaRef = await getListTemaName();
+        const programaRef = await getListProgramaName();
+
+        if (!orgaoRef.empty && !temaRef.empty && !programaRef.empty) {
+          setOrgaosNameFilter(orgaoRef);
+          setTemasNameFilter(temaRef);
+          setProgramasNameFilter(programaRef);
+        } else {
+          console.error("Erro aqui <<== ");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar nomes dos filtros", error);
+      }
+    };
+
+    loadFiltrosInfo();
+  }, []);
   return (
     <div className={classes.widgets}>
       <div className={classes.bottomWidgets}>
@@ -108,10 +137,10 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
         <UserWidget profile={profile} />
       </div>
       <div className={classes.filters}>
-        
-        <FiltrosBotoes  button1Array={['Option 1', 'Option 2', 'Option 3']}
-  button2Array={['Option AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'Option B', 'Option C']}
-  button3Array={['Choice X', 'Choice Y', 'Choice Z']}></FiltrosBotoes>
+
+        <FiltrosBotoes orgaosNameFilter={orgaosNameFilter}
+          temasNameFilter={temasNameFilter}
+          programasNameFilter={programasNameFilter}></FiltrosBotoes>
       </div>
     </div>
   );

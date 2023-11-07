@@ -820,19 +820,18 @@ export function getListOrgaoName() {
     return querySnapshot.docs.map((doc) => doc.data().nome);
   });
 }
+export function getListTemaName() {
+  // return a list of all tema names
+  const temaRef = db.collection("tema");
+  return temaRef.get().then((querySnapshot) => {
+    return querySnapshot.docs.map((doc) => doc.data().nome);
+  });
+}
 
 export async function getListProgramaData() {
   var res = await db.collection("programa").get();
   return res.docs.map((doc) => {
     return { ...doc.data(), id: doc.id };
-  });
-}
-
-export function getListProgramaName() {
-  // return a list of all programa names
-  const programaRef = db.collection("programa");
-  return programaRef.get().then((querySnapshot) => {
-    return querySnapshot.docs.map((doc) => doc.data().nome);
   });
 }
 
@@ -1016,10 +1015,10 @@ export async function getListTemaData() {
   });
 }
 
-export function getListTemaName() {
-  // return a list of all tema names
-  const temaRef = db.collection("tema");
-  return temaRef.get().then((querySnapshot) => {
+export function getListProgramaName() {
+  // return a list of all programa names
+  const programaRef = db.collection("programa");
+  return programaRef.get().then((querySnapshot) => {
     return querySnapshot.docs.map((doc) => doc.data().nome);
   });
 }

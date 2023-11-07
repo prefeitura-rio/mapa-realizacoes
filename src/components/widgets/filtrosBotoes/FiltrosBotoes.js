@@ -18,7 +18,7 @@ const SelectedIconComponent = () => (
   </svg>
 );
 
-const DropdownButtons = ({ button1Array, button2Array, button3Array }) => {
+const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilter }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -27,7 +27,7 @@ const DropdownButtons = ({ button1Array, button2Array, button3Array }) => {
   const handleButtonClick = (event, buttonName, buttonOptions) => {
     setAnchorEl(event.currentTarget);
     setCurrentButtonName(buttonName);
-    setOptions(buttonOptions); 
+    setOptions(buttonOptions);
     if (!selectedOptions[buttonName]) {
       setSelectedOptions(prevState => ({ ...prevState, [buttonName]: [] }));
     }
@@ -69,22 +69,22 @@ const DropdownButtons = ({ button1Array, button2Array, button3Array }) => {
       <div style={buttonContainerStyle}>
         <Button
           variant="contained"
-          onClick={(e) => handleButtonClick(e, 'button1', button1Array)}
-          style={buttonStyle} 
+          onClick={(e) => handleButtonClick(e, 'button1', orgaosNameFilter)}
+          style={buttonStyle}
         >
           Órgão
         </Button>
         <Button
           variant="contained"
-          onClick={(e) => handleButtonClick(e, 'button2', button2Array)}
-          style={buttonStyle} 
+          onClick={(e) => handleButtonClick(e, 'button2', temasNameFilter)}
+          style={buttonStyle}
         >
           Tema
         </Button>
         <Button
           variant="contained"
-          onClick={(e) => handleButtonClick(e, 'button3', button3Array)}
-          style={buttonStyle} 
+          onClick={(e) => handleButtonClick(e, 'button3', programasNameFilter)}
+          style={buttonStyle}
         >
           Programa
         </Button>
