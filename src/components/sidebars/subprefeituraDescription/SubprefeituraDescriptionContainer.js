@@ -3,6 +3,7 @@ import { setUnderSearchBar } from "../../../redux/active/actions";
 import { connect, useDispatch } from "react-redux";
 
 import { setDescriptionData } from "../../../redux/place/actions";
+import { loadData } from "../../../redux/place/actions";
 import { setActiveBar } from "../../../redux/active/actions";
 import { useEffect } from "react";
 import { loadDadosAgregadosAbaProgramasSubprefeitura, loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura, loadDadosAgregadosAbaTemaSubprefeitura, loadSubprefeituraData } from "../../../redux/subprefeituras/actions";
@@ -26,15 +27,17 @@ const SubprefeituraDescriptionContainer = (props) => {
   return (
       <SubprefeituraDescriptionBar
         underSearchBar={props.underSearchBar}
-        setUnderSearchBar={props.setUnderSearchBar}
-        setDescriptionData={props.setDescriptionData}
         images_subprefeitura={props.images_subprefeitura}
         subprefeituras={props.subprefeituras}
         dadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaTemaSubprefeitura}
         dadosAgregadosAbaProgramasSubprefeitura={props.dadosAgregadosAbaProgramasSubprefeitura}
         dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={props.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}
         dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={props.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura}
-       
+        setUnderSearchBar={props.setUnderSearchBar}
+        setActiveBar={props.setActiveBar}
+        setDescriptionData={props.setDescriptionData}
+        loadData={props.loadData}
+
         // remove if not useful
         profile={props.profile}
         login={props.login}
@@ -65,7 +68,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setUnderSearchBar,
   setActiveBar,
-  setDescriptionData
+  setDescriptionData,
+  loadData,
 };
 
 export default connect(

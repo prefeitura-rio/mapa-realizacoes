@@ -113,6 +113,10 @@ import BasicInfo from "./BasicInfo";
     dadosAgregadosAbaProgramasSubprefeitura,
     dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
     dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
+    setActiveBar,
+    setDescriptionData,
+    setUnderSearchBar,
+    loadData
 
   }) => {
     const classes = useStyles();
@@ -169,10 +173,10 @@ import BasicInfo from "./BasicInfo";
         </TabPanel>
 
         <TabPanel value={tabValue} index={1}>
-          <AccordionTemas dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade} dadosAgregadosAbaTemaSubprefeitura={dadosAgregadosAbaTemaSubprefeitura} dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}></AccordionTemas>
+          <AccordionTemas  loadData={loadData} setUnderSearchBar={setUnderSearchBar} setActiveBar={setActiveBar} setDescriptionData={setDescriptionData} dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade} dadosAgregadosAbaTemaSubprefeitura={dadosAgregadosAbaTemaSubprefeitura} dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}></AccordionTemas>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <AccordionProgramas dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade} dadosAgregadosAbaProgramasSubprefeitura={dadosAgregadosAbaProgramasSubprefeitura} dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}></AccordionProgramas>
+          <AccordionProgramas loadData={loadData} setUnderSearchBar={setUnderSearchBar} setActiveBar={setActiveBar} setDescriptionData={setDescriptionData} dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade} dadosAgregadosAbaProgramasSubprefeitura={dadosAgregadosAbaProgramasSubprefeitura} dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}></AccordionProgramas>
         </TabPanel>
     
     </>

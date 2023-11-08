@@ -4,6 +4,7 @@ import { connect, useDispatch } from "react-redux";
 import { setShownMore } from "./../../../redux/active/actions";
 import { Fade, Grow, Slide } from "@material-ui/core";
 import { setDescriptionData } from "./../../../redux/place/actions";
+import { loadData } from "./../../../redux/place/actions";
 import {
   setOpenCompletePhoto, setActiveBar, setPhotoGallery
 } from "./../../../redux/active/actions";
@@ -25,8 +26,6 @@ const MainUnderSearchContainer = (props) => {
   return (
       <MainUnderSearchBar
         underSearchBar={props.underSearchBar}
-        setUnderSearchBar={props.setUnderSearchBar}
-        setDescriptionData={props.setDescriptionData}
         content={props.content}
         images_cidade={props.images_cidade}
         cidades={props.cidades}
@@ -34,6 +33,11 @@ const MainUnderSearchContainer = (props) => {
         dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
         dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
         dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
+        setUnderSearchBar={props.setUnderSearchBar}
+        setActiveBar={props.setActiveBar}
+        setDescriptionData={props.setDescriptionData}
+        loadData={props.loadData}
+        
 
         // remove if not useful
         profile={props.profile}
@@ -48,8 +52,6 @@ const MainUnderSearchContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     underSearchBar: state.active.underSearchBar,
-    activeBar: state.active.activeBar,
-    descriptionData: state.place.descriptionData,
     content: state.place.content,
     cidades: state.cidades.all,
     dadosAgregadosAbaTemaCidade: state.cidades.dadosAgregadosAbaTemaCidade,
@@ -67,6 +69,7 @@ const mapDispatchToProps = {
   setUnderSearchBar,
   setActiveBar,
   setDescriptionData,
+  loadData,
   setPhotoGallery,
   setImagesType,
   setOpenCompletePhoto,

@@ -98,7 +98,6 @@ const theme = createTheme({
 
 const MainUnderSearchBar = forwardRef(
   ({ underSearchBar,
-    setUnderSearchBar,
     cidades,
     dadosAgregadosAbaTemaCidade,
     dadosAgregadosAbaProgramasCidade,
@@ -106,7 +105,12 @@ const MainUnderSearchBar = forwardRef(
     dadosAgregadosAbaSumarioStatusEntregasCidade,
     images_cidade,
     setPhotoGallery,
-    setImagesType
+    setImagesType,
+    setActiveBar,
+    setDescriptionData,
+    setUnderSearchBar,
+    loadData
+
   }, ref) => {
 
     const [imagesList, setImagesList] = useState(images_cidade);
@@ -140,6 +144,10 @@ const MainUnderSearchBar = forwardRef(
             dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade}
             dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade}
             dadosAgregadosAbaSumarioStatusEntregasCidade={dadosAgregadosAbaSumarioStatusEntregasCidade}
+            setActiveBar={setActiveBar} 
+            loadData={loadData} 
+            setDescriptionData={setDescriptionData}
+            setUnderSearchBar={setUnderSearchBar}
             cidades={cidades}
             topImgSrc={rio_cover}
             tabValue={tabValue}

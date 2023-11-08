@@ -3,6 +3,7 @@ import { setUnderSearchBar } from "../../../redux/active/actions";
 import { connect, useDispatch } from "react-redux";
 
 import { setDescriptionData } from "../../../redux/place/actions";
+import { loadData } from "../../../redux/place/actions";
 import { setActiveBar } from "../../../redux/active/actions";
 import { useEffect } from "react";
 import { loadBairroData, loadDadosAgregadosAbaProgramaBairro, loadDadosAgregadosAbaSumarioStatusEntregasBairro, loadDadosAgregadosAbaTemaBairro } from "../../../redux/bairros/actions";
@@ -25,14 +26,16 @@ const BairroDescriptionContainer = (props) => {
   return (
       <BairroDescriptionBar
         underSearchBar={props.underSearchBar}
-        setUnderSearchBar={props.setUnderSearchBar}
-        setDescriptionData={props.setDescriptionData}
         images_bairro={props.images_bairro}
         bairro={props.bairro}
         dadosAgregadosAbaSumarioStatusEntregasBairro={props.dadosAgregadosAbaSumarioStatusEntregasBairro}
         dadosAgregadosAbaTemaBairro={props.dadosAgregadosAbaTemaBairro}
         dadosAgregadosAbaProgramaBairro={props.dadosAgregadosAbaProgramaBairro}
-
+        setUnderSearchBar={props.setUnderSearchBar}
+        setActiveBar={props.setActiveBar}
+        setDescriptionData={props.setDescriptionData}
+        loadData={props.loadData}
+        
         // remove if not useful
         profile={props.profile}
         login={props.login}
@@ -61,7 +64,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setUnderSearchBar,
   setActiveBar,
-  setDescriptionData
+  setDescriptionData,
+  loadData,
 };
 
 export default connect(

@@ -96,12 +96,15 @@ const theme = createTheme({
 
 const BairroDescriptionBar = forwardRef(
   ({ underSearchBar,
-    setUnderSearchBar,
     bairro,
     images_bairro,
     dadosAgregadosAbaSumarioStatusEntregasBairro,
     dadosAgregadosAbaTemaBairro,
-    dadosAgregadosAbaProgramaBairro
+    dadosAgregadosAbaProgramaBairro,
+    setActiveBar,
+    setDescriptionData,
+    setUnderSearchBar,
+    loadData
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
@@ -143,6 +146,10 @@ const BairroDescriptionBar = forwardRef(
             dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro}
             dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}
             dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}
+            setActiveBar={setActiveBar} 
+            loadData={loadData} 
+            setDescriptionData={setDescriptionData}
+            setUnderSearchBar={setUnderSearchBar}
           />
 
       </div>

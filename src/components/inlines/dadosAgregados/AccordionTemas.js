@@ -6,6 +6,9 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, Divider, makeStyles } from '@material-ui/core';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { DESCRIPTION_BAR, SET_UNDERSEARCH_BAR, setActiveBar, setUnderSearchBar } from '../../../redux/active/actions';
+import { toSnakeCase } from '../../../utils/formatFile';
 
 
 const useStyles = makeStyles(()=>({
@@ -21,10 +24,16 @@ const useStyles = makeStyles(()=>({
   width:"120px",
   height:"100px", 
   borderRadius:"15px",
-  }
+  },
+  accordionDetails: {
+    "&:hover": {
+      cursor: "pointer",
+      filter: "brightness(80%)"
+    },
+  },
 }))
 
-export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregadosAbaTemaSubprefeitura, dadosAgregadosAbaTemaBairro }) {
+export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregadosAbaTemaSubprefeitura, dadosAgregadosAbaTemaBairro, setDescriptionData, setUnderSearchBar,setActiveBar,loadData }) {
   const [expanded, setExpanded] = useState(false);
   const [data, setData] = useState([]);
 
@@ -34,6 +43,13 @@ export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregad
     setExpanded(isExpanded ? panel : false);
   };
 
+  // useEffect(() => {
+  //   setActiveBar(DESCRIPTION_BAR);
+  //   setUnderSearchBar(SET_UNDERSEARCH_BAR);
+  //   // if (!loading && data) {
+  //   // }
+  // }, []);
+
   let dataToRender = [];
 
   if (dadosAgregadosAbaTemaCidade) {
@@ -42,6 +58,12 @@ export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregad
     dataToRender = dadosAgregadosAbaTemaBairro;
   } else dataToRender = dadosAgregadosAbaTemaSubprefeitura;
 
+  const showDescription = (value) => {
+    setDescriptionData(toSnakeCase(value));
+    setUnderSearchBar(true);
+    setActiveBar(DESCRIPTION_BAR);
+    loadData(toSnakeCase(value));
+  };
 
   return (
     <div>
@@ -54,7 +76,7 @@ export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregad
             <Typography sx={{ color: 'text.secondary' }}>{item.realizacoes.length} entregas</Typography>
           </AccordionSummary>
           {item.realizacoes.map((realizacao, index) => (
-            <AccordionDetails key={index}>
+            <AccordionDetails key={index} onClick={() => { console.log("Nome da realização: " + realizacao.titulo); showDescription(realizacao.titulo)}}  className={classes.accordionDetails}>
               <div style={{ display: 'flex' }}>
                 <div style={{ flex: 1 }}>
                   <Typography style={{ paddingLeft: 20 }} gutterBottom>
@@ -68,6 +90,7 @@ export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregad
                   <img src={realizacao.imageUrl} className={classes.thumbnail} alt="Imagem" />
                 </div>
               </div>
+              <Divider style={{marginTop:"20px"}} />
             </AccordionDetails>
           ))}
           <Divider />

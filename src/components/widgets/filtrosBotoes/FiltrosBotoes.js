@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import { FormControlLabel } from '@material-ui/core';
 import { SvgIcon, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 const NonSelectedIconComponent = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -19,21 +21,25 @@ const SelectedIconComponent = () => (
 );
 
 const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilter }) => {
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currentButtonName, setCurrentButtonName] = useState(null);
+  console.log('Selected Options1:', selectedOptions);
+  useEffect(() => {
+    // Log the selected options to the console
+    console.log('Selected Options:', selectedOptions);
+  }, [selectedOptions]);
 
   const handleButtonClick = (event, buttonName, buttonOptions) => {
     setAnchorEl(event.currentTarget);
     setCurrentButtonName(buttonName);
     setOptions(buttonOptions);
     if (!selectedOptions[buttonName]) {
-      setSelectedOptions(prevState => ({ ...prevState, [buttonName]: [] }));
+      setSelectedOptions(prevState => ({ ...prevState, [buttonName]: buttonOptions }));
     }
-  };
-
-
+   };   
 
   const handleOptionChange = (buttonName, option) => {
     setSelectedOptions(prevState => {

@@ -6,25 +6,33 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, Divider, makeStyles } from '@material-ui/core';
 import { useState } from 'react';
+import { DESCRIPTION_BAR } from '../../../redux/active/actions';
+import { toSnakeCase } from '../../../utils/formatFile';
 
 
-const useStyles = makeStyles(()=>({
+const useStyles = makeStyles(() => ({
   statusButton: {
     marginLeft: "20px",
     pointerEvents: "none",
-    borderRadius:"39px",
-    backgroundColor:"#007E7D",
+    borderRadius: "39px",
+    backgroundColor: "#007E7D",
     color: "#FFFFFF",
-    padding:"1px 8px 1px 8px"
+    padding: "1px 8px 1px 8px"
   },
-  thumbnail:{
-  width:"120px",
-  height:"100px", 
-  borderRadius:"15px",
-  }
+  thumbnail: {
+    width: "120px",
+    height: "100px",
+    borderRadius: "15px",
+  },
+  accordionDetails: {
+    "&:hover": {
+      cursor: "pointer",
+      filter: "brightness(80%)"
+    },
+  },
 }))
 
-export default function AccordionProgramas({dadosAgregadosAbaProgramasCidade,dadosAgregadosAbaProgramasSubprefeitura, dadosAgregadosAbaProgramaBairro}) {
+export default function AccordionProgramas({ dadosAgregadosAbaProgramasCidade, dadosAgregadosAbaProgramasSubprefeitura, dadosAgregadosAbaProgramaBairro, setDescriptionData, setUnderSearchBar, setActiveBar, loadData }) {
   const [expanded, setExpanded] = useState(false);
   const [data, setData] = useState([]);
 
@@ -41,6 +49,13 @@ export default function AccordionProgramas({dadosAgregadosAbaProgramasCidade,dad
     dataToRender = dadosAgregadosAbaProgramaBairro;
   } else dataToRender = dadosAgregadosAbaProgramasSubprefeitura;
 
+  const showDescription = (value) => {
+    setDescriptionData(toSnakeCase(value));
+    setUnderSearchBar(true);
+    setActiveBar(DESCRIPTION_BAR);
+    loadData(toSnakeCase(value));
+  };
+
   return (
     <div>
       {dataToRender.map((item) => (
@@ -52,7 +67,7 @@ export default function AccordionProgramas({dadosAgregadosAbaProgramasCidade,dad
             <Typography sx={{ color: 'text.secondary' }}>{item.realizacoes.length} entregas</Typography>
           </AccordionSummary>
           {item.realizacoes.map((realizacao, index) => (
-            <AccordionDetails key={index}>
+            <AccordionDetails key={index} onClick={() => { console.log("Nome da realização: " + realizacao.titulo); showDescription(realizacao.titulo) }} className={classes.accordionDetails}>
               <div style={{ display: 'flex' }}>
                 <div style={{ flex: 1 }}>
                   <Typography style={{ paddingLeft: 20 }} gutterBottom>
@@ -66,6 +81,7 @@ export default function AccordionProgramas({dadosAgregadosAbaProgramasCidade,dad
                   <img src={realizacao.imageUrl} className={classes.thumbnail} alt="Imagem" />
                 </div>
               </div>
+              <Divider style={{ marginTop: "20px" }} />
             </AccordionDetails>
           ))}
           <Divider />

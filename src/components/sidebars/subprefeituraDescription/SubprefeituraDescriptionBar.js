@@ -96,13 +96,16 @@ const theme = createTheme({
 
 const SubprefeituraDescriptionBar = forwardRef(
   ({ underSearchBar,
-    setUnderSearchBar,
     subprefeituras,
     images_subprefeitura,
     dadosAgregadosAbaTemaSubprefeitura,
     dadosAgregadosAbaProgramasSubprefeitura,
     dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
     dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
+    setActiveBar,
+    setDescriptionData,
+    setUnderSearchBar,
+    loadData
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
@@ -146,6 +149,10 @@ const SubprefeituraDescriptionBar = forwardRef(
             dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}
             dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={dadosAgregadosAbaSumarioStatusEntregasSubprefeitura}
             subprefeituras = {subprefeituras}
+            setActiveBar={setActiveBar} 
+            loadData={loadData} 
+            setDescriptionData={setDescriptionData}
+            setUnderSearchBar={setUnderSearchBar}
           />
 
       </div>
