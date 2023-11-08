@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { ButtonBase, makeStyles } from "@material-ui/core";
 import UnderSearchContainer from "../sidebars/wrapper/UnderSearchContainer";
 import HorizontalContainer from "./horizontalWidget/HorizontalContainer";
 // import MinimapWidget from "./minimapWidget/MinimapWidget";
@@ -7,6 +7,10 @@ import UserWidget from "./userWidget/UserWidget";
 import VerticalContainer from "./verticalWidget/VerticalContainer";
 import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
+import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
+import { getListBairroName, getListOrgaoName, getListProgramaName, getListTemaName } from "../../firebase";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   bottomRightWidgets: {
@@ -43,6 +47,14 @@ const useStyles = makeStyles({
     display: "flex",
     zIndex: 500,
   },
+  filters: {
+    top: "50px",
+    left: "500px",
+    position: "absolute",
+    display: "flex",
+    zIndex: 503,
+
+  },
 
   tools: {
     position: "absolute",
@@ -69,12 +81,42 @@ const useStyles = makeStyles({
     bottomLeftWidgets: {
       display: (props) => (props.underSearchBar ? "none" : "block"),
     },
+    filters: {
+      display: "none",
+    },
+    
   },
 });
 
 const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
   const classes = useStyles({ underSearchBar, bottomGallery });
 
+  const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
+  const [temasNameFilter, setTemasNameFilter] = useState([]);
+  const [programasNameFilter, setProgramasNameFilter] = useState([]);
+
+  useEffect(() => {
+
+    const loadFiltrosInfo = async () => {
+      try {
+        const orgaoRef = await getListOrgaoName();
+        const temaRef = await getListTemaName();
+        const programaRef = await getListProgramaName();
+
+        if (!orgaoRef.empty && !temaRef.empty && !programaRef.empty) {
+          setOrgaosNameFilter(orgaoRef);
+          setTemasNameFilter(temaRef);
+          setProgramasNameFilter(programaRef);
+        } else {
+          console.error("Erro aqui <<== ");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar nomes dos filtros", error);
+      }
+    };
+
+    loadFiltrosInfo();
+  }, []);
   return (
     <div className={classes.widgets}>
       <div className={classes.bottomWidgets}>
@@ -97,6 +139,12 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
       <div className={classes.topRightWidgets}>
         {/* <InfoWidget/> */}
         <UserWidget profile={profile} />
+      </div>
+      <div className={classes.filters}>
+
+        <FiltrosBotoes orgaosNameFilter={orgaosNameFilter}
+          temasNameFilter={temasNameFilter}
+          programasNameFilter={programasNameFilter}></FiltrosBotoes>
       </div>
     </div>
   );

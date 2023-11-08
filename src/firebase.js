@@ -37,7 +37,7 @@ export async function createUpdateBairro(data) {
     ips: data.ips,
     nome: data.nome,
     ranking_ips: data.ranking_ips,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("bairro").doc(documentName);
   await ref.set(documentData);
@@ -49,7 +49,7 @@ export async function createUpdateCidade(data) {
   }
   const documentData = {
     nome: data.nome,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("cidade").doc(documentName);
   await ref.set(documentData);
@@ -62,7 +62,7 @@ export async function createUpdateOrgao(data) {
   const documentData = {
     nome: data.nome,
     sigla: data.sigla,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("orgao").doc(documentName);
   await ref.set(documentData);
@@ -75,14 +75,13 @@ export async function createUpdatePrograma(data) {
   const documentData = {
     nome: data.nome,
     descricao: data.descricao,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("programa").doc(documentName);
   await ref.set(documentData);
 }
 
 export async function createUpdateRealizacao(data) {
-  console.log("createUpdateRealizacao(data)", data);
   if (!data.nome) {
     throw new Error("Nome da realização não pode ser vazio");
   }
@@ -98,7 +97,7 @@ export async function createUpdateRealizacao(data) {
     image_folder: data.image_folder,
     investimento: data.investimento,
     nome: data.nome,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("realizacao").doc(documentName);
   await ref.set(documentData);
@@ -114,7 +113,7 @@ export async function createUpdateRealizacaoOrgao(data) {
   const documentData = {
     id_orgao: data.id_orgao,
     id_realizacao: data.id_realizacao,
-  }
+  };
   const documentName = concatSnakeCase(data.id_realizacao, data.id_orgao);
   const ref = db.collection("realizacao_orgao").doc(documentName);
   await ref.set(documentData);
@@ -130,7 +129,7 @@ export async function createUpdateRealizacaoPrograma(data) {
   const documentData = {
     id_programa: data.id_programa,
     id_realizacao: data.id_realizacao,
-  }
+  };
   const documentName = concatSnakeCase(data.id_realizacao, data.id_programa);
   const ref = db.collection("realizacao_programa").doc(documentName);
   await ref.set(documentData);
@@ -146,7 +145,7 @@ export async function createUpdateRealizacaoTema(data) {
   const documentData = {
     id_tema: data.id_tema,
     id_realizacao: data.id_realizacao,
-  }
+  };
   const documentName = concatSnakeCase(data.id_realizacao, data.id_tema);
   const ref = db.collection("realizacao_tema").doc(documentName);
   await ref.set(documentData);
@@ -158,7 +157,7 @@ export async function createUpdateStatus(data) {
   }
   const documentData = {
     nome: data.nome,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("status").doc(documentName);
   await ref.set(documentData);
@@ -171,7 +170,7 @@ export async function createUpdateSubprefeitura(data) {
   const documentData = {
     id_cidade: data.id_cidade,
     nome: data.nome,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("subprefeitura").doc(documentName);
   await ref.set(documentData);
@@ -183,7 +182,7 @@ export async function createUpdateTema(data) {
   }
   const documentData = {
     nome: data.nome,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("tema").doc(documentName);
   await ref.set(documentData);
@@ -195,7 +194,7 @@ export async function createUpdateTipo(data) {
   }
   const documentData = {
     nome: data.nome,
-  }
+  };
   const documentName = toSnakeCase(data.nome);
   const ref = db.collection("tipo").doc(documentName);
   await ref.set(documentData);
@@ -455,7 +454,10 @@ export async function readTipo(id) {
 
 export async function createUpdateRealizacaoFromForm(data) {
   // Initialize few variables
-  let idBairro, idBairroOld, idStatus, idStatusOld = null;
+  let idBairro,
+    idBairroOld,
+    idStatus,
+    idStatusOld = null;
 
   // Deconstruct data
   var { content, photos, profile, contentSnapshot } = data;
@@ -470,7 +472,7 @@ export async function createUpdateRealizacaoFromForm(data) {
     "investimento",
     "nome",
     "status",
-  ]
+  ];
   for (let field of requiredFields) {
     if (!content[field]) {
       throw new Error(`Campo ${field} não pode ser vazio`);
@@ -551,9 +553,7 @@ export async function createUpdateRealizacaoFromForm(data) {
     );
     for (let i = 0; i < removedOrgaos.length; i++) {
       const idOrgao = await getIdOrgao(removedOrgaos[i]);
-      await deleteRealizacaoOrgao(
-        concatSnakeCase(idRealizacao, idOrgao),
-      );
+      await deleteRealizacaoOrgao(concatSnakeCase(idRealizacao, idOrgao));
     }
 
     // Create or update related programas
@@ -571,9 +571,7 @@ export async function createUpdateRealizacaoFromForm(data) {
     );
     for (let i = 0; i < removedProgramas.length; i++) {
       const idPrograma = await getIdPrograma(removedProgramas[i]);
-      await deleteRealizacaoPrograma(
-        concatSnakeCase(idRealizacao, idPrograma),
-      );
+      await deleteRealizacaoPrograma(concatSnakeCase(idRealizacao, idPrograma));
     }
 
     // Create or update related temas
@@ -591,9 +589,7 @@ export async function createUpdateRealizacaoFromForm(data) {
     );
     for (let i = 0; i < removedTemas.length; i++) {
       const idTema = await getIdTema(removedTemas[i]);
-      await deleteRealizacaoTema(
-        concatSnakeCase(idRealizacao, idTema),
-      );
+      await deleteRealizacaoTema(concatSnakeCase(idRealizacao, idTema));
     }
 
     // Log changes
@@ -616,7 +612,7 @@ export async function createUpdateRealizacaoFromForm(data) {
       image_folder: contentSnapshot.image_folder,
       investimento: contentSnapshot.investimento,
       nome: contentSnapshot.nome,
-    }
+    };
     createUserLog(docContent, oldDocContent, profile);
 
     // Delete old documents (if title changed)
@@ -636,8 +632,6 @@ export async function createUpdateRealizacaoFromForm(data) {
         deleteRealizacaoTema(realizacaoTema.id);
       }
     }
-
-    console.log("Document successfully updated!");
   } catch (e) {
     throw new Error("Error updating document: ", e);
   }
@@ -691,6 +685,30 @@ export async function getBairroFromCoords(coords) {
   throw new Error("Bairro não encontrado para as coordenadas informadas");
 }
 
+export async function getIdBairro(name) {
+  // query the collection "Bairros" for where the field "nome" is equal to the name
+  const bairrosRef = db.collection("bairro");
+  const bairrosSnapshot = await bairrosRef.where("nome", "==", name).get();
+  // if there are documents, return the first document's id
+  if (!bairrosSnapshot.empty) {
+    return bairrosSnapshot.docs[0].id;
+  }
+  // otherwise, raise an error
+  throw new Error("Bairro não encontrado");
+}
+
+export async function getIdCidade(name) {
+  // query the collection "Cidades" for where the field "nome" is equal to the name
+  const cidadesRef = db.collection("cidade");
+  const cidadesSnapshot = await cidadesRef.where("nome", "==", name).get();
+  // if there are documents, return the first document's id
+  if (!cidadesSnapshot.empty) {
+    return cidadesSnapshot.docs[0].id;
+  }
+  // otherwise, raise an error
+  throw new Error("Cidade não encontrada");
+}
+
 export async function getIdOrgao(name) {
   // query the collection "Orgaos" for where the field "nome" is equal to the name
   const orgaosRef = db.collection("orgao");
@@ -716,7 +734,6 @@ export async function getIdPrograma(name) {
 }
 
 export async function getIdStatus(name) {
-  console.log("getIdStatus, name=", name);
   // query the collection "Status" for where the field "nome" is equal to the name
   const statusRef = db.collection("status");
   const statusSnapshot = await statusRef.where("nome", "==", name).get();
@@ -726,6 +743,20 @@ export async function getIdStatus(name) {
   }
   // otherwise, raise an error
   throw new Error("Status não encontrado");
+}
+
+export async function getIdSubprefeitura(name) {
+  // query the collection "Subprefeituras" for where the field "nome" is equal to the name
+  const subprefeiturasRef = db.collection("subprefeitura");
+  const subprefeiturasSnapshot = await subprefeiturasRef
+    .where("nome", "==", name)
+    .get();
+  // if there are documents, return the first document's id
+  if (!subprefeiturasSnapshot.empty) {
+    return subprefeiturasSnapshot.docs[0].id;
+  }
+  // otherwise, raise an error
+  throw new Error("Subprefeitura não encontrada");
 }
 
 export async function getIdTema(name) {
@@ -740,11 +771,259 @@ export async function getIdTema(name) {
   throw new Error("Tema não encontrado");
 }
 
+export async function getListImageUrls(
+  filters = {
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
+) {
+  let inputFilters = {
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+    ...filters,
+  };
+  if (inputFilters.name_bairro) {
+    inputFilters.id_bairro = await getIdBairro(inputFilters.name_bairro);
+  }
+  if (inputFilters.name_subprefeitura) {
+    inputFilters.id_subprefeitura = await getIdSubprefeitura(
+      inputFilters.name_subprefeitura,
+    );
+  }
+  let realizacaoIds = await getListRealizacaoIds(inputFilters);
+  let realizacoes = await getListRealizacaoData(realizacaoIds);
+  let realizacoesNomes = realizacoes.map((realizacao) => realizacao.nome);
+  let result = [];
+  let res = await storageRef.listAll();
+  res = res.prefixes.filter((folderRef) =>
+    realizacoesNomes.includes(folderRef.name),
+  );
+  let promises = res.map((folderRef) => folderRef.listAll());
+  const folders = await Promise.all(promises);
+  for (var folder of folders) {
+    for (var item of folder.items) {
+      result.push(item);
+    }
+  }
+  promises = result.map((imageRef) => imageRef.getDownloadURL());
+  return await Promise.all(promises);
+}
+
+export async function getRealizacaoFirstImageUrl(name_realizacao) {
+  try {
+    const folderRef = storageRef.child(name_realizacao);
+    const res = await folderRef.listAll();
+    const imageRef = res.items[0];
+    return await imageRef.getDownloadURL();  
+  }
+  catch (e) {
+    return null;
+  }
+}
+
 export function getListOrgaoName() {
   // return a list of all orgao names
   const orgaoRef = db.collection("orgao");
   return orgaoRef.get().then((querySnapshot) => {
     return querySnapshot.docs.map((doc) => doc.data().nome);
+  });
+}
+export function getListTemaName() {
+  // return a list of all tema names
+  const temaRef = db.collection("tema");
+  return temaRef.get().then((querySnapshot) => {
+    return querySnapshot.docs.map((doc) => doc.data().nome);
+  });
+}
+
+export async function getListProgramaData() {
+  var res = await db.collection("programa").get();
+  return res.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
+}
+
+export async function getListRealizacaoData(ids = null) {
+  let results = [];
+  let idsChunks = [];
+  if (ids) {
+    if (ids.length === 0) {
+      return [];
+    } else if (ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < ids.length; i += 10) {
+        idsChunks.push(ids.slice(i, i + 10));
+      }
+    } else {
+      idsChunks = [ids];
+    }
+    for (let i = 0; i < idsChunks.length; i++) {
+      if (idsChunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("realizacao")
+        .where(firebase.firestore.FieldPath.documentId(), "in", idsChunks[i])
+        .get();
+      results.push(
+        ...res.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        }),
+      );
+    }
+  } else {
+    var res = await db.collection("realizacao").get();
+    results = res.docs.map((doc) => {
+      return { ...doc.data(), id: doc.id };
+    });
+  }
+  return results;
+}
+
+export async function getListRealizacaoIds(
+  filters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
+) {
+  let inputFilters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+    ...filters,
+  };
+  if (inputFilters.name_cidade) {
+    inputFilters.id_cidade = await getIdCidade(inputFilters.name_cidade);
+  }
+  if (inputFilters.name_subprefeitura) {
+    inputFilters.id_subprefeitura = await getIdSubprefeitura(
+      inputFilters.name_subprefeitura,
+    );
+  }
+  if (inputFilters.name_bairro) {
+    inputFilters.id_bairro = await getIdBairro(inputFilters.name_bairro);
+  }
+  let results = [];
+  if (inputFilters.id_cidade) {
+    // Get list of id_subprefeitura, then a list of id_bairro, then a list of id_realizacao
+    var subpref_ids = await db
+      .collection("subprefeitura")
+      .where("id_cidade", "==", inputFilters.id_cidade)
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => doc.id);
+      });
+    let bairro_ids = [];
+    let subpref_ids_chunks = [];
+    if (subpref_ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < subpref_ids.length; i += 10) {
+        subpref_ids_chunks.push(subpref_ids.slice(i, i + 10));
+      }
+    } else {
+      subpref_ids_chunks = [subpref_ids];
+    }
+    for (let i = 0; i < subpref_ids_chunks.length; i++) {
+      if (subpref_ids_chunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("bairro")
+        .where("id_subprefeitura", "in", subpref_ids_chunks[i])
+        .get();
+      bairro_ids.push(...res.docs.map((doc) => doc.id));
+    }
+    let bairro_ids_chunks = [];
+    if (bairro_ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < bairro_ids.length; i += 10) {
+        bairro_ids_chunks.push(bairro_ids.slice(i, i + 10));
+      }
+    } else {
+      bairro_ids_chunks = [bairro_ids];
+    }
+    for (let i = 0; i < bairro_ids_chunks.length; i++) {
+      if (bairro_ids_chunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("realizacao")
+        .where("id_bairro", "in", bairro_ids_chunks[i])
+        .get();
+      results.push(...res.docs.map((doc) => doc.id));
+    }
+  } else if (inputFilters.id_subprefeitura) {
+    // Get list of id_bairro, then a list of id_realizacao
+    var bairro_ids = await db
+      .collection("bairro")
+      .where("id_subprefeitura", "==", inputFilters.id_subprefeitura)
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => doc.id);
+      });
+    let bairro_ids_chunks = [];
+    if (bairro_ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < bairro_ids.length; i += 10) {
+        bairro_ids_chunks.push(bairro_ids.slice(i, i + 10));
+      }
+    } else {
+      bairro_ids_chunks = [bairro_ids];
+    }
+    for (let i = 0; i < bairro_ids_chunks.length; i++) {
+      if (bairro_ids_chunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("realizacao")
+        .where("id_bairro", "in", bairro_ids_chunks[i])
+        .get();
+      results.push(...res.docs.map((doc) => doc.id));
+    }
+  } else if (inputFilters.id_bairro) {
+    // Get list of id_realizacao
+    var res = await db
+      .collection("realizacao")
+      .where("id_bairro", "==", inputFilters.id_bairro)
+      .get();
+    results.push(...res.docs.map((doc) => doc.id));
+  } else {
+    var res = await db.collection("realizacao").get();
+    results = res.docs.map((doc) => doc.id);
+  }
+  return results;
+}
+
+export async function getListStatusData() {
+  var res = await db.collection("status").get();
+  return res.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
+}
+
+export function getListStatusName() {
+  // return a list of all status names
+  const statusRef = db.collection("status");
+  return statusRef.get().then((querySnapshot) => {
+    return querySnapshot.docs.map((doc) => doc.data().nome);
+  });
+}
+
+export async function getListTemaData() {
+  var res = await db.collection("tema").get();
+  return res.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
   });
 }
 
@@ -756,33 +1035,83 @@ export function getListProgramaName() {
   });
 }
 
-export async function getListRealizacaoData() {
-  var res = await db.collection("realizacao").get();
-  return res.docs.map((doc) => doc.data());
-}
-
-export function getListStatusName() {
-  // return a list of all status names
-  const statusRef = db.collection("status");
-  return statusRef.get().then((querySnapshot) => {
-    return querySnapshot.docs.map((doc) => doc.data().nome);
-  });
-}
-
-export function getListTemaName() {
-  // return a list of all tema names
-  const temaRef = db.collection("tema");
-  return temaRef.get().then((querySnapshot) => {
-    return querySnapshot.docs.map((doc) => doc.data().nome);
-  });
+export async function getListBairroData(
+  filters = { id_subprefeitura: null, id_cidade: null },
+) {
+  let inputFilters = {
+    id_subprefeitura: null,
+    id_cidade: null,
+    ...filters,
+  };
+  let results = [];
+  if (inputFilters.id_subprefeitura) {
+    var res = await db
+      .collection("bairro")
+      .where("id_subprefeitura", "==", inputFilters.id_subprefeitura)
+      .get();
+    results.push(
+      ...res.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      }),
+    );
+  } else if (inputFilters.id_cidade) {
+    var subpref_ids = await db
+      .collection("subprefeitura")
+      .where("id_cidade", "==", inputFilters.id_cidade)
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => doc.id);
+      });
+    let subpref_ids_chunks = [];
+    if (subpref_ids.length > 10) {
+      // Firestore only allows 10 ids per query
+      for (let i = 0; i < subpref_ids.length; i += 10) {
+        subpref_ids_chunks.push(subpref_ids.slice(i, i + 10));
+      }
+    }
+    else {
+      subpref_ids_chunks = [subpref_ids];
+    }
+    for (let i = 0; i < subpref_ids_chunks.length; i++) {
+      if (subpref_ids_chunks.length === 0) {
+        break;
+      }
+      var res = await db
+        .collection("bairro")
+        .where("id_subprefeitura", "in", subpref_ids_chunks[i])
+        .get();
+      results.push(
+        ...res.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        }),
+      );
+    }
+  } else {
+    var res = await db.collection("bairro").get();
+    results = res.docs.map((doc) => {
+      return { ...doc.data(), id: doc.id };
+    });
+  }
+  return results;
 }
 
 export async function getListBairroName() {
   try {
-    const neighborhoodRef = db.collection('bairro');
+    const neighborhoodRef = db.collection("bairro");
     const neighborhoodSnapshot = await neighborhoodRef.get();
 
     return neighborhoodSnapshot;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getListSubprefeituraName() {
+  try {
+    const subprefeitura = db.collection("subprefeitura");
+    const subprefeituraSnapshot = await subprefeitura.get();
+
+    return subprefeituraSnapshot;
   } catch (error) {
     throw error;
   }
@@ -848,9 +1177,20 @@ export async function getRealizacaoInfo(document) {
   return data;
 }
 export async function getBairroInfo(document) {
- 
+  return await db
+    .collection("bairro")
+    .doc(document)
+    .get()
+    .then((doc) => doc.data());
 }
 
+export async function getSubprefeituraInfo(document) {
+  return await db
+    .collection("subprefeitura")
+    .doc(document)
+    .get()
+    .then((doc) => doc.data());
+}
 
 export async function getRealizacaoOrgaos(idRealizacao) {
   return await db
@@ -866,10 +1206,24 @@ export async function getRealizacaoProgramas(idRealizacao) {
     .get();
 }
 
+export async function getRealizacoesPrograma(idPrograma) {
+  return await db
+    .collection("realizacao_programa")
+    .where("id_programa", "==", idPrograma)
+    .get();
+}
+
 export async function getRealizacaoTemas(idRealizacao) {
   return await db
     .collection("realizacao_tema")
     .where("id_realizacao", "==", idRealizacao)
+    .get();
+}
+
+export async function getRealizacoesTema(idTema) {
+  return await db
+    .collection("realizacao_tema")
+    .where("id_tema", "==", idTema)
     .get();
 }
 
@@ -889,9 +1243,347 @@ export async function uploadPhotoFirebase(file, keyword = "All") {
     } else {
       res = await storageRef.child(`${keyword}/uid`).listAll();
     }
-    console.log("Done", res);
     return await fileRef.getDownloadURL();
   } catch (e) {
     console.error(e);
+  }
+}
+
+// Município
+export async function getDadosAgregadosAbaSumarioInfoBasicasCidade() {
+  try {
+    const bairros = await getListBairroData();
+
+    // Faza soma dos domicílios e habitantes dos bairros.
+    const resultado = bairros.reduce(
+      (acumulador, bairro) => {
+        acumulador.domicilios += bairro.domicilios;
+        acumulador.habitantes += bairro.habitantes;
+        return acumulador;
+      },
+      { domicilios: 0, habitantes: 0 },
+    );
+
+    return resultado;
+  } catch (error) {
+    console.error("Erro ao obter dados agregados da cidade:", error);
+    throw error;
+  }
+}
+
+export async function getDadosAgregadosAbaSumarioStatusEntregas(
+  filters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
+) {
+  if (filters.name_cidade) {
+    filters.id_cidade = await getIdCidade(filters.name_cidade);
+  }
+  if (filters.name_bairro) {
+    filters.id_bairro = await getIdBairro(filters.name_bairro);
+  }
+  if (filters.name_subprefeitura) {
+    filters.id_subprefeitura = await getIdSubprefeitura(
+      filters.name_subprefeitura,
+    );
+  }
+  let inputFilters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    ...filters,
+  };
+  try {
+    const realizacaoIds = await getListRealizacaoIds(inputFilters);
+    const data = await getListRealizacaoData(realizacaoIds);
+    const contagemStatus = {
+      em_andamento: 0,
+      concluida: 0,
+      interrompida: 0,
+      em_licitacao: 0,
+    };
+    data.forEach((realizacao) => {
+      switch (realizacao.id_status) {
+        case "em_andamento":
+          contagemStatus.em_andamento++;
+          break;
+        case "concluído":
+          contagemStatus.concluida++;
+          break;
+        case "interrompida":
+          contagemStatus.interrompida++;
+          break;
+        case "em_licitação":
+          contagemStatus.em_licitacao++;
+          break;
+        default:
+          break;
+      }
+    });
+    return contagemStatus;
+  } catch (error) {
+    console.error(
+      "Erro ao obter dados agregados (informações básicas):",
+      error,
+    );
+    throw error;
+  }
+}
+
+export async function getDadosAgregadosAbaTema(
+  filters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
+) {
+  if (filters.name_cidade) {
+    filters.id_cidade = await getIdCidade(filters.name_cidade);
+  }
+  if (filters.name_bairro) {
+    filters.id_bairro = await getIdBairro(filters.name_bairro);
+  }
+  if (filters.name_subprefeitura) {
+    filters.id_subprefeitura = await getIdSubprefeitura(
+      filters.name_subprefeitura,
+    );
+  }
+  let inputFilters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    ...filters,
+  };
+  try {
+    const themeData = await getListTemaData();
+    const statusData = await getListStatusData();
+    // Convert statusData to a map
+    const statusDataMap = {};
+    statusData.forEach((status) => {
+      statusDataMap[status.id] = status.nome;
+    });
+    let aggregateRealizacaoTheme = {};
+    await Promise.all(
+      themeData.map(async (theme) => {
+        // Look for realizacoes that have this theme
+        const realizacoesTheme = await getRealizacoesTema(theme.id);
+        const realizacoesThemeDocs = realizacoesTheme.docs;
+        // If length is 0, skip this theme
+        if (realizacoesThemeDocs.length === 0) {
+          return;
+        }
+        // Append each realizacao to this theme's aggregate data
+        const realizacoesIds = realizacoesThemeDocs.map((realizacao) => {
+          return realizacao.data().id_realizacao;
+        });
+        let realizacoes = await getListRealizacaoData(realizacoesIds);
+        // Check for filters
+        if (inputFilters.id_cidade) {
+          const bairros = await getListBairroData({
+            id_cidade: inputFilters.id_cidade,
+          });
+          const bairroIds = bairros.map((bairro) => bairro.id);
+          realizacoes = realizacoes.filter((realizacao) => {
+            return bairroIds.includes(realizacao.id_bairro);
+          });
+        }
+        if (inputFilters.id_subprefeitura) {
+          const bairros = await getListBairroData({
+            id_subprefeitura: inputFilters.id_subprefeitura,
+          });
+          const bairroIds = bairros.map((bairro) => bairro.id);
+          realizacoes = realizacoes.filter((realizacao) => {
+            return bairroIds.includes(realizacao.id_bairro);
+          });
+        }
+        if (inputFilters.id_bairro) {
+          realizacoes = realizacoes.filter(
+            (realizacao) => realizacao.id_bairro === inputFilters.id_bairro,
+          );
+        }
+        // If we don't have any realizacoes left, skip this theme
+        if (realizacoes.length === 0) {
+          return;
+        }
+        // Initialize this theme's aggregate data
+        if (!aggregateRealizacaoTheme[theme.nome]) {
+          aggregateRealizacaoTheme[theme.nome] = [];
+        }
+        await Promise.all(
+          realizacoes.map(async (realizacao) => {
+            const realizacaoTheme = {
+              titulo: realizacao.nome,
+              status: statusDataMap[realizacao.id_status],
+              imageUrl: await getRealizacaoFirstImageUrl(realizacao.nome) || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
+            };
+            aggregateRealizacaoTheme[theme.nome].push(realizacaoTheme);
+          })
+        );
+      }),
+    );
+    let panelId = 1;
+    let res = [];
+    for (const theme in aggregateRealizacaoTheme) {
+      res.push({
+        id: `panel${panelId}`,
+        tema: theme,
+        realizacoes: aggregateRealizacaoTheme[theme],
+      });
+      panelId++;
+    }
+    return res;
+  } catch (error) {
+    console.error("Erro ao obter dados agregados de tema/cidade:", error);
+    throw error;
+  }
+}
+
+export async function getDadosAgregadosAbaProgramas(
+  filters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    name_cidade: null,
+    name_bairro: null,
+    name_subprefeitura: null,
+  },
+) {
+  if (filters.name_cidade) {
+    filters.id_cidade = await getIdCidade(filters.name_cidade);
+  }
+  if (filters.name_bairro) {
+    filters.id_bairro = await getIdBairro(filters.name_bairro);
+  }
+  if (filters.name_subprefeitura) {
+    filters.id_subprefeitura = await getIdSubprefeitura(
+      filters.name_subprefeitura,
+    );
+  }
+  let inputFilters = {
+    id_cidade: null,
+    id_bairro: null,
+    id_subprefeitura: null,
+    ...filters,
+  };
+  try {
+    const programaData = await getListProgramaData();
+    const statusData = await getListStatusData();
+    // Convert statusData to a map
+    const statusDataMap = {};
+    statusData.forEach((status) => {
+      statusDataMap[status.id] = status.nome;
+    });
+    let aggregateRealizacaoPrograma = {};
+    await Promise.all(
+      programaData.map(async (programa) => {
+        // Look for realizacoes that have this programa
+        const realizacoesPrograma = await getRealizacoesPrograma(programa.id);
+        const realizacoesProgramaDocs = realizacoesPrograma.docs;
+        // If length is 0, skip this programa
+        if (realizacoesProgramaDocs.length === 0) {
+          return;
+        }
+        // Append each realizacao to this programa's aggregate data
+        const realizacoesIds = realizacoesProgramaDocs.map((realizacao) => {
+          return realizacao.data().id_realizacao;
+        });
+        let realizacoes = await getListRealizacaoData(realizacoesIds);
+        // Check for filters
+        if (inputFilters.id_cidade) {
+          const bairros = await getListBairroData({
+            id_cidade: inputFilters.id_cidade,
+          });
+          const bairroIds = bairros.map((bairro) => bairro.id);
+          realizacoes = realizacoes.filter((realizacao) => {
+            return bairroIds.includes(realizacao.id_bairro);
+          });
+        }
+        if (inputFilters.id_subprefeitura) {
+          const bairros = await getListBairroData({
+            id_subprefeitura: inputFilters.id_subprefeitura,
+          });
+          const bairroIds = bairros.map((bairro) => bairro.id);
+          realizacoes = realizacoes.filter((realizacao) => {
+            return bairroIds.includes(realizacao.id_bairro);
+          });
+        }
+        if (inputFilters.id_bairro) {
+          realizacoes = realizacoes.filter(
+            (realizacao) => realizacao.id_bairro === inputFilters.id_bairro,
+          );
+        }
+        // If we don't have any realizacoes left, skip this theme
+        if (realizacoes.length === 0) {
+          return;
+        }
+        // Initialize this theme's aggregate data
+        if (!aggregateRealizacaoPrograma[programa.nome]) {
+          aggregateRealizacaoPrograma[programa.nome] = [];
+        }
+        await Promise.all(
+          realizacoes.map(async (realizacao) => {
+            const realizacaoPrograma = {
+              titulo: realizacao.nome,
+              status: statusDataMap[realizacao.id_status],
+              imageUrl: await getRealizacaoFirstImageUrl(realizacao.nome) || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
+            };
+            aggregateRealizacaoPrograma[programa.nome].push(realizacaoPrograma);
+          })
+        );
+      }),
+    );
+    let panelId = 1;
+    let res = [];
+    for (const programa in aggregateRealizacaoPrograma) {
+      res.push({
+        id: `panel${panelId}`,
+        tema: programa,
+        realizacoes: aggregateRealizacaoPrograma[programa],
+      });
+      panelId++;
+    }
+    return res;
+  } catch (error) {
+    console.error("Erro ao obter dados agregados de programa/cidade:", error);
+    throw error;
+  }
+}
+
+// Subprefeitura
+export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(
+  name_subprefeitura,
+) {
+  try {
+    let id_subprefeitura = await getIdSubprefeitura(name_subprefeitura);
+    const bairros = await getListBairroData({ id_subprefeitura });
+    const bairrosDaSubprefeitura = bairros.map((bairro) => {
+      return {
+        id_bairro: bairro.id,
+        habitantes: bairro.habitantes,
+        domicilios: bairro.domicilios,
+      };
+    });
+    // Faza soma dos domicílios e habitantes dos bairros da subprefeitura.
+    const resultado = bairrosDaSubprefeitura.reduce(
+      (acumulador, bairro) => {
+        acumulador.domicilios += bairro.domicilios;
+        acumulador.habitantes += bairro.habitantes;
+        return acumulador;
+      },
+      { domicilios: 0, habitantes: 0 },
+    );
+
+    return resultado;
+  } catch (error) {
+    console.error("Erro ao obter dados agregados da subprefeitura:", error);
+    throw error;
   }
 }

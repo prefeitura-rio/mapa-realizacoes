@@ -54,7 +54,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setActiveBar,
-  // setDescriptionData,
   setAddComment,
   setOpenEdit,
   setOpenUploadPhoto,

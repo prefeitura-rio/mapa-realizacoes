@@ -1,12 +1,16 @@
 import {
   Fab,
   makeStyles,
+  ThemeProvider,
+  createTheme
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
+import rio_cover from "../../assets/rio_cover.png"
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -84,44 +88,74 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#007E7D",
+    },
+  },
+});
+
 const MainUnderSearchBar = forwardRef(
   ({ underSearchBar,
-    setUnderSearchBar,
     cidades,
-    images,
+    dadosAgregadosAbaTemaCidade,
+    dadosAgregadosAbaProgramasCidade,
+    dadosAgregadosAbaSumarioInfoBasicasCidade,
+    dadosAgregadosAbaSumarioStatusEntregasCidade,
+    images_cidade,
+    setPhotoGallery,
+    setImagesType,
+    setActiveBar,
+    setDescriptionData,
+    setUnderSearchBar,
+    loadData
+
   }, ref) => {
+
+    const [imagesList, setImagesList] = useState(images_cidade);
+
     const classes = useStyles();
+
+    useEffect(() => {
+      setImagesList(images_cidade);
+    });
+    
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
     console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
 
     const [tabValue, setTabValue] = useState(0);
-    const [topImgSrc, setTopImgSrc] = useState(
-      // content.imageUrl ||
-      "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
-    );
-
-    const onTopImageError = () => {
-      setTopImgSrc(
-        "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
-      );
-    };
+  
 
     cidades = cidades || [];
+    dadosAgregadosAbaTemaCidade = dadosAgregadosAbaTemaCidade || [];
+    dadosAgregadosAbaProgramasCidade = dadosAgregadosAbaProgramasCidade || [];
+    dadosAgregadosAbaSumarioInfoBasicasCidade = dadosAgregadosAbaSumarioInfoBasicasCidade || [];
+    dadosAgregadosAbaSumarioStatusEntregasCidade = dadosAgregadosAbaSumarioStatusEntregasCidade || [];
 
 
     return (
       <div ref={ref}>
-
-        <DadosAgregados
-          topImgSrc={topImgSrc}
-          onTopImageError={onTopImageError}
-          cidades={cidades}
-          tabValue={tabValue}
-          setTabValue={setTabValue}
-          images={images}
-        />
+      
+          <DadosAgregados
+            dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade}
+            dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade}
+            dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade}
+            dadosAgregadosAbaSumarioStatusEntregasCidade={dadosAgregadosAbaSumarioStatusEntregasCidade}
+            setActiveBar={setActiveBar} 
+            loadData={loadData} 
+            setDescriptionData={setDescriptionData}
+            setUnderSearchBar={setUnderSearchBar}
+            cidades={cidades}
+            topImgSrc={rio_cover}
+            tabValue={tabValue}
+            setTabValue={setTabValue}
+            images={images_cidade}
+            setPhotoGallery={setPhotoGallery} 
+            setImagesType={setImagesType}
+          />
 
         <div className={classes.fabContainer}>
           <Fab

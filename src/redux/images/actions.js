@@ -33,6 +33,14 @@ export const LOAD_ALL_IMAGES = "LOAD_ALL_IMAGES";
 export const REQUEST_ALL_IMAGES_SUCCESS = "REQUEST_ALL_IMAGES_SUCCESS";
 export const REQUEST_ALL_IMAGES_FAILED = "REQUEST_ALL_IMAGES_FAILED";
 export const REQUEST_ALL_IMAGES = "REQUEST_ALL_IMAGES";
+export const LOAD_ALL_IMAGES_BAIRRO = "LOAD_ALL_IMAGES_BAIRRO";
+export const REQUEST_ALL_IMAGES_BAIRRO_SUCCESS = "REQUEST_ALL_IMAGES_BAIRRO_SUCCESS";
+export const REQUEST_ALL_IMAGES_BAIRRO_FAILED = "REQUEST_ALL_IMAGES_BAIRRO_FAILED";
+export const REQUEST_ALL_IMAGES_BAIRRO = "REQUEST_ALL_IMAGES_BAIRRO";
+export const LOAD_ALL_IMAGES_SUBPREFEITURA = "LOAD_ALL_IMAGES_SUBPREFEITURA";
+export const REQUEST_ALL_IMAGES_SUBPREFEITURA_SUCCESS = "REQUEST_ALL_IMAGES_SUBPREFEITURA_SUCCESS";
+export const REQUEST_ALL_IMAGES_SUBPREFEITURA_FAILED = "REQUEST_ALL_IMAGES_SUBPREFEITURA_FAILED";
+export const REQUEST_ALL_IMAGES_SUBPREFEITURA = "REQUEST_ALL_IMAGES_SUBPREFEITURA";
 
 export const requestAllImagesSuccess = (dataFromServer) => {
   return {
@@ -60,9 +68,61 @@ export const loadAllImages = (data) => {
   };
 };
 
+export const requestAllImagesBairroSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_ALL_IMAGES_BAIRRO_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const requestAllImagesBairroFailed = () => {
+  return {
+    type: REQUEST_ALL_IMAGES_BAIRRO_FAILED,
+  };
+};
+
+export const requestAllImagesBairro = () => {
+  return {
+    type: REQUEST_ALL_IMAGES_BAIRRO,
+  };
+};
+
+export const loadAllImagesBairro = (data) => {
+  return {
+    type: LOAD_ALL_IMAGES_BAIRRO,
+    payload: data,
+  };
+};
+export const requestAllImagesSubprefeituraSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_ALL_IMAGES_SUBPREFEITURA_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const requestAllImagesSubprefeituraFailed = () => {
+  return {
+    type: REQUEST_ALL_IMAGES_SUBPREFEITURA_FAILED,
+  };
+};
+
+export const requestAllImagesSubprefeitura = () => {
+  return {
+    type: REQUEST_ALL_IMAGES_SUBPREFEITURA,
+  };
+};
+
+export const loadAllImagesSubprefeitura = (data) => {
+  return {
+    type: LOAD_ALL_IMAGES_SUBPREFEITURA,
+    payload: data,
+  };
+};
+
 export const SET_IMAGES_TYPE = "SET_IMAGES_TYPE";
 export const TYPE_ALL = "TYPE_ALL";
 export const TYPE_PLACE = "TYPE_PLACE";
+export const TYPE_ALL_PHOTOS = "TYPE_ALL_PHOTOS";
 
 export const setImagesType = (data) => {
   return {

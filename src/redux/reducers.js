@@ -12,6 +12,7 @@ import authReducer from "./auth/reducers";
 import searchReducer from "./search/reducers";
 import cidadesReducer from "./cidade/reducers";
 import bairrosReducer from "./bairros/reducers";
+import subprefeiturasReducer from "./subprefeituras/reducers";
 
 const defaultState = {
   zoomDelta: 0,
@@ -39,6 +40,7 @@ export default combineReducers({
   points: pointsReducer,
   cidades: cidadesReducer,
   bairros: bairrosReducer,
+  subprefeituras: subprefeiturasReducer,
   map: mapReducer,
   auth: authReducer,
   search: searchReducer,

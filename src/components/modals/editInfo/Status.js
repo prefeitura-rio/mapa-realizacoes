@@ -15,7 +15,7 @@ export default function Status({ value, onChange }) {
     });
   }, []);
   return (
-    <Stack spacing={3} sx={{ width: 680 }}>
+    <Stack spacing={3} sx={{ width: 700 }}>
       <Autocomplete
         id="tags-standard"
         options={status}
@@ -25,8 +25,8 @@ export default function Status({ value, onChange }) {
           <TextField
             {...params}
             variant="standard"
-            label="Status relacionados"
-            placeholder="status"
+            // label="Status relacionados"
+            // placeholder="status"
           />
         )}
       />

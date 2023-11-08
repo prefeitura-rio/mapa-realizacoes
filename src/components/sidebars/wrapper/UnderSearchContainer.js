@@ -25,7 +25,7 @@ const mapStateToProps = (state) => {
   return {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
-    placesData: state.places.placesData,
+    // placesData: state.places.placesData,
   };
 };
 

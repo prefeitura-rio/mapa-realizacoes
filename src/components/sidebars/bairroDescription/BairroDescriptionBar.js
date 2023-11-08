@@ -1,6 +1,8 @@
 import {
   Fab,
   makeStyles,
+  ThemeProvider,
+  createTheme
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -84,17 +86,31 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#007E7D",
+    },
+  },
+});
+
 const BairroDescriptionBar = forwardRef(
   ({ underSearchBar,
+    bairro,
+    images_bairro,
+    dadosAgregadosAbaSumarioStatusEntregasBairro,
+    dadosAgregadosAbaTemaBairro,
+    dadosAgregadosAbaProgramaBairro,
+    setActiveBar,
+    setDescriptionData,
     setUnderSearchBar,
-    cidades,
-    images,
+    loadData
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
-    console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
+    console.log("=======> " + (bairro? bairro.nome : " Nenhum nome disponível"));
 
     const [tabValue, setTabValue] = useState(0);
     const [topImgSrc, setTopImgSrc] = useState(
@@ -108,37 +124,31 @@ const BairroDescriptionBar = forwardRef(
       );
     };
 
-    cidades = cidades || [];
+    bairro = bairro || [];
+    images_bairro = images_bairro || [];
+    dadosAgregadosAbaSumarioStatusEntregasBairro = dadosAgregadosAbaSumarioStatusEntregasBairro || [];
+    dadosAgregadosAbaTemaBairro = dadosAgregadosAbaTemaBairro || [];
+    dadosAgregadosAbaProgramaBairro = dadosAgregadosAbaProgramaBairro || [];
 
 
     return (
       <div ref={ref}>
-        <br></br>
-        <br></br>
-       
-        <DadosAgregados
-          topImgSrc={topImgSrc}
-          onTopImageError={onTopImageError}
-          cidades={cidades}
-          tabValue={tabValue}
-          setTabValue={setTabValue}
-          images={images}
-        />
-         <h3>CONTEÚDO DO BAIRRO</h3>
+          <DadosAgregados
+            topImgSrc={topImgSrc}
+            onTopImageError={onTopImageError}
+            bairro={bairro}
+            tabValue={tabValue}
+            setTabValue={setTabValue}
+            images={images_bairro}
+            dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro}
+            dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}
+            dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}
+            setActiveBar={setActiveBar} 
+            loadData={loadData} 
+            setDescriptionData={setDescriptionData}
+            setUnderSearchBar={setUnderSearchBar}
+          />
 
-        <div className={classes.fabContainer}>
-          <Fab
-            size="small"
-            variant="extended"
-            className={classes.fab}
-            onClick={() => {
-              handleUnderSearchBar();
-            }}
-          >
-            <ExpandLessIcon className={classes.extendedIcon} />
-            <div style={{ marginRight: "8px", color: "#3C4043" }}>Ocultar</div>
-          </Fab>
-        </div>
       </div>
     );
   }

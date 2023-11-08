@@ -1,7 +1,13 @@
 import {
   ALL,
   REQUEST_ALL_IMAGES,
+  REQUEST_ALL_IMAGES_BAIRRO,
+  REQUEST_ALL_IMAGES_BAIRRO_FAILED,
+  REQUEST_ALL_IMAGES_BAIRRO_SUCCESS,
   REQUEST_ALL_IMAGES_FAILED,
+  REQUEST_ALL_IMAGES_SUBPREFEITURA,
+  REQUEST_ALL_IMAGES_SUBPREFEITURA_FAILED,
+  REQUEST_ALL_IMAGES_SUBPREFEITURA_SUCCESS,
   REQUEST_ALL_IMAGES_SUCCESS,
   REQUEST_IMAGES,
   REQUEST_IMAGES_FAILED,
@@ -12,7 +18,7 @@ import {
 
 const defaultState = {
   images: [],
-  allImages: [],
+  allImagesCidade: [],
   loading: false,
   error: false,
   imagesType: null,
@@ -45,21 +51,63 @@ const imagesReducer = (state = defaultState, action) => {
     case REQUEST_ALL_IMAGES:
       return {
         ...state,
-        allImages: [],
+        allImagesCidade: [],
         loading: true,
         error: false,
       };
     case REQUEST_ALL_IMAGES_SUCCESS:
       return {
         ...state,
-        allImages: action.payload,
+        allImagesCidade: action.payload,
         loading: false,
         error: false,
       };
     case REQUEST_ALL_IMAGES_FAILED:
       return {
         ...state,
-        allImages: [],
+        allImagesCidade: [],
+        loading: false,
+        error: true,
+      };
+    case REQUEST_ALL_IMAGES_BAIRRO:
+      return {
+        ...state,
+        allImagesBairro: [],
+        loading: true,
+        error: false,
+      };
+    case REQUEST_ALL_IMAGES_BAIRRO_SUCCESS:
+      return {
+        ...state,
+        allImagesBairro: action.payload,
+        loading: false,
+        error: false,
+      };
+    case REQUEST_ALL_IMAGES_BAIRRO_FAILED:
+      return {
+        ...state,
+        allImagesBairro: [],
+        loading: false,
+        error: true,
+      };
+    case REQUEST_ALL_IMAGES_SUBPREFEITURA:
+      return {
+        ...state,
+        allImagesSubprefeitura: [],
+        loading: true,
+        error: false,
+      };
+    case REQUEST_ALL_IMAGES_SUBPREFEITURA_SUCCESS:
+      return {
+        ...state,
+        allImagesSubprefeitura: action.payload,
+        loading: false,
+        error: false,
+      };
+    case REQUEST_ALL_IMAGES_SUBPREFEITURA_FAILED:
+      return {
+        ...state,
+        allImagesSubprefeitura: [],
         loading: false,
         error: true,
       };

@@ -15,10 +15,13 @@ import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import CloseIcon from "@material-ui/icons/Close";
-import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
+import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, SUBPREFEITURA_DESCRIPTION_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
-import { getListBairroName } from "../../../firebase";
+import { getListBairroName, getListSubprefeituraName } from "../../../firebase";
+import { useDispatch } from "react-redux";
+import { loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../../../redux/subprefeituras/actions";
+import { loadDadosAgregadosAbaSumarioStatusEntregasBairro } from "../../../redux/bairros/actions";
 
 
 const useStyles = makeStyles((theme) => {
@@ -26,8 +29,8 @@ const useStyles = makeStyles((theme) => {
     searchbar: {
       position: "absolute",
       zIndex: 2,
-      left: "7px",
-      top: "7px",
+      left: "40px",
+      top: "40px",
     },
     paper: {
       width: "395px",
@@ -74,6 +77,12 @@ const useStyles = makeStyles((theme) => {
         display: "flex",
         alignItems: "center",
       },
+      searchbar: {
+        position: "absolute",
+        zIndex: 2,
+        top: "7px",
+        left: "7px",
+      },
     },
 
     "@media screen and (max-width: 410px)": {
@@ -86,6 +95,7 @@ const useStyles = makeStyles((theme) => {
         position: "absolute",
         zIndex: 2,
         top: "7px",
+        left: "7px",
       },
     },
   };
@@ -102,23 +112,39 @@ const SearchBar = ({
   setSearchPrompt,
   setContent,
   anyLoading,
-  anyPlaces,
-  setHistoryItems,
+  setBairroData,
+  setSubprefeituraData,
   setPlacesData,
+  setEhBairro,
   historyItems,
 }) => {
-
-  const handleBairroChange = (event, newValue) => {
-    if (newValue) {
-      console.log('Bairro selecionado:', newValue);
-      // Aqui, você pode realizar qualquer ação adicional que desejar com o nome do bairro selecionado.
+  const dispatch = useDispatch();
+  const handleBairroSubprefeituraChange = (event, name) => {
+    if (name) {
+      console.log('Bairro/prefeitura selecionado(a):', name);
     }
-    // setUnderSearchBar(!underSearchBar);
-    // if (!underSearchBar) {
-    //   inputRef.current.focus();
-    // }
-    setActiveBar(BAIRRO_DESCRIPTION_BAR);
+    
+  
+    // Check if name is a prefeitura
+    if (bairros.includes(name)) {
+      setBairroData(name);
+      setActiveBar(BAIRRO_DESCRIPTION_BAR);
+      setEhBairro(true);
+      console.log('Bairro selecionado: ', name);
+      dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
+    } 
+    else if (prefeituras.includes(name)){
+      setSubprefeituraData(name);
+      setActiveBar(SUBPREFEITURA_DESCRIPTION_BAR);
+      setEhBairro(false);
+      console.log('Subprefeitura selecionada: ', name);
+      dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(name));
+    }
+    else {
+      console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
+    }
   };
+  
   const handleSearchPrompt = () => {
     setSearchPrompt();
   };
@@ -141,30 +167,48 @@ const SearchBar = ({
   const classes = useStyles();
 
   const [inputValue, setInputValue] = useState("");
-  const [neighborhoods, setNeighborhoods] = useState([]);
+  const [bairrosSubSubprefeituras, setBairrosSubprefeituras] = useState([]);
+  const [prefeituras, setSubprefeituras] = useState([]);
+  const [bairros, setBairros] = useState([]);
 
   useEffect(() => {
-    const loadNeighborhoods = async () => {
+    const loadBairros = async () => {
       try {
-        const neighborhoodRef = await getListBairroName(); 
-        if (!neighborhoodRef.empty) {
-          const neighborhoodNames = [];
-          neighborhoodRef.forEach((doc) => {
-            const neighborhoodData = doc.data();
-            const neighborhoodName = neighborhoodData.nome; 
-            neighborhoodNames.push(neighborhoodName);
-          });
+        const bairroRef = await getListBairroName();
+        const prefeituraRef = await getListSubprefeituraName(); // Obter os nomes das prefeituras
   
-          setNeighborhoods(neighborhoodNames);
+        if (!bairroRef.empty) {
+          const bairrosSubSubprefeituras = [];
+          const bairrosName = [];
+          bairroRef.forEach((doc) => {
+            const bairrosData = doc.data();
+            const bairroName = bairrosData.nome;
+            bairrosSubSubprefeituras.push(bairroName);
+            bairrosName.push(bairroName);
+          });
+          setBairros(bairrosName);
+  
+          // Incluir os nomes das prefeituras na lista de bairros
+          const prefeiturasNames = [];
+          prefeituraRef.forEach((doc) => {
+            const prefeiturasData = doc.data();
+            const prefeituraName = prefeiturasData.nome;
+            bairrosSubSubprefeituras.push(prefeituraName);
+            prefeiturasNames.push(prefeituraName);
+          });
+          setSubprefeituras(prefeiturasNames);
+
+
+          setBairrosSubprefeituras(bairrosSubSubprefeituras);
         } else {
-          console.error("Nenhum bairro encontrado.");
+          console.error("Nenhum bairro/prefeitura encontrado.");
         }
       } catch (error) {
-        console.error("Erro ao buscar nomes de bairros:", error);
+        console.error("Erro ao buscar nomes de bairros/prefeituras:", error);
       }
     };
   
-    loadNeighborhoods();
+    loadBairros();
   }, []);
   
   
@@ -195,13 +239,13 @@ const SearchBar = ({
             freeSolo
             className={classes.input}
             value={inputValue}
-            onChange={handleBairroChange}
+            onChange={handleBairroSubprefeituraChange}
             disableClearable
-            options={neighborhoods} // Usando os nomes dos bairros obtidos do Firebase
+            options={bairrosSubSubprefeituras}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Buscar por bairro"
+                placeholder="Busque por bairro/prefeitura"
                 sx={{
                   "& fieldset": { border: 'none' },
                 }}

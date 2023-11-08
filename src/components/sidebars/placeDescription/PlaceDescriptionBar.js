@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     width: "100%",
     objectFit: "cover",
-    height: "235px",
+    height: "100%",
     borderRadius:"15px"
   },
 
@@ -94,9 +94,9 @@ const PlaceDescriptionBar = ({
   const classes = useStyles();
 
   useEffect(() => {
-    setImagesList(images);
-    setTopImgSrc(imagesList[0] || "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
-  }, [images]);
+  setImagesList(images);
+  setTopImgSrc(images.length > 0 ? images[0] : "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
+}, [images]);
 
   const handleOpenEdit = () => {
     setOpenEdit(true);

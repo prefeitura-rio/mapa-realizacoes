@@ -81,17 +81,6 @@ const UploadPhotoContent = ({
         </IconButton>
       </DialogTitle>
       <DialogContent classes={{ root: classes.dialogContent }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          className={classes.tabs}
-        >
-          <Tab disableRipple label="Carregar" />
-          <Tab disableRipple label="Fotos do celular" />
-          <Tab disableRipple label="Suas fotos" />
-        </Tabs>
         <DropzoneContainer />
       </DialogContent>
       <Divider />

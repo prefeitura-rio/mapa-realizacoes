@@ -1,12 +1,14 @@
 import {
   Fab,
   makeStyles,
+  ThemeProvider,
+  createTheme
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef } from "react";
 import { useState } from "react";
-import DadosAgregados from "../../inlines/DadosAgregados";
+import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -84,17 +86,32 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const PrefeituraDescriptionBar = forwardRef(
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#007E7D",
+    },
+  },
+});
+
+const SubprefeituraDescriptionBar = forwardRef(
   ({ underSearchBar,
+    subprefeituras,
+    images_subprefeitura,
+    dadosAgregadosAbaTemaSubprefeitura,
+    dadosAgregadosAbaProgramasSubprefeitura,
+    dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
+    dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
+    setActiveBar,
+    setDescriptionData,
     setUnderSearchBar,
-    cidades,
-    images,
+    loadData
   }, ref) => {
     const classes = useStyles();
     const handleUnderSearchBar = () => {
       setUnderSearchBar(!underSearchBar);
     };
-    console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
+    console.log("=======> " + (subprefeituras? subprefeituras.nome : " Nenhum nome disponível"));
 
     const [tabValue, setTabValue] = useState(0);
     const [topImgSrc, setTopImgSrc] = useState(
@@ -108,36 +125,35 @@ const PrefeituraDescriptionBar = forwardRef(
       );
     };
 
-    cidades = cidades || [];
+    subprefeituras = subprefeituras || [];
+    images_subprefeitura = images_subprefeitura || [];
+    dadosAgregadosAbaTemaSubprefeitura = dadosAgregadosAbaTemaSubprefeitura || [];
+    dadosAgregadosAbaProgramasSubprefeitura = dadosAgregadosAbaProgramasSubprefeitura || [];
+    dadosAgregadosAbaSumarioInfoBasicasSubprefeitura = dadosAgregadosAbaSumarioInfoBasicasSubprefeitura || [];
+    dadosAgregadosAbaSumarioStatusEntregasSubprefeitura = dadosAgregadosAbaSumarioStatusEntregasSubprefeitura || [];
 
 
     return (
       <div ref={ref}>
+          <DadosAgregados
+            topImgSrc={topImgSrc}
+            onTopImageError={onTopImageError}
+            tabValue={tabValue}
+            setTabValue={setTabValue}
+            images={images_subprefeitura}
+            dadosAgregadosAbaTemaSubprefeitura={dadosAgregadosAbaTemaSubprefeitura}
+            dadosAgregadosAbaProgramasSubprefeitura={dadosAgregadosAbaProgramasSubprefeitura}
+            dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}
+            dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={dadosAgregadosAbaSumarioStatusEntregasSubprefeitura}
+            subprefeituras = {subprefeituras}
+            setActiveBar={setActiveBar} 
+            loadData={loadData} 
+            setDescriptionData={setDescriptionData}
+            setUnderSearchBar={setUnderSearchBar}
+          />
 
-        <DadosAgregados
-          topImgSrc={topImgSrc}
-          onTopImageError={onTopImageError}
-          cidades={cidades}
-          tabValue={tabValue}
-          setTabValue={setTabValue}
-          images={images}
-        />
-
-        <div className={classes.fabContainer}>
-          <Fab
-            size="small"
-            variant="extended"
-            className={classes.fab}
-            onClick={() => {
-              handleUnderSearchBar();
-            }}
-          >
-            <ExpandLessIcon className={classes.extendedIcon} />
-            <div style={{ marginRight: "8px", color: "#3C4043" }}>Ocultar</div>
-          </Fab>
-        </div>
       </div>
     );
   }
 );
-export default PrefeituraDescriptionBar;
+export default SubprefeituraDescriptionBar;

@@ -3,12 +3,16 @@ import { setSearchPrompt } from "./../../../redux/active/actions";
 import { setMenuSidebar } from "./../../../redux/active/actions";
 import { setUnderSearchBar } from "./../../../redux/active/actions";
 import { setActiveBar } from "./../../../redux/active/actions";
+import { setEhBairro } from "./../../../redux/active/actions";
 import { setContent } from "../../../redux/place/actions";
 import { connect } from "react-redux";
 import { loadAllPlaces } from "./../../../redux/places/actions";
 import { setHistoryItems } from "../../../redux/search/actions";
 import { setPlacesData } from "./../../../redux/places/actions";
+import { setBairroData } from "./../../../redux/bairros/actions";
+import { setSubprefeituraData } from "./../../../redux/subprefeituras/actions";
 import { useEffect } from "react";
+
 
 const SearchbarContainer = (props) => {
   useEffect(() => {
@@ -27,6 +31,9 @@ const SearchbarContainer = (props) => {
       setSearchPrompt={props.setSearchPrompt}
       setContent={props.setContent}
       anyLoading={props.anyLoading}
+      setBairroData={props.setBairroData}
+      setSubprefeituraData={props.setSubprefeituraData}
+      setEhBairro={props.setEhBairro}
       setHistoryItems={props.setHistoryItems}
       setPlacesData={props.setPlacesData}
       historyItems={props.historyItems}
@@ -55,6 +62,9 @@ const mapDispatchToProps = {
   loadAllPlaces,
   setHistoryItems,
   setPlacesData,
+  setBairroData ,
+  setEhBairro ,
+  setSubprefeituraData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchbarContainer);

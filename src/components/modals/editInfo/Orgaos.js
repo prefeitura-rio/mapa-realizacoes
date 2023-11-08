@@ -15,7 +15,7 @@ export default function Orgaos({ value, onChange }) {
     });
   }, []);
   return (
-    <Stack spacing={3} sx={{ width: 680 }}>
+    <Stack spacing={3} sx={{ width: 700 }}>
       <Autocomplete
         multiple
         id="tags-standard"
@@ -26,8 +26,8 @@ export default function Orgaos({ value, onChange }) {
           <TextField
             {...params}
             variant="standard"
-            label="Orgaos relacionados"
-            placeholder="Orgaos"
+            // label="Orgaos relacionados"
+            // placeholder="Orgaos"
           />
         )}
       />

@@ -13,20 +13,21 @@ const BottomGalleryContainer = (props) => {
   }, []);
 
   return (
-    <Slide direction="up" in={props.bottomGallery} mountOnEnter unmountOnExit>
-      <BottomGallery
-        images={props.images}
-        setImagesType={props.setImagesType}
-        setPhotoGallery={props.setPhotoGallery}
-        setCurrentImg={props.setCurrentImg}
-      />
-    </Slide>
+    <></>
+    // <Slide direction="up" in={props.bottomGallery} mountOnEnter unmountOnExit>
+    //   <BottomGallery
+    //     images={props.images}
+    //     setImagesType={props.setImagesType}
+    //     setPhotoGallery={props.setPhotoGallery}
+    //     setCurrentImg={props.setCurrentImg}
+    //   />
+    // </Slide>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    images: state.images.allImages,
+    images: state.images.allImagesCidade,
     bottomGallery: state.active.bottomGallery,
   };
 };

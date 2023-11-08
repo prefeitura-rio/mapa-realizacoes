@@ -4,114 +4,89 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ListInfoPrograma from './ListInfoPrograma';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, Divider, makeStyles } from '@material-ui/core';
+import { useState } from 'react';
+import { DESCRIPTION_BAR } from '../../../redux/active/actions';
+import { toSnakeCase } from '../../../utils/formatFile';
 
 
-const useStyles = makeStyles(()=>({
+const useStyles = makeStyles(() => ({
   statusButton: {
+    marginLeft: "20px",
     pointerEvents: "none",
-    borderRadius:"39px",
-    backgroundColor:"#007E7D",
+    borderRadius: "39px",
+    backgroundColor: "#007E7D",
     color: "#FFFFFF",
-    padding:"1px 8px 1px 8px"
+    padding: "1px 8px 1px 8px"
+  },
+  thumbnail: {
+    width: "120px",
+    height: "100px",
+    borderRadius: "15px",
+  },
+  accordionDetails: {
+    "&:hover": {
+      cursor: "pointer",
+      filter: "brightness(80%)"
+    },
   },
 }))
 
+export default function AccordionProgramas({ dadosAgregadosAbaProgramasCidade, dadosAgregadosAbaProgramasSubprefeitura, dadosAgregadosAbaProgramaBairro, setDescriptionData, setUnderSearchBar, setActiveBar, loadData }) {
+  const [expanded, setExpanded] = useState(false);
+  const [data, setData] = useState([]);
 
-export default function AccordionProgramas() {
-    const [expanded, setExpanded] = React.useState(false);
-    const classes = useStyles();
-    const handleChange = (panel) => (event, isExpanded) => {
-      setExpanded(isExpanded ? panel : false);
-    };
-  
-    return (
-      <div>
-        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
-          >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>
-              Bairro Maravilha
-            </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>47 entregas</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{ flex: 1 }}>
-                {/* Conteúdo do lado esquerdo */}
-                <Typography gutterBottom>
-                  Título da realização
-                </Typography>
-                <Button variant="contained" className={classes.statusButton}>
-                Em andamento
-                </Button>
-              </div>
-              <div>
-                <img src={"https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"} alt="Imagem" />
-              </div>
-            </div>
-            
-            <ListInfoPrograma/>
+  const classes = useStyles();
 
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2bh-content"
-            id="panel2bh-header"
-          >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>Reviver Centro</Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-            43 entregas
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+  let dataToRender = [];
+
+  if (dadosAgregadosAbaProgramasCidade) {
+    dataToRender = dadosAgregadosAbaProgramasCidade;
+  } else if (dadosAgregadosAbaProgramaBairro) {
+    dataToRender = dadosAgregadosAbaProgramaBairro;
+  } else dataToRender = dadosAgregadosAbaProgramasSubprefeitura;
+
+  const showDescription = (value) => {
+    setDescriptionData(toSnakeCase(value));
+    setUnderSearchBar(true);
+    setActiveBar(DESCRIPTION_BAR);
+    loadData(toSnakeCase(value));
+  };
+
+  return (
+    <div>
+      {dataToRender.map((item) => (
+        <Accordion key={item.id} expanded={expanded === item.id} onChange={handleChange(item.id)}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${item.id}-content`} id={`${item.id}-header`}>
+            <Typography style={{ paddingLeft: 20, color:"#007E7D ", fontWeight:"bold" }} sx={{ width: '50%', flexShrink: 0 }}>
+              {item.tema}
             </Typography>
+            <Typography sx={{ color: 'text.secondary' , marginLeft:"30px"}}>{item.realizacoes.length} entregas</Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-            Educação, conteúdo sobre Educação
-            </Typography>
-          </AccordionDetails>
+          {item.realizacoes.map((realizacao, index) => (
+            <AccordionDetails key={index} onClick={() => { console.log("Nome da realização: " + realizacao.titulo); showDescription(realizacao.titulo) }} className={classes.accordionDetails}>
+              <div style={{ display: 'flex' }}>
+                <div style={{ flex: 1 }}>
+                  <Typography style={{ paddingLeft: 20 , fontWeight:"bold"}} gutterBottom>
+                    {realizacao.titulo}
+                  </Typography>
+                  <Button variant="contained" className={classes.statusButton}>
+                    {realizacao.status}
+                  </Button>
+                </div>
+                <div>
+                  <img src={realizacao.imageUrl} className={classes.thumbnail} alt="Imagem" />
+                </div>
+              </div>
+              <Divider style={{ marginTop: "20px" }} />
+            </AccordionDetails>
+          ))}
+          <Divider />
         </Accordion>
-        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3bh-content"
-            id="panel3bh-header"
-          >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>
-              Maravalley
-            </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-            41 entregas
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-            Zeladoria, conteúdo sobre zeladoria
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel4bh-content"
-            id="panel4bh-header"
-          >
-            <Typography sx={{ width: '50%', flexShrink: 0 }}>Porto Maravilha</Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-            23 entregas
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-            Segurança pública, conteúdo sobre segurança pública
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      </div>
-    );
-  }
+      ))}
+    </div>
+  );
+}

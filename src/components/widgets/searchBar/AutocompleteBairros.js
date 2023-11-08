@@ -18,7 +18,7 @@ function AutocompleteBairros({ inputValue, onInputChange, onSelect }) {
         renderInput={(params) => (
           <InputBase
             {...params}
-            placeholder="Buscar por bairro"
+            placeholder="Busque por bairro/subprefeitura"
             inputRef={inputRef}
             className={classes.input}
           />

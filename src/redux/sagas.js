@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTema, getDadosAgregadosAbaProgramas, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregas, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, getListImageUrls } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -21,6 +21,14 @@ import {
   requestAllImages,
   requestAllImagesFailed,
   requestAllImagesSuccess,
+  requestAllImagesBairro,
+  requestAllImagesBairroFailed,
+  requestAllImagesBairroSuccess,
+  requestAllImagesSubprefeitura,
+  requestAllImagesSubprefeituraFailed,
+  requestAllImagesSubprefeituraSuccess,
+  LOAD_ALL_IMAGES_BAIRRO,
+  LOAD_ALL_IMAGES_SUBPREFEITURA,
 } from "./images/actions";
 import {
   loadPlaces,
@@ -41,9 +49,24 @@ import {
 } from "./points/actions";
 import { 
   LOAD_ALL_CIDADES, 
+  LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE, 
+  LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE, 
+  LOAD_DADOS_AGREGADOS_ABA_TEMA_CIDADE, 
   requestAllCidades, 
   requestAllCidadesFailed, 
-  requestAllCidadesSuccess
+  requestAllCidadesSuccess,
+  requestDadosAgregadosAbaProgramasCidade,
+  requestDadosAgregadosAbaProgramasCidadeFailed,
+  requestDadosAgregadosAbaProgramasCidadeSuccess,
+  requestDadosAgregadosAbaSumarioInfoBasicasCidade,
+  requestDadosAgregadosAbaSumarioInfoBasicasCidadeFailed,
+  requestDadosAgregadosAbaSumarioInfoBasicasCidadeSuccess,
+  requestDadosAgregadosAbaSumarioStatusEntregasCidade,
+  requestDadosAgregadosAbaSumarioStatusEntregasCidadeFailed,
+  requestDadosAgregadosAbaSumarioStatusEntregasCidadeSuccess,
+  requestDadosAgregadosAbaTemaCidade,
+  requestDadosAgregadosAbaTemaCidadeFailed,
+  requestDadosAgregadosAbaTemaCidadeSuccess
 } from "./cidade/actions";
 import { byCategory } from "../components/modals/editCategory/categoryItems";
 import {
@@ -56,7 +79,9 @@ import {
 } from "./auth/actions";
 
 import firebase from "firebase/app";
-import { LOAD_ALL_BAIRROS, LOAD_BAIRRO_DATA, requestAllBAIRROSSuccess, requestAllBairros, requestAllBairrosFailed, requestBairroData, requestBairroDataFailed, requestBairroDataSuccess } from "./bairros/actions";
+import { LOAD_ALL_BAIRROS, LOAD_BAIRRO_DATA, LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO, LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO, LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO, requestAllBAIRROSSuccess, requestAllBairros, requestAllBairrosFailed, requestBairroData, requestBairroDataFailed, requestBairroDataSuccess, requestDadosAgregadosAbaProgramaBairro, requestDadosAgregadosAbaProgramaBairroFailed, requestDadosAgregadosAbaProgramaBairroSuccess, requestDadosAgregadosAbaSumarioStatusEntregasBairro, requestDadosAgregadosAbaSumarioStatusEntregasBairroFailed, requestDadosAgregadosAbaSumarioStatusEntregasBairroSuccess,requestDadosAgregadosAbaTemaBairro, requestDadosAgregadosAbaTemaBairroFailed, requestDadosAgregadosAbaTemaBairroSuccess } from "./bairros/actions";
+import { toSnakeCase } from "../utils/formatFile";
+import { LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA, LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA, LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA, LOAD_SUBPREFEITURA_DATA, requestDadosAgregadosAbaProgramasSubprefeitura, requestDadosAgregadosAbaProgramasSubprefeituraFailed, requestDadosAgregadosAbaProgramasSubprefeituraSuccess, requestDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, requestDadosAgregadosAbaSumarioInfoBasicasSubprefeituraFailed, requestDadosAgregadosAbaSumarioInfoBasicasSubprefeituraSuccess, requestDadosAgregadosAbaSumarioStatusEntregasSubprefeitura, requestDadosAgregadosAbaSumarioStatusEntregasSubprefeituraFailed, requestDadosAgregadosAbaSumarioStatusEntregasSubprefeituraSuccess, requestDadosAgregadosAbaTemaSubprefeitura, requestDadosAgregadosAbaTemaSubprefeituraFailed, requestDadosAgregadosAbaTemaSubprefeituraSuccess, requestSubprefeituraData, requestSubprefeituraDataFailed, requestSubprefeituraDataSuccess } from "./subprefeituras/actions";
 
 
 function* workerLoadData(action) {
@@ -76,24 +101,10 @@ export function* watchLoadData() {
 
 // ----------------------------
 
-async function fetchAllImages() {
-  let result = [];
-  let res = await storageRef.listAll();
-  let promises = res.prefixes.map((folderRef) => folderRef.listAll());
-  const folders = await Promise.all(promises);
-  for (var folder of folders) {
-    for (var item of folder.items) {
-      result.push(item);
-    }
-  }
-  promises = result.map((imageRef) => imageRef.getDownloadURL());
-  return await Promise.all(promises);
-}
-
 function* workerLoadAllImages() {
   try {
     yield put(requestAllImages());
-    const data = yield call(fetchAllImages);
+    const data = yield call(getListImageUrls);
     yield put(requestAllImagesSuccess(data));
   } catch (error) {
     yield put(requestAllImagesFailed());
@@ -102,6 +113,34 @@ function* workerLoadAllImages() {
 
 export function* watchLoadAllImages() {
   yield takeEvery(LOAD_ALL_IMAGES, workerLoadAllImages);
+}
+
+function* workerLoadAllImagesBairro(action) {
+  try {
+    yield put(requestAllImagesBairro());
+    const data = yield call(getListImageUrls, {name_bairro: action.payload});
+    yield put(requestAllImagesBairroSuccess(data));
+  } catch (error) {
+    yield put(requestAllImagesBairroFailed());
+  }
+}
+
+export function* watchLoadAllImagesBairro() {
+  yield takeEvery(LOAD_ALL_IMAGES_BAIRRO, workerLoadAllImagesBairro);
+}
+
+function* workerLoadAllImagesSubprefeitura(action) {
+  try {
+    yield put(requestAllImagesSubprefeitura());
+    const data = yield call(getListImageUrls, {name_subprefeitura: action.payload});
+    yield put(requestAllImagesSubprefeituraSuccess(data));
+  } catch (error) {
+    yield put(requestAllImagesSubprefeituraFailed());
+  }
+}
+
+export function* watchLoadAllImagesSubprefeitura() {
+  yield takeEvery(LOAD_ALL_IMAGES_SUBPREFEITURA, workerLoadAllImagesSubprefeitura);
 }
 
 async function fetchImages(keyword) {
@@ -155,10 +194,10 @@ function* workerLoadAllPlaces(action) {
   try {
     yield put(requestAllPlaces());
     const data = yield call(getListRealizacaoData, action.payload);
-    console.log("Data em workerLoadAllPlaces:", data); // Imprime o valor de "data" no console
+    console.log("Data em workerLoadAllPlaces:", data); 
     yield put(requestAllPlacesSuccess(data));
   } catch (error) {
-    console.log("Erro em workerLoadAllPlaces:", error); // Imprime o erro no console
+    console.log("Erro em workerLoadAllPlaces:", error); 
     yield put(requestAllPlacesFailed());
   }
 }
@@ -167,23 +206,6 @@ export function* watchLoadAllPlaces() {
   yield takeEvery(LOAD_ALL_PLACES, workerLoadAllPlaces);
 }
 
-function* workerLoadAllPoints() {
-  try {
-    yield put(requestAllPoints());
-    const data = yield call(getListRealizacaoData);
-    console.log("data: ", data)
-    yield put(requestAllPointsSuccess(data));
-  } catch (error) {
-    console.error("Erro2: "+error);
-    yield put(requestAllPointsFailed());
-  }
-}
-
-export function* watchLoadAllPoints() {
-  yield takeEvery(LOAD_ALL_POINTS, workerLoadAllPoints);
-}
-
-
 function* workerLoadAllCidades() {
   try {
     yield put(requestAllCidades());
@@ -191,7 +213,7 @@ function* workerLoadAllCidades() {
     console.log(data)
     yield put(requestAllCidadesSuccess(data));
   } catch (error) {
-    console.error("Erro2: "+error);
+    console.error("Erro: "+error);
     yield put(requestAllCidadesFailed());
   }
 }
@@ -200,11 +222,181 @@ export function* watchLoadAllCidades() {
   yield takeEvery(LOAD_ALL_CIDADES, workerLoadAllCidades);
 }
 
+// Municipio
+function* workerLoadDadosAgregadosAbaTemaCidade() {
+  try {
+    yield put(requestDadosAgregadosAbaTemaCidade());
+    const data = yield call(getDadosAgregadosAbaTema, {id_cidade: "rio_de_janeiro"});
+    console.log("dados aba tema cidade: ", data)
+    yield put(requestDadosAgregadosAbaTemaCidadeSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaTemaCidadeFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaTemaCidade() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_TEMA_CIDADE, workerLoadDadosAgregadosAbaTemaCidade);
+}
+
+function* workerLoadDadosAgregadosAbaProgramasCidade() {
+  try {
+    yield put(requestDadosAgregadosAbaProgramasCidade());
+    const data = yield call(getDadosAgregadosAbaProgramas, {id_cidade: "rio_de_janeiro"});
+    console.log("dados aba bairro programa cidade: ", data)
+    yield put(requestDadosAgregadosAbaProgramasCidadeSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaProgramasCidadeFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaProgramasCidade() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE, workerLoadDadosAgregadosAbaProgramasCidade);
+}
+
+function* workerLoadDadosAgregadosAbaSumarioInfoBasicasCidade() {
+  try {
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasCidade());
+    const data = yield call(getDadosAgregadosAbaSumarioInfoBasicasCidade);
+    console.log("dados aba cidade info basica: ", data)
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasCidadeSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasCidadeFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE, workerLoadDadosAgregadosAbaSumarioInfoBasicasCidade);
+}
+
+function* workerLoadDadosAgregadosAbaSumarioStatusEntregasCidade() {
+  try {
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasCidade());
+    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregas, {id_cidade: "rio_de_janeiro"});
+    console.log("dados aba cidade status entregas: ", data)
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasCidadeSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasCidadeFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaSumarioStatusEntregasCidade() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE, workerLoadDadosAgregadosAbaSumarioStatusEntregasCidade);
+}
+
+// Subprefeitura
+function* workerLoadDadosAgregadosAbaTemaSubprefeitura(action) {
+  try {
+    yield put(requestDadosAgregadosAbaTemaSubprefeitura());
+    const data = yield call(getDadosAgregadosAbaTema, {name_subprefeitura: action.payload});
+    console.log("dados aba cidade: ", data)
+    yield put(requestDadosAgregadosAbaTemaSubprefeituraSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaTemaSubprefeituraFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaTemaSubprefeitura() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_TEMA_SUBPREFEITURA, workerLoadDadosAgregadosAbaTemaSubprefeitura);
+}
+
+function* workerLoadDadosAgregadosAbaProgramasSubprefeitura(action) {
+  try {
+    yield put(requestDadosAgregadosAbaProgramasSubprefeitura());
+    const data = yield call(getDadosAgregadosAbaProgramas, {name_subprefeitura: action.payload});
+    console.log("dados aba bairro programa subprefeitura: ", data)
+    yield put(requestDadosAgregadosAbaProgramasSubprefeituraSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaProgramasSubprefeituraFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaProgramasSubprefeitura() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_SUBPREFEITURA, workerLoadDadosAgregadosAbaProgramasSubprefeitura);
+}
+
+function* workerLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(action) {
+  try {
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasSubprefeitura());
+    const data = yield call(getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, action.payload);
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasSubprefeituraSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaSumarioInfoBasicasSubprefeituraFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA, workerLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura);
+}
+
+function* workerLoadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(action) {
+  try {
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasSubprefeitura());
+    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregas, {name_subprefeitura: action.payload});
+    console.log("dados aba cidade status entregas: ", data)
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasSubprefeituraSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasSubprefeituraFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_SUBPREFEITURA, workerLoadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura);
+}
+
+
+// Bairro
+
+function* workerLoadDadosAgregadosAbaTemaBairro(action) {
+  try {
+    yield put(requestDadosAgregadosAbaTemaBairro());
+    const data = yield call(getDadosAgregadosAbaTema, {name_bairro: action.payload});
+    console.log("dados aba tema bairro: ", data)
+    yield put(requestDadosAgregadosAbaTemaBairroSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaTemaBairroFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaTemaBairro() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_TEMA_BAIRRO, workerLoadDadosAgregadosAbaTemaBairro);
+}
+
+function* workerLoadDadosAgregadosAbaProgramaBairro(action) {
+  try {
+    yield put(requestDadosAgregadosAbaProgramaBairro());
+    const data = yield call(getDadosAgregadosAbaProgramas, {name_bairro: action.payload});
+    console.log("dados aba bairro programa: ", data)
+    yield put(requestDadosAgregadosAbaProgramaBairroSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaProgramaBairroFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaProgramaBairro() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO, workerLoadDadosAgregadosAbaProgramaBairro);
+}
+
+function* workerLoadDadosAgregadosAbaSumarioStatusEntregasBairro(action) {
+  try {
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasBairro());
+    const data = yield call(getDadosAgregadosAbaSumarioStatusEntregas, {name_bairro: action.payload});
+    console.log("dados aba bairro status entregas: ", data)
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasBairroSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDadosAgregadosAbaSumarioStatusEntregasBairroFailed());
+  }
+}
+export function* watchLoadDadosAgregadosAbaSumarioStatusEntregaBairro() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_BAIRRO, workerLoadDadosAgregadosAbaSumarioStatusEntregasBairro);
+}
+
+
 function* workerLoadBairroData(action) {
   try {
     yield put(requestBairroData());
-    const data = yield call(getBairroInfo, action.payload);
-    console.log("BAIRRO_workerLoadData: ", data)
+    const data = yield call(getBairroInfo, toSnakeCase(action.payload));
+    console.log("action.payload: ", data)
     yield put(requestBairroDataSuccess(data));
   } catch (error) {
     yield put(requestBairroDataFailed());
@@ -213,6 +405,22 @@ function* workerLoadBairroData(action) {
 
 export function* watchLoadBairroData() {
   yield takeEvery(LOAD_BAIRRO_DATA, workerLoadBairroData);
+}
+
+
+function* workerLoadSubprefeituraData(action) {
+  try {
+    yield put(requestSubprefeituraData());
+    const data = yield call(getSubprefeituraInfo, toSnakeCase(action.payload));
+    console.log("agora action.payload: ", data)
+    yield put(requestSubprefeituraDataSuccess(data));
+  } catch (error) {
+    yield put(requestSubprefeituraDataFailed());
+  }
+}
+
+export function* watchLoadSubprefeituraData() {
+  yield takeEvery(LOAD_SUBPREFEITURA_DATA, workerLoadSubprefeituraData);
 }
 
 async function loginFirebase() {
@@ -260,12 +468,25 @@ export function* rootSaga() {
   yield all([
     fork(watchLoadImages),
     fork(watchLoadAllImages),
+    fork(watchLoadAllImagesBairro),
+    fork(watchLoadAllImagesSubprefeitura),
     fork(watchLoadData),
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
     fork(watchLoadAllCidades),
+    fork(watchLoadDadosAgregadosAbaTemaCidade),
+    fork(watchLoadDadosAgregadosAbaProgramasCidade),
+    fork(watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade),
+    fork(watchLoadDadosAgregadosAbaSumarioStatusEntregasCidade),
+    fork(watchLoadDadosAgregadosAbaTemaSubprefeitura),
+    fork(watchLoadDadosAgregadosAbaProgramasSubprefeitura),
+    fork(watchLoadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura),
+    fork(watchLoadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura),
+    fork(watchLoadDadosAgregadosAbaTemaBairro),
+    fork(watchLoadDadosAgregadosAbaProgramaBairro),
+    fork(watchLoadDadosAgregadosAbaSumarioStatusEntregaBairro),
     fork(watchLoadBairroData),
-    fork(watchLoadAllPoints),
+    fork(watchLoadSubprefeituraData),
     fork(watchLogin),
     fork(watchLogOut),
   ]);
