@@ -15,7 +15,7 @@ export default function Programas({ value, onChange }) {
     });
   }, []);
   return (
-    <Stack spacing={3} sx={{ width: 680 }}>
+    <Stack spacing={3} sx={{ width: 700 }}>
       <Autocomplete
         multiple
         id="tags-standard"
@@ -26,8 +26,8 @@ export default function Programas({ value, onChange }) {
           <TextField
             {...params}
             variant="standard"
-            label="Programas relacionados"
-            placeholder="Programas"
+            // label="Programas relacionados"
+            // placeholder="Programas"
           />
         )}
       />

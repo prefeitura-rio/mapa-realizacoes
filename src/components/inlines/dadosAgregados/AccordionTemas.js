@@ -70,16 +70,16 @@ export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregad
       {dataToRender.map((item) => (
         <Accordion key={item.id} expanded={expanded === item.id} onChange={handleChange(item.id)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${item.id}-content`} id={`${item.id}-header`}>
-            <Typography style={{ paddingLeft: 20 }} sx={{ width: '50%', flexShrink: 0 }}>
+            <Typography style={{ paddingLeft: 20, color:"#007E7D ", fontWeight:"bold" }} sx={{ width: '50%', flexShrink: 0 }}>
               {item.tema}
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>{item.realizacoes.length} entregas</Typography>
+            <Typography sx={{ color: 'text.secondary', marginLeft:"30px"}}>{item.realizacoes.length} entregas</Typography>
           </AccordionSummary>
           {item.realizacoes.map((realizacao, index) => (
             <AccordionDetails key={index} onClick={() => { console.log("Nome da realização: " + realizacao.titulo); showDescription(realizacao.titulo)}}  className={classes.accordionDetails}>
               <div style={{ display: 'flex' }}>
                 <div style={{ flex: 1 }}>
-                  <Typography style={{ paddingLeft: 20 }} gutterBottom>
+                  <Typography style={{ paddingLeft: 20, fontWeight:"bold"}} gutterBottom>
                     {realizacao.titulo}
                   </Typography>
                   <Button variant="contained" className={classes.statusButton}>

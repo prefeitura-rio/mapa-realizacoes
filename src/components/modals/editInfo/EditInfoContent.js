@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogContent: {
     padding: 0,
+    marginLeft: "-20px",
   },
   contentTitle: {
     padding: "14px 54px",
@@ -74,8 +75,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: (props) => `url(${props.mapFragment})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
-    backgroundColor: "#0000008a",
+    backgroundColor: "#007E7D",
     backgroundBlendMode: "darken",
+    borderRadius: "20px",
   },
   bottomDiv: {
     display: "flex",
@@ -90,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     backgroundColor: "rgba(255,255,255,0)",
     borderColor: "white",
+    fontSize: "16px",
   },
   underButtonText2: {
     alignSelf: "start",
@@ -287,21 +290,23 @@ const EditInfoModal = ({
         <Divider />
         <EditItem
           title="Título da Realização"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com o título da realização."
+          // IconComponent={StoreIcon}
           value={content.nome}
           onChange={onTituloChange}
-          
         />
         <EditItem
           title="Descrição"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com a descrição da realização."
+          // IconComponent={StoreIcon}
           value={content.descricao}
           onChange={onDescricaoChange}
         />
 
         <EditItem
           title="Status"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com o status da realização."
+          // IconComponent={StoreIcon}
           value={content.status}
           onChange={onStatusChange}
           MUIComponents={true} 
@@ -309,7 +314,8 @@ const EditInfoModal = ({
        
         <EditItem
           title="Programa"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com os programas da realização."
+          // IconComponent={StoreIcon}
           value={JSON.stringify(content.programa)}
           onChange={onProgramaChange}
           MUIComponents={true} 
@@ -317,7 +323,8 @@ const EditInfoModal = ({
 
        <EditItem
           title="Tema"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com os temas da realização."
+          // IconComponent={StoreIcon}
           value={content.tema}
           onChange={onTemaChange}
           MUIComponents={true} 
@@ -325,37 +332,50 @@ const EditInfoModal = ({
                 
         <EditItem
           title="Órgão"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com os órgãos da realização."
+          // IconComponent={StoreIcon}
           value={content.orgao}
           onChange={onOrgaoChange}
           MUIComponents={true} 
         />
         <EditItem
           title="Total Investido"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com o total investido da realização."
+          // IconComponent={StoreIcon}
           value={content.investimento}
           onChange={onTotalInvestidoChange}
         />
         <EditItem
           title="Cariocas Atendidos"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com o total de cariocas antedidos com a realização."
+          // IconComponent={StoreIcon}
           value={content.cariocas_atendidos}
           onChange={onCariocasAtendidosChange}
         />
         <EditItem
           title="Data Início"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com a data início da realização."
+          // IconComponent={StoreIcon}
           value={content.data_inicio}
           onChange={onDataInicioChange}
           MUIComponents={true} 
         />
         <EditItem
           title="Data Fim"
-          IconComponent={StoreIcon}
+          tooltip="Preencha com a data fim da realização."
+          // IconComponent={StoreIcon}
           value={content.data_fim}
           onChange={onDataFimChange}
           MUIComponents={true} 
         />
+        
+        <div className={classes.bottomDiv}>
+          <AddPhotoBlock
+            photoFiles={photoFiles}
+            setPhotoFiles={setPhotoFiles}
+          />
+        </div>
+
         <div className={classes.centerButton}>
           <Button
             variant="outlined"
@@ -366,12 +386,6 @@ const EditInfoModal = ({
           </Button>
         </div>
 
-        <div className={classes.bottomDiv}>
-          <AddPhotoBlock
-            photoFiles={photoFiles}
-            setPhotoFiles={setPhotoFiles}
-          />
-        </div>
       </DialogContent>
 
       <DialogActions className={classes.actions}>

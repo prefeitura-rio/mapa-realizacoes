@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     width: "100%",
     objectFit: "cover",
-    height: "235px",
+    height: "100%",
     borderRadius:"15px"
   },
 

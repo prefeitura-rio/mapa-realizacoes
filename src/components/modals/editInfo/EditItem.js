@@ -1,3 +1,4 @@
+import Tooltip from '@mui/material/Tooltip';
 import {
   Button,
   ClickAwayListener,
@@ -46,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     paddingTop: "4px",
     width: "100%",
+    color: '#007E7D',
+    // fontWeight: 'bold',
+    fontSize: '18px',
   },
   inputField: {
     width: "100%",
@@ -67,6 +71,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover:not(.Mui-disabled):before": {
       borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
     },
+    // "&.Mui-focused:after": {
+    //   borderBottom: "1px solid #007E7D", 
+    // },
+    // "&.Mui-focused:before": {
+    //   borderBottom: "1.5px solid #007E7D", 
+    // },
   },
   selectPaper: {
     position: "absolute",
@@ -77,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EditItem = ({
   title,
+  tooltip,
   IconComponent,
   value,
   jsxValue,
@@ -94,7 +105,7 @@ const EditItem = ({
 
   const [inputValue, setinputValue] = useState(value || "");
   const [canceled, setCanceled] = useState(false);
-  
+
   const handleCanceled = () => {
     setCanceled(!canceled);
     onCancel();
@@ -105,13 +116,13 @@ const EditItem = ({
     setinputValue(numericValue);
     if (onChange) onChange(numericValue);
   };
-  
+
   const onCariocasAtendidosChange = (value) => {
     const numericValue = value.replace(/\D/g, ""); // Isso remove todos os caracteres não numéricos
     setinputValue(numericValue);
     if (onChange) onChange(numericValue);
   };
-  
+
 
   const changeInputValue = (newValue) => {
     setinputValue(newValue);
@@ -143,7 +154,7 @@ const EditItem = ({
       return <DatePickerFim value={inputValue} onChange={changeInputValue} />;
     }
   };
-  
+
   const MySelector = () => {
     let selected = select
       .filter((el) =>
@@ -191,7 +202,12 @@ const EditItem = ({
         className={classes.inputDiv}
         style={!IconComponent ? { marginLeft: "34px" } : {}}
       >
-        <div className={classes.inputLabel}>{title}</div>
+        <div className={classes.inputLabel}>
+          <Tooltip title={tooltip} placement="right">
+           <span>{title}</span> 
+          </Tooltip>
+        </div>
+
         {subTitle ? <div className={classes.inputLabel}>{subTitle}</div> : null}
         {jsxValue ? (
           jsxValue
@@ -201,28 +217,28 @@ const EditItem = ({
           </ClickAwayListener>
         ) : (
           <Input
-          value={inputValue}
-          inputProps={{
-            style: { textDecoration: canceled ? "line-through" : "none" },
-            type: title === "Total Investido" || title === "Cariocas Atendidos" ? "number" : "text",
-          }}
-          className={classes.inputField}
-          classes={{ underline: classes.underline }}
-          onChange={(e) => {
-            if (title === "Total Investido" || title === "Cariocas Atendidos") {
-              const numericValue = e.target.value.replace(/\D/g, "");
-              setinputValue(numericValue);
-              if (onChange) onChange(numericValue);
-            } else {
-              setinputValue(e.target.value);
-              if (onChange) onChange(e.target.value);
-            }
-          }}
-          disabled={canceled ? true : false}
-          onClick={() => setFocused(true)}
-          onBlur={disableBlur ? () => {} : onBlur}
-        />
-        
+            value={inputValue}
+            inputProps={{
+              style: { textDecoration: canceled ? "line-through" : "none" },
+              type: title === "Total Investido" || title === "Cariocas Atendidos" ? "number" : "text",
+            }}
+            className={classes.inputField}
+            classes={{ underline: classes.underline }}
+            onChange={(e) => {
+              if (title === "Total Investido" || title === "Cariocas Atendidos") {
+                const numericValue = e.target.value.replace(/\D/g, "");
+                setinputValue(numericValue);
+                if (onChange) onChange(numericValue);
+              } else {
+                setinputValue(e.target.value);
+                if (onChange) onChange(e.target.value);
+              }
+            }}
+            disabled={canceled ? true : false}
+            onClick={() => setFocused(true)}
+            onBlur={disableBlur ? () => { } : onBlur}
+          />
+
         )}
         {extraIcon ? (
           <IconButton
@@ -250,6 +266,6 @@ const EditItem = ({
   );
 };
 
-  
+
 
 export default EditItem;

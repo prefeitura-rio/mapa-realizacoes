@@ -52,9 +52,14 @@ const useStyles = makeStyles((theme) => {
       paddingBottom: "15px",
       paddingTop: "15px"
     },
-    listItemText: {
+    listItemTextPrimary: {
       fontSize: "0.8rem",
-      paddingBottom:"5px"
+      paddingBottom:"5px",
+      justifyContent: "space-between",
+    },
+    listItemTextSecondary: {
+    
+      justifyContent: "space-between",
     },
     
   };
@@ -93,11 +98,11 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
     
       <Divider />
       <ListItem>
-        <ListItemIcon>
+        {/* <ListItemIcon>
           <InfoIcon />
-        </ListItemIcon>
+        </ListItemIcon> */}
         <ListItemText
-          classes={{ primary: classes.listItemText }}
+          classes={{ primary: classes.listItemTextPrimary , secondary: classes.listItemTextSecondary}}
           primary={"Sobre o projeto"}
           
           secondary={`O Mapa de Realizações da Cidade do Rio de Janeiro é

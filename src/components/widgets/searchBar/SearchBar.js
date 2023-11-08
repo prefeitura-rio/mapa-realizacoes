@@ -244,9 +244,8 @@ const SearchBar = ({
             options={bairrosSubSubprefeituras}
             renderInput={(params) => (
               <TextField
-              // inputRef={inputRef}
                 {...params}
-                label="Busque por bairro/prefeitura"
+                placeholder="Busque por bairro/prefeitura"
                 sx={{
                   "& fieldset": { border: 'none' },
                 }}

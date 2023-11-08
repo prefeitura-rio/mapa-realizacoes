@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   bottonIcon: {
     marginRight: "8px",
     marginBottom: "4px",
+    color:"#007E7D"
   },
   underButtonText: {
     fontStyle: "italic",
@@ -56,8 +57,8 @@ const AddPhotoBlock = ({ photoFiles, setPhotoFiles }) => {
           className={classes.wideButton}
           onClick={onAddPhotoClick}
         >
-          <AddAPhotoIcon fontSize="small" className={classes.bottonIcon} />
-          Adicionar uma foto
+          <AddAPhotoIcon  className={classes.bottonIcon} />
+         <span style={{color:"#007E7D", fontSize:"16px"}}> Adicionar uma foto </span>
         </Button>
       )}
 

@@ -135,9 +135,6 @@ const SubprefeituraDescriptionBar = forwardRef(
 
     return (
       <div ref={ref}>
-        <br></br>
-        <br></br>
-    
           <DadosAgregados
             topImgSrc={topImgSrc}
             onTopImageError={onTopImageError}

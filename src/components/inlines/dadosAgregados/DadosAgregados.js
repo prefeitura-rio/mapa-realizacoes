@@ -21,8 +21,8 @@ import BasicInfo from "./BasicInfo";
     topImage: {
         overflow: "hidden",
         width: "100%",
-        objectFit: "cover",
-        height: "235px",
+        // objectFit: "cover",
+        height: "100%",
         borderRadius: "15px"
       },
       photos: {

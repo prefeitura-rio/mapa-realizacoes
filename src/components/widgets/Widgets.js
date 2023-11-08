@@ -81,6 +81,10 @@ const useStyles = makeStyles({
     bottomLeftWidgets: {
       display: (props) => (props.underSearchBar ? "none" : "block"),
     },
+    filters: {
+      display: "none",
+    },
+    
   },
 });
 
