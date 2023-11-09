@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     color: '#007E7D',
     // fontWeight: 'bold',
-    fontSize: '18px',
+    fontSize: '14px',
   },
   inputField: {
     width: "100%",

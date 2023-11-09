@@ -23,7 +23,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-
+  editIcon: {
+    color: '#007E7D',
+  },
   closeButton: {
     position: "absolute",
     right: "8px",
@@ -90,7 +92,7 @@ const EditModal = ({ setOpenEdit, openEdit, setOpenEditInfo }) => {
               onClick={onEditInfoClick}
             >
               <ListItemIcon>
-                <EditIcon color="primary" />
+                <EditIcon className={classes.editIcon} />
               </ListItemIcon>
               <ListItemText
                 primary="Alterar título ou outros detalhes"

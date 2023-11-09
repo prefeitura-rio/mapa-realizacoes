@@ -62,6 +62,7 @@ const mapStateToProps = (state) => {
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
     openCompletePhoto: state.active.openCompletePhoto,
+    setImagesType: state.images.setImagesType,  
   };
 };
 

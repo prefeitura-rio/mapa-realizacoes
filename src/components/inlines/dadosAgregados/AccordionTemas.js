@@ -79,7 +79,7 @@ export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregad
             <AccordionDetails key={index} onClick={() => { console.log("Nome da realização: " + realizacao.titulo); showDescription(realizacao.titulo)}}  className={classes.accordionDetails}>
               <div style={{ display: 'flex' }}>
                 <div style={{ flex: 1 }}>
-                  <Typography style={{ paddingLeft: 20, fontWeight:"bold"}} gutterBottom>
+                  <Typography style={{ paddingLeft: 20,paddingRight: 30, fontWeight:"bold"}} gutterBottom>
                     {realizacao.titulo}
                   </Typography>
                   <Button variant="contained" className={classes.statusButton}>

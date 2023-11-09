@@ -68,7 +68,7 @@ const Map = ({
           lng: currentCoords.longitude,
         });
       } else {
-        map.flyTo({ lat: 52.2, lng: 104.2 });
+        map.flyTo({ lat: -22.8800, lng: -43.5600 });
       }
     }
   }, [currentCoords]);
@@ -76,8 +76,8 @@ const Map = ({
   return (
     <>
       <MapContainer
-        center={[-22.9068, -43.3999]}  // Coordenadas para o Rio de Janeiro
-        zoom={11.5}
+        center={[-22.8800, -43.5600]}  // Coordenadas para o Rio de Janeiro
+        zoom={11.0}
         scrollWheelZoom={true}
         zoomControl={false}
         whenCreated={setMap}

@@ -9,8 +9,8 @@ import ArrowBackIosOutlinedIcon from "@material-ui/icons/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@material-ui/icons/ArrowForwardIosOutlined";
 import clsx from "clsx";
 import { useState } from "react";
-import { TYPE_ALL_PHOTOS, TYPE_PLACE } from "../../redux/images/actions";
-import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
+import { TYPE_ALL_PHOTOS_BAIRRO,TYPE_ALL_PHOTOS_SUBPREFEITURA, TYPE_ALL_PHOTOS_MUNICIPIO, TYPE_PLACE } from "../../redux/images/actions";
+import { BAIRRO_DESCRIPTION_BAR,SUBPREFEITURA_DESCRIPTION_BAR, DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -87,10 +87,16 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
 
   const onPhotoClick = () => {
     if(activeBar === MAIN_UNDERSEARCH_BAR){
-    setImagesType(TYPE_ALL_PHOTOS);
+    setImagesType(TYPE_ALL_PHOTOS_MUNICIPIO);
     }
     else if( activeBar === DESCRIPTION_BAR){
     setImagesType(TYPE_PLACE);
+    }
+    else if( activeBar === BAIRRO_DESCRIPTION_BAR){
+    setImagesType(TYPE_ALL_PHOTOS_BAIRRO);
+    }
+    else if( activeBar === SUBPREFEITURA_DESCRIPTION_BAR){
+    setImagesType(TYPE_ALL_PHOTOS_SUBPREFEITURA);
     }
     setPhotoGallery(true);
     console.log(activeBar)
@@ -105,7 +111,7 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
             : classes.imageList
         }
         style={{ margin: 0 }}
-        rowHeight={180} // Defina a altura desejada para as miniaturas aqui
+        rowHeight={180} 
         gap={8}
       >
         {images.map((item, i) => (

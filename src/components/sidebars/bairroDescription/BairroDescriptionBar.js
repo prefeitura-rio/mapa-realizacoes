@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 
@@ -101,28 +101,41 @@ const BairroDescriptionBar = forwardRef(
     dadosAgregadosAbaSumarioStatusEntregasBairro,
     dadosAgregadosAbaTemaBairro,
     dadosAgregadosAbaProgramaBairro,
-    setActiveBar,
     setDescriptionData,
     setUnderSearchBar,
-    loadData
+    loadData,
+    setPhotoGallery,
+    setImagesType,
+    setActiveBar
   }, ref) => {
+
+    const [imagesList, setImagesList] = useState(images_bairro);
     const classes = useStyles();
-    const handleUnderSearchBar = () => {
-      setUnderSearchBar(!underSearchBar);
-    };
-    console.log("=======> " + (bairro? bairro.nome : " Nenhum nome disponível"));
+    
+    useEffect(() => {
+      setImagesList(images_bairro);
+      setTopImgSrc(images_bairro.length > 0 ? images_bairro[0] : "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
+    }, [images_bairro]);
 
-    const [tabValue, setTabValue] = useState(0);
+
     const [topImgSrc, setTopImgSrc] = useState(
-      // content.imageUrl ||
+      imagesList? imagesList[0] :
       "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
-    );
-
-    const onTopImageError = () => {
-      setTopImgSrc(
-        "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
       );
-    };
+      
+      const onTopImageError = () => {
+        setTopImgSrc(
+          "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+          );
+        };
+
+        // const handleUnderSearchBar = () => {
+        //   setUnderSearchBar(!underSearchBar);
+        // };
+
+    console.log("=======> " + (bairro ? bairro.nome : " Nenhum nome disponível"));
+    
+    const [tabValue, setTabValue] = useState(0);
 
     bairro = bairro || [];
     images_bairro = images_bairro || [];
@@ -130,24 +143,25 @@ const BairroDescriptionBar = forwardRef(
     dadosAgregadosAbaTemaBairro = dadosAgregadosAbaTemaBairro || [];
     dadosAgregadosAbaProgramaBairro = dadosAgregadosAbaProgramaBairro || [];
 
-
     return (
       <div ref={ref}>
-          <DadosAgregados
-            topImgSrc={topImgSrc}
-            onTopImageError={onTopImageError}
-            bairro={bairro}
-            tabValue={tabValue}
-            setTabValue={setTabValue}
-            images={images_bairro}
-            dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro}
-            dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}
-            dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}
-            setActiveBar={setActiveBar} 
-            loadData={loadData} 
-            setDescriptionData={setDescriptionData}
-            setUnderSearchBar={setUnderSearchBar}
-          />
+        <DadosAgregados
+          topImgSrc={topImgSrc}
+          onTopImageError={onTopImageError}
+          bairro={bairro}
+          tabValue={tabValue}
+          setTabValue={setTabValue}
+          images={images_bairro}
+          dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro}
+          dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}
+          dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}
+          setActiveBar={setActiveBar}
+          loadData={loadData}
+          setDescriptionData={setDescriptionData}
+          setUnderSearchBar={setUnderSearchBar}
+          setPhotoGallery={setPhotoGallery}
+          setImagesType={setImagesType}
+        />
 
       </div>
     );
