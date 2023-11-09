@@ -62,7 +62,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento
         ? (
           <span>
-            {dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento}
+            {dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento?.toLocaleString()}
             {' '}
             <span>obras em andamento</span>
           </span>
@@ -78,7 +78,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioInfoBasicasCidade
         ? (
           <span>
-            {dadosAgregadosAbaSumarioInfoBasicasCidade.domicilios}
+            {dadosAgregadosAbaSumarioInfoBasicasCidade.domicilios?.toLocaleString()}
             {' '}
             <span>domicílios</span>
             {' '}
@@ -94,7 +94,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioInfoBasicasCidade
         ? (
           <span>
-            {dadosAgregadosAbaSumarioInfoBasicasCidade.habitantes}
+            {dadosAgregadosAbaSumarioInfoBasicasCidade.habitantes?.toLocaleString()}
             {' '}
             <span>habitantes</span>
             {' '}
@@ -112,7 +112,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_andamento
         ? (
           <span>
-            {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento}{' '}
+            {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento?.toLocaleString()}{' '}
             <span>obras em andamento</span>
           </span>
         )
@@ -127,7 +127,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioInfoBasicasSubprefeitura
         ? (
           <span>
-            {dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.domicilios}
+            {dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.domicilios?.toLocaleString()}
             {' '}
             <span>domicílios</span>
             {' '}
@@ -143,7 +143,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioInfoBasicasSubprefeitura
         ? (
           <span>
-            {dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.habitantes}
+            {dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.habitantes?.toLocaleString()}
             {' '}
             <span>habitantes</span>
             {' '}
@@ -161,7 +161,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento
         ? (
           <span>
-            Em andamento {dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento}{' '}
+            Em andamento {dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento?.toLocaleString()}{' '}
             <span>obras</span>
           </span>
         )
@@ -176,7 +176,7 @@ const ListInfoSumario = ({
       text: bairroInfo
         ? (
           <span>
-            {bairroInfo.domicilios}
+            {bairroInfo.domicilios?.toLocaleString()}
             {' '}
             <span>domicílios</span>
             {' '}
@@ -192,7 +192,7 @@ const ListInfoSumario = ({
       text: bairroInfo
         ? (
           <span>
-            {bairroInfo.habitantes}
+            {bairroInfo.habitantes?.toLocaleString()}
             {' '}
             <span>habitantes</span>
             {' '}
@@ -224,7 +224,7 @@ const ListInfoSumario = ({
       text: bairroInfo
         ? (
           <span>
-            {bairroInfo.ranking_ips}
+            {bairroInfo.ranking_ips?.toLocaleString()}
             <span>° no rank IPS</span>
             {' '}
             <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
@@ -246,7 +246,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}> Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasCidade.concluida} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}> Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasCidade.concluida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.concluida != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.concluida == 0 ? <span>
@@ -257,7 +257,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento  </span>{dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento  </span>{dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento?.toLocaleString()} obras
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento == 0 ? <span>
@@ -268,7 +268,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida == 0 ? <span>
@@ -279,7 +279,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao?.toLocaleString()} obras
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao == 0 ? <span>
@@ -292,7 +292,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.concluida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida == 0 ? <span>
@@ -303,7 +303,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_andamento
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento?.toLocaleString()} obras
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento == 0 ? <span>
@@ -314,7 +314,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.interrompida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida</span>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida</span>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida == 0 ? <span>
@@ -325,7 +325,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_licitacao
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao?.toLocaleString()} obras
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao == 0 ? <span>
@@ -338,7 +338,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.concluida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.concluida} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.concluida?.toLocaleString()} obras
           </span>
 
         )
@@ -350,7 +350,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento?.toLocaleString()} obras
           </span>
         )
         : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento == 0 ? <span>
@@ -361,7 +361,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.interrompida
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida == 0 ? <span>
@@ -372,7 +372,7 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.em_licitacao
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}> Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}> Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao?.toLocaleString()} obras
           </span>
 
         )

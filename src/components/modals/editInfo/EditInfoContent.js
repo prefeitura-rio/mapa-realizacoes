@@ -21,6 +21,7 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import PublicIcon from "@material-ui/icons/Public";
 import EditItem from "./EditItem";
 import { useEffect, useRef, useState } from "react";
+import PlaceIcon from '@mui/icons-material/Place';
 import { useCallback } from "react";
 import AddPhotoBlock from "../nested/AddPhotoBlock";
 import { createUpdateRealizacaoFromForm } from "../../../firebase";
@@ -30,6 +31,18 @@ import { getTileImage } from "../../../utils/getTileImage";
 import DatePickerFim from './DatePickerFim'; 
 const useStyles = makeStyles((theme) => ({
   root: {},
+  wideButton: {
+    marginBottom: "10px",
+    marginTop: "10px",
+    width: "100%",
+    padding: "12px",
+    borderColor: theme.palette.grey[400],
+  },
+  bottonIcon: {
+    marginRight: "8px",
+    marginBottom: "4px",
+    color:"#007E7D"
+  },
   dialog: {
     maxWidth: "764px",
     height: "626px",
@@ -368,6 +381,18 @@ const EditInfoModal = ({
           onChange={onDataFimChange}
           MUIComponents={true} 
         />
+          <div className={classes.bottomDiv}>
+          <Button
+            variant="outlined"
+            color="primary"
+            className={classes.wideButton}
+            onClick={onUpdateLocation}
+          >
+             <PlaceIcon  className={classes.bottonIcon} />
+         <span style={{color:"#007E7D", fontSize:"16px"}}> Atualizar localização </span>
+          </Button>
+
+        </div>
         
         <div className={classes.bottomDiv}>
           <AddPhotoBlock
@@ -376,15 +401,6 @@ const EditInfoModal = ({
           />
         </div>
 
-        <div className={classes.centerButton}>
-          <Button
-            variant="outlined"
-            classes={{ outlined: classes.outlinedWhite }}
-            onClick={onUpdateLocation}
-          >
-            Atualizar Localização
-          </Button>
-        </div>
 
       </DialogContent>
 
