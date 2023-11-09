@@ -7,7 +7,7 @@ import {
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef } from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 
 
@@ -102,28 +102,40 @@ const SubprefeituraDescriptionBar = forwardRef(
     dadosAgregadosAbaProgramasSubprefeitura,
     dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
     dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
-    setActiveBar,
     setDescriptionData,
     setUnderSearchBar,
-    loadData
+    loadData,
+    setPhotoGallery,
+    setImagesType,
+    setActiveBar
   }, ref) => {
     const classes = useStyles();
-    const handleUnderSearchBar = () => {
-      setUnderSearchBar(!underSearchBar);
-    };
-    console.log("=======> " + (subprefeituras? subprefeituras.nome : " Nenhum nome disponível"));
+    const [imagesList, setImagesList] = useState(images_subprefeitura);
+    
+    useEffect(() => {
+      setImagesList(images_subprefeitura);
+      setTopImgSrc(images_subprefeitura.length > 0 ? images_subprefeitura[0] : "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
+    }, [images_subprefeitura]);
 
-    const [tabValue, setTabValue] = useState(0);
+
     const [topImgSrc, setTopImgSrc] = useState(
-      // content.imageUrl ||
+      imagesList? imagesList[0] :
       "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
-    );
-
-    const onTopImageError = () => {
-      setTopImgSrc(
-        "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
       );
-    };
+      
+      const onTopImageError = () => {
+        setTopImgSrc(
+          "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+          );
+        };
+
+        // const handleUnderSearchBar = () => {
+        //   setUnderSearchBar(!underSearchBar);
+        // };
+
+        console.log("=======> " + (subprefeituras? subprefeituras.nome : " Nenhum nome disponível"));
+    
+    const [tabValue, setTabValue] = useState(0);
 
     subprefeituras = subprefeituras || [];
     images_subprefeitura = images_subprefeitura || [];
@@ -150,6 +162,8 @@ const SubprefeituraDescriptionBar = forwardRef(
             loadData={loadData} 
             setDescriptionData={setDescriptionData}
             setUnderSearchBar={setUnderSearchBar}
+            setPhotoGallery={setPhotoGallery}
+            setImagesType={setImagesType}
           />
 
       </div>

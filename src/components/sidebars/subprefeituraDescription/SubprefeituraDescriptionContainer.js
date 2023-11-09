@@ -4,10 +4,10 @@ import { connect, useDispatch } from "react-redux";
 
 import { setDescriptionData } from "../../../redux/place/actions";
 import { loadData } from "../../../redux/place/actions";
-import { setActiveBar } from "../../../redux/active/actions";
+import { setActiveBar,setPhotoGallery } from "../../../redux/active/actions";
 import { useEffect } from "react";
 import { loadDadosAgregadosAbaProgramasSubprefeitura, loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura, loadDadosAgregadosAbaTemaSubprefeitura, loadSubprefeituraData } from "../../../redux/subprefeituras/actions";
-import { loadAllImagesSubprefeitura } from "../../../redux/images/actions";
+import { loadAllImagesSubprefeitura,setImagesType } from "../../../redux/images/actions";
 
 
 const SubprefeituraDescriptionContainer = (props) => {
@@ -22,7 +22,7 @@ const SubprefeituraDescriptionContainer = (props) => {
     dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(props.descriptionData));
     dispatch(loadDadosAgregadosAbaTemaSubprefeitura(props.descriptionData));
     dispatch(loadDadosAgregadosAbaProgramasSubprefeitura(props.descriptionData));
-  }, []);
+  }, [props.descriptionData]);
 
   return (
       <SubprefeituraDescriptionBar
@@ -37,13 +37,13 @@ const SubprefeituraDescriptionContainer = (props) => {
         setActiveBar={props.setActiveBar}
         setDescriptionData={props.setDescriptionData}
         loadData={props.loadData}
+        setPhotoGallery={props.setPhotoGallery}
+        setImagesType={props.setImagesType}
 
         // remove if not useful
         profile={props.profile}
         login={props.login}
         anyLoading={props.anyLoading}
-        setPhotoGallery={props.setPhotoGallery}
-        setImagesType={props.setImagesType}
       />
   );
 };
@@ -61,6 +61,7 @@ const mapStateToProps = (state) => {
     dadosAgregadosAbaProgramasSubprefeitura: state.subprefeituras.dadosAgregadosAbaProgramasSubprefeitura,
     dadosAgregadosAbaSumarioInfoBasicasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
     dadosAgregadosAbaSumarioStatusEntregasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
+    setImagesType: state.images.setImagesType,  
     
   };
 };
@@ -70,6 +71,8 @@ const mapDispatchToProps = {
   setActiveBar,
   setDescriptionData,
   loadData,
+  setPhotoGallery,
+  setImagesType,
 };
 
 export default connect(

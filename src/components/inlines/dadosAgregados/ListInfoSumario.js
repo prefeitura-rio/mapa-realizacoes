@@ -13,6 +13,7 @@ import subprefeituraIcon from '../../../icons/subprefeitura.png';
 import habitantesIcon from '../../../icons/cariocas_atendidos.png';
 import programaIcon from '../../../icons/programa.png';
 import ipsIcon from '../../../icons/ips.png';
+import rankIpsIcon from '../../../icons/trofeu.png';
 import Stack from '@mui/material/Stack';
 import LinearProgress from '@mui/material/LinearProgress';
 import Loading from "../../../utils/loading";
@@ -66,7 +67,9 @@ const ListInfoSumario = ({
             <span>obras em andamento</span>
           </span>
         )
-        : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento != 0) ? <Loading /> : undefined,
+        : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento == 0 ? <span>
+          <span > 0 obras em andamento</span>
+        </span> : undefined),
       iconComponent: () => (
         <img src={subprefeituraIcon} alt="Orgao" style={{ width: '20px', height: '20px' }} />
       )
@@ -113,7 +116,9 @@ const ListInfoSumario = ({
             <span>obras em andamento</span>
           </span>
         )
-        : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento != 0) ? <Loading /> : undefined,
+        : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento == 0 ? <span>
+          <span > 0 obras em andamento</span>
+        </span> : undefined),
       iconComponent: () => (
         <img src={subprefeituraIcon} alt="Orgao" style={{ width: '20px', height: '20px' }} />
       )
@@ -160,7 +165,9 @@ const ListInfoSumario = ({
             <span>obras</span>
           </span>
         )
-        : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento != 0) ? <Loading /> : undefined,
+        : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento == 0 ? <span>
+          <span > 0 obras em andamento</span>
+        </span> : undefined),
       iconComponent: () => (
         <img src={subprefeituraIcon} alt="Orgao" style={{ width: '20px', height: '20px' }} />
       )
@@ -225,7 +232,7 @@ const ListInfoSumario = ({
         )
         : activeBar === BAIRRO_DESCRIPTION_BAR ? <Loading /> : undefined,
       iconComponent: () => (
-        <img src={ipsIcon} alt="rank ips" style={{ width: '20px', height: '20px' }} />
+        <img src={rankIpsIcon} alt="rank ips" style={{ width: '20px', height: '20px' }} />
       )
     },
 
@@ -364,9 +371,10 @@ const ListInfoSumario = ({
     {
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.em_licitacao
         ? (
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>
-            Em licitação {dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao} obras
+          <span>
+            <span style={{ color: '#007E7D', fontWeight: "bold" }}> Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao} obras
           </span>
+
         )
         : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao == 0 ? <span>
           <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação</span> 0 obras

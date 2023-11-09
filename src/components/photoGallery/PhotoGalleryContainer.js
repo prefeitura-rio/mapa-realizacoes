@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import PhotoGallery from "./PhotoGallery";
 import { setPhotoGallery } from "./../../redux/active/actions";
 import { setOpenUploadPhoto } from "../../redux/active/actions";
-import { TYPE_ALL_PHOTOS, setCurrentImg } from "../../redux/images/actions";
+import { TYPE_ALL_PHOTOS_BAIRRO, TYPE_ALL_PHOTOS_MUNICIPIO, TYPE_ALL_PHOTOS_SUBPREFEITURA, setCurrentImg } from "../../redux/images/actions";
 import { TYPE_ALL } from "../../redux/images/actions";
 import { useEffect, useState } from "react";
 
@@ -11,11 +11,11 @@ const PhotoGalleryContainer = (props) => {
   const [title, setTitle] = useState(props.title);
 
   useEffect(() => {
-    setImages(props.imagesType === TYPE_ALL_PHOTOS ? props.allImagesCidade : props.images);
-    setTitle(props.imagesType === TYPE_ALL_PHOTOS ? "Realizações da cidade" : props.title);
-  }, [props.imagesType, props.content, props.images]);
+    setImages(props.imagesType === TYPE_ALL_PHOTOS_MUNICIPIO ? props.allImagesCidade : props.imagesType === TYPE_ALL_PHOTOS_BAIRRO ? props.allImagesBairro :props.imagesType === TYPE_ALL_PHOTOS_SUBPREFEITURA ? props.allImagesSubprefeitura : props.images);
+    setTitle(props.imagesType === TYPE_ALL_PHOTOS_MUNICIPIO ? "Realizações da cidade" : props.imagesType === TYPE_ALL_PHOTOS_BAIRRO ? "Realizações do bairro" :  props.imagesType === TYPE_ALL_PHOTOS_SUBPREFEITURA ? "Realizações da subprefeitura" : props.title);
+  }, [props.imagesType, props.content, props.images,props.allImagesCidade,props.allImagesBairro,props.allImagesSubprefeitura]);
 
-  return ((props.content && props.images) || props.allImagesCidade) &&
+  return ((props.content && props.images) || props.allImagesCidade || props.allImagesBairro || props.allImagesSubprefeitura) &&
     props.photoGallery ? (
     <PhotoGallery
       title={title}
@@ -34,6 +34,8 @@ const mapStateToProps = (state) => {
     title: state.place.content?.nome,
     images: state.images.images,
     allImagesCidade: state.images.allImagesCidade,
+    allImagesBairro: state.images.allImagesBairro,
+    allImagesSubprefeitura: state.images.allImagesSubprefeitura,
     photoGallery: state.active.photoGallery,
     imagesType: state.images.imagesType,
     content: state.place.content,

@@ -4,10 +4,10 @@ import { connect, useDispatch } from "react-redux";
 
 import { setDescriptionData } from "../../../redux/place/actions";
 import { loadData } from "../../../redux/place/actions";
-import { setActiveBar } from "../../../redux/active/actions";
+import { setActiveBar, setPhotoGallery} from "../../../redux/active/actions";
 import { useEffect } from "react";
 import { loadBairroData, loadDadosAgregadosAbaProgramaBairro, loadDadosAgregadosAbaSumarioStatusEntregasBairro, loadDadosAgregadosAbaTemaBairro } from "../../../redux/bairros/actions";
-import { loadAllImagesBairro } from "../../../redux/images/actions";
+import { loadAllImagesBairro,setImagesType } from "../../../redux/images/actions";
 
 
 const BairroDescriptionContainer = (props) => {
@@ -21,7 +21,7 @@ const BairroDescriptionContainer = (props) => {
     dispatch(loadDadosAgregadosAbaTemaBairro(props.descriptionData));
     dispatch(loadDadosAgregadosAbaProgramaBairro(props.descriptionData));
     dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(props.descriptionData));
-  }, []);
+  }, [props.descriptionData]);
 
   return (
       <BairroDescriptionBar
@@ -35,13 +35,13 @@ const BairroDescriptionContainer = (props) => {
         setActiveBar={props.setActiveBar}
         setDescriptionData={props.setDescriptionData}
         loadData={props.loadData}
+        setPhotoGallery={props.setPhotoGallery}
+        setImagesType={props.setImagesType}
         
         // remove if not useful
         profile={props.profile}
         login={props.login}
         anyLoading={props.anyLoading}
-        setPhotoGallery={props.setPhotoGallery}
-        setImagesType={props.setImagesType}
       />
   );
 };
@@ -58,6 +58,7 @@ const mapStateToProps = (state) => {
     dadosAgregadosAbaProgramaBairro: state.bairros.dadosAgregadosAbaProgramaBairro,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
+    setImagesType: state.images.setImagesType,  
   };
 };
 
@@ -66,6 +67,8 @@ const mapDispatchToProps = {
   setActiveBar,
   setDescriptionData,
   loadData,
+  setPhotoGallery,
+  setImagesType,
 };
 
 export default connect(
