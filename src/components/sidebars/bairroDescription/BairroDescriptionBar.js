@@ -67,12 +67,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  // searchShadow: {
-  //   position: "fixed",
-  //   width: "423px",
-  //   height: "80px",
-  //   background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
-  // },
+  searchShadow: {
+    position: "fixed",
+    width: "423px",
+    height: "80px",
+    background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
+  },
 
   textSmall: {
     fontSize: "0.75rem",
