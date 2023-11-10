@@ -1,5 +1,6 @@
 import Widgets from "./Widgets";
 import { setZoomDelta } from "../../redux/actions";
+import { setFiltros } from "../../redux/filtros/actions";
 import { connect } from "react-redux";
 
 const WidgetsContainer = (props) => {
@@ -9,6 +10,7 @@ const WidgetsContainer = (props) => {
       underSearchBar={props.underSearchBar}
       bottomGallery={props.bottomGallery}
       profile={props.profile}
+      setFiltros={props.setFiltros}
     />
   );
 };
@@ -23,6 +25,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setZoomDelta,
+  setFiltros
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WidgetsContainer);

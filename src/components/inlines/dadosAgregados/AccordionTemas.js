@@ -70,10 +70,10 @@ export default function AccordionTemas({dadosAgregadosAbaTemaCidade,dadosAgregad
       {dataToRender.map((item) => (
         <Accordion key={item.id} expanded={expanded === item.id} onChange={handleChange(item.id)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${item.id}-content`} id={`${item.id}-header`}>
-            <Typography style={{ paddingLeft: 20, color:"#007E7D ", fontWeight:"bold" }} sx={{ width: '50%', flexShrink: 0 }}>
+            <Typography style={{ paddingLeft: 20, color:"#007E7D ", fontWeight:"bold", fontSize:'14px' }} sx={{ width: '50%', flexShrink: 0 }}>
               {item.tema}
             </Typography>
-            <Typography sx={{ color: 'text.secondary', marginLeft:"30px"}}>{item.realizacoes.length} entregas</Typography>
+            <Typography sx={{ color: 'text.secondary', marginLeft:"30px",fontSize:'14px'}}>{item.realizacoes.length} entregas</Typography>
           </AccordionSummary>
           {item.realizacoes.map((realizacao, index) => (
             <AccordionDetails key={index} onClick={() => { console.log("Nome da realização: " + realizacao.titulo); showDescription(realizacao.titulo)}}  className={classes.accordionDetails}>

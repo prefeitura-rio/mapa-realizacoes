@@ -88,7 +88,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
+const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
   const classes = useStyles({ underSearchBar, bottomGallery });
 
   const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
@@ -144,7 +144,8 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
 
         <FiltrosBotoes orgaosNameFilter={orgaosNameFilter}
           temasNameFilter={temasNameFilter}
-          programasNameFilter={programasNameFilter}></FiltrosBotoes>
+          programasNameFilter={programasNameFilter}
+          setFiltros={setFiltros}></FiltrosBotoes>
       </div>
     </div>
   );

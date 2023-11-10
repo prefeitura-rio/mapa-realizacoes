@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import ContextMenu from "./ContextMenu";
 import { getIcon } from "../../icons/typeIcons";
 import { DESCRIPTION_BAR } from "../../redux/active/actions";
+import { getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
 
 const Map = ({
   zoomDelta,
@@ -24,9 +25,10 @@ const Map = ({
   setUnderSearchBar,
   currentCoords,
   profile,
+  filtros
 }) => {
   const [map, setMap] = useState(null);
-
+  const [filtered, setFiltered] = useState([]);
   points = points || [];
 
   const [contextCoords, setContextCoords] = useState(null);
@@ -39,6 +41,56 @@ const Map = ({
     }
   }, [zoomDelta, map]);
 
+  const [listRealizacaoOrgao, setOrgaosNameFilter] = useState([]);
+  const [listRealizacaoPrograma, setTemasNameFilter] = useState([]);
+  const [listRealizacaoTema, setProgramasNameFilter] = useState([]);
+
+  const loadFiltrosInfo = async () => {
+    try {
+      const orgaoRef = await getRealizacaoOrgaoIds();
+      const temaRef = await getRealizacaoProgramaIds();
+      const programaRef = await getRealizacaoTemaIds();
+
+      if (!orgaoRef.empty && !temaRef.empty && !programaRef.empty) {
+        setOrgaosNameFilter(orgaoRef);
+        setTemasNameFilter(temaRef);
+        setProgramasNameFilter(programaRef);
+      } else {
+        console.error("Erro aqui <<== ");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar nomes dos filtros", error);
+    }
+  };
+
+  useEffect(() => {
+    loadFiltrosInfo();
+  }, []); // Simula o componentDidMount - Executa apenas uma vez
+
+
+  useEffect(() => {
+
+    // console.log("filtros ===> ", filtros);
+    let newFiltered = [];
+    filtros.map((filtro) => {
+      filtro.button1?.map((button) => {
+        newFiltered.push(toSnakeCase(button));
+      });
+    });
+    filtros.map((filtro) => {
+      filtro.button2?.map((button) => {
+        newFiltered.push(toSnakeCase(button));
+      });
+    });
+    filtros.map((filtro) => {
+      filtro.button3?.map((button) => {
+        newFiltered.push(toSnakeCase(button));
+      });
+    });
+    setFiltered(newFiltered);
+
+  }, [filtros]);
+
   const onContextMenu = (e) => {
     setOpened(true);
     setContextCoords({ point: e.containerPoint, latlng: e.latlng });
@@ -46,11 +98,11 @@ const Map = ({
 
   function toSnakeCase(str) {
     return str
-        .trim()  // Remove espaços no início e fim da string
-        .toLowerCase()  // Converte tudo para lowercase
-        .replace(/\s+/g, '_');  // Substitui um ou mais espaços por underscore (_)
+      .trim()  // Remove espaços no início e fim da string
+      .toLowerCase()  // Converte tudo para lowercase
+      .replace(/\s+/g, '_');  // Substitui um ou mais espaços por underscore (_)
   }
-  
+
   const onMarkerClick = (point) => {
     setUnderSearchBar(true);
     setDescriptionData(toSnakeCase(point.nome));
@@ -89,20 +141,45 @@ const Map = ({
           tileSize={512}
           zoomOffset={-1}
         />
-        {points.map((point) => (
-          <Marker
-            key={Object.values(point.coords).join("")}
-            position={Object.values(point.coords)}
-            icon={getIcon("anyIcon")}
-            eventHandlers={{
-              click: (e) => onMarkerClick(point),
-            }}
-          >
-            <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-              <span>{point.nome}</span>
-            </Tooltip>
-          </Marker>
-        ))}
+
+        {points.map((point, index) =>
+          filtered.length > 0
+            ? filtered.map((item) => {
+              const combinedId = point.id + "__" + item;
+              if (listRealizacaoOrgao.includes(combinedId) || listRealizacaoPrograma.includes(combinedId) || listRealizacaoTema.includes(combinedId)) {
+                return (
+                  <Marker
+                    key={point.id + index}
+                    position={Object.values(point.coords)}
+                    icon={getIcon("anyIcon")}
+                    eventHandlers={{
+                      click: (e) => onMarkerClick(point),
+                    }}
+                  >
+                    <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+                      <span>{point.nome}</span>
+                    </Tooltip>
+                  </Marker>
+                );
+              }
+              return null;
+            })
+            : (
+              <Marker
+                key={point.id + index}
+                position={Object.values(point.coords)}
+                icon={getIcon("anyIcon")}
+                eventHandlers={{
+                  click: (e) => onMarkerClick(point),
+                }}
+              >
+                <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+                  <span>{point.nome}</span>
+                </Tooltip>
+              </Marker>
+            )
+        )}
+
       </MapContainer>
 
       {contextCoords && opened ? (

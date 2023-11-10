@@ -1587,3 +1587,43 @@ export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(
     throw error;
   }
 }
+
+// Obter array de id's de realizacao_orgao
+
+export async function getRealizacaoOrgaoIds() {
+  try {
+    const snapshot = await db.collection('realizacao_orgao').get();
+    const ids = snapshot.docs.map((doc) => doc.id);
+    return ids;
+  } catch (error) {
+    console.error('Erro ao obter os IDs dos documentos:', error);
+    throw error;
+  }
+}
+export async function getRealizacaoProgramaIds() {
+  try {
+    const snapshot = await db.collection('realizacao_programa').get();
+    const ids = snapshot.docs.map((doc) => doc.id);
+    return ids;
+  } catch (error) {
+    console.error('Erro ao obter os IDs dos documentos:', error);
+    throw error;
+  }
+}
+export async function getRealizacaoTemaIds() {
+  try {
+    const snapshot = await db.collection('realizacao_tema').get();
+    const ids = snapshot.docs.map((doc) => doc.id);
+    return ids;
+  } catch (error) {
+    console.error('Erro ao obter os IDs dos documentos:', error);
+    throw error;
+  }
+}
+// export function getListOrgaoName() {
+//   // return a list of all orgao names
+//   const orgaoRef = db.collection("orgao");
+//   return orgaoRef.get().then((querySnapshot) => {
+//     return querySnapshot.docs.map((doc) => doc.data().nome);
+//   });
+// }
