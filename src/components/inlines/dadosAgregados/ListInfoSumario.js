@@ -82,7 +82,7 @@ const ListInfoSumario = ({
             {' '}
             <span>domicílios</span>
             {' '}
-            <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
+            <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioInfoBasicasCidade.domicilios != 0) ? <Loading /> : undefined,
@@ -98,7 +98,7 @@ const ListInfoSumario = ({
             {' '}
             <span>habitantes</span>
             {' '}
-            <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
+            <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioInfoBasicasCidade.habitantes != 0) ? <Loading /> : undefined,
@@ -131,7 +131,7 @@ const ListInfoSumario = ({
             {' '}
             <span>domicílios</span>
             {' '}
-            <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
+            <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.domicilios != 0) ? <Loading /> : undefined,
@@ -147,7 +147,7 @@ const ListInfoSumario = ({
             {' '}
             <span>habitantes</span>
             {' '}
-            <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
+            <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioInfoBasicasSubprefeitura.habitantes != 0) ? <Loading /> : undefined,
@@ -180,7 +180,7 @@ const ListInfoSumario = ({
             {' '}
             <span>domicílios</span>
             {' '}
-            <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
+            <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
         )
         : activeBar === BAIRRO_DESCRIPTION_BAR ? <Loading /> : undefined,
@@ -196,7 +196,7 @@ const ListInfoSumario = ({
             {' '}
             <span>habitantes</span>
             {' '}
-            <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
+            <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
         )
         : activeBar === BAIRRO_DESCRIPTION_BAR ? <Loading /> : undefined,
@@ -212,7 +212,7 @@ const ListInfoSumario = ({
             {' '}
             <span>IPS</span>
             {' '}
-            <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
+            <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
         )
         : activeBar === BAIRRO_DESCRIPTION_BAR ? <Loading /> : undefined,
@@ -227,7 +227,7 @@ const ListInfoSumario = ({
             {bairroInfo.ranking_ips?.toLocaleString()}
             <span>° no rank IPS</span>
             {' '}
-            <span style={{ fontStyle: 'italic', color: 'grey', fontSize: '12px' }}>em 2010</span>
+            <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
         )
         : activeBar === BAIRRO_DESCRIPTION_BAR ? <Loading /> : undefined,
@@ -246,44 +246,44 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}> Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasCidade.concluida?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px", paddingRight:"10px" }}> Concluído </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.concluida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.concluida != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.concluida == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído </span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Concluído </span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento  </span>{dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em andamento  </span>{dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento?.toLocaleString()} obras
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento </span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em andamento </span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Interrompida </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.interrompida == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida </span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Interrompida </span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao?.toLocaleString()} obras
           </span>
         )
         : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_licitacao == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação </span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em licitação </span> 0 obras
         </span> : undefined),
     },
 
@@ -292,44 +292,44 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.concluida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.concluida == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído</span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Concluído</span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_andamento
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em andamento</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento?.toLocaleString()} obras
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento</span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em andamento</span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.interrompida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida</span>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Interrompida</span>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.interrompida == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida</span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Interrompida</span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_licitacao
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em licitação</span> {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao?.toLocaleString()} obras
           </span>
         )
         : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_licitacao == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação</span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em licitação</span> 0 obras
         </span> : undefined),
     },
 
@@ -338,46 +338,46 @@ const ListInfoSumario = ({
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.concluida
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.concluida?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Concluído</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.concluida?.toLocaleString()} obras
           </span>
 
         )
         : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.concluida != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.concluida == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Concluído</span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Concluído</span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em andamento</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento?.toLocaleString()} obras
           </span>
         )
         : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em andamento</span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em andamento</span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.interrompida
         ? (
           <span >
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Interrompida</span> {dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida?.toLocaleString()} obras
           </span>
         )
         : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.interrompida == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Interrompida</span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Interrompida</span> 0 obras
         </span> : undefined),
     },
     {
       text: dadosAgregadosAbaSumarioStatusEntregasBairro?.em_licitacao
         ? (
           <span>
-            <span style={{ color: '#007E7D', fontWeight: "bold" }}> Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao?.toLocaleString()} obras
+            <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}> Em licitação </span> {dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao?.toLocaleString()} obras
           </span>
 
         )
         : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_licitacao == 0 ? <span>
-          <span style={{ color: '#007E7D', fontWeight: "bold" }}>Em licitação</span> 0 obras
+          <span style={{ color: '#007E7D', fontWeight: "bold", paddingRight:"10px" }}>Em licitação</span> 0 obras
         </span> : undefined),
     },
 

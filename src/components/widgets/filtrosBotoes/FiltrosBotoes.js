@@ -21,13 +21,13 @@ const SelectedIconComponent = () => (
 
 );
 
-const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilter }) => {
+const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilter,setFiltros }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currentButtonName, setCurrentButtonName] = useState(null);
-  console.log('Selected Options1:', selectedOptions);
+ 
   useEffect(() => {
     // Log the selected options to the console
     console.log('Selected Options:', selectedOptions);
@@ -38,9 +38,15 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
     setCurrentButtonName(buttonName);
     setOptions(buttonOptions);
     if (!selectedOptions[buttonName]) {
-      setSelectedOptions(prevState => ({ ...prevState, [buttonName]: buttonOptions }));
+      setSelectedOptions(prevState => ({ ...prevState, [buttonName]: [] }));
     }
-   };   
+   };
+
+   useEffect(() => {
+    console.log(selectedOptions);
+    setFiltros(selectedOptions);
+   }, [selectedOptions]);
+        
 
   const handleOptionChange = (buttonName, option) => {
     setSelectedOptions(prevState => {
@@ -69,6 +75,7 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
     borderRadius: '20px',
     paddingLeft: '20px',
     paddingRight: '20px',
+    textTransform: 'none'
   };
 
   return (

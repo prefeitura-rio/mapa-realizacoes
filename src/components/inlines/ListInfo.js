@@ -61,10 +61,23 @@ const ListInfo = ({ content }) => {
     // { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: PublicIcon},
     { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     // { text: content.data_inicio + " início", iconComponent: PublicIcon},
-    { text: content.data_inicio + " inicio", iconComponent: () => <img src={dataInicioIcon} alt="Data Inicio" style={{width: '20px', height: '20px'}}/> },
-    // { text: content.data_fim + " fim", iconComponent: PublicIcon},
-    { text: content.data_fim + " fim", iconComponent: () => <img src={dataFimIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/> },
-   
+    { 
+      text: 
+      <>
+        {content.data_inicio} 
+        <span style={{color: 'gray', fontSize: '12px', paddingLeft:"8px"}}> inicio</span>
+      </>, 
+      iconComponent: () => <img src={dataInicioIcon} alt="Data Inicio" style={{width: '20px', height: '20px'}}/> 
+     },
+     { 
+      text: 
+      <>
+        {content.data_fim} 
+        <span style={{color: 'gray', fontSize: '12px', paddingLeft:"8px"}}> fim</span>
+      </>, 
+      iconComponent: () => <img src={dataFimIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/> 
+     },
+     
   ];
 
   console.log("content: ", (content))

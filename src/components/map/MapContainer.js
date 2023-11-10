@@ -31,6 +31,7 @@ const MapContainer = (props) => {
       setUnderSearchBar={props.setUnderSearchBar}
       currentCoords={props.currentCoords}
       profile={props.profile}
+      filtros={props.filtros}	
     />
   );
 };
@@ -40,7 +41,8 @@ const mapStateToProps = (state) => {
     zoomDelta: state.app.zoomDelta,
     points: state.places.allPlaces,
     currentCoords: state.map.coords,
-    profile: state.auth.profile
+    profile: state.auth.profile,
+    filtros: state.filtros.filtros
   };
 };
 
