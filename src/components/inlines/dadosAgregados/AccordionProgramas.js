@@ -30,6 +30,11 @@ const useStyles = makeStyles(() => ({
       filter: "brightness(80%)"
     },
   },
+  "@media screen and (max-width: 540px)": {
+    programaStyle: {
+      paddingLeft: "10px !important",
+    }
+  }
 }))
 
 export default function AccordionProgramas({ dadosAgregadosAbaProgramasCidade, dadosAgregadosAbaProgramasSubprefeitura, dadosAgregadosAbaProgramaBairro, setDescriptionData, setUnderSearchBar, setActiveBar, loadData }) {
@@ -61,7 +66,7 @@ export default function AccordionProgramas({ dadosAgregadosAbaProgramasCidade, d
       {dataToRender.map((item) => (
         <Accordion key={item.id} expanded={expanded === item.id} onChange={handleChange(item.id)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${item.id}-content`} id={`${item.id}-header`}>
-            <Typography style={{ paddingLeft: 20, color:"#007E7D ", fontWeight:"bold", fontSize:'14px'}} sx={{ width: '50%', flexShrink: 0 }}>
+            <Typography className={classes.programaStyle} style={{ paddingLeft: 20, color:"#007E7D ", fontWeight:"bold", fontSize:'14px'}} sx={{ width: '50%', flexShrink: 0 }}>
               {item.tema}
             </Typography>
             <Typography sx={{ color: 'text.secondary' , marginLeft:"30px",fontSize:'14px'}}>{item.realizacoes.length} entregas</Typography>

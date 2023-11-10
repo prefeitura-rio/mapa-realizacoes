@@ -159,6 +159,8 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
           </Fab>
         )}
       </div>
+      <br></br>
+      <br></br>
     </div>
   );
 };
