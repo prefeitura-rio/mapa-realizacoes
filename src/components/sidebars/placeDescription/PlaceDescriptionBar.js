@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     objectFit: "cover",
     height: "100%",
-    borderRadius:"15px"
+    borderBottomLeftRadius: "15px",
+    borderBottomRightRadius: "15px",
   },
 
   listInfo: {
@@ -63,12 +64,12 @@ const useStyles = makeStyles((theme) => ({
     padding: "5px 15px",
     minWidth: "35px",
   },
-  searchShadow: {
-    position: "fixed",
-    width: "423px",
-    height: "80px",
-    background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
-  },
+  // searchShadow: {
+  //   position: "fixed",
+  //   width: "423px",
+  //   height: "80px",
+  //   background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
+  // },
   signInButton: {
     display: "flex",
     justifyContent: "center",

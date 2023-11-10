@@ -11,6 +11,7 @@ import ContextMenu from "./ContextMenu";
 import { getIcon } from "../../icons/typeIcons";
 import { DESCRIPTION_BAR } from "../../redux/active/actions";
 import { getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
+import { isDesktop } from "../../redux/active/reducers";
 
 const Map = ({
   zoomDelta,
@@ -67,6 +68,7 @@ const Map = ({
     loadFiltrosInfo();
   }, []); // Simula o componentDidMount - Executa apenas uma vez
 
+  const isDesktopDevice = isDesktop();
 
   useEffect(() => {
 
@@ -120,7 +122,7 @@ const Map = ({
           lng: currentCoords.longitude,
         });
       } else {
-        map.flyTo({ lat: -22.8800, lng: -43.5600 });
+        map.flyTo({ lat: -22.8800, lng: -43.4600 });
       }
     }
   }, [currentCoords]);
@@ -128,7 +130,7 @@ const Map = ({
   return (
     <>
       <MapContainer
-        center={[-22.8800, -43.5600]}  // Coordenadas para o Rio de Janeiro
+        center={isDesktopDevice?[-22.8800, -43.4600] :[-22.8800, -43.4200] }  // Coordenadas para o Rio de Janeiro
         zoom={11.0}
         scrollWheelZoom={true}
         zoomControl={false}

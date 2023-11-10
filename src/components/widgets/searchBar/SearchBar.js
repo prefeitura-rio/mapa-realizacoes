@@ -163,6 +163,11 @@ const SearchBar = ({
     setActiveBar(MAIN_UNDERSEARCH_BAR);
   };
 
+  const handleOnfocus = () =>{
+    setUnderSearchBar(true);
+    setActiveBar(MAIN_UNDERSEARCH_BAR);
+  }
+
   const inputRef = useRef(null);
   const classes = useStyles();
 
@@ -245,6 +250,7 @@ const SearchBar = ({
             renderInput={(params) => (
               <TextField
                 {...params}
+                onFocus={() => handleOnfocus()}
                 placeholder="Busque por bairro/prefeitura"
                 sx={{
                   "& fieldset": { border: 'none' },

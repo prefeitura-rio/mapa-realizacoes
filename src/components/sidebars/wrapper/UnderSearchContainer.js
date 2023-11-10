@@ -12,7 +12,7 @@ const UnderSearchContainer = (props) => {
   }, [props.placesData]);
 
   return (
-    <Slide direction="down" in={props.underSearchBar} mountOnEnter unmountOnExit >
+    <Slide direction="right" in={props.underSearchBar} mountOnEnter unmountOnExit >
       <UnderSearchBar
         underSearchBar={props.underSearchBar}
         activeBar={props.activeBar}

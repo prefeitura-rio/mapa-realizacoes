@@ -66,7 +66,7 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
 
   const buttonContainerStyle = {
     display: 'flex',
-    gap: '20px',
+    gap: '10px',
   };
 
   const buttonStyle = {
@@ -87,13 +87,22 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
           style={buttonStyle}
         >
           Órgão
+          {selectedOptions['button1']?.length ? 
+          <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
+            {selectedOptions['button1']?.length}
+          </Typography> : null}
         </Button>
+        
         <Button
           variant="contained"
           onClick={(e) => handleButtonClick(e, 'button2', temasNameFilter)}
           style={buttonStyle}
         >
           Tema
+          {selectedOptions['button2']?.length ? 
+          <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
+            {selectedOptions['button2']?.length}
+          </Typography> : null}
         </Button>
         <Button
           variant="contained"
@@ -101,10 +110,14 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
           style={buttonStyle}
         >
           Programa
+          {selectedOptions['button3']?.length ? 
+          <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
+            {selectedOptions['button3']?.length}
+          </Typography> : null}
         </Button>
 
       </div>
-      <Popover
+      <Popover style={{ marginTop: '15px' }}
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handleClose}
@@ -117,7 +130,7 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
           horizontal: 'left',
         }}
       >
-        <Box p={2} style={{ marginTop: '5px', height:"300px"}}>
+        <Box p={2} style={{ marginTop: '-5px', height:"300px"}}>
           {options.map((option, index) => (
             <div key={index} >
               <FormControlLabel
