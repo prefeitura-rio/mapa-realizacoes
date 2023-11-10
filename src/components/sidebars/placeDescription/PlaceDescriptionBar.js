@@ -75,6 +75,14 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     margin: "8px",
+    whiteSpace: "nowrap",
+  },
+  addPhoto: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "8px",
+    whiteSpace: "nowrap",
   },
   bottomInfo:{
     marginBottom:"30px"
@@ -154,11 +162,13 @@ const PlaceDescriptionBar = ({
         <HeaderBar title="Fotos" />
         <PhotoCards images={imagesList} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
         {profile ? (
+           <div className={classes.addPhoto}> 
           <BottomButton
             title="Adicionar uma foto"
             startIcon={CameraAltOutlinedIcon}
             onClick={handleOpenUploadPhoto}
           />
+          </div>
         ) : (
           <div className={classes.signInButton}>           
             <BottomButton title="Faça login para editar" color="primary" variant="outlined" onClick={login}/>
@@ -166,7 +176,7 @@ const PlaceDescriptionBar = ({
         )}
 
       </div>
-      {/* <div className={classes.bottomInfo}></div> */}
+      <div className={classes.bottomInfo}></div>
       <Divider/>
      
     </div>

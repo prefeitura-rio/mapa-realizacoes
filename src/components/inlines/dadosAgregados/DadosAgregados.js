@@ -72,10 +72,9 @@ const useStyles = makeStyles((theme) => ({
   "@media screen and (max-width: 540px)": {
     
   tab: {
-    fontSize: "15px",
-    marginLeft: "10px",
-    minWidth: "90px",
-    width: "auto",
+    fontSize: "5vw",
+    marginLeft: "23px",
+    minWidth: "70px",
     color: theme.palette.text.primary,
     "&$selected": {
       color: "#007E7D",
