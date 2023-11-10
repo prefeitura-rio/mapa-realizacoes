@@ -23,6 +23,11 @@ import {
   SET_INFO_MODAL
 } from "./actions";
 
+export const isDesktop = () => {
+  const userAgent = navigator.userAgent;
+  return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+ };
+
 const defaultState = {
   categoryModal: false,
   addPhoto: false,
@@ -38,7 +43,7 @@ const defaultState = {
   openCompletePhoto: false,
   activeBar: MAIN_UNDERSEARCH_BAR,
   searchPrompt: false,
-  underSearchBar: true,
+  underSearchBar: isDesktop(),
   bottomGallery: false,
   menuSidebar: false,
   photoGallery: false,
