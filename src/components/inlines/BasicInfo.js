@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius:"39px",
     backgroundColor:"#007E7D",
     color: "#FFFFFF",
-    padding:"1px 8px 1px 8px"
+    padding:"1px 8px 1px 8px",
+    fontSize:"12px"
   },
   titulo:{
     fontSize:"25px",

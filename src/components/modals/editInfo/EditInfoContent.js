@@ -67,7 +67,8 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogContent: {
     padding: 0,
-    marginLeft: "-20px",
+    marginLeft: "10px",
+    marginRight: "50px",
   },
   contentTitle: {
     padding: "14px 54px",
@@ -297,9 +298,6 @@ const EditInfoModal = ({
         ref={dialogRef}
         className={disabled ? classes.disabled : ""}
       >
-        <Typography className={classes.contentTitle} color="textSecondary">
-          Por favor, Forneça Detalhes da Realização
-        </Typography>
         <Divider />
         <EditItem
           title="Título da Realização"

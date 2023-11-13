@@ -53,13 +53,13 @@ const useStyles = makeStyles((theme) => {
       paddingTop: "15px"
     },
     listItemTextPrimary: {
-      fontSize: "0.8rem",
+      fontSize: "0.9rem",
       paddingBottom:"5px",
       justifyContent: "space-between",
+      margin:"15px"
     },
     listItemTextSecondary: {
-    
-      justifyContent: "space-between",
+      margin:"15px",
     },
     
   };

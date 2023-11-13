@@ -107,7 +107,7 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
     <div className={classes.photoCards}>
       {images.length === 0 ? (
         <Typography variant="body2" style={{ fontSize:"15px", textAlign: "center" }}>
-          Ainda não há fotos deste local <SentimentVeryDissatisfiedIcon style={{verticalAlign: "middle"}} fontSize="small"></SentimentVeryDissatisfiedIcon>
+          Ainda não há fotos deste local.
         </Typography>
       ) : (
         <ImageList

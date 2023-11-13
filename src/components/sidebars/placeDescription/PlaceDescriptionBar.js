@@ -1,6 +1,6 @@
 //
 import { useEffect, useState } from "react";
-import { Divider, makeStyles } from "@material-ui/core";
+import { Divider, Typography, makeStyles } from "@material-ui/core";
 
 import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
 
@@ -27,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
   photos: {
     // padding: "12px",
+  },
+  title:{
+    fontSize: "15px",
+    fontWeight: "bold",
+    padding: "4px 24px 9px 24px",
   },
 
   directoryInput: {
@@ -159,7 +164,9 @@ const PlaceDescriptionBar = ({
      
       <Divider />
       <div className={classes.photos}>
-        <HeaderBar title="Fotos" />
+        <Typography className={classes.title}>
+          Fotos
+        </Typography>
         <PhotoCards images={imagesList} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
         {profile ? (
            <div className={classes.addPhoto}> 
