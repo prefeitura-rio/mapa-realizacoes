@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
   bottomInfo:{
-    marginBottom:"30px"
+    marginBottom:"80px"
   }
 }));
 
