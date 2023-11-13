@@ -47,14 +47,6 @@ const useStyles = makeStyles({
     display: "flex",
     zIndex: 500,
   },
-  filters: {
-    top: "50px",
-    left: "500px",
-    position: "absolute",
-    display: "flex",
-    zIndex: 503,
-
-  },
 
   tools: {
     position: "absolute",
@@ -74,6 +66,7 @@ const useStyles = makeStyles({
     transition: "width 200ms cubic-bezier(0, 0, 0.2, 1)",
   },
   widgets: {},
+
   "@media screen and (max-width: 540px)": {
     topRightWidgets: {
       top: "115px",
@@ -81,11 +74,16 @@ const useStyles = makeStyles({
     bottomLeftWidgets: {
       display: (props) => (props.underSearchBar ? "none" : "block"),
     },
-    filters: {
-      display: "none",
-    },
-    
   },
+  "@media screen and (min-width: 1279px)":{
+    filters: {
+      top: "50px",
+      left: "500px",
+      position: "absolute",
+      display: "flex",
+      zIndex: 503,
+    },
+  }
 });
 
 const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {

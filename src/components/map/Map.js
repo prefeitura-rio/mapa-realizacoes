@@ -130,7 +130,7 @@ const Map = ({
   return (
     <>
       <MapContainer
-        center={isDesktopDevice?[-22.8800, -43.4600] :[-22.8800, -43.4200] }  // Coordenadas para o Rio de Janeiro
+        center={isDesktopDevice?[-22.8800, -43.5800] :[-22.8800, -43.4200] }  // Coordenadas para o Rio de Janeiro
         zoom={11.0}
         scrollWheelZoom={true}
         zoomControl={false}

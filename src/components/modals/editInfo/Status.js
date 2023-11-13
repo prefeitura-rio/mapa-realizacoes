@@ -15,7 +15,7 @@ export default function Status({ value, onChange }) {
     });
   }, []);
   return (
-    <Stack spacing={3} sx={{ width: 700 }}>
+    <Stack spacing={3} >
       <Autocomplete
         id="tags-standard"
         options={status}

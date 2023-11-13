@@ -15,7 +15,7 @@ export default function Orgaos({ value, onChange }) {
     });
   }, []);
   return (
-    <Stack spacing={3} sx={{ width: 700 }}>
+    <Stack spacing={3} >
       <Autocomplete
         multiple
         id="tags-standard"

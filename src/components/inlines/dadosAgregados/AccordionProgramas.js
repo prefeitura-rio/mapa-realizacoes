@@ -17,12 +17,16 @@ const useStyles = makeStyles(() => ({
     borderRadius: "39px",
     backgroundColor: "#007E7D",
     color: "#FFFFFF",
-    padding: "1px 8px 1px 8px"
+    padding: "1px 8px 1px 8px",
+    fontSize:"12px"
   },
   thumbnail: {
     width: "120px",
     height: "100px",
     borderRadius: "15px",
+  },
+  tabBoxProgramas:{
+    paddingBottom: "40px",
   },
   accordionDetails: {
     "&:hover": {
@@ -62,7 +66,7 @@ export default function AccordionProgramas({ dadosAgregadosAbaProgramasCidade, d
   };
 
   return (
-    <div>
+    <div className={classes.tabBoxProgramas}>
       {dataToRender.map((item) => (
         <Accordion key={item.id} expanded={expanded === item.id} onChange={handleChange(item.id)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${item.id}-content`} id={`${item.id}-header`}>

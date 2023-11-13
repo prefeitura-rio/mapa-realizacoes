@@ -10,6 +10,7 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Typography,
 } from "@material-ui/core";
 import { IconButton, makeStyles } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -24,6 +25,7 @@ import Orgaos from './Orgaos';
 import Status from './Status';
 import DatePicker from './DatePicker';
 import DatePickerFim from "./DatePickerFim";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -202,10 +204,11 @@ const EditItem = ({
         className={classes.inputDiv}
         style={!IconComponent ? { marginLeft: "34px" } : {}}
       >
-        <div className={classes.inputLabel}>
-          <Tooltip title={tooltip} placement="right">
-           <span>{title}</span> 
+        <div className={classes.inputLabel} >
+          <Tooltip title={tooltip} placement="right" >
+          <span> {title}  <InfoOutlinedIcon sx={{ fontSize: 16, color: 'black'}} style={{verticalAlign: "middle"}} ></InfoOutlinedIcon></span>
           </Tooltip>
+          
         </div>
 
         {subTitle ? <div className={classes.inputLabel}>{subTitle}</div> : null}
