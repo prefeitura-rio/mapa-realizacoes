@@ -1,4 +1,5 @@
-import { Fab } from "@material-ui/core";
+import { Fab, Typography } from "@material-ui/core";
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import {
   ImageList,
   ImageListItem,
@@ -104,36 +105,43 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
 
   return (
     <div className={classes.photoCards}>
-      <ImageList
-        className={
-          shiftedEnd
-            ? clsx(classes.imageList, classes.shiftEnd)
-            : classes.imageList
-        }
-        style={{ margin: 0 }}
-        rowHeight={180} 
-        gap={8}
-      >
-        {images.map((item, i) => (
-          <ImageListItem
-            key={i}
-            classes={{ item: classes.imageListItem }}
-            style={{ width: "220px" }} 
-            onClick={onPhotoClick}
-          >
-            <img src={item || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"} alt={`Thumbnail ${i}`} />
-            <ImageListItemBar
-              actionPosition="left"
-              classes={{
-                root: classes.titleBar,
-                title: classes.title,
-              }}
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
+      {images.length === 0 ? (
+        <Typography variant="body2" style={{ fontSize:"15px", textAlign: "center" }}>
+          Ainda não há fotos deste local <SentimentVeryDissatisfiedIcon style={{verticalAlign: "middle"}} fontSize="small"></SentimentVeryDissatisfiedIcon>
+        </Typography>
+      ) : (
+        <ImageList
+          className={
+            shiftedEnd
+              ? clsx(classes.imageList, classes.shiftEnd)
+              : classes.imageList
+          }
+          style={{ margin: 0 }}
+          rowHeight={180} 
+          gap={8}
+        >
+          {images.map((item, i) => (
+            <ImageListItem
+              key={i}
+              classes={{ item: classes.imageListItem }}
+              style={{ width: "220px" }} 
+              onClick={onPhotoClick}
+            >
+              <img src={item || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"} alt={`Thumbnail ${i}`} />
+              <ImageListItemBar
+                actionPosition="left"
+                classes={{
+                  root: classes.titleBar,
+                  title: classes.title,
+                }}
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      )}
       <div className={classes.fabContainer}>
-        {!shiftedEnd ? (
+        {images.length > 0 ? (
+        !shiftedEnd ? (
           <Fab
             size="small"
             aria-label="add"
@@ -157,12 +165,13 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
               style={{ fill: "black" }}
             />
           </Fab>
-        )}
+        )):null}
       </div>
       <br></br>
       <br></br>
     </div>
-  );
+   );
+   
 };
 
 const mapStateToProps = (state) => {
