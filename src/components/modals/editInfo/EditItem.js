@@ -237,14 +237,14 @@ const EditItem = ({
                 if (onChange) onChange(numericValue);
               } 
               else if (title === "Título da Realização"){
-                newValue = newValue.slice(0, 108); // Limit the number of digits to 10
-                setExceededLimit(newValue.length == 108);
+                newValue = newValue.slice(0, 100); // Limit the number of digits to 10
+                setExceededLimit(newValue.length == 100);
                 setinputValue(newValue);
                 if (onChange) onChange(newValue);
               }
               else if (title === "Descrição"){
-                newValue = newValue.slice(0, 324); // Limit the number of digits to 10
-                setExceededLimitDescricao(newValue.length == 324);
+                newValue = newValue.slice(0, 300); // Limit the number of digits to 10
+                setExceededLimitDescricao(newValue.length == 300);
                 setinputValue(newValue);
                 if (onChange) onChange(newValue);
               }
@@ -260,8 +260,8 @@ const EditItem = ({
           
 
         )}
-        {exceededLimit && ( <Typography variant="body2" color="error" >Preencha com no máximo 1o8 dígitos</Typography>)}
-        {exceededLimitDescricao && ( <Typography variant="body2" color="error" >Preencha com no máximo 324 dígitos</Typography>)}
+        {exceededLimit && ( <Typography variant="body2" color="error" >Preencha com no máximo 100 dígitos</Typography>)}
+        {exceededLimitDescricao && ( <Typography variant="body2" color="error" >Preencha com no máximo 300 dígitos</Typography>)}
         {extraIcon ? (
           <IconButton
             className={classes.extraIcon}
