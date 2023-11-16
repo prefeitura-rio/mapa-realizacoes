@@ -147,7 +147,7 @@ const EditInfoModal = ({
   setContent,
   photoFiles,
   setPhotoFiles,
-  loadAllPoints,
+  loadAllPlaces,
   setLocationModal,
   profile
 }) => {
@@ -187,7 +187,8 @@ const EditInfoModal = ({
     setOpenCompleteEditInfo(true);
     setCanceledFields([]);
     setPhotoFiles([]);
-    loadAllPoints();
+    // loadAllPoints();
+    loadAllPlaces();
   }
 
   const onCancel = () => {
@@ -301,14 +302,14 @@ const EditInfoModal = ({
         <Divider />
         <EditItem
           title="Título da Realização"
-          tooltip="Preencha com o título da realização."
+          tooltip="Digite o nome principal do projeto ou ação.."
           // IconComponent={StoreIcon}
           value={content.nome}
           onChange={onTituloChange}
         />
         <EditItem
           title="Descrição"
-          tooltip="Preencha com a descrição da realização."
+          tooltip="Digite um resumo breve do projeto ou ação."
           // IconComponent={StoreIcon}
           value={content.descricao}
           onChange={onDescricaoChange}
@@ -316,7 +317,7 @@ const EditInfoModal = ({
 
         <EditItem
           title="Status"
-          tooltip="Preencha com o status da realização."
+          tooltip="Selecione o status do projeto."
           // IconComponent={StoreIcon}
           value={content.status}
           onChange={onStatusChange}
@@ -325,7 +326,7 @@ const EditInfoModal = ({
        
         <EditItem
           title="Programa"
-          tooltip="Preencha com os programas da realização."
+          tooltip="Selecione o programa governamental relacionado."
           // IconComponent={StoreIcon}
           value={JSON.stringify(content.programa)}
           onChange={onProgramaChange}
@@ -334,7 +335,7 @@ const EditInfoModal = ({
 
        <EditItem
           title="Tema"
-          tooltip="Preencha com os temas da realização."
+          tooltip="Selecione o tema principal do projeto."
           // IconComponent={StoreIcon}
           value={content.tema}
           onChange={onTemaChange}
@@ -343,7 +344,7 @@ const EditInfoModal = ({
                 
         <EditItem
           title="Órgão"
-          tooltip="Preencha com os órgãos da realização."
+          tooltip="Selecione o órgão governamental responsável/relacionado."
           // IconComponent={StoreIcon}
           value={content.orgao}
           onChange={onOrgaoChange}
@@ -351,21 +352,21 @@ const EditInfoModal = ({
         />
         <EditItem
           title="Total Investido"
-          tooltip="Preencha com o total investido da realização."
+          tooltip="Digite o valor total em reais."
           // IconComponent={StoreIcon}
           value={content.investimento}
           onChange={onTotalInvestidoChange}
         />
         <EditItem
           title="Cariocas Atendidos"
-          tooltip="Preencha com o total de cariocas antedidos com a realização."
+          tooltip="Digite o número estimado de beneficiados."
           // IconComponent={StoreIcon}
           value={content.cariocas_atendidos}
           onChange={onCariocasAtendidosChange}
         />
         <EditItem
           title="Data Início"
-          tooltip="Preencha com a data início da realização."
+          tooltip="Digite ou selecione o mês e ano de início."
           // IconComponent={StoreIcon}
           value={content.data_inicio}
           onChange={onDataInicioChange}
@@ -373,7 +374,7 @@ const EditInfoModal = ({
         />
         <EditItem
           title="Data Fim"
-          tooltip="Preencha com a data fim da realização."
+          tooltip="Digite ou selecione o mês e ano de conclusão."
           // IconComponent={StoreIcon}
           value={content.data_fim}
           onChange={onDataFimChange}

@@ -499,6 +499,7 @@ export async function createUpdateRealizacaoFromForm(data) {
   // Get bairro from coordinates
   try {
     const refBairro = await getBairroFromCoords(content.coords);
+    console.log("refBairro: ", refBairro)
     idBairro = refBairro.id;
     if (contentSnapshot.coords) {
       const refBairroOld = await getBairroFromCoords(contentSnapshot.coords);
@@ -664,14 +665,12 @@ export async function getBairroFromCoords(coords) {
         const geometryData = JSON.parse(bairroData.geo).geometry;
         
         if (geometryData.type === 'Polygon') {
-          console.log("1 AHSUHSUAUHASHUASHUASUHAS")
           const polygon = turf.polygon(geometryData.coordinates);
           if (turf.booleanPointInPolygon(point, polygon)) {
             idBairro = bairrosSnapshot[i].id;
             break;
           }
         } else if (geometryData.type === 'MultiPolygon') {
-          console.log("2 AHSUHSUAUHASHUASHUASUHAS")
           for (const coords of geometryData.coordinates) {
             const polygon = turf.polygon(coords);
             if (turf.booleanPointInPolygon(point, polygon)) {
@@ -679,8 +678,8 @@ export async function getBairroFromCoords(coords) {
               break;
             }
           }
-          if (idBairro) break;
         } 
+        // if (idBairro) break;
       } catch (e) {
         console.error(
           "Erro ao processar geometria para o bairro: ",

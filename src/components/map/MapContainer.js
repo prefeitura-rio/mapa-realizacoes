@@ -4,7 +4,7 @@ import { connect, useDispatch } from "react-redux";
 import { setOpenEditInfo } from "./../../redux/active/actions";
 import { setContent, setContentSnapshot } from "./../../redux/place/actions";
 import { useEffect } from "react";
-import { loadAllPoints } from "../../redux/points/actions";
+// import { loadAllPoints } from "../../redux/points/actions";
 import { setDescriptionData } from "./../../redux/place/actions";
 import { setActiveBar, setUnderSearchBar } from "./../../redux/active/actions";
 import { loadData } from "../../redux/place/actions";
@@ -28,6 +28,7 @@ const MapContainer = (props) => {
       setDescriptionData={props.setDescriptionData}
       setActiveBar={props.setActiveBar}
       loadData={props.loadData}
+      loadAllPlaces={props.loadAllPlaces}
       setUnderSearchBar={props.setUnderSearchBar}
       currentCoords={props.currentCoords}
       profile={props.profile}
@@ -55,6 +56,7 @@ const mapDispatchToProps = {
   setDescriptionData,
   loadData,
   setUnderSearchBar,
+  loadAllPlaces
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
