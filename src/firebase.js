@@ -661,16 +661,29 @@ export async function getBairroFromCoords(coords) {
     const bairroData = bairrosSnapshot[i].data();
     if (JSON.parse(bairroData.geo) && JSON.parse(bairroData.geo).geometry) {
       try {
-        const polygon = turf.polygon(
-          JSON.parse(bairroData.geo).geometry.coordinates,
-        );
-        if (turf.booleanPointInPolygon(point, polygon)) {
-          idBairro = bairrosSnapshot[i].id;
-          break;
-        }
+        const geometryData = JSON.parse(bairroData.geo).geometry;
+        
+        if (geometryData.type === 'Polygon') {
+          console.log("1 AHSUHSUAUHASHUASHUASUHAS")
+          const polygon = turf.polygon(geometryData.coordinates);
+          if (turf.booleanPointInPolygon(point, polygon)) {
+            idBairro = bairrosSnapshot[i].id;
+            break;
+          }
+        } else if (geometryData.type === 'MultiPolygon') {
+          console.log("2 AHSUHSUAUHASHUASHUASUHAS")
+          for (const coords of geometryData.coordinates) {
+            const polygon = turf.polygon(coords);
+            if (turf.booleanPointInPolygon(point, polygon)) {
+              idBairro = bairrosSnapshot[i].id;
+              break;
+            }
+          }
+          if (idBairro) break;
+        } 
       } catch (e) {
         console.error(
-          "Erro ao processar polígono pro bairro: ",
+          "Erro ao processar geometria para o bairro: ",
           bairroData.nome,
           e,
         );
@@ -681,9 +694,11 @@ export async function getBairroFromCoords(coords) {
   if (idBairro) {
     return db.collection("bairro").doc(idBairro);
   }
+  else throw new Error("Bairro não encontrado para as coordenadas informadas");
 
-  throw new Error("Bairro não encontrado para as coordenadas informadas");
+
 }
+
 
 export async function getIdBairro(name) {
   // query the collection "Bairros" for where the field "nome" is equal to the name
