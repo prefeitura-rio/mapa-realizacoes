@@ -251,7 +251,7 @@ const SearchBar = ({
               <TextField
                 {...params}
                 onFocus={() => handleOnfocus()}
-                placeholder="Busque por bairro/prefeitura"
+                placeholder="Busque por bairro/subprefeitura"
                 sx={{
                   "& fieldset": { border: 'none' },
                 }}

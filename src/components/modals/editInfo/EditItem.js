@@ -131,6 +131,8 @@ const EditItem = ({
     if (onChange) onChange(newValue);
   };
 
+  const [exceededLimit, setExceededLimit] = useState(false);
+  const [exceededLimitDescricao, setExceededLimitDescricao] = useState(false);
 
   const [focused, setFocused] = useState(false);
 
@@ -206,7 +208,7 @@ const EditItem = ({
       >
         <div className={classes.inputLabel} >
           <Tooltip title={tooltip} placement="right" >
-          <span> {title}  <InfoOutlinedIcon sx={{ fontSize: 16, color: 'black'}} style={{verticalAlign: "middle"}} ></InfoOutlinedIcon></span>
+          <span> {title}  <InfoOutlinedIcon sx={{ fontSize: 16, color: 'grey'}} style={{verticalAlign: "middle"}} ></InfoOutlinedIcon></span>
           </Tooltip>
           
         </div>
@@ -228,21 +230,38 @@ const EditItem = ({
             className={classes.inputField}
             classes={{ underline: classes.underline }}
             onChange={(e) => {
+              let newValue = e.target.value;
               if (title === "Total Investido" || title === "Cariocas Atendidos") {
                 const numericValue = e.target.value.replace(/\D/g, "");
                 setinputValue(numericValue);
                 if (onChange) onChange(numericValue);
-              } else {
+              } 
+              else if (title === "Título da Realização"){
+                newValue = newValue.slice(0, 108); // Limit the number of digits to 10
+                setExceededLimit(newValue.length == 108);
+                setinputValue(newValue);
+                if (onChange) onChange(newValue);
+              }
+              else if (title === "Descrição"){
+                newValue = newValue.slice(0, 324); // Limit the number of digits to 10
+                setExceededLimitDescricao(newValue.length == 324);
+                setinputValue(newValue);
+                if (onChange) onChange(newValue);
+              }
+              else{
                 setinputValue(e.target.value);
                 if (onChange) onChange(e.target.value);
-              }
+              } 
             }}
             disabled={canceled ? true : false}
             onClick={() => setFocused(true)}
             onBlur={disableBlur ? () => { } : onBlur}
           />
+          
 
         )}
+        {exceededLimit && ( <Typography variant="body2" color="error" >Preencha com no máximo 1o8 dígitos</Typography>)}
+        {exceededLimitDescricao && ( <Typography variant="body2" color="error" >Preencha com no máximo 324 dígitos</Typography>)}
         {extraIcon ? (
           <IconButton
             className={classes.extraIcon}
