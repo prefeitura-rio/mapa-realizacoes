@@ -9,7 +9,7 @@ import {
   makeStyles,
   Typography
 } from "@material-ui/core";
-import React from 'react';
+import React, { useState } from 'react';
 import ListInfoSumario from "./ListInfoSumario";
 import PhotoCards from "../PhotoCards";
 import AccordionTemas from "./AccordionTemas";
@@ -133,6 +133,9 @@ const DadosAgregados = ({
 
 }) => {
   const classes = useStyles();
+
+  const [expandedAccordion, setExpandedAccordion] = useState({ temas: false, programas: false });
+
   return (
     <>
       <img
@@ -186,10 +189,10 @@ const DadosAgregados = ({
       </TabPanel>
 
       <TabPanel value={tabValue} index={1}>
-        <AccordionTemas loadData={loadData} setUnderSearchBar={setUnderSearchBar} setActiveBar={setActiveBar} setDescriptionData={setDescriptionData} dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade} dadosAgregadosAbaTemaSubprefeitura={dadosAgregadosAbaTemaSubprefeitura} dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}></AccordionTemas>
+        <AccordionTemas expanded={expandedAccordion.temas} setExpanded={(id) => setExpandedAccordion({ ...expandedAccordion, temas: id })} loadData={loadData} setUnderSearchBar={setUnderSearchBar} setActiveBar={setActiveBar} setDescriptionData={setDescriptionData} dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade} dadosAgregadosAbaTemaSubprefeitura={dadosAgregadosAbaTemaSubprefeitura} dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}></AccordionTemas>
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <AccordionProgramas loadData={loadData} setUnderSearchBar={setUnderSearchBar} setActiveBar={setActiveBar} setDescriptionData={setDescriptionData} dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade} dadosAgregadosAbaProgramasSubprefeitura={dadosAgregadosAbaProgramasSubprefeitura} dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}></AccordionProgramas>
+        <AccordionProgramas expanded={expandedAccordion.programas} setExpanded={(id) => setExpandedAccordion({ ...expandedAccordion, programas: id })} loadData={loadData} setUnderSearchBar={setUnderSearchBar} setActiveBar={setActiveBar} setDescriptionData={setDescriptionData} dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade} dadosAgregadosAbaProgramasSubprefeitura={dadosAgregadosAbaProgramasSubprefeitura} dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}></AccordionProgramas>
       </TabPanel>
 
     </>

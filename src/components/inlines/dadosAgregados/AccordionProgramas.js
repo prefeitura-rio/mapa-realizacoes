@@ -41,8 +41,8 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export default function AccordionProgramas({ dadosAgregadosAbaProgramasCidade, dadosAgregadosAbaProgramasSubprefeitura, dadosAgregadosAbaProgramaBairro, setDescriptionData, setUnderSearchBar, setActiveBar, loadData }) {
-  const [expanded, setExpanded] = useState(false);
+export default function AccordionProgramas({expanded, setExpanded, dadosAgregadosAbaProgramasCidade, dadosAgregadosAbaProgramasSubprefeitura, dadosAgregadosAbaProgramaBairro, setDescriptionData, setUnderSearchBar, setActiveBar, loadData }) {
+
   const [data, setData] = useState([]);
 
   const classes = useStyles();
