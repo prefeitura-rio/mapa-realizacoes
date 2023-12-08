@@ -130,7 +130,7 @@ const Map = ({
   return (
     <>
       <MapContainer
-        center={isDesktopDevice?[-22.9200, -43.4250] :[-22.8800, -43.4200] }  // Coordenadas para o Rio de Janeiro
+        center={isDesktopDevice ? [-22.9200, -43.4250] : [-22.8800, -43.4200]}  // Coordenadas para o Rio de Janeiro
         zoom={11.50}
         scrollWheelZoom={true}
         zoomControl={false}
@@ -146,26 +146,25 @@ const Map = ({
 
         {points.map((point, index) =>
           filtered.length > 0
-            ? filtered.map((item) => {
+            ? filtered.every((item) => {
               const combinedId = point.id + "__" + item;
-              if (listRealizacaoOrgao.includes(combinedId) || listRealizacaoPrograma.includes(combinedId) || listRealizacaoTema.includes(combinedId)) {
-                return (
-                  <Marker
-                    key={point.id + index}
-                    position={Object.values(point.coords)}
-                    icon={getIcon("anyIcon")}
-                    eventHandlers={{
-                      click: (e) => onMarkerClick(point),
-                    }}
-                  >
-                    <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-                      <span>{point.nome}</span>
-                    </Tooltip>
-                  </Marker>
-                );
-              }
-              return null;
+              return listRealizacaoOrgao.includes(combinedId) || listRealizacaoPrograma.includes(combinedId) || listRealizacaoTema.includes(combinedId);
             })
+              ? (
+                <Marker
+                  key={point.id + index}
+                  position={Object.values(point.coords)}
+                  icon={getIcon("anyIcon")}
+                  eventHandlers={{
+                    click: (e) => onMarkerClick(point),
+                  }}
+                >
+                  <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+                    <span>{point.nome}</span>
+                  </Tooltip>
+                </Marker>
+              )
+              : null
             : (
               <Marker
                 key={point.id + index}
