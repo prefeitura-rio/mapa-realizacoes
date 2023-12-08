@@ -42,8 +42,8 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export default function AccordionTemas({ dadosAgregadosAbaTemaCidade, dadosAgregadosAbaTemaSubprefeitura, dadosAgregadosAbaTemaBairro, setDescriptionData, setUnderSearchBar, setActiveBar, loadData }) {
-  const [expanded, setExpanded] = useState(false);
+export default function AccordionTemas({ expanded, setExpanded, dadosAgregadosAbaTemaCidade, dadosAgregadosAbaTemaSubprefeitura, dadosAgregadosAbaTemaBairro, setDescriptionData, setUnderSearchBar, setActiveBar, loadData }) {
+
   const [data, setData] = useState([]);
 
   const classes = useStyles();

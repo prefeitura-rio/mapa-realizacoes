@@ -3,10 +3,11 @@ import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
-import { FormControlLabel } from '@material-ui/core';
+import { FormControlLabel, Tooltip, Fade } from '@material-ui/core';
 import { SvgIcon, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const NonSelectedIconComponent = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,18 +17,18 @@ const NonSelectedIconComponent = () => (
 
 const SelectedIconComponent = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="8" cy="8" r="7.5" fill="#007E7D" stroke="#007E7D"/>
-</svg>
+    <circle cx="8" cy="8" r="7.5" fill="#007E7D" stroke="#007E7D" />
+  </svg>
 
 );
 
-const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilter,setFiltros }) => {
+const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilter, setFiltros }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currentButtonName, setCurrentButtonName] = useState(null);
- 
+
   useEffect(() => {
     // Log the selected options to the console
     console.log('Selected Options:', selectedOptions);
@@ -40,13 +41,14 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
     if (!selectedOptions[buttonName]) {
       setSelectedOptions(prevState => ({ ...prevState, [buttonName]: [] }));
     }
-   };
+  };
 
-   useEffect(() => {
-    console.log(selectedOptions);
+  useEffect(() => {
     setFiltros(selectedOptions);
-   }, [selectedOptions]);
-        
+  }, [selectedOptions]);
+
+  // New state variable for displaying the message
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleOptionChange = (buttonName, option) => {
     setSelectedOptions(prevState => {
@@ -58,7 +60,16 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
     });
   };
 
+  const handleCleanButtonClick = () => {
+    setSelectedOptions({});
+    setShowTooltip(true); // Show the tooltip
+    handleClose(); // Close the popover if it's open
 
+    // Hide the tooltip after a few seconds
+    setTimeout(() => {
+      setShowTooltip(false);
+    }, 3000); // Adjust time as needed
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -77,7 +88,15 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
     paddingRight: '20px',
     textTransform: 'none'
   };
+  const cleanButtonStyle = {
+    backgroundColor: (selectedOptions['button1']?.length > 0 || selectedOptions['button2']?.length > 0 || selectedOptions['button3']?.length > 0) ? '#FF7F7F' : "white",
+    color: 'black',
+    textTransform: 'none',
+    borderRadius: '50%', // Make the button completely rounded
+    padding: '10px',    // Adjust padding as needed
+    minWidth: '35px',   // Ensures the button is circular, adjust as needed
 
+  };
   return (
     <div>
       <div style={buttonContainerStyle}>
@@ -87,22 +106,22 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
           style={buttonStyle}
         >
           Órgão
-          {selectedOptions['button1']?.length ? 
-          <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
-            {selectedOptions['button1']?.length}
-          </Typography> : null}
+          {selectedOptions['button1']?.length ?
+            <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
+              {selectedOptions['button1']?.length}
+            </Typography> : null}
         </Button>
-        
+
         <Button
           variant="contained"
           onClick={(e) => handleButtonClick(e, 'button2', temasNameFilter)}
           style={buttonStyle}
         >
           Tema
-          {selectedOptions['button2']?.length ? 
-          <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
-            {selectedOptions['button2']?.length}
-          </Typography> : null}
+          {selectedOptions['button2']?.length ?
+            <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
+              {selectedOptions['button2']?.length}
+            </Typography> : null}
         </Button>
         <Button
           variant="contained"
@@ -110,11 +129,22 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
           style={buttonStyle}
         >
           Programa
-          {selectedOptions['button3']?.length ? 
-          <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
-            {selectedOptions['button3']?.length}
-          </Typography> : null}
+          {selectedOptions['button3']?.length ?
+            <Typography variant="body2" style={{ color: 'grey', marginLeft: '5px' }}>
+              {selectedOptions['button3']?.length}
+            </Typography> : null}
         </Button>
+        <Tooltip
+          title="Filtros removidos!"
+          open={showTooltip}
+          TransitionComponent={Fade} // You can choose other transitions like Grow, Zoom, etc.
+          TransitionProps={{ timeout: 700 }} // Adjust timeout for the transition effect
+
+        >
+          <Button variant="contained" onClick={handleCleanButtonClick} style={cleanButtonStyle}>
+            <DeleteOutlineIcon sx={{ fontSize: 17 }} />
+          </Button>
+        </Tooltip>
 
       </div>
       <Popover style={{ marginTop: '15px' }}
@@ -130,7 +160,7 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
           horizontal: 'left',
         }}
       >
-        <Box p={2} style={{ marginTop: '-5px', height:"300px"}}>
+        <Box p={2} style={{ marginTop: '-5px', height: "300px" }}>
           {options.map((option, index) => (
             <div key={index} >
               <FormControlLabel
