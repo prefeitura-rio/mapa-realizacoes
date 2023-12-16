@@ -8,7 +8,7 @@ import VerticalContainer from "./verticalWidget/VerticalContainer";
 import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
 import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
-import { getListBairroName, getListOrgaoName, getListProgramaName, getListTemaName } from "../../firebase";
+import { getListBairroName, getListOrgaoName, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -92,6 +92,9 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
   const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
   const [temasNameFilter, setTemasNameFilter] = useState([]);
   const [programasNameFilter, setProgramasNameFilter] = useState([]);
+  const [orgaosNameFilterIds, setOrgaosNameFilterIds] = useState([]);
+  const [temasNameFilterIds, setTemasNameFilterIds] = useState([]);
+  const [programasNameFilterIds, setProgramasNameFilterIds] = useState([]);
 
   useEffect(() => {
 
@@ -113,7 +116,26 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       }
     };
 
+    const loadFiltrosInfoIds = async () => {
+      try {
+        const realizacaoOrgaoRef = await getListRealizacaoOrgaoIds();
+        const realizacaoTemaRef = await getListRealizacaoTemaIds();
+        const realizacaoProgramaRef = await getListRealizacaoProgramaIds();
+
+        if (!realizacaoOrgaoRef.empty && !realizacaoTemaRef.empty && !realizacaoProgramaRef.empty) {
+          setOrgaosNameFilterIds(realizacaoOrgaoRef);
+          setTemasNameFilterIds(realizacaoTemaRef);
+          setProgramasNameFilterIds(realizacaoProgramaRef);
+        } else {
+          console.error("Erro aqui <<== ");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar nomes dos filtros", error);
+      }
+    };
+
     loadFiltrosInfo();
+    loadFiltrosInfoIds();
   }, []);
   return (
     <div className={classes.widgets}>
@@ -143,6 +165,9 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
         <FiltrosBotoes orgaosNameFilter={orgaosNameFilter}
           temasNameFilter={temasNameFilter}
           programasNameFilter={programasNameFilter}
+          orgaosNameFilterIds={orgaosNameFilterIds}
+          temasNameFilterIds={temasNameFilterIds} 
+          programasNameFilterIds={programasNameFilterIds}
           setFiltros={setFiltros}></FiltrosBotoes>
       </div>
     </div>

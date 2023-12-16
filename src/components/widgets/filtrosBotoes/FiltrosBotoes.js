@@ -4,10 +4,11 @@ import Popover from '@mui/material/Popover';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import { FormControlLabel, Tooltip, Fade } from '@material-ui/core';
-import { SvgIcon, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { Typography } from '@mui/material';
 import { useEffect } from 'react';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { toSnakeCase } from '../../../utils/formatFile';
+
 
 const NonSelectedIconComponent = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,16 +23,30 @@ const SelectedIconComponent = () => (
 
 );
 
-const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilter, setFiltros }) => {
+const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilter, orgaosNameFilterIds, temasNameFilterIds, programasNameFilterIds, setFiltros }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currentButtonName, setCurrentButtonName] = useState(null);
 
+  const isOptionDisabled = (option, buttonName) => {
+    switch (buttonName) {
+      case 'button1':
+        return !orgaosNameFilterIds.includes(option);
+      case 'button2':
+        return !temasNameFilterIds.includes(option);
+      case 'button3':
+        return !programasNameFilterIds.includes(option);
+      default:
+        return false;
+    }
+  };
+  
   useEffect(() => {
     // Log the selected options to the console
-    console.log('Selected Options:', selectedOptions);
+    // console.log('Selected Options:', selectedOptions);
+    // console.log('orgaosNameFilterIds, temasNameFilterIds, programasNameFilterIds,:',orgaosNameFilterIds, temasNameFilterIds, programasNameFilterIds,);
   }, [selectedOptions]);
 
   const handleButtonClick = (event, buttonName, buttonOptions) => {
@@ -171,6 +186,7 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
                     style={{ color: '#007E7D', }}
                     checked={selectedOptions[currentButtonName]?.includes(option)}
                     onChange={() => handleOptionChange(currentButtonName, option)}
+                    disabled={isOptionDisabled(option, currentButtonName)} // Adicionando a lógica de desabilitar
                   />
                 }
                 label={<Typography fontSize="14.5px">{option}</Typography>}
