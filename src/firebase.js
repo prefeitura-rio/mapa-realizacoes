@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import "firebase/firestore";
 import firebaseCredentials from "./firebaseconfig";
-import { toSnakeCase, toTitleCase, concatSnakeCase } from "./utils/formatFile";
+import { toSnakeCase, toTitleCase, concatSnakeCase, snakeToCapitalized } from "./utils/formatFile";
 import * as turf from "@turf/turf";
 import { compareContent } from "./utils/data";
 
@@ -1634,10 +1634,36 @@ export async function getRealizacaoTemaIds() {
     throw error;
   }
 }
-// export function getListOrgaoName() {
-//   // return a list of all orgao names
-//   const orgaoRef = db.collection("orgao");
-//   return orgaoRef.get().then((querySnapshot) => {
-//     return querySnapshot.docs.map((doc) => doc.data().nome);
-//   });
-// }
+
+// Obter array de id's de realizacao_orgao, realizacao_tema, realizacao_programa snake_case to Capitalized
+
+export async function getListRealizacaoTemaIds() {
+  try {
+    const snapshot = await db.collection('realizacao_tema').get();
+  const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_tema));
+    return ids;
+  } catch (error) {
+    console.error('Erro ao obter os IDs dos documentos:', error);
+    throw error;
+  }
+}
+export async function getListRealizacaoProgramaIds() {
+  try {
+    const snapshot = await db.collection('realizacao_programa').get();
+  const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_programa));
+    return ids;
+  } catch (error) {
+    console.error('Erro ao obter os IDs dos documentos:', error);
+    throw error;
+  }
+}
+export async function getListRealizacaoOrgaoIds() {
+  try {
+    const snapshot = await db.collection('realizacao_orgao').get();
+  const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_orgao));
+    return ids;
+  } catch (error) {
+    console.error('Erro ao obter os IDs dos documentos:', error);
+    throw error;
+  }
+}

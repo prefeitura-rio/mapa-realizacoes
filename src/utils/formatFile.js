@@ -5,6 +5,12 @@ function toSnakeCase(str) {
     .toLowerCase() // Converte tudo para lowercase
     .replace(/\s+/g, "_"); // Substitui um ou mais espaços por underscore (_)
 }
+function snakeToCapitalized(str) {
+  return str
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+}
 
 function toTitleCase(str) {
   // Converts a string from "snake_case" to "Title Case"
@@ -27,4 +33,4 @@ function concatSnakeCase(string1, string2) {
 
 
 // Exporte as funções
-export { toSnakeCase, toTitleCase, concatSnakeCase };
+export { toSnakeCase, toTitleCase, concatSnakeCase, snakeToCapitalized };
