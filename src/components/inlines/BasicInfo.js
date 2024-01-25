@@ -1,4 +1,5 @@
 import { Box, Link, makeStyles, Typography,  Button} from "@material-ui/core";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Rating from "@material-ui/lab/Rating";
 import { useEffect } from "react";
 import numeral from "numeral";
@@ -21,13 +22,27 @@ const useStyles = makeStyles((theme) => ({
     padding:"1px 8px 1px 8px",
     fontSize:"12px"
   },
+  datavizButton: {
+    // pointerEvents: "none",
+    borderRadius:"39px",
+    backgroundColor:"#0B60B0",
+    color: "#FFFFFF",
+    // paddingRight:"25px",
+    fontSize:"12px"
+  },
   titulo:{
-    fontSize:"25px",
+    fontSize:"15px",
     fontWeight:"bold",
     marginBottom:"-15px"
   },
   descricao:{
-    lineHeight:"130%"
+    lineHeight:"130%",
+    paddingBottom:"1rem",
+  },
+  datavizLink:{
+    lineHeight:"130%",
+    textDecoration: "none",
+    color:"white"
   }
   
 }));
@@ -40,6 +55,14 @@ const BasicInfo = ({ content }) => {
       <Typography  className={classes.titulo}>{content.nome}</Typography>
       <br></br>
       <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
+      <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" maxWidth="300px" >
+  <a  href="https://www.google.com" target="_blank" style={{ paddingTop:"5px",paddingBottom:"5px",paddingLeft:"20px", textDecoration: "none", color: "#FFFFFF", display: "flex", alignItems: "center" }}>
+    Resumo das obras de resiliência climática
+    <OpenInNewIcon style={{ fontSize: '20px', paddingLeft:"10px"}} />
+  </a>
+</Box>
+
+
       <br></br>
       <Button variant="contained" className={classes.statusButton}>
       {content.status}

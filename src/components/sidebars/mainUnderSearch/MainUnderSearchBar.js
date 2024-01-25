@@ -9,7 +9,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
-import rio_cover from "../../assets/rio_cover.png"
+import rio_cover from "../../assets/rio_cover.jpg"
 
 
 
