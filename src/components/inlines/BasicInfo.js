@@ -55,10 +55,10 @@ const BasicInfo = ({ content }) => {
       <Typography  className={classes.titulo}>{content.nome}</Typography>
       <br></br>
       <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
-      <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" maxWidth="300px" >
-  <a  href="https://www.google.com" target="_blank" style={{ paddingTop:"5px",paddingBottom:"5px",paddingLeft:"20px", textDecoration: "none", color: "#FFFFFF", display: "flex", alignItems: "center" }}>
+      <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" >
+  <a  href="https://www.google.com" target="_blank" style={{ fontSize:"15px", paddingTop:"9px",paddingBottom:"9px",paddingLeft:"20px", textDecoration: "none", color: "#FFFFFF", display: "flex", alignItems: "center" }}>
     Resumo das obras de resiliência climática
-    <OpenInNewIcon style={{ fontSize: '20px', paddingLeft:"10px"}} />
+    <OpenInNewIcon style={{ fontSize: '20px', paddingLeft:"20px"}} />
   </a>
 </Box>
 
