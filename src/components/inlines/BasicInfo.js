@@ -47,12 +47,17 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
+const capitalizeFirstLetter = (str) => {
+  return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
+};
+
 const BasicInfo = ({ content }) => {
   const classes = useStyles();
+  const capitalizedNome = capitalizeFirstLetter(content.nome);
 
   return (
     <div className={classes.basicInfo}>
-      <Typography  className={classes.titulo}>{content.nome}</Typography>
+      <Typography  className={classes.titulo}>{capitalizedNome}</Typography>
       <br></br>
       <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
       <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" >

@@ -13,6 +13,10 @@ import { DESCRIPTION_BAR } from "../../redux/active/actions";
 import { getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
 import { isDesktop } from "../../redux/active/reducers";
 
+const capitalizeFirstLetter = (str) => {
+  return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
+};
+
 const Map = ({
   zoomDelta,
   setZoomDelta,
@@ -160,7 +164,7 @@ const Map = ({
                   }}
                 >
                   <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-                    <span>{point.nome}</span>
+                    <span>{capitalizeFirstLetter(point.nome)}</span>
                   </Tooltip>
                 </Marker>
               )
@@ -175,7 +179,7 @@ const Map = ({
                 }}
               >
                 <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-                  <span>{point.nome}</span>
+                  <span>{capitalizeFirstLetter(point.nome)}</span>
                 </Tooltip>
               </Marker>
             )
