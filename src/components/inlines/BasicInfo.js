@@ -66,7 +66,7 @@ const BasicInfo = ({ content }) => {
     </Button>
     <br></br> <br></br>
       <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" >
-  <a  href="https://www.google.com" target="_blank" style={{ fontSize:"15px", paddingTop:"9px",paddingBottom:"9px",paddingLeft:"20px", textDecoration: "none", color: "#FFFFFF", display: "flex", alignItems: "center" }}>
+  <a  href="https://viz.dados.rio/#/plano-verao" target="_blank" style={{ fontSize:"15px", paddingTop:"9px",paddingBottom:"9px",paddingLeft:"20px", textDecoration: "none", color: "#FFFFFF", display: "flex", alignItems: "center" }}>
     Resumo das obras de resiliência climática
     <OpenInNewIcon style={{ fontSize: '20px', paddingLeft:"20px"}} />
   </a>
