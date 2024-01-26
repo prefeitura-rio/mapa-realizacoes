@@ -45,7 +45,6 @@ const ListInfo = ({ content }) => {
   const classes = useStyles();
 
   const listInfo = [
-  
     // { text: content.programa, iconComponent: PublicIcon },
     { text: content.programa, iconComponent: () => <img src={programaIcon} alt="Programa" style={{width: '20px', height: '20px'}}/> },
     // { text: content.orgao, iconComponent: PublicIcon },
@@ -54,33 +53,40 @@ const ListInfo = ({ content }) => {
     { text: content.tema, iconComponent: () => <img src={temaIcon} alt="Tema" style={{width: '20px', height: '20px'}}/> },
     // { text: content.bairro, iconComponent: PublicIcon },
     { text: content.bairro, iconComponent: () => <img src={bairroIcon} alt="Bairro" style={{width: '20px', height: '20px'}}/> },
-    // { text: content.subprefeitura, iconComponent: PublicIcon},
+    // { text: content.subprefeitura, iconComponent: PublicIcon },
     { text: content.subprefeitura, iconComponent: () => <img src={subprefeituraIcon} alt="Subprefeitura" style={{width: '20px', height: '20px'}}/> },
-    // { text: "R$ " +  content.investimento + " investidos", iconComponent: PublicIcon},
+    // { text: "R$ " +  content.investimento + " investidos", iconComponent: PublicIcon },
     { text: "R$ " + parseFloat(content.investimento).toLocaleString('pt-BR') + ",00 " + "investidos", iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/> },
-    // { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: PublicIcon},
-    { text: parseInt(content.cariocas_atendidos).toLocaleString('pt-BR') + " cariocas atendidos", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
-    // { text: content.data_inicio + " início", iconComponent: PublicIcon},
-    { 
-      text: 
-      <>
-        {content.data_inicio} 
-        <span style={{color: 'gray', fontSize: '12px', paddingLeft:"8px"}}> inicio</span>
-      </>, 
-      iconComponent: () => <img src={dataInicioIcon} alt="Data Inicio" style={{width: '20px', height: '20px'}}/> 
-     },
-     { 
-      text: 
-      <>
-        {content.data_fim} 
-        <span style={{color: 'gray', fontSize: '12px', paddingLeft:"8px"}}> fim</span>
-      </>, 
-      iconComponent: () => <img src={dataFimIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/> 
-     },
-     
+    // { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: PublicIcon },
+    { text: parseInt(content.cariocas_atendidos).toLocaleString('pt-BR') + " população do bairro", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
+    
   ];
 
-  console.log("content: ", (content))
+  if (content.data_inicio) {
+    listInfo.push({
+      text: (
+        <>
+          {content.data_inicio} 
+          <span style={{color: 'gray', fontSize: '12px', paddingLeft:"8px"}}> inicio</span>
+        </>
+      ),
+      iconComponent: () => <img src={dataInicioIcon} alt="Data Inicio" style={{width: '20px', height: '20px'}}/>
+    });
+  }
+
+  if (content.data_fim) {
+    listInfo.push({
+      text: (
+        <>
+          {content.data_fim} 
+          <span style={{color: 'gray', fontSize: '12px', paddingLeft:"8px"}}> fim</span>
+        </>
+      ),
+      iconComponent: () => <img src={dataFimIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/>
+    });
+  }
+
+  console.log("contenttt: ", (content))
 
   return (
     <>
@@ -88,50 +94,49 @@ const ListInfo = ({ content }) => {
         Informações Básicas
       </Typography>
     <List>
-{listInfo.map((item, i) => (
-    <React.Fragment key={i}>
-        {Array.isArray(item.text) ? (
+      {listInfo.map((item, i) => (
+        <React.Fragment key={i}>
+          {Array.isArray(item.text) ? (
             item.text.map((textItem, j) => (
-                <ListItem
-                    button
-                    classes={{ gutters: classes.listItemGutters }}
-                    key={textItem}
-                >
-                    {j === 0 ? (
-                        <ListItemIcon classes={{ root: classes.listItemIcon }}>
-                            <item.iconComponent/>
-                        </ListItemIcon>
-                    ) : (
-                        <ListItemIcon classes={{ root: classes.listItemIcon }}>
-                            {/* espaço vazio, mantém alinhamento mas sem ícone */}
-                        </ListItemIcon>
-                    )}
-                    <ListItemText
-                        primary={textItem}
-                        primaryTypographyProps={{ variant: 'body2' }}
-                        classes={{ root: classes.marginZero }}
-                    />
-                </ListItem>
-            ))
-        ) : item.text ? (
-            <ListItem
+              <ListItem
                 button
                 classes={{ gutters: classes.listItemGutters }}
-                key={item.text}
-            >
-                <ListItemIcon classes={{ root: classes.listItemIcon }}>
-                    <item.iconComponent color="primary" />
-                </ListItemIcon>
+                key={textItem}
+              >
+                {j === 0 ? (
+                  <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                    <item.iconComponent/>
+                  </ListItemIcon>
+                ) : (
+                  <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                    {/* espaço vazio, mantém alinhamento mas sem ícone */}
+                  </ListItemIcon>
+                )}
                 <ListItemText
-                    primary={item.text}
-                    primaryTypographyProps={{ variant: 'body2' }}
-                    classes={{ root: classes.marginZero }}
+                  primary={textItem}
+                  primaryTypographyProps={{ variant: 'body2' }}
+                  classes={{ root: classes.marginZero }}
                 />
+              </ListItem>
+            ))
+          ) : item.text ? (
+            <ListItem
+              button
+              classes={{ gutters: classes.listItemGutters }}
+              key={item.text}
+            >
+              <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                <item.iconComponent color="primary" />
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{ variant: 'body2' }}
+                classes={{ root: classes.marginZero }}
+              />
             </ListItem>
-        ) : null}
-    </React.Fragment>
-))}
-
+          ) : null}
+        </React.Fragment>
+      ))}
     </List>
     </>
   );
