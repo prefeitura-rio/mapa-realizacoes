@@ -466,8 +466,8 @@ export async function createUpdateRealizacaoFromForm(data) {
   const requiredFields = [
     "cariocas_atendidos",
     "coords",
-    "data_fim",
-    "data_inicio",
+    // "data_fim",
+    // "data_inicio",
     "descricao",
     "investimento",
     "nome",
