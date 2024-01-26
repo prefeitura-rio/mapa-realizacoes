@@ -54,12 +54,13 @@ const capitalizeFirstLetter = (str) => {
 const BasicInfo = ({ content }) => {
   const classes = useStyles();
   const capitalizedNome = capitalizeFirstLetter(content.nome);
+  const capitalizedDescription = capitalizeFirstLetter(content.descricao);
 
   return (
     <div className={classes.basicInfo}>
       <Typography  className={classes.titulo}>{capitalizedNome}</Typography>
       <br></br>
-      <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
+      <Typography className={classes.descricao} variant="h2">{capitalizedDescription}</Typography>
       <Button variant="contained" className={classes.statusButton}>
       {content.status}
     </Button>
