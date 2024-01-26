@@ -60,6 +60,10 @@ const BasicInfo = ({ content }) => {
       <Typography  className={classes.titulo}>{capitalizedNome}</Typography>
       <br></br>
       <Typography className={classes.descricao} variant="h2">{content.descricao}</Typography>
+      <Button variant="contained" className={classes.statusButton}>
+      {content.status}
+    </Button>
+    <br></br> <br></br>
       <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" >
   <a  href="https://www.google.com" target="_blank" style={{ fontSize:"15px", paddingTop:"9px",paddingBottom:"9px",paddingLeft:"20px", textDecoration: "none", color: "#FFFFFF", display: "flex", alignItems: "center" }}>
     Resumo das obras de resiliência climática
@@ -68,10 +72,8 @@ const BasicInfo = ({ content }) => {
 </Box>
 
 
-      <br></br>
-      <Button variant="contained" className={classes.statusButton}>
-      {content.status}
-    </Button>
+      
+     
 
     </div>
   );
