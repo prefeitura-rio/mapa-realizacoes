@@ -39,11 +39,19 @@ const useStyles = makeStyles((theme) => ({
     lineHeight:"130%",
     paddingBottom:"1rem",
   },
-  datavizLink:{
-    lineHeight:"130%",
-    textDecoration: "none",
-    color:"white"
-  }
+  datavizLink: {
+    fontSize: "13.5px", 
+    paddingTop: "9px", 
+    paddingBottom: "9px", 
+    paddingLeft: "11px", 
+    textDecoration: "none", 
+    color: "#FFFFFF", 
+    display: "flex", 
+    alignItems: "center",
+    [theme.breakpoints.down('xs')]: {
+      fontSize: "12px",
+    },
+ },
   
 }));
 
@@ -65,10 +73,10 @@ const BasicInfo = ({ content }) => {
       {content.status}
     </Button>
     <br></br> <br></br>
-      <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" >
-  <a  href="https://viz.dados.rio/#/plano-verao" target="_blank" style={{ fontSize:"15px", paddingTop:"9px",paddingBottom:"9px",paddingLeft:"20px", textDecoration: "none", color: "#FFFFFF", display: "flex", alignItems: "center" }}>
-    Resumo das obras de resiliência climática
-    <OpenInNewIcon style={{ fontSize: '20px', paddingLeft:"20px"}} />
+    <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" style={{ flexWrap: "wrap" }}>
+  <a href="https://viz.dados.rio/#/plano-verao" target="_blank" className={classes.datavizLink} >
+    Panorama especial das obras de resiliência climática
+    <OpenInNewIcon style={{ fontSize: '20px', paddingLeft: "7px" }} />
   </a>
 </Box>
 
