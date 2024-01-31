@@ -33,6 +33,9 @@ const MapContainer = (props) => {
       currentCoords={props.currentCoords}
       profile={props.profile}
       filtros={props.filtros}	
+      bairroNome={props.bairroNome}	
+      subprefeituraNome={props.subprefeituraNome?.nome}	
+
     />
   );
 };
@@ -43,7 +46,9 @@ const mapStateToProps = (state) => {
     points: state.places.allPlaces,
     currentCoords: state.map.coords,
     profile: state.auth.profile,
-    filtros: state.filtros.filtros
+    filtros: state.filtros.filtros,
+    bairroNome: state.bairros.descriptionData,
+    subprefeituraNome: state.subprefeituras.content
   };
 };
 

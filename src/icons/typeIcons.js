@@ -1,44 +1,47 @@
 import L from "leaflet";
-import shopIcon from "../icons/gshop.png";
-import anyIcon from "../icons/any.png";
-import studyIcon from "../icons/study.png";
-import hotelIcon from "../icons/hotel.png";
-import takeoutIcon from "../icons/takeout.png";
-import foodIcon from "../icons/food.png";
-import gasIcon from "../icons/gas.png";
+import ShoppingIcon from '@material-ui/icons/ShoppingCart';
+import GasStationIcon from '@material-ui/icons/LocalGasStation';
+import SchoolIcon from '@material-ui/icons/School';
+import HotelIcon from '@material-ui/icons/Hotel';
+import RestaurantIcon from '@material-ui/icons/Restaurant';
+import BarIcon from '@material-ui/icons/LocalBar';
+import DefaultIcon from '@material-ui/icons/Place'; // Default icon
+import ReactDOMServer from 'react-dom/server';
+
+
+const createMuiIcon = (MuiIcon, iconSize = 35, iconColor = 'default') => {
+  const iconHtml = ReactDOMServer.renderToString(
+    <MuiIcon style={{ fontSize: iconSize, color: iconColor }} />
+  );
+  return L.divIcon({
+    html: iconHtml,
+    iconSize: [iconSize, iconSize],
+    className: '' // Important to avoid Leaflet applying default icon styles
+  });
+};
+
+
+
 
 export const getIcon = (name) => {
-  let value;
   switch (name.toLowerCase()) {
     case "shopping mall":
     case "shopping supermarket":
-      value = shopIcon;
-      break;
+      return createMuiIcon(ShoppingIcon);
     case "gas station":
-      value = gasIcon;
-      break;
+      return createMuiIcon(GasStationIcon);
     case "university":
     case "school":
-      value = studyIcon;
-      break;
-    case "hotel" || "hostel":
-      value = hotelIcon;
-      break;
+      return createMuiIcon(SchoolIcon);
+    case "hotel":
+    case "hostel":
+      return createMuiIcon(HotelIcon);
     case "restaurant":
     case "cafe":
-      value = foodIcon;
-      break;
+      return createMuiIcon(RestaurantIcon);
     case "bar":
-      value = takeoutIcon;
-      break;
+      return createMuiIcon(BarIcon);
     default:
-      value = anyIcon;
+      return createMuiIcon(DefaultIcon, 35, "#007E7D");
   }
-  let resultIcon = L.Icon.extend({
-    options: {
-      iconUrl: value,
-      iconSize: new L.Point(35, 35),
-    },
-  });
-  return new resultIcon();
 };
