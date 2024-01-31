@@ -30,13 +30,26 @@ const Map = ({
   setUnderSearchBar,
   currentCoords,
   profile,
-  filtros
+  filtros,
+  bairroNome,
+  subprefeituraNome,
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
   points = points || [];
 
   const [contextCoords, setContextCoords] = useState(null);
+
+  useEffect(() => {
+    if (map && bairroNome) {
+       const bairro = points.find(point => toSnakeCase(bairroNome) === point.id_bairro);
+       if (bairro) {
+         const coords = Object.values(bairro.coords);
+         console.log("AAAAAAAAAABBBBBBBBB: " + coords)
+         map.flyTo(coords,13);
+       }
+    }
+   }, [bairroNome, map]);
 
   useEffect(() => {
     if (map) {
@@ -131,6 +144,24 @@ const Map = ({
     }
   }, [currentCoords]);
 
+  // Função auxiliar para renderizar o marcador
+  function renderMarker(point, index) {
+    return (
+      <Marker
+        key={point.id + index}
+        position={Object.values(point.coords)}
+        icon={getIcon("anyIcon")}
+        eventHandlers={{
+          click: (e) => onMarkerClick(point),
+        }}
+      >
+        <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+          <span>{capitalizeFirstLetter(point.nome)}</span>
+        </Tooltip>
+      </Marker>
+    );
+  }
+
   return (
     <>
       <MapContainer
@@ -147,43 +178,37 @@ const Map = ({
           tileSize={512}
           zoomOffset={-1}
         />
+        {console.log("bairroNome: " + bairroNome)}
+        {points.map((point, index) => {
+          // Verifica se deve exibir todos os pontos
+          if (filtered.length === 0 && bairroNome === null && subprefeituraNome === null ) {
+            return renderMarker(point, index);
+          }
 
-        {points.map((point, index) =>
-          filtered.length > 0
-            ? filtered.every((item) => {
-              const combinedId = point.id + "__" + item;
-              return listRealizacaoOrgao.includes(combinedId) || listRealizacaoPrograma.includes(combinedId) || listRealizacaoTema.includes(combinedId);
-            })
-              ? (
-                <Marker
-                  key={point.id + index}
-                  position={Object.values(point.coords)}
-                  icon={getIcon("anyIcon")}
-                  eventHandlers={{
-                    click: (e) => onMarkerClick(point),
-                  }}
-                >
-                  <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-                    <span>{capitalizeFirstLetter(point.nome)}</span>
-                  </Tooltip>
-                </Marker>
-              )
-              : null
-            : (
-              <Marker
-                key={point.id + index}
-                position={Object.values(point.coords)}
-                icon={getIcon("anyIcon")}
-                eventHandlers={{
-                  click: (e) => onMarkerClick(point),
-                }}
-              >
-                <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-                  <span>{capitalizeFirstLetter(point.nome)}</span>
-                </Tooltip>
-              </Marker>
-            )
-        )}
+          // Verifica se o ponto corresponde ao bairro selecionado
+          const isBairroMatch = bairroNome ? toSnakeCase(bairroNome) === point.id_bairro : true;
+        
+          // Verifica se o ponto corresponde ao subprefeitura selecionado
+          // const isSubprefeituraMatch = subprefeituraNome ? toSnakeCase(subprefeituraNome) === point.id_subprefeitura : true;
+
+          // Verifica se o ponto corresponde aos filtros aplicados
+          const isFilterMatch = filtered.length > 0 ? filtered.every((item) => {
+            const combinedId = point.id + "__" + item;
+            return listRealizacaoOrgao.includes(combinedId) || listRealizacaoPrograma.includes(combinedId) || listRealizacaoTema.includes(combinedId);
+          }) : true;
+
+          // Renderiza o marcador se corresponder ao bairro e aos filtros
+          if (isBairroMatch && isFilterMatch) {
+            return renderMarker(point, index);
+          }
+
+          // // Renderiza o marcador se corresponder ao bairro e aos filtros
+          // if (isSubprefeituraMatch && isFilterMatch) {
+          //   return renderMarker(point, index);
+          // }
+
+          return null;
+        })}
 
       </MapContainer>
 

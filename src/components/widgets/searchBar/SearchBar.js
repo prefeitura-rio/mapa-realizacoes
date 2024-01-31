@@ -158,6 +158,7 @@ const SearchBar = ({
   };
 
   const onDirectionsClick = () => {
+    setBairroData(null);
     setContent(null);
     setPlacesData(null);
     setActiveBar(MAIN_UNDERSEARCH_BAR);
@@ -250,7 +251,7 @@ const SearchBar = ({
             renderInput={(params) => (
               <TextField
                 {...params}
-                onFocus={() => handleOnfocus()}
+                onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => {}}
                 placeholder="Busque por bairro/subprefeitura"
                 sx={{
                   "& fieldset": { border: 'none' },
