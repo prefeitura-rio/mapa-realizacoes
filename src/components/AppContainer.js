@@ -1,13 +1,14 @@
 import App from "./App";
 import { connect } from "react-redux";
 import "firebase/firestore";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 const AppContainer = (props) => {
   return (
-    <Router>
+    <HashRouter>
       <App />
-    </Router>
+    </ HashRouter>
   );
 };
 const mapStateToProps = (state) => {
