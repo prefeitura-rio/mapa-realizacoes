@@ -8,16 +8,20 @@ import OutterModals from "./modals/OutterModals";
 import PhotoGalleryContainer from "./photoGallery/PhotoGalleryContainer";
 import UploadPhotoContainer from "./modals/uploadPhoto/UploadPhotoContainer";
 import InfoModalContainer from "./modals/info/InfoModalContainer";
+import { Route, Routes } from "react-router-dom";
 
-function App({}) {
+function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <MapContainer />
+      <MapContainer />
+      <Routes>
+          <Route path=':id' element={<MapContainer />} />
+        </Routes>
         <WidgetsContainer />
         <MenuSidebarContainer />
         <OutterModals />
-        <InfoModalContainer/>
+        <InfoModalContainer />
         <UploadPhotoContainer />
         <PhotoGalleryContainer />
       </div>

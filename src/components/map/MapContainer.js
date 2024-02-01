@@ -10,12 +10,15 @@ import { setActiveBar, setUnderSearchBar } from "./../../redux/active/actions";
 import { loadData } from "../../redux/place/actions";
 import { loadAllCidades } from "../../redux/cidade/actions";
 import { loadAllPlaces } from "../../redux/places/actions";
+import { useParams } from "react-router-dom"
 
 const MapContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadAllPlaces());
   }, []);
+
+  const { id } = useParams();
 
   return (
     <Map
@@ -35,7 +38,7 @@ const MapContainer = (props) => {
       filtros={props.filtros}	
       bairroNome={props.bairroNome}	
       subprefeituraNome={props.subprefeituraNome?.nome}	
-
+      realizacaoId = {id}
     />
   );
 };

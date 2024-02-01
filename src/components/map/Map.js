@@ -9,9 +9,10 @@ import "./map.css";
 import { useEffect, useState } from "react";
 import ContextMenu from "./ContextMenu";
 import { getIcon } from "../../icons/typeIcons";
-import { DESCRIPTION_BAR } from "../../redux/active/actions";
+import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
 import { getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
 import { isDesktop } from "../../redux/active/reducers";
+import { useNavigate } from 'react-router-dom';
 
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
@@ -33,12 +34,14 @@ const Map = ({
   filtros,
   bairroNome,
   subprefeituraNome,
+  realizacaoId
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
   points = points || [];
 
   const [contextCoords, setContextCoords] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (map && bairroNome) {
@@ -50,6 +53,19 @@ const Map = ({
        }
     }
    }, [bairroNome, map]);
+
+  useEffect(() => {
+    if (realizacaoId){
+    // const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
+    // if (realizacaoOk){
+    setUnderSearchBar(true);
+    setDescriptionData(realizacaoId);
+    setActiveBar(DESCRIPTION_BAR);
+    loadData(realizacaoId);
+    }
+    // }
+
+   }, [realizacaoId]);
 
   useEffect(() => {
     if (map) {
@@ -127,6 +143,7 @@ const Map = ({
     setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
     loadData(toSnakeCase(point.nome));
+    navigate(`/${toSnakeCase(point.nome)}`);
   };
 
   const [opened, setOpened] = useState(false);
@@ -143,6 +160,13 @@ const Map = ({
       }
     }
   }, [currentCoords]);
+
+  if(MAIN_UNDERSEARCH_BAR){
+    if (map) {
+    const coords = [-22.9200, -43.4250];
+    map.flyTo(coords,12)
+    }
+  }
 
   // Função auxiliar para renderizar o marcador
   function renderMarker(point, index) {
