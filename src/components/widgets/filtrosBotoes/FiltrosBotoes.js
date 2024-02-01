@@ -52,7 +52,14 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
   const handleButtonClick = (event, buttonName, buttonOptions) => {
     setAnchorEl(event.currentTarget);
     setCurrentButtonName(buttonName);
-    setOptions(buttonOptions);
+
+    // antes
+   // setOptions(buttonOptions);
+   
+    // Filtrar opções válidas antes de definir o estado
+    const filteredOptions = buttonOptions.filter(option => !isOptionDisabled(option, buttonName));
+    setOptions(filteredOptions);
+
     if (!selectedOptions[buttonName]) {
       setSelectedOptions(prevState => ({ ...prevState, [buttonName]: [] }));
     }
@@ -186,13 +193,14 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
                     style={{ color: '#007E7D', }}
                     checked={selectedOptions[currentButtonName]?.includes(option)}
                     onChange={() => handleOptionChange(currentButtonName, option)}
-                    disabled={isOptionDisabled(option, currentButtonName)} // Adicionando a lógica de desabilitar
+                    // Removido o atributo 'disabled'
+                    // disabled={isOptionDisabled(option, currentButtonName)} // Adicionando a lógica de desabilitar
+
                   />
                 }
                 label={<Typography fontSize="14.5px">{option}</Typography>}
                 style={{ marginRight: '3px', marginTop: '-5px' }}
               />
-
             </div>
           ))}
         </Box>
