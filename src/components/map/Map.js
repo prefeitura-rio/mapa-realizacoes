@@ -9,7 +9,7 @@ import "./map.css";
 import { useEffect, useState } from "react";
 import ContextMenu from "./ContextMenu";
 import { getIcon } from "../../icons/typeIcons";
-import { DESCRIPTION_BAR } from "../../redux/active/actions";
+import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
 import { getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
 import { isDesktop } from "../../redux/active/reducers";
 
@@ -143,6 +143,13 @@ const Map = ({
       }
     }
   }, [currentCoords]);
+
+  if(MAIN_UNDERSEARCH_BAR){
+    if (map) {
+    const coords = [-22.9200, -43.4250];
+    map.flyTo(coords,12)
+    }
+  }
 
   // Função auxiliar para renderizar o marcador
   function renderMarker(point, index) {
