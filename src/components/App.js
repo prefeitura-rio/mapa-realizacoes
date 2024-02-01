@@ -31,13 +31,3 @@ function App() {
 
 export default App;
 
-// TODO
-// loader +
-// comments +
-// places by category +
-// search +
-// auth +
-// update location +
-// photo gallery +
-// bugs
-// animations
