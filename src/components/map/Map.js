@@ -34,7 +34,8 @@ const Map = ({
   filtros,
   bairroNome,
   subprefeituraNome,
-  realizacaoId
+  realizacaoId,
+  rota,setRota
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -42,6 +43,14 @@ const Map = ({
 
   const [contextCoords, setContextCoords] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("ROTAROTA " + JSON.stringify(rota.rota))
+    if (rota.rota == null && map) {
+    const coords = [-22.9200, -43.4250];
+    map.flyTo(coords,12)
+  }
+  } , [rota]);
 
   useEffect(() => {
     if (map && bairroNome) {
@@ -144,29 +153,17 @@ const Map = ({
     setActiveBar(DESCRIPTION_BAR);
     loadData(toSnakeCase(point.nome));
     navigate(`/${toSnakeCase(point.nome)}`);
+    if (map) {
+      if (point) {
+        map.flyTo({
+          lat: point.coords.latitude,
+          lng: point.coords.longitude,
+        },14);
+      }}
+      setRota(toSnakeCase(point.nome))
   };
 
   const [opened, setOpened] = useState(false);
-
-  useEffect(() => {
-    if (map) {
-      if (currentCoords && currentCoords.latitude) {
-        map.flyTo({
-          lat: currentCoords.latitude,
-          lng: currentCoords.longitude,
-        });
-      } else {
-        map.flyTo({ lat: -22.8800, lng: -43.4600 });
-      }
-    }
-  }, [currentCoords]);
-
-  if(MAIN_UNDERSEARCH_BAR){
-    if (map) {
-    const coords = [-22.9200, -43.4250];
-    map.flyTo(coords,12)
-    }
-  }
 
   // Função auxiliar para renderizar o marcador
   function renderMarker(point, index) {
