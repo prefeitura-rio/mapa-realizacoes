@@ -14,8 +14,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-      <MapContainer />
+      
       <Routes>
+          <Route path='/' element={<MapContainer />} />
           <Route path=':id' element={<MapContainer />} />
         </Routes>
         <WidgetsContainer />

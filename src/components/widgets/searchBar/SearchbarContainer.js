@@ -12,6 +12,7 @@ import { setPlacesData } from "./../../../redux/places/actions";
 import { setBairroData } from "./../../../redux/bairros/actions";
 import { setSubprefeituraData } from "./../../../redux/subprefeituras/actions";
 import { useEffect } from "react";
+import { setRota } from "../../../redux/rota/actions";
 
 
 const SearchbarContainer = (props) => {
@@ -37,6 +38,8 @@ const SearchbarContainer = (props) => {
       setHistoryItems={props.setHistoryItems}
       setPlacesData={props.setPlacesData}
       historyItems={props.historyItems}
+      rota = {props.rota}
+      setRota = {props.setRota}
     />
   );
 };
@@ -50,6 +53,7 @@ const mapStateToProps = (state) => {
     anyLoading: state.places.loading || state.place.loading,
     anyPlaces: state.places.anyPlaces,
     historyItems: state.search.historyItems,
+    rota: state.rota
   };
 };
 
@@ -64,7 +68,8 @@ const mapDispatchToProps = {
   setPlacesData,
   setBairroData ,
   setEhBairro ,
-  setSubprefeituraData
+  setSubprefeituraData,
+  setRota
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchbarContainer);

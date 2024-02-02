@@ -14,6 +14,7 @@ import cidadesReducer from "./cidade/reducers";
 import bairrosReducer from "./bairros/reducers";
 import subprefeiturasReducer from "./subprefeituras/reducers";
 import { filtrosReducer } from "./filtros/reducers";
+import { rotaReducer } from "./rota/reducers";
 
 const defaultState = {
   zoomDelta: 0,
@@ -46,4 +47,5 @@ export default combineReducers({
   auth: authReducer,
   search: searchReducer,
   filtros: filtrosReducer,
+  rota: rotaReducer
 });

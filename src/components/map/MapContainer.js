@@ -7,6 +7,7 @@ import { useEffect } from "react";
 // import { loadAllPoints } from "../../redux/points/actions";
 import { setDescriptionData } from "./../../redux/place/actions";
 import { setActiveBar, setUnderSearchBar } from "./../../redux/active/actions";
+import { setRota } from "./../../redux/rota/actions";
 import { loadData } from "../../redux/place/actions";
 import { loadAllCidades } from "../../redux/cidade/actions";
 import { loadAllPlaces } from "../../redux/places/actions";
@@ -39,6 +40,8 @@ const MapContainer = (props) => {
       bairroNome={props.bairroNome}	
       subprefeituraNome={props.subprefeituraNome?.nome}	
       realizacaoId = {id}
+      rota = {props.rota}
+      setRota = {props.setRota}
     />
   );
 };
@@ -51,7 +54,8 @@ const mapStateToProps = (state) => {
     profile: state.auth.profile,
     filtros: state.filtros.filtros,
     bairroNome: state.bairros.descriptionData,
-    subprefeituraNome: state.subprefeituras.content
+    subprefeituraNome: state.subprefeituras.content,
+    rota: state.rota
   };
 };
 
@@ -64,7 +68,8 @@ const mapDispatchToProps = {
   setDescriptionData,
   loadData,
   setUnderSearchBar,
-  loadAllPlaces
+  loadAllPlaces,
+  setRota
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);

@@ -22,7 +22,7 @@ import { getListBairroName, getListSubprefeituraName } from "../../../firebase";
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../../../redux/subprefeituras/actions";
 import { loadDadosAgregadosAbaSumarioStatusEntregasBairro } from "../../../redux/bairros/actions";
-
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -117,8 +117,10 @@ const SearchBar = ({
   setPlacesData,
   setEhBairro,
   historyItems,
+  setRota
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleBairroSubprefeituraChange = (event, name) => {
     if (name) {
       console.log('Bairro/prefeitura selecionado(a):', name);
@@ -162,6 +164,8 @@ const SearchBar = ({
     setContent(null);
     setPlacesData(null);
     setActiveBar(MAIN_UNDERSEARCH_BAR);
+    setRota(null);
+    navigate(`/`);
   };
 
   const handleOnfocus = () =>{
