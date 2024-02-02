@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { ButtonBase, makeStyles } from "@material-ui/core";
 import UnderSearchContainer from "../sidebars/wrapper/UnderSearchContainer";
 import HorizontalContainer from "./horizontalWidget/HorizontalContainer";
 // import MinimapWidget from "./minimapWidget/MinimapWidget";
@@ -7,6 +7,10 @@ import UserWidget from "./userWidget/UserWidget";
 import VerticalContainer from "./verticalWidget/VerticalContainer";
 import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
+import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
+import { getListBairroName, getListOrgaoName, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   bottomRightWidgets: {
@@ -62,6 +66,7 @@ const useStyles = makeStyles({
     transition: "width 200ms cubic-bezier(0, 0, 0.2, 1)",
   },
   widgets: {},
+
   "@media screen and (max-width: 540px)": {
     topRightWidgets: {
       top: "115px",
@@ -70,11 +75,68 @@ const useStyles = makeStyles({
       display: (props) => (props.underSearchBar ? "none" : "block"),
     },
   },
+  "@media screen and (min-width: 1279px)":{
+    filters: {
+      top: "50px",
+      left: "500px",
+      position: "absolute",
+      display: "flex",
+      zIndex: 503,
+    },
+  }
 });
 
-const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
+const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
   const classes = useStyles({ underSearchBar, bottomGallery });
 
+  const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
+  const [temasNameFilter, setTemasNameFilter] = useState([]);
+  const [programasNameFilter, setProgramasNameFilter] = useState([]);
+  const [orgaosNameFilterIds, setOrgaosNameFilterIds] = useState([]);
+  const [temasNameFilterIds, setTemasNameFilterIds] = useState([]);
+  const [programasNameFilterIds, setProgramasNameFilterIds] = useState([]);
+
+  useEffect(() => {
+
+    const loadFiltrosInfo = async () => {
+      try {
+        const orgaoRef = await getListOrgaoName();
+        const temaRef = await getListTemaName();
+        const programaRef = await getListProgramaName();
+
+        if (!orgaoRef.empty && !temaRef.empty && !programaRef.empty) {
+          setOrgaosNameFilter(orgaoRef);
+          setTemasNameFilter(temaRef);
+          setProgramasNameFilter(programaRef);
+        } else {
+          console.error("Erro aqui <<== ");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar nomes dos filtros", error);
+      }
+    };
+
+    const loadFiltrosInfoIds = async () => {
+      try {
+        const realizacaoOrgaoRef = await getListRealizacaoOrgaoIds();
+        const realizacaoTemaRef = await getListRealizacaoTemaIds();
+        const realizacaoProgramaRef = await getListRealizacaoProgramaIds();
+
+        if (!realizacaoOrgaoRef.empty && !realizacaoTemaRef.empty && !realizacaoProgramaRef.empty) {
+          setOrgaosNameFilterIds(realizacaoOrgaoRef);
+          setTemasNameFilterIds(realizacaoTemaRef);
+          setProgramasNameFilterIds(realizacaoProgramaRef);
+        } else {
+          console.error("Erro aqui <<== ");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar nomes dos filtros", error);
+      }
+    };
+
+    loadFiltrosInfo();
+    loadFiltrosInfoIds();
+  }, []);
   return (
     <div className={classes.widgets}>
       <div className={classes.bottomWidgets}>
@@ -97,6 +159,16 @@ const Widgets = ({ underSearchBar, bottomGallery, profile }) => {
       <div className={classes.topRightWidgets}>
         {/* <InfoWidget/> */}
         <UserWidget profile={profile} />
+      </div>
+      <div className={classes.filters}>
+
+        <FiltrosBotoes orgaosNameFilter={orgaosNameFilter}
+          temasNameFilter={temasNameFilter}
+          programasNameFilter={programasNameFilter}
+          orgaosNameFilterIds={orgaosNameFilterIds}
+          temasNameFilterIds={temasNameFilterIds} 
+          programasNameFilterIds={programasNameFilterIds}
+          setFiltros={setFiltros}></FiltrosBotoes>
       </div>
     </div>
   );

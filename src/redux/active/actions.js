@@ -107,14 +107,23 @@ export const setOpenCompletePhoto = (data) => {
 };
 
 export const SET_ACTIVE_BAR = "SET_ACTIVE_BAR";
+export const SET_EH_BAIRRO = "SET_EH_BAIRRO";
 export const PLACES_BAR = "PLACES_BAR";
 export const DESCRIPTION_BAR = "DESCRIPTION_BAR";
 export const MAIN_UNDERSEARCH_BAR = "MAIN_UNDERSEARCH_BAR";
+export const BAIRRO_DESCRIPTION_BAR = "BAIRRO_DESCRIPTION_BAR";
+export const SUBPREFEITURA_DESCRIPTION_BAR = "SUBPREFEITURA_DESCRIPTION_BAR";
 
 export const setActiveBar = (activeBar) => {
   return {
     type: SET_ACTIVE_BAR,
     payload: activeBar,
+  };
+};
+export const setEhBairro= (ehBairro) => {
+  return {
+    type: SET_EH_BAIRRO,
+    payload: ehBairro,
   };
 };
 

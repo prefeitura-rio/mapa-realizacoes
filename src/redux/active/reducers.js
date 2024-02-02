@@ -10,7 +10,9 @@ import {
   SET_OPEN_EDIT_INFO,
   SET_OPEN_UPLOAD_PHOTO,
   MAIN_UNDERSEARCH_BAR,
+  BAIRRO_DESCRIPTION_BAR,
   SET_ACTIVE_BAR,
+  SET_EH_BAIRRO,
   SET_SEARCH_PROMPT,
   SET_UNDERSEARCH_BAR,
   SET_BOTTOM_GALLERY,
@@ -20,6 +22,11 @@ import {
   SET_SHOWN_MORE,
   SET_INFO_MODAL
 } from "./actions";
+
+export const isDesktop = () => {
+  const userAgent = navigator.userAgent;
+  return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+ };
 
 const defaultState = {
   categoryModal: false,
@@ -36,7 +43,7 @@ const defaultState = {
   openCompletePhoto: false,
   activeBar: MAIN_UNDERSEARCH_BAR,
   searchPrompt: false,
-  underSearchBar: false,
+  underSearchBar: isDesktop(),
   bottomGallery: false,
   menuSidebar: false,
   photoGallery: false,
@@ -109,6 +116,12 @@ export const activeReducer = (state = defaultState, action) => {
       return {
         ...state,
         activeBar: action.payload,
+      };
+
+    case SET_EH_BAIRRO:
+      return {
+        ...state,
+        ehBairro: action.payload,
       };
     case SET_SEARCH_PROMPT:
       return {

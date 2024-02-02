@@ -1,4 +1,5 @@
-import { Fab } from "@material-ui/core";
+import { Fab, Typography } from "@material-ui/core";
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import {
   ImageList,
   ImageListItem,
@@ -9,7 +10,9 @@ import ArrowBackIosOutlinedIcon from "@material-ui/icons/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@material-ui/icons/ArrowForwardIosOutlined";
 import clsx from "clsx";
 import { useState } from "react";
-import { TYPE_PLACE } from "../../redux/images/actions";
+import { TYPE_ALL_PHOTOS_BAIRRO,TYPE_ALL_PHOTOS_SUBPREFEITURA, TYPE_ALL_PHOTOS_MUNICIPIO, TYPE_PLACE } from "../../redux/images/actions";
+import { BAIRRO_DESCRIPTION_BAR,SUBPREFEITURA_DESCRIPTION_BAR, DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -70,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PhotoCards = ({ images, setPhotoGallery, setImagesType }) => {
+const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
   const classes = useStyles();
 
   const [shiftedEnd, setShiftedEnd] = useState(false);
@@ -84,57 +87,61 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType }) => {
   };
 
   const onPhotoClick = () => {
+    if(activeBar === MAIN_UNDERSEARCH_BAR){
+    setImagesType(TYPE_ALL_PHOTOS_MUNICIPIO);
+    }
+    else if( activeBar === DESCRIPTION_BAR){
     setImagesType(TYPE_PLACE);
+    }
+    else if( activeBar === BAIRRO_DESCRIPTION_BAR){
+    setImagesType(TYPE_ALL_PHOTOS_BAIRRO);
+    }
+    else if( activeBar === SUBPREFEITURA_DESCRIPTION_BAR){
+    setImagesType(TYPE_ALL_PHOTOS_SUBPREFEITURA);
+    }
     setPhotoGallery(true);
-  };
-
-  const itemData = () => {
-    var titles = ["All", "Latest", "Inside", "Street View", "Videos"];
-    return titles.map((title, i) => {
-      return {
-        img: images
-          ? images[i] ||
-            images[0] ||
-            "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"
-          : "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
-        title,
-      };
-    });
+    console.log(activeBar)
   };
 
   return (
     <div className={classes.photoCards}>
-      <ImageList
-        className={
-          shiftedEnd
-            ? clsx(classes.imageList, classes.shiftEnd)
-            : classes.imageList
-        }
-        style={{ margin: 0 }}
-        rowHeight={150}
-        gap={8}
-      >
-        {itemData().map((item, i) => (
-          <ImageListItem
-            key={i}
-            classes={{ item: classes.imageListItem }}
-            style={{ width: "120px" }}
-            onClick={onPhotoClick}
-          >
-            <img src={item.img} alt={item.title} />
-            <ImageListItemBar
-              title={item.title}
-              actionPosition="left"
-              classes={{
-                root: classes.titleBar,
-                title: classes.title,
-              }}
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
+      {images.length === 0 ? (
+        <Typography variant="body2" style={{ fontSize:"15px", textAlign: "center" }}>
+          Ainda não há fotos deste local.
+        </Typography>
+      ) : (
+        <ImageList
+          className={
+            shiftedEnd
+              ? clsx(classes.imageList, classes.shiftEnd)
+              : classes.imageList
+          }
+          style={{ margin: 0 }}
+          rowHeight={180} 
+          gap={8}
+        >
+          {images.map((item, i) => (
+            <ImageListItem
+              key={i}
+              classes={{ item: classes.imageListItem }}
+              style={{ width: "220px" }} 
+              onClick={onPhotoClick}
+            >
+              <img src={item || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png"} alt={`Thumbnail ${i}`} />
+              <ImageListItemBar
+                actionPosition="left"
+                classes={{
+                  root: classes.titleBar,
+                  title: classes.title,
+                }}
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      )}
       <div className={classes.fabContainer}>
-        {!shiftedEnd ? (
+        {images.length > 0 ? (
+        !shiftedEnd ? (
           <Fab
             size="small"
             aria-label="add"
@@ -158,10 +165,20 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType }) => {
               style={{ fill: "black" }}
             />
           </Fab>
-        )}
+        )):null}
       </div>
+      <br></br>
+      <br></br>
     </div>
-  );
+   );
+   
 };
 
-export default PhotoCards;
+const mapStateToProps = (state) => {
+  return {
+    activeBar: state.active.activeBar, // Access imagesType from the Redux store
+    // Other props you need from the Redux store
+  };
+};
+
+export default connect(mapStateToProps)(PhotoCards);

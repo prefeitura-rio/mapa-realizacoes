@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import RemoveIcon from "@material-ui/icons/Remove";
@@ -17,27 +18,23 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "30px",
     minHeight: "30px",
     minWidth: "30px",
-    borderRadius: "8px",
+    borderRadius: "50%",
   },
   zoom: {
     marginTop: "4px",
-    marginRight:"20px",
-    position: "relative",
+    marginRight: "20px",
   },
   buttons: {
-    height: "60px",
+    display: "flex",
+    flexDirection: "column", // Make buttons stack vertically
+    alignItems: "center", // Center buttons horizontally
   },
   zoomInButton: {
-    position: "absolute",
-    top: 0,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    width: "100%",
+    marginBottom: "5px",
   },
   zoomOutButton: {
-    position: "absolute",
-    bottom: 0,
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
+    width: "100%",
   },
 }));
 
@@ -53,11 +50,6 @@ const VerticalWidget = ({ setZoomDelta }) => {
 
   return (
     <div className={classes.root}>
-      {/* <div>
-        <Button variant="contained" className={classes.controlButton}>
-          <MyLocationIcon fontSize="small" className={classes.textSecondary} />
-        </Button>
-      </div> */}
       <div className={classes.zoom}>
         <div className={classes.buttons}>
           <Button

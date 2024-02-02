@@ -8,16 +8,21 @@ import OutterModals from "./modals/OutterModals";
 import PhotoGalleryContainer from "./photoGallery/PhotoGalleryContainer";
 import UploadPhotoContainer from "./modals/uploadPhoto/UploadPhotoContainer";
 import InfoModalContainer from "./modals/info/InfoModalContainer";
+import { Route, Routes } from "react-router-dom";
 
-function App({}) {
+function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <MapContainer />
+      
+      <Routes>
+          <Route path='/' element={<MapContainer />} />
+          <Route path=':id' element={<MapContainer />} />
+        </Routes>
         <WidgetsContainer />
         <MenuSidebarContainer />
         <OutterModals />
-        <InfoModalContainer/>
+        <InfoModalContainer />
         <UploadPhotoContainer />
         <PhotoGalleryContainer />
       </div>
@@ -27,13 +32,3 @@ function App({}) {
 
 export default App;
 
-// TODO
-// loader +
-// comments +
-// places by category +
-// search +
-// auth +
-// update location +
-// photo gallery +
-// bugs
-// animations

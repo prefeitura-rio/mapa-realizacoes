@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import PhotoPreviews from "./../PhotoPreviews";
 import { compress } from "../../../utils/compress";
 import { getPreviews } from "../../../utils/previews";
-import { editarRealizacao } from "../../../firebase";
+import { createUpdateRealizacaoFromForm } from "../../../firebase";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -141,7 +141,7 @@ const MyDropzone = ({
       profile,
       contentSnapshot,
     };
-    await editarRealizacao(data);
+    await createUpdateRealizacaoFromForm(data);
 
     setDropzoneState(dropStates.UPLOAD);
     onComplete();
@@ -167,7 +167,7 @@ const MyDropzone = ({
             {dropzoneState === dropStates.LOADING ? (
               <div className={classes.loadingBlock}>
                 <Typography variant="subtitle2" style={{ marginBottom: "4px" }}>
-                  Uploading...
+                  Carregando...
                 </Typography>
                 <LinearProgress className={classes.progress} />
               </div>
@@ -196,13 +196,13 @@ const MyDropzone = ({
                       <div className={classes.dragImage} />
                     ) : null}
                     <Typography variant="h5" style={{ marginBottom: "10px" }}>
-                      Drag photos here
+                      Arraste fotos aqui
                     </Typography>
                     <Typography
                       variant="subtitle2"
                       style={{ marginBottom: "4px" }}
                     >
-                      or if you prefer...
+                      ou se você preferir...
                     </Typography>
                     <Button
                       variant="contained"
@@ -211,7 +211,7 @@ const MyDropzone = ({
                       size="small"
                       onClick={openDialog}
                     >
-                      Choose photos to upload
+                      Escolha fotos para fazer upload
                     </Button>
                   </>
                 )}

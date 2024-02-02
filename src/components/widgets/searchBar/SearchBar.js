@@ -10,19 +10,27 @@ import {
   ClickAwayListener,
   CircularProgress,
 } from "@material-ui/core";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import CloseIcon from "@material-ui/icons/Close";
-import { MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
+import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, SUBPREFEITURA_DESCRIPTION_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
+import Orgaos from "../../modals/editInfo/Orgaos";
+import { getListBairroName, getListSubprefeituraName } from "../../../firebase";
+import { useDispatch } from "react-redux";
+import { loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../../../redux/subprefeituras/actions";
+import { loadDadosAgregadosAbaSumarioStatusEntregasBairro } from "../../../redux/bairros/actions";
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => {
   return {
     searchbar: {
       position: "absolute",
       zIndex: 2,
-      left: "7px",
-      top: "7px",
+      left: "40px",
+      top: "40px",
     },
     paper: {
       width: "395px",
@@ -69,6 +77,12 @@ const useStyles = makeStyles((theme) => {
         display: "flex",
         alignItems: "center",
       },
+      searchbar: {
+        position: "absolute",
+        zIndex: 2,
+        top: "7px",
+        left: "7px",
+      },
     },
 
     "@media screen and (max-width: 410px)": {
@@ -81,6 +95,7 @@ const useStyles = makeStyles((theme) => {
         position: "absolute",
         zIndex: 2,
         top: "7px",
+        left: "7px",
       },
     },
   };
@@ -97,17 +112,41 @@ const SearchBar = ({
   setSearchPrompt,
   setContent,
   anyLoading,
-  anyPlaces,
-  setHistoryItems,
+  setBairroData,
+  setSubprefeituraData,
   setPlacesData,
+  setEhBairro,
   historyItems,
+  setRota
 }) => {
-  const handleUnderSearchBar = () => {
-    setUnderSearchBar(!underSearchBar);
-    if (!underSearchBar) {
-      inputRef.current.focus();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleBairroSubprefeituraChange = (event, name) => {
+    if (name) {
+      console.log('Bairro/prefeitura selecionado(a):', name);
+    }
+    
+  
+    // Check if name is a prefeitura
+    if (bairros.includes(name)) {
+      setBairroData(name);
+      setActiveBar(BAIRRO_DESCRIPTION_BAR);
+      setEhBairro(true);
+      console.log('Bairro selecionado: ', name);
+      dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
+    } 
+    else if (prefeituras.includes(name)){
+      setSubprefeituraData(name);
+      setActiveBar(SUBPREFEITURA_DESCRIPTION_BAR);
+      setEhBairro(false);
+      console.log('Subprefeitura selecionada: ', name);
+      dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(name));
+    }
+    else {
+      console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
     }
   };
+  
   const handleSearchPrompt = () => {
     setSearchPrompt();
   };
@@ -121,29 +160,68 @@ const SearchBar = ({
   };
 
   const onDirectionsClick = () => {
+    setBairroData(null);
     setContent(null);
     setPlacesData(null);
     setActiveBar(MAIN_UNDERSEARCH_BAR);
+    setRota(null);
+    navigate(`/`);
   };
+
+  const handleOnfocus = () =>{
+    setUnderSearchBar(true);
+    setActiveBar(MAIN_UNDERSEARCH_BAR);
+  }
 
   const inputRef = useRef(null);
   const classes = useStyles();
 
-  const [inputValue, setinputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [bairrosSubSubprefeituras, setBairrosSubprefeituras] = useState([]);
+  const [prefeituras, setSubprefeituras] = useState([]);
+  const [bairros, setBairros] = useState([]);
 
   useEffect(() => {
-    let newHistoryItems = anyPlaces || [];
-    if (newHistoryItems.length) {
-      newHistoryItems = newHistoryItems
-        .filter((el) =>
-          el.name
-            .toLowerCase()
-            .startsWith(inputValue ? inputValue.toLowerCase() : "")
-        )
-        .slice(0, 3);
-      setHistoryItems(newHistoryItems);
-    }
-  }, [anyPlaces, inputValue]);
+    const loadBairros = async () => {
+      try {
+        const bairroRef = await getListBairroName();
+        const prefeituraRef = await getListSubprefeituraName(); // Obter os nomes das prefeituras
+  
+        if (!bairroRef.empty) {
+          const bairrosSubSubprefeituras = [];
+          const bairrosName = [];
+          bairroRef.forEach((doc) => {
+            const bairrosData = doc.data();
+            const bairroName = bairrosData.nome;
+            bairrosSubSubprefeituras.push(bairroName);
+            bairrosName.push(bairroName);
+          });
+          setBairros(bairrosName);
+  
+          // Incluir os nomes das prefeituras na lista de bairros
+          const prefeiturasNames = [];
+          prefeituraRef.forEach((doc) => {
+            const prefeiturasData = doc.data();
+            const prefeituraName = prefeiturasData.nome;
+            bairrosSubSubprefeituras.push(prefeituraName);
+            prefeiturasNames.push(prefeituraName);
+          });
+          setSubprefeituras(prefeiturasNames);
+
+
+          setBairrosSubprefeituras(bairrosSubSubprefeituras);
+        } else {
+          console.error("Nenhum bairro/prefeitura encontrado.");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar nomes de bairros/prefeituras:", error);
+      }
+    };
+  
+    loadBairros();
+  }, []);
+  
+  
 
   return (
     <ClickAwayListener onClickAway={handleClickOutside}>
@@ -166,11 +244,24 @@ const SearchBar = ({
           >
             <MenuIcon />
           </IconButton>
-          <InputBase
+         
+          <Autocomplete
+            freeSolo
             className={classes.input}
-            placeholder="Buscar por bairro"
-            inputRef={inputRef}
-            onChange={(e) => setinputValue(e.target.value)}
+            value={inputValue}
+            onChange={handleBairroSubprefeituraChange}
+            disableClearable
+            options={bairrosSubSubprefeituras}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => {}}
+                placeholder="Busque por bairro/subprefeitura"
+                sx={{
+                  "& fieldset": { border: 'none' },
+                }}
+              />
+            )}
           />
           <IconButton
             type="submit"
@@ -198,12 +289,6 @@ const SearchBar = ({
             )}
           </IconButton>
         </Paper>
-
-        <PromptBlock
-          searchPrompt={searchPrompt}
-          underSearchBar={underSearchBar}
-          handleUnderSearchBar={handleUnderSearchBar}
-        />
       </div>
     </ClickAwayListener>
   );

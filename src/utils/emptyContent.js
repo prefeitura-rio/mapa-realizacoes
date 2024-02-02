@@ -1,82 +1,21 @@
 import { firestore } from "../firebase";
 
 export const emptyContent = {
-  //header
-  titulo: "Adicionar título",
-  descricao:"Adicionar descrição",
-  status:[],
-  tema:[],
-
-  //informações básicas
-  programa:[],
-  orgao:[],
-  bairro:"-",
-  // endereco:"Adicionar endereço",
-  subprefeitura:"-",
-
-  //total investido + cariocas atendidos
-  totalInvestido:"Adicionar total investido",
-  cariocasAtendidos:"Adicionar total de cariocas atendidos",
-
-  //data início + data fim
-
-
-
-
-  // endereco: "Adicionar Endereço",
-  // lastVisit: firestore.Timestamp.fromDate(
-  //   new Date("March 1, 2021 at 12:00:00 AM UTC+8")
-  // ),
-  // website: "Add website",
-  // phoneNumber: "Add phone number",
-  // ratingCount: 0,
-  // ratingValue: 5,
-  // inside: null,
-  // type: 'Shopping mall',
-  imageUrl: null,
+  bairro: null,
+  cariocas_atendidos: 0,
   coords: null,
-  // schedule: {
-  //   monday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   tuesday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   wednesday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   thursday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   friday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   saturday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  //   sunday: {
-  //     open: "8:00",
-  //     close: "23:00",
-  //     allDay: false,
-  //     closed: false
-  //   },
-  // },
+  data_fim: null,
+  data_inicio: null,
+  descricao: null,
+  id_bairro: null,
+  id_status: null,
+  id_tipo: null,
+  image_folder: null,
+  investimento: 0,
+  nome: null,
+  orgao: [],
+  programa: [],
+  tema: [],
+  status: null,
+  subprefeitura: null,
 };

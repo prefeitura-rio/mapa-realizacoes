@@ -21,15 +21,28 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import PublicIcon from "@material-ui/icons/Public";
 import EditItem from "./EditItem";
 import { useEffect, useRef, useState } from "react";
+import PlaceIcon from '@mui/icons-material/Place';
 import { useCallback } from "react";
 import AddPhotoBlock from "../nested/AddPhotoBlock";
-import { editarRealizacao } from "../../../firebase";
+import { createUpdateRealizacaoFromForm } from "../../../firebase";
 import clsx from "clsx";
 import MySchedule from "./MySchedule";
 import { getTileImage } from "../../../utils/getTileImage";
 import DatePickerFim from './DatePickerFim'; 
 const useStyles = makeStyles((theme) => ({
   root: {},
+  wideButton: {
+    marginBottom: "10px",
+    marginTop: "10px",
+    width: "100%",
+    padding: "12px",
+    borderColor: theme.palette.grey[400],
+  },
+  bottonIcon: {
+    marginRight: "8px",
+    marginBottom: "4px",
+    color:"#007E7D"
+  },
   dialog: {
     maxWidth: "764px",
     height: "626px",
@@ -54,6 +67,8 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogContent: {
     padding: 0,
+    marginLeft: "10px",
+    marginRight: "50px",
   },
   contentTitle: {
     padding: "14px 54px",
@@ -74,8 +89,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: (props) => `url(${props.mapFragment})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
-    backgroundColor: "#0000008a",
+    backgroundColor: "#007E7D",
     backgroundBlendMode: "darken",
+    borderRadius: "20px",
   },
   bottomDiv: {
     display: "flex",
@@ -90,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     backgroundColor: "rgba(255,255,255,0)",
     borderColor: "white",
+    fontSize: "16px",
   },
   underButtonText2: {
     alignSelf: "start",
@@ -130,7 +147,7 @@ const EditInfoModal = ({
   setContent,
   photoFiles,
   setPhotoFiles,
-  loadAllPoints,
+  loadAllPlaces,
   setLocationModal,
   profile
 }) => {
@@ -163,14 +180,15 @@ const EditInfoModal = ({
       profile,
       contentSnapshot: contentSnapshot
     };
-    await editarRealizacao(data);
+    await createUpdateRealizacaoFromForm(data);
 
     setOpenEditInfo(false);
     setDisabled(false);
     setOpenCompleteEditInfo(true);
     setCanceledFields([]);
     setPhotoFiles([]);
-    loadAllPoints();
+    // loadAllPoints();
+    loadAllPlaces();
   }
 
   const onCancel = () => {
@@ -193,13 +211,9 @@ const EditInfoModal = ({
     setLocationModal(true);
   };
 
-  const onEnderecoChange = (value) => {
-    setContent({ ...content, endereco: value });
-  };
-
   // --------------- INICIO ------------------
   const onTituloChange = (value) => {
-    setContent({ ...content, titulo: value });
+    setContent({ ...content, nome: value });
   };
   const onDescricaoChange = (value) => {
     setContent({ ...content, descricao: value });
@@ -216,23 +230,17 @@ const EditInfoModal = ({
   const onOrgaoChange = (value) => {
     setContent({ ...content, orgao: value });
   };
-  const onBairroChange = (value) => {
-    setContent({ ...content, bairro: value });
-  };
-  const onSubprefeituraChange = (value) => {
-    setContent({ ...content, subprefeitura: value });
-  };
   const onTotalInvestidoChange = (value) => {
-    setContent({ ...content, totalInvestido: value });
+    setContent({ ...content, investimento: value });
   };
   const onCariocasAtendidosChange = (value) => {
-    setContent({ ...content, cariocasAtendidos: value });
+    setContent({ ...content, cariocas_atendidos: value });
   };
   const onDataInicioChange = (value) => {
-    setContent({ ...content, dataInicio: value });
+    setContent({ ...content, data_inicio: value });
   };
   const onDataFimChange = (value) => {
-    setContent({ ...content, dataFim: value });
+    setContent({ ...content, data_fim: value });
   };
 
   //------------------FIM ----------------------
@@ -243,6 +251,15 @@ const EditInfoModal = ({
   const [disabled, setDisabled] = useState(false);
 
   // TODO remove event listener
+
+  const habilitaBotao = () => {
+    if(!(content.nome && content.descricao && content.status)){
+      return true
+    }
+    return false
+  }
+
+  console.log("content here", content)
 
   return (
     <>
@@ -264,7 +281,7 @@ const EditInfoModal = ({
           Inclusão de Nova Realização
           </Typography>
           <Typography variant="body1" color="textSecondary" component="span">
-            {content.name}
+            {content.nome}
           </Typography>
         </div>
 
@@ -282,103 +299,108 @@ const EditInfoModal = ({
         ref={dialogRef}
         className={disabled ? classes.disabled : ""}
       >
-        <Typography className={classes.contentTitle} color="textSecondary">
-          Por favor, Forneça Detalhes da Realização
-        </Typography>
         <Divider />
         <EditItem
           title="Título da Realização"
-          IconComponent={StoreIcon}
-          value={content.titulo}
+          tooltip="Digite o nome principal do projeto ou ação.."
+          // IconComponent={StoreIcon}
+          value={content.nome}
           onChange={onTituloChange}
-          
         />
         <EditItem
           title="Descrição"
-          IconComponent={StoreIcon}
+          tooltip="Digite um resumo breve do projeto ou ação."
+          // IconComponent={StoreIcon}
           value={content.descricao}
           onChange={onDescricaoChange}
         />
 
         <EditItem
           title="Status"
-          IconComponent={StoreIcon}
+          tooltip="Selecione o status do projeto."
+          // IconComponent={StoreIcon}
           value={content.status}
           onChange={onStatusChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
        
         <EditItem
           title="Programa"
-          IconComponent={StoreIcon}
+          tooltip="Selecione o programa governamental relacionado."
+          // IconComponent={StoreIcon}
           value={JSON.stringify(content.programa)}
           onChange={onProgramaChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
 
        <EditItem
           title="Tema"
-          IconComponent={StoreIcon}
+          tooltip="Selecione o tema principal do projeto."
+          // IconComponent={StoreIcon}
           value={content.tema}
           onChange={onTemaChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
                 
         <EditItem
           title="Órgão"
-          IconComponent={StoreIcon}
+          tooltip="Selecione o órgão governamental responsável/relacionado."
+          // IconComponent={StoreIcon}
           value={content.orgao}
           onChange={onOrgaoChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
         <EditItem
           title="Total Investido"
-          IconComponent={StoreIcon}
-          value={content.totalInvestido}
+          tooltip="Digite o valor total em reais."
+          // IconComponent={StoreIcon}
+          value={content.investimento}
           onChange={onTotalInvestidoChange}
         />
         <EditItem
           title="Cariocas Atendidos"
-          IconComponent={StoreIcon}
-          value={content.cariocasAtendidos}
+          tooltip="Digite o número estimado de beneficiados."
+          // IconComponent={StoreIcon}
+          value={content.cariocas_atendidos}
           onChange={onCariocasAtendidosChange}
         />
         <EditItem
           title="Data Início"
-          IconComponent={StoreIcon}
-          value={content.dataInicio}
+          tooltip="Digite ou selecione o mês e ano de início."
+          // IconComponent={StoreIcon}
+          value={content.data_inicio}
           onChange={onDataInicioChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
         <EditItem
           title="Data Fim"
-          IconComponent={StoreIcon}
-          value={content.dataFim}
+          tooltip="Digite ou selecione o mês e ano de conclusão."
+          // IconComponent={StoreIcon}
+          value={content.data_fim}
           onChange={onDataFimChange}
-          isAutocomplete={true} 
+          MUIComponents={true} 
         />
-        {/* <EditItem
-          title="Localização"
-          IconComponent={LocationOnIcon}
-          value={content.endereco}
-          onChange={onEnderecoChange}
-        /> */}
-        <div className={classes.centerButton}>
+          <div className={classes.bottomDiv}>
           <Button
             variant="outlined"
-            classes={{ outlined: classes.outlinedWhite }}
+            color="primary"
+            className={classes.wideButton}
             onClick={onUpdateLocation}
           >
-            Atualizar Localização
+             <PlaceIcon  className={classes.bottonIcon} />
+         <span style={{color:"#007E7D", fontSize:"16px"}}> Atualizar localização </span>
           </Button>
-        </div>
 
+        </div>
+        
         <div className={classes.bottomDiv}>
           <AddPhotoBlock
             photoFiles={photoFiles}
             setPhotoFiles={setPhotoFiles}
           />
         </div>
+
+
       </DialogContent>
 
       <DialogActions className={classes.actions}>
@@ -393,7 +415,7 @@ const EditInfoModal = ({
           Cancelar
         </Button>
         <Button
-          disabled={disabled}
+          disabled={habilitaBotao()}
           variant="contained"
           disableElevation
           color="primary"

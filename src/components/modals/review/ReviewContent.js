@@ -126,8 +126,8 @@ const ReviewContent = ({
   async function onPostClick() {
     setDisabled(true);
     const data = {
-      place: content.titulo,
-      photoFolder: content.photoFolder || content.titulo,
+      place: content.nome,
+      image_folder: content.image_folder || content.nome,
       author: {
         name: profile.name,
         photoURL: profile.photoURL,
@@ -142,7 +142,7 @@ const ReviewContent = ({
     setDisabled(false);
     setPhotoFiles([]);
     setCompleteReview(true);
-    // loadComments(content.photoFolder || content.name);
+    // loadComments(content.image_folder || content.nome);
   }
 
   const [ratingValue, setRatingValue] = useState(0);

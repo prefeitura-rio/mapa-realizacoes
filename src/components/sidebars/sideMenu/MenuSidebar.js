@@ -52,9 +52,14 @@ const useStyles = makeStyles((theme) => {
       paddingBottom: "15px",
       paddingTop: "15px"
     },
-    listItemText: {
-      fontSize: "0.8rem",
-      paddingBottom:"5px"
+    listItemTextPrimary: {
+      fontSize: "0.9rem",
+      paddingBottom:"5px",
+      justifyContent: "space-between",
+      margin:"15px"
+    },
+    listItemTextSecondary: {
+      margin:"15px",
     },
     
   };
@@ -90,56 +95,14 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
           <CloseIcon />
         </IconButton>
       </div>
-      {/* <Divider />
-      <List>
-        <ListItem button>
-          <ListItemIcon>
-            <LayersOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText
-            classes={{ primary: classes.listItemText }}
-            primary={layersText}
-          />
-        </ListItem>
-      </List>
-      <Divider /> */}
-      {/* <List>
-        {componentsToText.map((data) => (
-          <ListItem button key={data.text}>
-            <ListItemIcon>
-              <data.iconComponent />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary={data.text}
-            />
-          </ListItem>
-        ))}
-      </List> */}
-      {/* <Divider />
-      <ListItem
-        button
-        onClick={() =>
-          window.open("prefeitura.rio", "_blank").focus()
-          // window.open("https://github.com/AlexanderBaikal", "_blank").focus()
-        }
-      >
-        <ListItemIcon>
-          <LinkIcon />
-        </ListItemIcon>
-        <ListItemText
-          classes={{ primary: classes.listItemText }}
-          primary={"prefeitura.rio"}
-          // primary={"github.com/AlexanderBaikal"}
-        />
-      </ListItem> */}
+    
       <Divider />
       <ListItem>
-        <ListItemIcon>
+        {/* <ListItemIcon>
           <InfoIcon />
-        </ListItemIcon>
+        </ListItemIcon> */}
         <ListItemText
-          classes={{ primary: classes.listItemText }}
+          classes={{ primary: classes.listItemTextPrimary , secondary: classes.listItemTextSecondary}}
           primary={"Sobre o projeto"}
           
           secondary={`O Mapa de Realizações da Cidade do Rio de Janeiro é

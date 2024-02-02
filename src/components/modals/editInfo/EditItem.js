@@ -1,3 +1,4 @@
+import Tooltip from '@mui/material/Tooltip';
 import {
   Button,
   ClickAwayListener,
@@ -9,6 +10,7 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Typography,
 } from "@material-ui/core";
 import { IconButton, makeStyles } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -23,6 +25,7 @@ import Orgaos from './Orgaos';
 import Status from './Status';
 import DatePicker from './DatePicker';
 import DatePickerFim from "./DatePickerFim";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -46,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     paddingTop: "4px",
     width: "100%",
+    color: '#007E7D',
+    // fontWeight: 'bold',
+    fontSize: '14px',
   },
   inputField: {
     width: "100%",
@@ -67,6 +73,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover:not(.Mui-disabled):before": {
       borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
     },
+    // "&.Mui-focused:after": {
+    //   borderBottom: "1px solid #007E7D", 
+    // },
+    // "&.Mui-focused:before": {
+    //   borderBottom: "1.5px solid #007E7D", 
+    // },
   },
   selectPaper: {
     position: "absolute",
@@ -77,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EditItem = ({
   title,
+  tooltip,
   IconComponent,
   value,
   jsxValue,
@@ -87,7 +100,7 @@ const EditItem = ({
   onCancel,
   select = [],
   disableBlur = false,
-  isAutocomplete = false,
+  MUIComponents = false,
 }) => {
   const classes = useStyles();
 
@@ -105,19 +118,21 @@ const EditItem = ({
     setinputValue(numericValue);
     if (onChange) onChange(numericValue);
   };
-  
+
   const onCariocasAtendidosChange = (value) => {
     const numericValue = value.replace(/\D/g, ""); // Isso remove todos os caracteres não numéricos
     setinputValue(numericValue);
     if (onChange) onChange(numericValue);
   };
-  
+
 
   const changeInputValue = (newValue) => {
     setinputValue(newValue);
     if (onChange) onChange(newValue);
   };
 
+  const [exceededLimit, setExceededLimit] = useState(false);
+  const [exceededLimitDescricao, setExceededLimitDescricao] = useState(false);
 
   const [focused, setFocused] = useState(false);
 
@@ -143,7 +158,7 @@ const EditItem = ({
       return <DatePickerFim value={inputValue} onChange={changeInputValue} />;
     }
   };
-  
+
   const MySelector = () => {
     let selected = select
       .filter((el) =>
@@ -191,39 +206,62 @@ const EditItem = ({
         className={classes.inputDiv}
         style={!IconComponent ? { marginLeft: "34px" } : {}}
       >
-        <div className={classes.inputLabel}>{title}</div>
+        <div className={classes.inputLabel} >
+          <Tooltip title={tooltip} placement="right" >
+          <span> {title}  <InfoOutlinedIcon sx={{ fontSize: 16, color: 'grey'}} style={{verticalAlign: "middle"}} ></InfoOutlinedIcon></span>
+          </Tooltip>
+          
+        </div>
+
         {subTitle ? <div className={classes.inputLabel}>{subTitle}</div> : null}
         {jsxValue ? (
           jsxValue
-        ) : isAutocomplete ? (
+        ) : MUIComponents ? (
           <ClickAwayListener onClickAway={() => setFocused(false)}>
             <div onClick={onClick}>{renderAutocompleteComponent()}</div>
           </ClickAwayListener>
         ) : (
           <Input
-          value={inputValue}
-          inputProps={{
-            style: { textDecoration: canceled ? "line-through" : "none" },
-            type: title === "Total Investido" || title === "Cariocas Atendidos" ? "number" : "text",
-          }}
-          className={classes.inputField}
-          classes={{ underline: classes.underline }}
-          onChange={(e) => {
-            if (title === "Total Investido" || title === "Cariocas Atendidos") {
-              const numericValue = e.target.value.replace(/\D/g, "");
-              setinputValue(numericValue);
-              if (onChange) onChange(numericValue);
-            } else {
-              setinputValue(e.target.value);
-              if (onChange) onChange(e.target.value);
-            }
-          }}
-          disabled={canceled ? true : false}
-          onClick={() => setFocused(true)}
-          onBlur={disableBlur ? () => {} : onBlur}
-        />
-        
+            value={inputValue}
+            inputProps={{
+              style: { textDecoration: canceled ? "line-through" : "none" },
+              type: title === "Total Investido" || title === "Cariocas Atendidos" ? "number" : "text",
+            }}
+            className={classes.inputField}
+            classes={{ underline: classes.underline }}
+            onChange={(e) => {
+              let newValue = e.target.value;
+              if (title === "Total Investido" || title === "Cariocas Atendidos") {
+                const numericValue = e.target.value.replace(/\D/g, "");
+                setinputValue(numericValue);
+                if (onChange) onChange(numericValue);
+              } 
+              else if (title === "Título da Realização"){
+                newValue = newValue.slice(0, 150); // Limit the number of digits to 10
+                setExceededLimit(newValue.length == 150);
+                setinputValue(newValue);
+                if (onChange) onChange(newValue);
+              }
+              else if (title === "Descrição"){
+                newValue = newValue.slice(0, 300); // Limit the number of digits to 10
+                setExceededLimitDescricao(newValue.length == 300);
+                setinputValue(newValue);
+                if (onChange) onChange(newValue);
+              }
+              else{
+                setinputValue(e.target.value);
+                if (onChange) onChange(e.target.value);
+              } 
+            }}
+            disabled={canceled ? true : false}
+            onClick={() => setFocused(true)}
+            onBlur={disableBlur ? () => { } : onBlur}
+          />
+          
+
         )}
+        {exceededLimit && ( <Typography variant="body2" color="error" >Preencha com no máximo 150 dígitos</Typography>)}
+        {exceededLimitDescricao && ( <Typography variant="body2" color="error" >Preencha com no máximo 300 dígitos</Typography>)}
         {extraIcon ? (
           <IconButton
             className={classes.extraIcon}
@@ -250,9 +288,6 @@ const EditItem = ({
   );
 };
 
-  
 
-
-  
 
 export default EditItem;

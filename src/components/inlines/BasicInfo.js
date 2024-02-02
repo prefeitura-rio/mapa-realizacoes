@@ -1,4 +1,5 @@
 import { Box, Link, makeStyles, Typography,  Button} from "@material-ui/core";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Rating from "@material-ui/lab/Rating";
 import { useEffect } from "react";
 import numeral from "numeral";
@@ -13,50 +14,76 @@ const useStyles = makeStyles((theme) => ({
   basicInfo: {
     padding: "15px 25px",
   },
-  nonClickableButton: {
+  statusButton: {
     pointerEvents: "none",
-  }
+    borderRadius:"39px",
+    backgroundColor:"#007E7D",
+    color: "#FFFFFF",
+    padding:"1px 8px 1px 8px",
+    fontSize:"12px"
+  },
+  datavizButton: {
+    // pointerEvents: "none",
+    borderRadius:"39px",
+    backgroundColor:"#0B60B0",
+    color: "#FFFFFF",
+    // paddingRight:"25px",
+    fontSize:"12px"
+  },
+  titulo:{
+    fontSize:"15px",
+    fontWeight:"bold",
+    marginBottom:"-15px"
+  },
+  descricao:{
+    lineHeight:"130%",
+    paddingBottom:"1rem",
+  },
+  datavizLink: {
+    fontSize: "13.5px", 
+    paddingTop: "9px", 
+    paddingBottom: "9px", 
+    paddingLeft: "11px", 
+    textDecoration: "none", 
+    color: "#FFFFFF", 
+    display: "flex", 
+    alignItems: "center",
+    [theme.breakpoints.down('xs')]: {
+      fontSize: "12px",
+    },
+ },
   
 }));
 
+const capitalizeFirstLetter = (str) => {
+  return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
+};
+
 const BasicInfo = ({ content }) => {
   const classes = useStyles();
+  const capitalizedNome = capitalizeFirstLetter(content.nome);
+  const capitalizedDescription = capitalizeFirstLetter(content.descricao);
 
   return (
     <div className={classes.basicInfo}>
-      <Typography variant="h1">{content.titulo}</Typography>
+      <Typography  className={classes.titulo}>{capitalizedNome}</Typography>
       <br></br>
-      <Typography variant="h2">{content.descricao}</Typography>
-      <br></br>
-      <Button variant="contained" className={classes.nonClickableButton}>
+      <Typography className={classes.descricao} variant="h2">{capitalizedDescription}</Typography>
+      <Button variant="contained" className={classes.statusButton}>
       {content.status}
     </Button>
+    <br></br> <br></br>
+    <Box className={classes.datavizButton} bgcolor="#0B60B0" color="#FFFFFF" borderRadius="39px" fontSize="12px" display="flex" alignItems="center" style={{ flexWrap: "wrap" }}>
+  <a href="https://viz-staging.dados.rio/#/plano-verao" target="_blank" className={classes.datavizLink} >
+    Panorama especial das obras de resiliência climática
+    <OpenInNewIcon style={{ fontSize: '20px', paddingLeft: "7px" }} />
+  </a>
+</Box>
 
-      {/* <Typography variant="h2" style={{ marginTop: "4px" }}>
-        {content.name}
-      </Typography> */}
-      {/* <Typography variant="body2" component="div" style={{ marginTop: "8px" }}> */}
-        {/* <div className={classes.rating}>
-          <Box mr="3px">{numeral(content.ratingValue).format("0.0")}</Box>
-          <Rating
-            name="read-only"
-            value={content.ratingValue || 5}
-            readOnly
-            size="small"
-          />
-          <Box ml="3px">
-            {numeral(content.ratingCount).format("0,0") + " rewiews"}
-          </Box>
-        </div> */}
-        {/* <Link
-          href="#"
-          onClick={(e) => e.preventDefault()}
-          variant="body2"
-          color="textSecondary"
-        >
-          {content.type}
-        </Link> */}
-      {/* </Typography> */}
+
+      
+     
+
     </div>
   );
 };

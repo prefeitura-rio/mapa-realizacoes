@@ -1,34 +1,24 @@
 //
+import { useEffect, useState } from "react";
+import { Divider, Typography, makeStyles } from "@material-ui/core";
 
-import { Divider, Input, makeStyles, Button } from "@material-ui/core";
-
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
-import SortOutlinedIcon from "@material-ui/icons/SortOutlined";
-import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 
-import clsx from "clsx";
-import { useState } from "react";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
-import PlacesList from "./../../inlines/PlacesList";
-import Comments from "./../../inlines/Comments";
-import Chips from "./../../inlines/Chips";
-import RatingReview from "./../../inlines/RatingReview";
 import PhotoCards from "./../../inlines/PhotoCards";
 import ListInfo from "./../../inlines/ListInfo";
-import ActionButtons from "./../../inlines/ActionButtons";
 import BasicInfo from "./../../inlines/BasicInfo";
 import HeaderBar from "./../../inlines/HeaderBar";
 import BottomButton from "./../../inlines/BottomButton";
-import ReviewModalContainer from "../../modals/review/ReviewModalContainer";
-
 
 const useStyles = makeStyles((theme) => ({
   topImage: {
     overflow: "hidden",
     width: "100%",
     objectFit: "cover",
-    height: "235px",
+    height: "100%",
+    borderBottomLeftRadius: "15px",
+    borderBottomRightRadius: "15px",
   },
 
   listInfo: {
@@ -37,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
   photos: {
     // padding: "12px",
+  },
+  title:{
+    fontSize: "15px",
+    fontWeight: "bold",
+    padding: "4px 24px 9px 24px",
   },
 
   directoryInput: {
@@ -74,39 +69,48 @@ const useStyles = makeStyles((theme) => ({
     padding: "5px 15px",
     minWidth: "35px",
   },
-  searchShadow: {
-    position: "fixed",
-    width: "423px",
-    height: "80px",
-    background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
-  },
+  // searchShadow: {
+  //   position: "fixed",
+  //   width: "423px",
+  //   height: "80px",
+  //   background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
+  // },
   signInButton: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     margin: "8px",
+    whiteSpace: "nowrap",
   },
+  addPhoto: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "8px",
+    whiteSpace: "nowrap",
+  },
+  bottomInfo:{
+    marginBottom:"80px"
+  }
 }));
 
 const PlaceDescriptionBar = ({
-  setActiveBar,
   content,
   images,
-  places,
-  comments,
-  setDescriptionData,
-  setAddComment,
   setOpenEdit,
   setOpenUploadPhoto,
-
-  loadComments,
   profile,
   login,
-  anyLoading,
   setPhotoGallery,
   setImagesType
 }) => {
+  const [imagesList, setImagesList] = useState(images);
   const classes = useStyles();
+
+  useEffect(() => {
+  setImagesList(images);
+  setTopImgSrc(images.length > 0 ? images[0] : "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
+}, [images]);
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
@@ -117,7 +121,7 @@ const PlaceDescriptionBar = ({
   };
 
   const [topImgSrc, setTopImgSrc] = useState(
-    content.imageUrl ||
+    imagesList[0] ||
       "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
   );
 
@@ -125,13 +129,6 @@ const PlaceDescriptionBar = ({
     setTopImgSrc(
       "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
     );
-  };
-
-  const [extended, setExtended] = useState(false);
-  const handleExtended = () => {
-    const limit = !extended ? 20 : 3;
-    setExtended((v) => !v);
-    loadComments(content.photoFolder || content.name, limit);
   };
 
   return (
@@ -152,15 +149,14 @@ const PlaceDescriptionBar = ({
         {}
         {profile ? (
           <BottomButton
-            title="Editar informarções"
+            title="Editar informações"
             startIcon={CreateOutlinedIcon}
             onClick={handleOpenEdit}
           />
         ) : (
           <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
-            Fazer login para editar informação
-            </Button>
+            <BottomButton onClick={login}
+            title= "Faça login para editar"/>
           </div>
         )}
 
@@ -168,107 +164,28 @@ const PlaceDescriptionBar = ({
      
       <Divider />
       <div className={classes.photos}>
-        <HeaderBar title="Fotos" />
-        <PhotoCards images={images} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
+        <Typography className={classes.title}>
+          Fotos
+        </Typography>
+        <PhotoCards images={imagesList} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
         {profile ? (
+           <div className={classes.addPhoto}> 
           <BottomButton
             title="Adicionar uma foto"
             startIcon={CameraAltOutlinedIcon}
             onClick={handleOpenUploadPhoto}
           />
+          </div>
         ) : (
-          <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
-              Fazer login para adicionar uma foto
-            </Button>
+          <div className={classes.signInButton}>           
+            <BottomButton title="Faça login para editar" color="primary" variant="outlined" onClick={login}/>
           </div>
         )}
 
       </div>
-
-      <Divider />
-      <div className={classes.directory}>
-        {/* <HeaderBar title="Directory" />
-        <div className={classes.directoryFilters}>
-          <Input
-            placeholder="Search for places"
-            className={classes.directoryInputWrapper}
-            inputProps={{
-              "aria-label": "description",
-              className: classes.directoryInput,
-            }}
-            disableUnderline
-          />
-          <Chips />
-        </div>
-        {places ? (
-          <div className={classes.directoryPlaces}>
-            <PlacesList
-              items={places}
-              maxCount={4}
-              short
-              setActiveBar={setActiveBar}
-              setDescriptionData={setDescriptionData}
-              loading={anyLoading}
-              data={content}
-            />
-          </div>
-        ) : null}
-        <BottomButton title="View all" textButton /> */}
-      </div>
-      {/* <Divider />
-      <div className={classes.review}>
-        <HeaderBar title="Comentários" />
-        <RatingReview content={content} />
-        {profile ? (
-          <BottomButton
-            onClick={() => setAddComment(true)}
-            title="Escreva um comentário"
-            startIcon={RateReviewOutlinedIcon}
-          />
-        ) : (
-          <div className={classes.signInButton}>
-            <Button color="primary" variant="outlined" onClick={login}>
-              Faça login para escrever um comentário
-            </Button>
-          </div>
-        )}
-      </div>
-      <Divider />
-      <ReviewModalContainer /> */}
-
-      {/* <div className={classes.comments}>
-        <HeaderBar
-          title="Reviews"
-          buttons={
-            <>
-              <Button
-                className={classes.subheaderButton}
-                variant="outlined"
-                style={{ padding: "7px 8px", marginRight: "5px" }}
-                onClick={handleExtended}
-              >
-                <SearchOutlinedIcon fontSize="small" color="primary" />
-              </Button>
-              <Button
-                variant="outlined"
-                className={classes.subheaderButton}
-                onClick={handleExtended}
-              >
-                <SortOutlinedIcon fontSize="small" color="primary" />
-                Sort
-              </Button>
-            </>
-          }
-        />
-
-        <Comments
-          comments={comments}
-          content={content}
-          handleExtended={handleExtended}
-          extended={extended}
-        />
-      </div> */}
+      <div className={classes.bottomInfo}></div>
+      <Divider/>
+     
     </div>
   );
 };

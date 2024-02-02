@@ -21,7 +21,6 @@ export default function DatePickerViews({ onChange }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DatePicker', 'DatePicker', 'DatePicker']}>
         <DatePicker
-          label={'Mês e Ano'}
           views={['month', 'year']}
           onChange={(newValue) => onChange(newValue ? formatData(newValue) : '')}
         />

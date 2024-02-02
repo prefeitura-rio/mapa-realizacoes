@@ -22,6 +22,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { FormatAlignCenter } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
     zIndex: 600,
@@ -172,22 +173,7 @@ const PhotoGallery = ({
           </IconButton>
         </DialogTitle>
         <Divider />
-        <Tabs
-          value={tabValue}
-          onChange={(e, i) => {
-            setTabValue(i);
-          }}
-          indicatorColor="primary"
-          textColor="primary"
-          className={classes.tabs}
-          TabIndicatorProps={{ style: { width: "72px" } }}
-        >
-          <Tab label="All" className={classes.tab} />
-          <Tab label="Latest" className={classes.tab} />
-          <Tab label="Inside" className={classes.tab} />
-          <Tab label="360" className={classes.tab} />
-          <Tab label="Streetview" className={classes.tab} />
-        </Tabs>
+      
         <div className={classes.gallery}>
           <ImageList
             rowHeight={200}

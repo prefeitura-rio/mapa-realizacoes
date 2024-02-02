@@ -12,7 +12,7 @@ const UnderSearchContainer = (props) => {
   }, [props.placesData]);
 
   return (
-    <Slide direction="down" in={props.underSearchBar} mountOnEnter unmountOnExit >
+    <Slide direction="right" timeout={1000} in={props.underSearchBar} mountOnEnter unmountOnExit >
       <UnderSearchBar
         underSearchBar={props.underSearchBar}
         activeBar={props.activeBar}
@@ -25,7 +25,7 @@ const mapStateToProps = (state) => {
   return {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
-    placesData: state.places.placesData,
+    // placesData: state.places.placesData,
   };
 };
 

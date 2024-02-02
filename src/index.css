@@ -1,1 +1,10 @@
 
+@font-face {
+    font-family: 'Cera Pro Regular';
+    src: url('./utils/fonte/Cera Pro Regular.otf') format('opentype');
+  }
+  
+  * {
+    font-family: 'Cera Pro Regular', sans-serif !important;
+  }
+  

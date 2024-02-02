@@ -9,7 +9,14 @@ import "./map.css";
 import { useEffect, useState } from "react";
 import ContextMenu from "./ContextMenu";
 import { getIcon } from "../../icons/typeIcons";
-import { DESCRIPTION_BAR } from "../../redux/active/actions";
+import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
+import { getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
+import { isDesktop } from "../../redux/active/reducers";
+import { useNavigate } from 'react-router-dom';
+
+const capitalizeFirstLetter = (str) => {
+  return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
+};
 
 const Map = ({
   zoomDelta,
@@ -24,12 +31,50 @@ const Map = ({
   setUnderSearchBar,
   currentCoords,
   profile,
+  filtros,
+  bairroNome,
+  subprefeituraNome,
+  realizacaoId,
+  rota,setRota
 }) => {
   const [map, setMap] = useState(null);
-
+  const [filtered, setFiltered] = useState([]);
   points = points || [];
 
   const [contextCoords, setContextCoords] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("ROTAROTA " + JSON.stringify(rota.rota))
+    if (rota.rota == null && map) {
+    const coords = [-22.9200, -43.4250];
+    map.flyTo(coords,12)
+  }
+  } , [rota]);
+
+  useEffect(() => {
+    if (map && bairroNome) {
+       const bairro = points.find(point => toSnakeCase(bairroNome) === point.id_bairro);
+       if (bairro) {
+         const coords = Object.values(bairro.coords);
+         console.log("AAAAAAAAAABBBBBBBBB: " + coords)
+         map.flyTo(coords,13);
+       }
+    }
+   }, [bairroNome, map]);
+
+  useEffect(() => {
+    if (realizacaoId){
+    // const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
+    // if (realizacaoOk){
+    setUnderSearchBar(true);
+    setDescriptionData(realizacaoId);
+    setActiveBar(DESCRIPTION_BAR);
+    loadData(realizacaoId);
+    }
+    // }
+
+   }, [realizacaoId]);
 
   useEffect(() => {
     if (map) {
@@ -39,39 +84,110 @@ const Map = ({
     }
   }, [zoomDelta, map]);
 
+  const [listRealizacaoOrgao, setOrgaosNameFilter] = useState([]);
+  const [listRealizacaoPrograma, setTemasNameFilter] = useState([]);
+  const [listRealizacaoTema, setProgramasNameFilter] = useState([]);
+
+  const loadFiltrosInfo = async () => {
+    try {
+      const orgaoRef = await getRealizacaoOrgaoIds();
+      const temaRef = await getRealizacaoProgramaIds();
+      const programaRef = await getRealizacaoTemaIds();
+
+      if (!orgaoRef.empty && !temaRef.empty && !programaRef.empty) {
+        setOrgaosNameFilter(orgaoRef);
+        setTemasNameFilter(temaRef);
+        setProgramasNameFilter(programaRef);
+      } else {
+        console.error("Erro aqui <<== ");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar nomes dos filtros", error);
+    }
+  };
+
+  useEffect(() => {
+    loadFiltrosInfo();
+  }, []); // Simula o componentDidMount - Executa apenas uma vez
+
+  const isDesktopDevice = isDesktop();
+
+  useEffect(() => {
+
+    // console.log("filtros ===> ", filtros);
+    let newFiltered = [];
+    filtros.map((filtro) => {
+      filtro.button1?.map((button) => {
+        newFiltered.push(toSnakeCase(button));
+      });
+    });
+    filtros.map((filtro) => {
+      filtro.button2?.map((button) => {
+        newFiltered.push(toSnakeCase(button));
+      });
+    });
+    filtros.map((filtro) => {
+      filtro.button3?.map((button) => {
+        newFiltered.push(toSnakeCase(button));
+      });
+    });
+    setFiltered(newFiltered);
+
+  }, [filtros]);
+
   const onContextMenu = (e) => {
     setOpened(true);
     setContextCoords({ point: e.containerPoint, latlng: e.latlng });
   };
 
+  function toSnakeCase(str) {
+    return str
+      .trim()  // Remove espaços no início e fim da string
+      .toLowerCase()  // Converte tudo para lowercase
+      .replace(/\s+/g, '_');  // Substitui um ou mais espaços por underscore (_)
+  }
+
   const onMarkerClick = (point) => {
     setUnderSearchBar(true);
-    setDescriptionData(point.nome);
+    setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
-    loadData(point.nome);
-    console.log(point)
+    loadData(toSnakeCase(point.nome));
+    navigate(`/${toSnakeCase(point.nome)}`);
+    if (map) {
+      if (point) {
+        map.flyTo({
+          lat: point.coords.latitude,
+          lng: point.coords.longitude,
+        },14);
+      }}
+      setRota(toSnakeCase(point.nome))
   };
 
   const [opened, setOpened] = useState(false);
 
-  useEffect(() => {
-    if (map) {
-      if (currentCoords && currentCoords.latitude) {
-        map.flyTo({
-          lat: currentCoords.latitude,
-          lng: currentCoords.longitude,
-        });
-      } else {
-        map.flyTo({ lat: 52.2, lng: 104.2 });
-      }
-    }
-  }, [currentCoords]);
+  // Função auxiliar para renderizar o marcador
+  function renderMarker(point, index) {
+    return (
+      <Marker
+        key={point.id + index}
+        position={Object.values(point.coords)}
+        icon={getIcon("anyIcon")}
+        eventHandlers={{
+          click: (e) => onMarkerClick(point),
+        }}
+      >
+        <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+          <span>{capitalizeFirstLetter(point.nome)}</span>
+        </Tooltip>
+      </Marker>
+    );
+  }
 
   return (
     <>
       <MapContainer
-        center={[-22.9068, -43.3999]}  // Coordenadas para o Rio de Janeiro
-        zoom={11.5}
+        center={isDesktopDevice ? [-22.9200, -43.4250] : [-22.8800, -43.4200]}  // Coordenadas para o Rio de Janeiro
+        zoom={11.50}
         scrollWheelZoom={true}
         zoomControl={false}
         whenCreated={setMap}
@@ -83,20 +199,38 @@ const Map = ({
           tileSize={512}
           zoomOffset={-1}
         />
-        {points.map((point) => (
-          <Marker
-            key={Object.values(point.coords).join("")}
-            position={Object.values(point.coords)}
-            icon={getIcon("anyIcon")}
-            eventHandlers={{
-              click: (e) => onMarkerClick(point),
-            }}
-          >
-            <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-              <span>{point.id}</span>
-            </Tooltip>
-          </Marker>
-        ))}
+        {console.log("bairroNome: " + bairroNome)}
+        {points.map((point, index) => {
+          // Verifica se deve exibir todos os pontos
+          if (filtered.length === 0 && bairroNome === null && subprefeituraNome === null ) {
+            return renderMarker(point, index);
+          }
+
+          // Verifica se o ponto corresponde ao bairro selecionado
+          const isBairroMatch = bairroNome ? toSnakeCase(bairroNome) === point.id_bairro : true;
+        
+          // Verifica se o ponto corresponde ao subprefeitura selecionado
+          // const isSubprefeituraMatch = subprefeituraNome ? toSnakeCase(subprefeituraNome) === point.id_subprefeitura : true;
+
+          // Verifica se o ponto corresponde aos filtros aplicados
+          const isFilterMatch = filtered.length > 0 ? filtered.every((item) => {
+            const combinedId = point.id + "__" + item;
+            return listRealizacaoOrgao.includes(combinedId) || listRealizacaoPrograma.includes(combinedId) || listRealizacaoTema.includes(combinedId);
+          }) : true;
+
+          // Renderiza o marcador se corresponder ao bairro e aos filtros
+          if (isBairroMatch && isFilterMatch) {
+            return renderMarker(point, index);
+          }
+
+          // // Renderiza o marcador se corresponder ao bairro e aos filtros
+          // if (isSubprefeituraMatch && isFilterMatch) {
+          //   return renderMarker(point, index);
+          // }
+
+          return null;
+        })}
+
       </MapContainer>
 
       {contextCoords && opened ? (

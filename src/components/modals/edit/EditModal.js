@@ -23,7 +23,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-
+  editIcon: {
+    color: '#007E7D',
+  },
   closeButton: {
     position: "absolute",
     right: "8px",
@@ -90,28 +92,17 @@ const EditModal = ({ setOpenEdit, openEdit, setOpenEditInfo }) => {
               onClick={onEditInfoClick}
             >
               <ListItemIcon>
-                <EditIcon color="primary" />
+                <EditIcon className={classes.editIcon} />
               </ListItemIcon>
               <ListItemText
                 primary="Alterar título ou outros detalhes"
                 primaryTypographyProps={{ variant: "subtitle2" }}
                 secondaryTypographyProps={{ variant: "body2" }}
-                secondary="Edite título, bairro, status, etc"
+                secondary="Edite informações da realização"
               />
             </ListItem>
             <Divider component="li" />
-            {/* <ListItem button classes={{ gutters: classes.gutters }}>
-              <ListItemIcon>
-                <LocationOffIcon color="primary" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Close or remove"
-                primaryTypographyProps={{ variant: "subtitle2" }}
-                secondaryTypographyProps={{ variant: "body2" }}
-                secondary="Mark as closed, non-existent or duplicate"
-              />
-            </ListItem> */}
-            {/* <Divider component="li" /> */}
+           
           </List>
         </DialogContent>
       </Dialog>

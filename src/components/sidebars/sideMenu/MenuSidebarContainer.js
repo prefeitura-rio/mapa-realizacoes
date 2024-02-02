@@ -1,32 +1,31 @@
 import { connect, useDispatch } from "react-redux";
 import MenuSidebar from "./MenuSidebar";
-import { setMenuSidebar } from "../../../redux/active/actions";
+import { BAIRRO_DESCRIPTION_BAR, SUBPREFEITURA_DESCRIPTION_BAR, setMenuSidebar,setEhBairro } from "../../../redux/active/actions";
 import { loadData } from "../../../redux/place/actions";
-import { loadComments } from "../../../redux/comments/actions";
 import { loadImages } from "../../../redux/images/actions";
 import { useEffect } from "react";
+import { loadBairroData } from "../../../redux/bairros/actions";
+import { loadSubprefeituraData } from "../../../redux/subprefeituras/actions";
 
 const MenuSidebarContainer = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (props.descriptionData) {
-      dispatch(loadData(props.descriptionData));
-      dispatch(loadImages(props.descriptionData));
-      dispatch(loadComments(props.descriptionData));
+    
+    if (props.ehBairro) {
+      dispatch(loadBairroData(props.descriptionData));
     }
-  }, [props.descriptionData]);
+    else dispatch(loadSubprefeituraData(props.descriptionDataSubprefeitura));
+  }, [props.setEhBairro, props.descriptionData, props.descriptionDataSubprefeitura]);
 
   useEffect(() => {
     if (
       props.content &&
-      props.content.photoFolder &&
-      props.content.name !== props.content.photoFolder
+      props.content.image_folder
     ) {
-      dispatch(loadComments(props.content.photoFolder));
-      dispatch(loadImages(props.content.photoFolder));
+      dispatch(loadImages(props.content.image_folder));
     }
-  }, [props.content, props.descriptionData]);
+  }, [props.ehBairro,props.content, props.descriptionData]);
 
   return (
     <MenuSidebar
@@ -39,13 +38,16 @@ const MenuSidebarContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     menuSidebar: state.active.menuSidebar,
-    descriptionData: state.place.descriptionData,
+    descriptionData: state.bairros.descriptionData,
+    descriptionDataSubprefeitura: state.subprefeituras.descriptionData,
     content: state.place.content,
+    ehBairro: state.active.ehBairro,
   };
 };
 
 const mapDispatchToProps = {
   setMenuSidebar,
+  setEhBairro
 };
 
 export default connect(
