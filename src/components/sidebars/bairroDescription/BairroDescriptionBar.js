@@ -9,6 +9,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
+import PlaceHolder from "../../assets/placeholder_green.jpg"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -114,18 +115,18 @@ const BairroDescriptionBar = forwardRef(
     
     useEffect(() => {
       setImagesList(images_bairro);
-      setTopImgSrc(images_bairro.length > 0 ? images_bairro[0] : "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
+      setTopImgSrc(images_bairro.length > 0 ? images_bairro[0] : PlaceHolder);
     }, [images_bairro]);
 
 
     const [topImgSrc, setTopImgSrc] = useState(
       imagesList? imagesList[0] :
-      "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+      PlaceHolder
       );
       
       const onTopImageError = () => {
         setTopImgSrc(
-          "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+          PlaceHolder
           );
         };
 

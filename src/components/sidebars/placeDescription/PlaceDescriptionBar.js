@@ -10,6 +10,7 @@ import ListInfo from "./../../inlines/ListInfo";
 import BasicInfo from "./../../inlines/BasicInfo";
 import HeaderBar from "./../../inlines/HeaderBar";
 import BottomButton from "./../../inlines/BottomButton";
+import PlaceHolder from "../../assets/placeholder_green.jpg"
 
 const useStyles = makeStyles((theme) => ({
   topImage: {
@@ -109,7 +110,7 @@ const PlaceDescriptionBar = ({
 
   useEffect(() => {
   setImagesList(images);
-  setTopImgSrc(images.length > 0 ? images[0] : "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
+  setTopImgSrc(images.length > 0 ? images[0] : PlaceHolder);
 }, [images]);
 
   const handleOpenEdit = () => {
@@ -122,12 +123,12 @@ const PlaceDescriptionBar = ({
 
   const [topImgSrc, setTopImgSrc] = useState(
     imagesList[0] ||
-      "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+      PlaceHolder
   );
 
   const onTopImageError = () => {
     setTopImgSrc(
-      "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+      PlaceHolder
     );
   };
 
