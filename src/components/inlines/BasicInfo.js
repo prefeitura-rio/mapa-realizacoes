@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   datavizButton: {
     // pointerEvents: "none",
     borderRadius:"39px",
-    backgroundColor:"#0B60B0",
+    backgroundColor:"#4A6C94",
     color: "#FFFFFF",
     // paddingRight:"25px",
     fontSize:"12px"

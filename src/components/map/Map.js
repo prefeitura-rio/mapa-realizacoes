@@ -13,6 +13,11 @@ import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/action
 import { getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
 import { isDesktop } from "../../redux/active/reducers";
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import bairros_centros from "./centroideBairros";
+
+
 
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
@@ -35,46 +40,66 @@ const Map = ({
   bairroNome,
   subprefeituraNome,
   realizacaoId,
-  rota,setRota
+  rota,
+  setRota
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
   points = points || [];
 
+  const [realizacaoOk2, setRealizacaoOk]= useState(null)
+  const [alertOpen, setAlertOpen] = useState(false);
   const [contextCoords, setContextCoords] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log("ROTAROTA " + JSON.stringify(rota.rota))
     if (rota.rota == null && map) {
-    const coords = [-22.9200, -43.4250];
-    map.flyTo(coords,12)
-  }
-  } , [rota]);
+      const coords = [-22.9200, -43.4250];
+      map.flyTo(coords, 12)
+    }
+  }, [rota]);
 
   useEffect(() => {
     if (map && bairroNome) {
-       const bairro = points.find(point => toSnakeCase(bairroNome) === point.id_bairro);
-       if (bairro) {
-         const coords = Object.values(bairro.coords);
-         console.log("AAAAAAAAAABBBBBBBBB: " + coords)
-         map.flyTo(coords,13);
-       }
+      // Converte o nome do bairro para o formato correto (considerando acentuação)
+      const bairroFormatado = bairroNome.toLowerCase();
+
+      // Busca as informações do bairro no novo formato
+      const bairro = bairros_centros[bairroFormatado];
+      console.log("bairro ", bairro);
+
+      if (bairro) {
+        const coords = [bairro.lat, bairro.lng];
+        map.flyTo(coords, 13);
+      }
     }
-   }, [bairroNome, map]);
+  }, [bairroNome, map]);
+
+ 
+  const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
+
+  useEffect(()=>{
+   if( realizacaoOk?.nome){
+    setRealizacaoOk(realizacaoOk.image_folder)
+   }
+  },[realizacaoOk])
 
   useEffect(() => {
-    if (realizacaoId){
-    // const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
-    // if (realizacaoOk){
-    setUnderSearchBar(true);
-    setDescriptionData(realizacaoId);
-    setActiveBar(DESCRIPTION_BAR);
-    loadData(realizacaoId);
-    }
-    // }
 
-   }, [realizacaoId]);
+    console.log(">> realizacaoOk2: ", realizacaoOk2?.nome);
+    
+    if (realizacaoId && realizacaoOk2){
+      setUnderSearchBar(true);
+      setDescriptionData(realizacaoId);
+      setActiveBar(DESCRIPTION_BAR);
+      loadData(realizacaoId);
+      setAlertOpen(false)
+    }
+    if (realizacaoId && realizacaoOk == undefined){
+      setAlertOpen(true)
+    }
+  }, [realizacaoOk2]);
 
   useEffect(() => {
     if (map) {
@@ -158,9 +183,10 @@ const Map = ({
         map.flyTo({
           lat: point.coords.latitude,
           lng: point.coords.longitude,
-        },14);
-      }}
-      setRota(toSnakeCase(point.nome))
+        }, 14);
+      }
+    }
+    setRota(toSnakeCase(point.nome))
   };
 
   const [opened, setOpened] = useState(false);
@@ -185,6 +211,11 @@ const Map = ({
 
   return (
     <>
+      <Snackbar open={alertOpen} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={() => setAlertOpen(false)}>
+        <Alert onClose={() => setAlertOpen(false)} severity="warning">
+         A URL deve conter o id da realização.<br></br> Para mais informações entre em contato com o Escritório de Dados.
+        </Alert>
+      </Snackbar>
       <MapContainer
         center={isDesktopDevice ? [-22.9200, -43.4250] : [-22.8800, -43.4200]}  // Coordenadas para o Rio de Janeiro
         zoom={11.50}
@@ -202,13 +233,13 @@ const Map = ({
         {console.log("bairroNome: " + bairroNome)}
         {points.map((point, index) => {
           // Verifica se deve exibir todos os pontos
-          if (filtered.length === 0 && bairroNome === null && subprefeituraNome === null ) {
+          if (filtered.length === 0 && bairroNome === null && subprefeituraNome === null) {
             return renderMarker(point, index);
           }
 
           // Verifica se o ponto corresponde ao bairro selecionado
           const isBairroMatch = bairroNome ? toSnakeCase(bairroNome) === point.id_bairro : true;
-        
+
           // Verifica se o ponto corresponde ao subprefeitura selecionado
           // const isSubprefeituraMatch = subprefeituraNome ? toSnakeCase(subprefeituraNome) === point.id_subprefeitura : true;
 

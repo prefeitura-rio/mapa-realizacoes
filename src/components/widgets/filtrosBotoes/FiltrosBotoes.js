@@ -8,6 +8,7 @@ import { Typography } from '@mui/material';
 import { useEffect } from 'react';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { toSnakeCase } from '../../../utils/formatFile';
+// import { useSearchParams } from "react-router-dom"
 
 
 const NonSelectedIconComponent = () => (
@@ -29,6 +30,30 @@ const DropdownButtons = ({ orgaosNameFilter, temasNameFilter, programasNameFilte
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currentButtonName, setCurrentButtonName] = useState(null);
+  // const [searchParams] = useSearchParams();
+
+  // const idOrgao = searchParams.get('id_orgao');
+  // const idTema = searchParams.get('id_tema');
+  // const idPrograma = searchParams.get('id_programa');
+
+  // const getOrgaoNameById = (id) => orgaosNameFilter.find(orgao => orgao.id === id)?.name;
+  // const getTemaNameById = (id) => temasNameFilter.find(tema => tema.id === id)?.name;
+  // const getProgramaNameById = (id) => programasNameFilter.find(programa => programa.id === id)?.name;
+
+  // useEffect(() => {
+  //   const selectedOrgao = idOrgao ? getOrgaoNameById(idOrgao) : null;
+  //   const selectedTema = idTema ? getTemaNameById(idTema) : null;
+  //   const selectedPrograma = idPrograma ? getProgramaNameById(idPrograma) : null;
+  
+  //   const newSelectedOptions = {
+  //     button1: selectedOrgao ? [selectedOrgao] : [],
+  //     button2: selectedTema ? [selectedTema] : [],
+  //     button3: selectedPrograma ? [selectedPrograma] : []
+  //   };
+  
+  //   setSelectedOptions(newSelectedOptions);
+  // }, []);
+  
 
   const isOptionDisabled = (option, buttonName) => {
     switch (buttonName) {
