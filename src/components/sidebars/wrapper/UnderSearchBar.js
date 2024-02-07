@@ -82,6 +82,7 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
       }
       elevation={underSearchBar ? 12 : 4}
       square={underSearchBar ? true : false}
+      style={{backgroundColor:"#f4fdf4"}}
     >
       {renderSwitch(activeBar)}
     </Paper>

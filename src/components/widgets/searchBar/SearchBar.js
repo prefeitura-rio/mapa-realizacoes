@@ -44,11 +44,14 @@ const useStyles = makeStyles((theme) => {
     },
 
     colorInfo: {
-      color: "#64b5f6",
+      color: "#007E7D",
+    },
+    colorLoading: {
+      color: "#007E7D",
     },
 
     colorSecondary: {
-      color: "#bdbdbd",
+      color: "#007E7D",
     },
 
     input: {
@@ -281,11 +284,11 @@ const SearchBar = ({
             }
           >
             {anyLoading ? (
-              <CircularProgress size={20} />
+              <CircularProgress classes={{ colorPrimary: classes.colorLoading }} size={20} />
             ) : activeBar !== MAIN_UNDERSEARCH_BAR ? (
               <CloseIcon />
             ) : (
-              <DirectionsIcon />
+             null
             )}
           </IconButton>
         </Paper>

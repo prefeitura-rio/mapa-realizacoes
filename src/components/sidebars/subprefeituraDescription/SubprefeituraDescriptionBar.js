@@ -9,7 +9,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef } from "react";
 import { useState,useEffect } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
-
+import PlaceHolder from "../../assets/placeholder_green.jpg"
 
 const useStyles = makeStyles((theme) => ({
 
@@ -114,18 +114,18 @@ const SubprefeituraDescriptionBar = forwardRef(
     
     useEffect(() => {
       setImagesList(images_subprefeitura);
-      setTopImgSrc(images_subprefeitura.length > 0 ? images_subprefeitura[0] : "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png");
+      setTopImgSrc(images_subprefeitura.length > 0 ? images_subprefeitura[0] : PlaceHolder);
     }, [images_subprefeitura]);
 
 
     const [topImgSrc, setTopImgSrc] = useState(
       imagesList? imagesList[0] :
-      "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+      PlaceHolder
       );
       
       const onTopImageError = () => {
         setTopImgSrc(
-          "https://maps.gstatic.com/tactile/pane/default_geocode-2x.png"
+          PlaceHolder
           );
         };
 
