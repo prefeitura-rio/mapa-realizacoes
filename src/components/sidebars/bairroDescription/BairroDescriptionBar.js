@@ -9,7 +9,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
-import PlaceHolder from "../../assets/placeholder_green.jpg"
+import PlaceHolder from "../../assets/placeholder_blue.jpg"
 
 
 const useStyles = makeStyles((theme) => ({
