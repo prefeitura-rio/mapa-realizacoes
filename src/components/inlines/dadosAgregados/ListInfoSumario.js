@@ -19,7 +19,8 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Loading from "../../../utils/loading";
 import { connect } from "react-redux";
 import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, SUBPREFEITURA_DESCRIPTION_BAR } from "../../../redux/active/actions";
-
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -216,7 +217,9 @@ const ListInfoSumario = ({
           <span>
             {bairroInfo.ips}
             {' '}
-            <span>IPS</span>
+            <Tooltip title={"O Índice de Progresso Social avalia o desenvolvimento humano com base em indicadores sociais e ambientais."} placement="right" >
+          <span> IPS  <InfoOutlinedIcon sx={{ fontSize: 14, color: 'grey'}} style={{verticalAlign: "middle"}} ></InfoOutlinedIcon></span>
+          </Tooltip>
             {' '}
             <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
@@ -231,7 +234,9 @@ const ListInfoSumario = ({
         ? (
           <span>
             {bairroInfo.ranking_ips?.toLocaleString('pt-BR')}
-            <span>° no rank IPS</span>
+            <Tooltip title={"O Índice de Progresso Social avalia o desenvolvimento humano com base em indicadores sociais e ambientais."} placement="right" >
+          <span>° no rank IPS <InfoOutlinedIcon sx={{ fontSize: 14, color: 'grey'}} style={{verticalAlign: "middle"}} ></InfoOutlinedIcon></span>
+          </Tooltip>
             {' '}
             <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>

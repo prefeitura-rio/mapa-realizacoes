@@ -10,7 +10,7 @@ import ListInfo from "./../../inlines/ListInfo";
 import BasicInfo from "./../../inlines/BasicInfo";
 import HeaderBar from "./../../inlines/HeaderBar";
 import BottomButton from "./../../inlines/BottomButton";
-import PlaceHolder from "../../assets/placeholder_green.jpg"
+import PlaceHolder from "../../assets/placeholder_blue.jpg"
 
 const useStyles = makeStyles((theme) => ({
   topImage: {
