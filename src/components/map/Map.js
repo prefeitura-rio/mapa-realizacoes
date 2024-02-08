@@ -224,9 +224,8 @@ const Map = ({
         whenCreated={setMap}
       >
         <TileLayer
-          url="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}@2x.png?key=aqjLoB2kRuhWSZjNO6YJ"
-          // attribution='<a href="https://www.maptiler.com/copyright/\" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors | Prefeitura do Rio de Janeiro <a href="https://prefeitura.rio/" target="_blank"></a>'
-          maxZoom={18}
+          url="https://api.mapbox.com/styles/v1/escritoriodedados/cll16e75n00t901pi9iif9gpx/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZXNjcml0b3Jpb2RlZGFkb3MiLCJhIjoiY2t3bWdmcHpjMmJ2cTJucWJ4MGQ1Mm1kbiJ9.4hHJX-1pSevYoBbja7Pq4w"
+          minZoom={11}
           tileSize={512}
           zoomOffset={-1}
         />
