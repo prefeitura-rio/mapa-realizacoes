@@ -156,10 +156,10 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
         <SearchbarContainer />
         <UnderSearchContainer />
       </div>
-      <div className={classes.topRightWidgets}>
+      {/* <div className={classes.topRightWidgets}> */}
         {/* <InfoWidget/> */}
-        <UserWidget profile={profile} />
-      </div>
+        {/* <UserWidget profile={profile} />
+      </div> */}
       <div className={classes.filters}>
 
         <FiltrosBotoes orgaosNameFilter={orgaosNameFilter}
