@@ -67,15 +67,16 @@ const ContextMenu = ({
     <ClickAwayListener onClickAway={handleClickAway}>
       <Paper className={classes.paper}>
         <List disablePadding>
-          <ListItem button className={classes.listItem}>
+          {/* <ListItem button className={classes.listItem}>
             <ListItemText
               primary={getCoords(geoCoords).join(" ")}
             ></ListItemText>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem button className={classes.listItem}>
             <ListItemText
-              primary={"Você não tem autorização para fazer modificações."}
+              primary={"Busque por AP, Bairro, Subprefeitura."}
+              secondary={"Clique em uma obra para ver detalhes."}
             ></ListItemText>
           </ListItem>
 
