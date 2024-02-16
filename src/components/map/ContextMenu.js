@@ -73,7 +73,13 @@ const ContextMenu = ({
             ></ListItemText>
           </ListItem>
 
-          <ListItem
+          <ListItem button className={classes.listItem}>
+            <ListItemText
+              primary={"Você não tem autorização para fazer modificações."}
+            ></ListItemText>
+          </ListItem>
+
+          {/* <ListItem
             button
             className={classes.listItem}
             onClick={profile ? onAddClick : () => {dispatch(login());}}
@@ -85,7 +91,7 @@ const ContextMenu = ({
                   : "Por favor, faça login para adiconar realização."
               }
             ></ListItemText>
-          </ListItem>
+          </ListItem> */}
         </List>
       </Paper>
     </ClickAwayListener>

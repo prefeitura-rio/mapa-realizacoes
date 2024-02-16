@@ -148,7 +148,7 @@ const PlaceDescriptionBar = ({
           
         <br></br>
         {}
-        {profile ? (
+        {/* {profile ? (
           <BottomButton
             title="Editar informações"
             startIcon={CreateOutlinedIcon}
@@ -159,7 +159,7 @@ const PlaceDescriptionBar = ({
             <BottomButton onClick={login}
             title= "Faça login para editar"/>
           </div>
-        )}
+        )} */}
 
       </div>
      
@@ -169,7 +169,7 @@ const PlaceDescriptionBar = ({
           Fotos
         </Typography>
         <PhotoCards images={imagesList} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
-        {profile ? (
+        {/* {profile ? (
            <div className={classes.addPhoto}> 
           <BottomButton
             title="Adicionar uma foto"
@@ -181,7 +181,7 @@ const PlaceDescriptionBar = ({
           <div className={classes.signInButton}>           
             <BottomButton title="Faça login para editar" color="primary" variant="outlined" onClick={login}/>
           </div>
-        )}
+        )} */}
 
       </div>
       <div className={classes.bottomInfo}></div>
