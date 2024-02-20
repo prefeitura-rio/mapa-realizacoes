@@ -41,7 +41,8 @@ const Map = ({
   subprefeituraNome,
   realizacaoId,
   rota,
-  setRota
+  setRota,
+  underSearchBar
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -55,10 +56,21 @@ const Map = ({
   useEffect(() => {
     console.log("ROTAROTA " + JSON.stringify(rota.rota))
     if (rota.rota == null && map) {
-      const coords = [-22.9200, -43.4250];
-      map.flyTo(coords, 12)
+      const coords = [-22.9200, -43.3250];
+      map.flyTo(coords, 11)
     }
   }, [rota]);
+
+  useEffect(() => {
+    console.log("underSearchBar " + underSearchBar)
+    if (map && !underSearchBar) {
+      const coords = [-22.9200, -43.4250];
+      map.flyTo(coords, 12)
+    }else if (map && underSearchBar) {
+      const coords = [-22.9200, -43.3250];
+      map.flyTo(coords, 11)
+    }
+  }, [underSearchBar])
 
   useEffect(() => {
     if (map && bairroNome) {
@@ -217,8 +229,8 @@ const Map = ({
         </Alert>
       </Snackbar>
       <MapContainer
-        center={isDesktopDevice ? [-22.9200, -43.4250] : [-22.8800, -43.4200]}  // Coordenadas para o Rio de Janeiro
-        zoom={11.50}
+        center={isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200]}  // Coordenadas para o Rio de Janeiro
+        zoom={11}
         scrollWheelZoom={true}
         zoomControl={false}
         whenCreated={setMap}

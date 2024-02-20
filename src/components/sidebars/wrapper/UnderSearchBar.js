@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
       position: "fixed",
       top: "30px",
       bottom: "30px",
-      left: "30px",
+      right: "15px",
       width: "423px",
       borderRadius: "15px",
       overflowY: "scroll",

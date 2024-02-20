@@ -50,7 +50,7 @@ const useStyles = makeStyles({
 
   tools: {
     position: "absolute",
-    right: "20px",
+    left: "20px",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-end",
@@ -60,7 +60,7 @@ const useStyles = makeStyles({
 
   bottomWidgets: {
     bottom: 0,
-    width: (props) => (props.underSearchBar ? "calc(100vw - 423px)" : "100vw"),
+    width: (props) => (props.underSearchBar ? "calc(99vw)" : "100vw"),
     right: 0,
     position: "absolute",
     transition: "width 200ms cubic-bezier(0, 0, 0.2, 1)",
