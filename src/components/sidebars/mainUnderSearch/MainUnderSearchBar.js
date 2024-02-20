@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
     textTransform: "none",
     border: "1px solid #dadce0",
-    boxShadow: "0 1px 6px rgb(60 64 67 / 28%)",
+    boxShadow: "0 1px 6px #007E7D",
 
     "&:hover": {
       borderColor: " #DADCE0",
@@ -167,7 +167,6 @@ const MainUnderSearchBar = forwardRef(
             }}
           >
             <ExpandLessIcon className={classes.extendedIcon} />
-            <div style={{ marginRight: "8px", color: "#3C4043" }}>Ocultar</div>
           </Fab>
         </div>
       </div>

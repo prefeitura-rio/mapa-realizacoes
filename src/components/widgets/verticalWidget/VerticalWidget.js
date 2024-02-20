@@ -4,6 +4,7 @@ import MyLocationIcon from "@material-ui/icons/MyLocation";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
 import clsx from "clsx";
+import InfoIcon from '@mui/icons-material/Info';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,25 +21,36 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "30px",
     borderRadius: "50%",
   },
-  zoom: {
-    marginTop: "4px",
-    marginRight: "20px",
+  controlButtonInfo: {
+    backgroundColor: "#007E7D",
+    maxHeight: "30px",
+    maxWidth: "30px",
+    minHeight: "30px",
+    minWidth: "30px",
+    borderRadius: "50%",
   },
+  // zoom: {
+  //   marginTop: "4px",
+  //   marginRight: "20px",
+  // },
   buttons: {
     display: "flex",
     flexDirection: "column", // Make buttons stack vertically
-    alignItems: "center", // Center buttons horizontally
+    // alignItems: "flex-start", // Center buttons horizontally
   },
   zoomInButton: {
     width: "100%",
     marginBottom: "5px",
+    marginTop: "5px",
   },
   zoomOutButton: {
     width: "100%",
   },
 }));
 
-const VerticalWidget = ({ setZoomDelta }) => {
+
+
+const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar }) => {
   const classes = useStyles();
 
   const zoomIn = () => {
@@ -46,6 +58,10 @@ const VerticalWidget = ({ setZoomDelta }) => {
   };
   const zoomOut = () => {
     setZoomDelta(-1);
+  };
+
+  const handleMenuSidebar = () => {
+    setMenuSidebar(!menuSidebar);
   };
 
   return (
@@ -66,6 +82,16 @@ const VerticalWidget = ({ setZoomDelta }) => {
           >
             <RemoveIcon fontSize="small" className={classes.textSecondary} />
           </Button>
+          <Button
+            // variant="contained"
+            aria-label="menu"
+            className={clsx(classes.controlButtonInfo, classes.zoomInButton)}
+            onClick={handleMenuSidebar}
+          >
+            <InfoIcon sx={{ fontSize: 37, color: 'white'}} className={classes.textSecondary} />
+          </Button>
+
+         
         </div>
       </div>
     </div>

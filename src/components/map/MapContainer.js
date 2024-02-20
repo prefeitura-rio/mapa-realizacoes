@@ -42,6 +42,7 @@ const MapContainer = (props) => {
       realizacaoId = {id}
       rota = {props.rota}
       setRota = {props.setRota}
+      underSearchBar = {props.underSearchBar}
     />
   );
 };
@@ -55,7 +56,8 @@ const mapStateToProps = (state) => {
     filtros: state.filtros.filtros,
     bairroNome: state.bairros.descriptionData,
     subprefeituraNome: state.subprefeituras.content,
-    rota: state.rota
+    rota: state.rota,
+    underSearchBar: state.active.underSearchBar
   };
 };
 

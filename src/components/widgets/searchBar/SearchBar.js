@@ -33,10 +33,21 @@ const useStyles = makeStyles((theme) => {
       top: "40px",
     },
     paper: {
-      width: "395px",
+      width: "400px",
       padding: "0 4px",
       display: "flex",
       alignItems: "center",
+      borderRadius: '40px',
+      // paddingRight: "-50px",
+    },
+
+    buttonStyle : {
+      backgroundColor: 'white',
+      color: 'black',
+      borderRadius: '20px',
+      paddingLeft: '20px',
+      paddingRight: '20px',
+      textTransform: 'none'
     },
 
     bottomRound: {
@@ -163,6 +174,7 @@ const SearchBar = ({
   };
 
   const onDirectionsClick = () => {
+    handleClearInput();
     setBairroData(null);
     setContent(null);
     setPlacesData(null);
@@ -183,7 +195,10 @@ const SearchBar = ({
   const [bairrosSubSubprefeituras, setBairrosSubprefeituras] = useState([]);
   const [prefeituras, setSubprefeituras] = useState([]);
   const [bairros, setBairros] = useState([]);
-
+  const handleClearInput = () => {
+    setInputValue('');
+  };
+  
   useEffect(() => {
     const loadBairros = async () => {
       try {
@@ -231,22 +246,16 @@ const SearchBar = ({
       <div className={classes.searchbar}>
         <Paper
           component="form"
-          variant={underSearchBar ? "outlined" : "elevation"}
+          variant="elevation"
           className={
             searchPrompt && historyItems?.length
               ? clsx(classes.paper, classes.bottomRound)
               : classes.paper
           }
-          elevation={searchPrompt ? 1 : 2}
+          elevation={searchPrompt ? 1 : 3}
           onFocus={handleSearchPrompt}
         >
-          <IconButton
-            className={classes.iconButton}
-            aria-label="menu"
-            onClick={handleMenuSidebar}
-          >
-            <MenuIcon />
-          </IconButton>
+         
          
           <Autocomplete
             freeSolo
@@ -259,38 +268,41 @@ const SearchBar = ({
               <TextField
                 {...params}
                 onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => {}}
-                placeholder="Busque por bairro/subprefeitura"
+                placeholder="Busque por Bairro, Subprefeitura ou AP"
                 sx={{
                   "& fieldset": { border: 'none' },
                 }}
               />
             )}
           />
+         
+          <Divider className={classes.divider} orientation="vertical" />
           <IconButton
             type="submit"
             color="secondary"
             classes={{ colorSecondary: classes.colorSecondary }}
             aria-label="search"
+            onClick={
+              activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => {}
+            }
           >
-            <SearchIcon />
+             {anyLoading ? (
+              <CircularProgress classes={{ colorPrimary: classes.colorLoading }} size={20} />
+            ) : activeBar == MAIN_UNDERSEARCH_BAR ?  <SearchIcon /> : <CloseIcon />
+            
+            }
+            
           </IconButton>
-          <Divider className={classes.divider} orientation="vertical" />
-          <IconButton
+          {/* <IconButton
             color="primary"
             classes={{ colorPrimary: classes.colorInfo }}
             aria-label="right btn"
             onClick={
               activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => {}
             }
-          >
-            {anyLoading ? (
-              <CircularProgress classes={{ colorPrimary: classes.colorLoading }} size={20} />
-            ) : activeBar !== MAIN_UNDERSEARCH_BAR ? (
-              <CloseIcon />
-            ) : (
-             null
-            )}
-          </IconButton>
+          > */}
+           
+          {/* </IconButton> */}
         </Paper>
       </div>
     </ClickAwayListener>
