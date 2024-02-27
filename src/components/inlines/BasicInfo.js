@@ -61,8 +61,8 @@ const capitalizeFirstLetter = (str) => {
 
 const BasicInfo = ({ content }) => {
   const classes = useStyles();
-  const capitalizedNome = capitalizeFirstLetter(content.nome);
-  const capitalizedDescription = capitalizeFirstLetter(content.descricao);
+  const capitalizedNome = content.nome;
+  const capitalizedDescription = content.descricao;
 
   return (
     <div className={classes.basicInfo}>
