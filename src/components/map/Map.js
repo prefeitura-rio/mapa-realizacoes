@@ -215,7 +215,7 @@ const Map = ({
         }}
       >
         <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-          <span>{capitalizeFirstLetter(point.nome)}</span>
+          <span>{point.nome}</span>
         </Tooltip>
       </Marker>
     );
