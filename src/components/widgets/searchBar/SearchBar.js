@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme) => {
       display: "flex",
       alignItems: "center",
       borderRadius: '40px',
-      // paddingRight: "-50px",
+      height: "40px",
+      marginTop: "10px",
     },
 
     buttonStyle : {
