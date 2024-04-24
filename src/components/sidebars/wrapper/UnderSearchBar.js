@@ -14,7 +14,7 @@ import PlaceDescriptionContainer from "../placeDescription/PlaceDescriptionConta
 import BairroDescriptionContainer from "../bairroDescription/BairroDescriptionContainer";
 import SubrefeituraDescriptionContainer from "../subprefeituraDescription/SubprefeituraDescriptionContainer";
 // import PlacesContainer from "../places/PlacesContainer";
-
+import { Slide } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
 
   visible: {
@@ -35,10 +35,70 @@ const useStyles = makeStyles((theme) => ({
   "@media screen and (min-width: 540px)": {
     underSearch: {
       position: "fixed",
-      top: "30px",
-      bottom: "30px",
-      right: "15px",
-      width: "423px",
+      top: "3vh",
+      right: "3vh",
+      width: "25vw",
+      minWidth:"300px", 
+      height: "8.5vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+       display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch2: {
+      position: "fixed",
+      top: "14.5vh", //3vh + 8.5vh + 3vh
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth:"300px", 
+      height: "34vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+       display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch3: {
+      position: "fixed",
+      top: "51.5vh", //14.5vh + 34vh +3vh
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth:"300px", 
+      height: "8.5vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+       display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch4: {
+      position: "fixed",
+      top: "63vh", // 51.5vh + 8.5vh + 3vh
+      right: "3vh",
+      width: "25vw",
+      minWidth:"300px", 
+      height: "34vh",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -54,39 +114,81 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
+export const WhiteComponent = () => {
+  return (
+    <div>UnderSearchBar</div>
+  )
+}
+
+
 const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
   const classes = useStyles();
-
+ 
   const renderSwitch = (param) => {
-    switch (param) {
-      // case PLACES_BAR:
-      //   return <PlacesContainer />;
-      case BAIRRO_DESCRIPTION_BAR:
-        return <BairroDescriptionContainer />;
-      case SUBPREFEITURA_DESCRIPTION_BAR:
-        return <SubrefeituraDescriptionContainer />;
-      case DESCRIPTION_BAR:
-        return <PlaceDescriptionContainer />;
-      default:
-        return <MainUnderSearchContainer />;
-    }
+     switch (param) {
+       case BAIRRO_DESCRIPTION_BAR:
+         return <BairroDescriptionContainer />;
+       case SUBPREFEITURA_DESCRIPTION_BAR:
+         return <SubrefeituraDescriptionContainer />;
+       case DESCRIPTION_BAR:
+         return <PlaceDescriptionContainer />;
+       default:
+        //  return <MainUnderSearchContainer />;
+         return <WhiteComponent />;
+     }
   };
-
+ 
   return (
-    <Paper
-      ref={ref}
-      className={
-        underSearchBar
-          ? clsx(classes.underSearch, classes.open)
-          : clsx(classes.underSearch, classes.close)
-      }
-      elevation={underSearchBar ? 12 : 4}
-      square={underSearchBar ? true : false}
-      style={{backgroundColor:"white"}}
-    >
-      {renderSwitch(activeBar)}
-    </Paper>
+     <>
+       <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+         <Paper
+           ref={ref}
+           className={
+             underSearchBar
+               ? clsx(classes.underSearch, classes.open)
+               : clsx(classes.underSearch, classes.close)
+           }
+         >
+           {renderSwitch(activeBar)}
+         </Paper>
+       </Slide>
+       <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+         <Paper
+           className={
+             underSearchBar
+               ? clsx(classes.underSearch2, classes.open)
+               : clsx(classes.underSearch2, classes.close)
+           }
+         >
+           {renderSwitch(activeBar)}
+         </Paper>
+       </Slide>
+       <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+         <Paper
+           className={
+             underSearchBar
+               ? clsx(classes.underSearch3, classes.open)
+               : clsx(classes.underSearch3, classes.close)
+           }
+         >
+           {renderSwitch(activeBar)}
+         </Paper>
+       </Slide>
+       <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+         <Paper
+           className={
+             underSearchBar
+               ? clsx(classes.underSearch4, classes.open)
+               : clsx(classes.underSearch4, classes.close)
+           }
+         >
+           {renderSwitch(activeBar)}
+         </Paper>
+       </Slide>
+     </>
   );
-});
-
-export default UnderSearchBar;
+ });
+ 
+ export default UnderSearchBar;

@@ -40,6 +40,8 @@ const SearchbarContainer = (props) => {
       historyItems={props.historyItems}
       rota = {props.rota}
       setRota = {props.setRota}
+      temasNameFilter = {props.temasNameFilter}
+      programasNameFilter = {props.programasNameFilter}
     />
   );
 };
