@@ -42,7 +42,10 @@ const Map = ({
   realizacaoId,
   rota,
   setRota,
-  underSearchBar
+  underSearchBar,
+  tema,
+  programa,
+  realizacao
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -201,6 +204,7 @@ const Map = ({
     setRota(toSnakeCase(point.nome))
   };
 
+
   const [opened, setOpened] = useState(false);
 
   // Função auxiliar para renderizar o marcador
@@ -220,7 +224,7 @@ const Map = ({
       </Marker>
     );
   }
-
+ console.log("AAHAHUHEU points: ", points)
   return (
     <>
       <Snackbar open={alertOpen} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={() => setAlertOpen(false)}>
@@ -242,36 +246,33 @@ const Map = ({
           tileSize={512}
           zoomOffset={-1}
         />
-        {console.log("bairroNome: " + bairroNome)}
+
         {points.map((point, index) => {
-          // Verifica se deve exibir todos os pontos
-          if (filtered.length === 0 && bairroNome === null && subprefeituraNome === null) {
-            return renderMarker(point, index);
-          }
 
           // Verifica se o ponto corresponde ao bairro selecionado
           const isBairroMatch = bairroNome ? toSnakeCase(bairroNome) === point.id_bairro : true;
 
           // Verifica se o ponto corresponde ao subprefeitura selecionado
-          // const isSubprefeituraMatch = subprefeituraNome ? toSnakeCase(subprefeituraNome) === point.id_subprefeitura : true;
+          const isSubprefeituraMatch = subprefeituraNome ? toSnakeCase(subprefeituraNome) === point.id_subprefeitura : true;
 
-          // Verifica se o ponto corresponde aos filtros aplicados
-          const isFilterMatch = filtered.length > 0 ? filtered.every((item) => {
-            const combinedId = point.id + "__" + item;
-            return listRealizacaoOrgao.includes(combinedId) || listRealizacaoPrograma.includes(combinedId) || listRealizacaoTema.includes(combinedId);
-          }) : true;
+          // Verifica se o ponto corresponde ao tema selecionado
+          const isTemaMatch = tema ? 
+          listRealizacaoTema.includes(point.id + "__" + toSnakeCase(tema)) 
+          : true;
 
-          // Renderiza o marcador se corresponder ao bairro e aos filtros
-          if (isBairroMatch && isFilterMatch) {
+          const isProgramaMatch = programa ? 
+          listRealizacaoPrograma.includes(point.id + "__" + toSnakeCase(programa)) 
+          : true;
+          
+          const isRealizacaoMatch = realizacao ? 
+          point.id === toSnakeCase(realizacao)
+          : true;
+
+          // Renderiza o marcador se corresponder ao bairro e aos demais
+          if ((tema || bairroNome || subprefeituraNome || realizacao) && isBairroMatch && isTemaMatch && isProgramaMatch && isRealizacaoMatch && isSubprefeituraMatch) {
             return renderMarker(point, index);
           }
 
-          // // Renderiza o marcador se corresponder ao bairro e aos filtros
-          // if (isSubprefeituraMatch && isFilterMatch) {
-          //   return renderMarker(point, index);
-          // }
-
-          return null;
         })}
 
       </MapContainer>

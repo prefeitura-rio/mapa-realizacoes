@@ -1,176 +1,3 @@
-// import {
-//   Fab,
-//   makeStyles,
-//   ThemeProvider,
-//   createTheme
-// } from "@material-ui/core";
-
-// import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-// import { forwardRef, useEffect } from "react";
-// import { useState } from "react";
-// import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
-// import PlaceHolder from "../../assets/placeholder_blue.jpg"
-
-
-// const useStyles = makeStyles((theme) => ({
-
-//   listInfo: {
-//     padding: "6px 0",
-//   },
-
-//   photos: {
-//     // padding: "12px",
-//   },
-
-//   directoryInput: {
-//     border: "1px solid",
-//     boxSizing: "border-box",
-//     borderRadius: "8px",
-//     borderColor: "rgba(0, 0, 0, 0.23)",
-//     padding: "0 16px",
-//     marginBottom: "8px",
-//     height: "36px",
-
-//     "&:focus": {
-//       border: "2px solid",
-//       padding: "0 15px",
-//       borderColor: theme.palette.primary.main,
-//     },
-//   },
-
-//   directoryFilters: {
-//     padding: "0 5%",
-//   },
-//   fabContainer: {
-//     display: "flex",
-//     justifyContent: "center",
-//   },
-
-
-//   directoryInputWrapper: {
-//     width: "97%",
-//     margin: "0 1.5%",
-//   },
-
-//   fab: {
-//     position: "fixed",
-//     bottom: "20px",
-//     backgroundColor: "white",
-
-//     textTransform: "none",
-//     border: "1px solid #dadce0",
-//     boxShadow: "0 1px 6px rgb(60 64 67 / 28%)",
-
-//     "&:hover": {
-//       borderColor: " #DADCE0",
-//       backgroundColor: "#F1F3F4",
-//       transition: "none",
-//     },
-//   },
-
-//   searchShadow: {
-//     position: "fixed",
-//     width: "423px",
-//     height: "80px",
-//     background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
-//   },
-
-//   textSmall: {
-//     fontSize: "0.75rem",
-//   },
-//   marginZero: {
-//     margin: 0,
-//   },
-//   bottomInfo: {
-//     marginBottom: "30px"
-//   }
-
-// }));
-
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: "#007E7D",
-//     },
-//   },
-// });
-
-// const BairroDescriptionBar = forwardRef(
-//   ({ underSearchBar,
-//     bairro,
-//     images_bairro,
-//     dadosAgregadosAbaSumarioStatusEntregasBairro,
-//     dadosAgregadosAbaTemaBairro,
-//     dadosAgregadosAbaProgramaBairro,
-//     setDescriptionData,
-//     setUnderSearchBar,
-//     loadData,
-//     setPhotoGallery,
-//     setImagesType,
-//     setActiveBar
-//   }, ref) => {
-
-//     const [imagesList, setImagesList] = useState(images_bairro);
-//     const classes = useStyles();
-    
-//     useEffect(() => {
-//       setImagesList(images_bairro);
-//       setTopImgSrc(images_bairro.length > 0 ? images_bairro[0] : PlaceHolder);
-//     }, [images_bairro]);
-
-
-//     const [topImgSrc, setTopImgSrc] = useState(
-//       imagesList? imagesList[0] :
-//       PlaceHolder
-//       );
-      
-//       const onTopImageError = () => {
-//         setTopImgSrc(
-//           PlaceHolder
-//           );
-//         };
-
-//         // const handleUnderSearchBar = () => {
-//         //   setUnderSearchBar(!underSearchBar);
-//         // };
-
-//     console.log("=======> " + (bairro ? bairro.nome : " Nenhum nome disponível"));
-    
-//     const [tabValue, setTabValue] = useState(0);
-
-//     bairro = bairro || [];
-//     images_bairro = images_bairro || [];
-//     dadosAgregadosAbaSumarioStatusEntregasBairro = dadosAgregadosAbaSumarioStatusEntregasBairro || [];
-//     dadosAgregadosAbaTemaBairro = dadosAgregadosAbaTemaBairro || [];
-//     dadosAgregadosAbaProgramaBairro = dadosAgregadosAbaProgramaBairro || [];
-
-//     return (
-//       <div ref={ref}>
-//         <DadosAgregados
-//           topImgSrc={topImgSrc}
-//           onTopImageError={onTopImageError}
-//           bairro={bairro}
-//           tabValue={tabValue}
-//           setTabValue={setTabValue}
-//           images={images_bairro}
-//           dadosAgregadosAbaSumarioStatusEntregasBairro={dadosAgregadosAbaSumarioStatusEntregasBairro}
-//           dadosAgregadosAbaTemaBairro={dadosAgregadosAbaTemaBairro}
-//           dadosAgregadosAbaProgramaBairro={dadosAgregadosAbaProgramaBairro}
-//           setActiveBar={setActiveBar}
-//           loadData={loadData}
-//           setDescriptionData={setDescriptionData}
-//           setUnderSearchBar={setUnderSearchBar}
-//           setPhotoGallery={setPhotoGallery}
-//           setImagesType={setImagesType}
-//         />
-
-//       </div>
-//     );
-//   }
-// );
-// export default BairroDescriptionBar;
-
-
 import {
   Fab,
   makeStyles,
@@ -179,8 +6,7 @@ import {
   Slide,
   Paper,
   Box,
-  Typography,
-  CircularProgress
+  Typography
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -196,7 +22,7 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
-import BairroDescriptionContainer from "./BairroDescriptionContainer";
+import TemaDescriptionContainer from "./TemaDescriptionContainer";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -414,34 +240,39 @@ const theme = createTheme({
   },
 });
 
-const BairroDescriptionBar = forwardRef(
+const TemaDescriptionBar = forwardRef(
   ({ underSearchBar,
-    tema,
-    bairro,
-    images_bairro,
-    dadosAgregadosAbaSumarioStatusEntregasBairro,
-    dadosAgregadosAbaTemaBairro,
-    dadosAgregadosAbaProgramaBairro,
+    cidades,
+    dadosAgregadosAbaTemaCidade,
+    dadosAgregadosAbaProgramasCidade,
+    dadosAgregadosAbaSumarioInfoBasicasCidade,
+    dadosAgregadosAbaSumarioStatusEntregasCidade,
+    images_cidade,
+    setPhotoGallery,
+    setImagesType,
+    setActiveBar,
     setDescriptionData,
     setUnderSearchBar,
     loadData,
-    setPhotoGallery,
-    setImagesType,
-    setActiveBar
+
+    tema
+
+
+
   }, ref) => {
 
     const classes = useStyles();
     
-    const [dadosAgregadosAbaSumarioStatusEntregasBairroTotal,setDadosAgregadosAbaSumarioStatusEntregasBairroTotal] = useState(0)
+    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal,setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasBairro){
-        const total = dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasBairro?.concluida + dadosAgregadosAbaSumarioStatusEntregasBairro?.interrompida + dadosAgregadosAbaSumarioStatusEntregasBairro?.em_licitacao;
-        setDadosAgregadosAbaSumarioStatusEntregasBairroTotal(total);
+      if (dadosAgregadosAbaSumarioStatusEntregasCidade){
+        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
+        setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
       }
-    }, [dadosAgregadosAbaSumarioStatusEntregasBairro]);
+    }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
     
     return (
 <>
@@ -453,8 +284,8 @@ const BairroDescriptionBar = forwardRef(
             className={classes.underSearch}
           >
             <div className={classes.basicInfo}>
-              <Typography className={classes.titulo}>{bairro?bairro.nome:<CircularProgress size={25}/>}</Typography>
-              <Typography className={classes.subtitulo}> Bairro</Typography>
+              <Typography className={classes.titulo}>{tema}</Typography>
+              <Typography className={classes.subtitulo}> Temas</Typography>
             </div>
           </Paper>
         </Slide>
@@ -467,7 +298,7 @@ const BairroDescriptionBar = forwardRef(
               <Stack direction="row">
 
                 <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                <Tooltip placement="right" title={`Detalhe sobre o bairro ${tema}`}>
+                <Tooltip placement="right" title={`Detalhe sobre o ${tema}`}>
                   <IconButton>
                     <InfoIcon sx={{color:"black"}}/>
                   </IconButton>
@@ -535,4 +366,4 @@ const BairroDescriptionBar = forwardRef(
     );
   }
 );
-export default BairroDescriptionBar;
+export default TemaDescriptionBar;

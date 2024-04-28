@@ -2,7 +2,11 @@ import {
   Fab,
   makeStyles,
   ThemeProvider,
-  createTheme
+  createTheme,
+  Slide,
+  Paper,
+  Box,
+  Typography
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -10,8 +14,14 @@ import { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
-
-
+import clsx from "clsx";
+import { Stack } from "@mui/material";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import { useDispatch } from "react-redux";
+import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -84,6 +94,139 @@ const useStyles = makeStyles((theme) => ({
   },
   bottomInfo: {
     marginBottom: "30px"
+  },
+  visible: {
+    display: "block",
+  },
+
+  close: {
+    display: "none",
+  },
+  "@media screen and (max-width: 540px)": {
+    underSearch: {
+      height: "100vh",
+      width: "100vw",
+      overflow: "auto",
+      position: "relative",
+    },
+  },
+  "@media screen and (min-width: 540px)": {
+    underSearch: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      position: "fixed",
+      top: "3vh",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "8.5vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch2: {
+      position: "fixed",
+      top: "14.5vh", //3vh + 8.5vh + 3vh
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "34vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch3: {
+      position: "fixed",
+      top: "51.5vh", //14.5vh + 34vh +3vh
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "8.5vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch4: {
+      position: "fixed",
+      top: "63vh", // 51.5vh + 8.5vh + 3vh
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "34vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+  },
+  basicInfo: {
+    padding: "3px 20px",
+  },
+  dadosAgregadosCidade: {
+    // padding: "3px 20px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
+  statusButton: {
+    pointerEvents: "none",
+    borderRadius: "39px",
+    backgroundColor: "#007E7D",
+    color: "#FFFFFF",
+    padding: "1px 8px 1px 8px"
+  },
+  titulo: {
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+    marginBottom: "-5px"
+  },
+  subtitulo: {
+    // marginTop: "15px", 
+    opacity: 0.6,
+  },
+  sobreMunicipio: {
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+    // marginBottom:"-5px"
+  },
+  subtituloMunicipio: {
+    // marginTop: "15px", 
+    opacity: 0.8
   }
 
 }));
@@ -113,33 +256,23 @@ const MainUnderSearchBar = forwardRef(
 
   }, ref) => {
 
-    const [imagesList, setImagesList] = useState(images_cidade);
-
     const classes = useStyles();
+    
+    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal,setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-      setImagesList(images_cidade);
-    });
+      if (dadosAgregadosAbaSumarioStatusEntregasCidade){
+        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
+        setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
+      }
+    }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
     
-    const handleUnderSearchBar = () => {
-      setUnderSearchBar(!underSearchBar);
-    };
-    console.log("=======> " + (cidades && cidades.length > 0 ? cidades[0].nome : "Nenhum nome disponível"));
-
-    const [tabValue, setTabValue] = useState(0);
-  
-
-    cidades = cidades || [];
-    dadosAgregadosAbaTemaCidade = dadosAgregadosAbaTemaCidade || [];
-    dadosAgregadosAbaProgramasCidade = dadosAgregadosAbaProgramasCidade || [];
-    dadosAgregadosAbaSumarioInfoBasicasCidade = dadosAgregadosAbaSumarioInfoBasicasCidade || [];
-    dadosAgregadosAbaSumarioStatusEntregasCidade = dadosAgregadosAbaSumarioStatusEntregasCidade || [];
-
-
     return (
       <div ref={ref}>
-      
-          <DadosAgregados
+
+        {/* <DadosAgregados
             dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade}
             dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade}
             dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade}
@@ -168,7 +301,92 @@ const MainUnderSearchBar = forwardRef(
           >
             <ExpandLessIcon className={classes.extendedIcon} />
           </Fab>
-        </div>
+        </div> */}
+
+        <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+          <Paper
+            elevation={6}
+            ref={ref}
+            className={classes.underSearch}
+          >
+            <div className={classes.basicInfo}>
+              <Typography className={classes.titulo}>Rio de Janeiro</Typography>
+              <Typography className={classes.subtitulo}> Mapa de Realizações </Typography>
+            </div>
+          </Paper>
+        </Slide>
+        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+          <Paper
+            elevation={6}
+            className={classes.underSearch2}
+          >
+            <div className={classes.basicInfo}>
+              <Stack direction="row">
+
+                <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                <Tooltip placement="right" title="O Rio de Janeiro continua lindo...">
+                  <IconButton>
+                    <InfoIcon sx={{color:"black"}}/>
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+              <Typography className={classes.subtituloMunicipio}> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </Typography>
+            </div>
+          </Paper>
+        </Slide>
+        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+          <Paper
+            elevation={6}
+            className={classes.underSearch3}
+          >
+
+            <Box height="8.5vh" display="flex" justifyContent="space-between" alignItems="center">
+              <Box pl={2} display="flex" >
+                <AccountBalanceIcon />
+                <Box pl={0.5}>
+                  <Typography>{dadosAgregadosAbaSumarioStatusEntregasCidadeTotal} obras</Typography>
+                </Box>
+              </Box>
+              <Box display="flex" >
+              <AccountBalanceIcon />
+                <Box pl={0.5}>
+                  {/* TODO: valor agregado das obras. */}
+                  <Typography>4 bilhões</Typography>
+                </Box>
+              </Box>
+              <Box pr={2} display="flex">
+              <AccountBalanceIcon />
+                <Box pl={0.5}>
+                   {/* TODO: Puxar valor real */}
+                  <Typography>5 mi de m²</Typography>
+                </Box>
+              </Box>
+
+            </Box>
+
+          </Paper>
+        </Slide>
+        <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+          <Paper
+            elevation={6}
+            className={classes.underSearch4}
+          >
+            <div className={classes.basicInfo}>
+              <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+              <ul>
+                <li>
+                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.</Typography>
+                </li>
+                <li>
+                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...</Typography>
+                </li>
+                <li>
+                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.</Typography>
+                </li>
+              </ul>
+            </div>
+          </Paper>
+        </Slide>
       </div>
     );
   }

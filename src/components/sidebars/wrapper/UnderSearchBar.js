@@ -3,11 +3,13 @@ import { Paper } from "@material-ui/core";
 import clsx from "clsx";
 import { forwardRef } from "react";
 import {
+  TEMA_DESCRIPTION_BAR,
   BAIRRO_DESCRIPTION_BAR,
   DESCRIPTION_BAR,
   MAIN_UNDERSEARCH_BAR,
   PLACES_BAR,
   SUBPREFEITURA_DESCRIPTION_BAR,
+  PROGRAMA_DESCRIPTION_BAR,
 } from "../../../redux/active/actions";
 import MainUnderSearchContainer from "../mainUnderSearch/MainUnderSearchContainer";
 import PlaceDescriptionContainer from "../placeDescription/PlaceDescriptionContainer";
@@ -15,6 +17,8 @@ import BairroDescriptionContainer from "../bairroDescription/BairroDescriptionCo
 import SubrefeituraDescriptionContainer from "../subprefeituraDescription/SubprefeituraDescriptionContainer";
 // import PlacesContainer from "../places/PlacesContainer";
 import { Slide } from "@material-ui/core";
+import TemaDescriptionContainer from "../temaDescription/TemaDescriptionContainer";
+import ProgramaDescriptionContainer from "../programaDescription/ProgramaDescriptionContainer";
 const useStyles = makeStyles((theme) => ({
 
   visible: {
@@ -116,18 +120,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export const WhiteComponent = () => {
-  return (
-    <div>UnderSearchBar</div>
-  )
-}
-
-
 const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
   const classes = useStyles();
  
   const renderSwitch = (param) => {
      switch (param) {
+       case TEMA_DESCRIPTION_BAR:
+         return <TemaDescriptionContainer />;
+       case PROGRAMA_DESCRIPTION_BAR:
+         return <ProgramaDescriptionContainer />;
        case BAIRRO_DESCRIPTION_BAR:
          return <BairroDescriptionContainer />;
        case SUBPREFEITURA_DESCRIPTION_BAR:
@@ -135,14 +136,15 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
        case DESCRIPTION_BAR:
          return <PlaceDescriptionContainer />;
        default:
-        //  return <MainUnderSearchContainer />;
-         return <WhiteComponent />;
+         return <MainUnderSearchContainer />;
+        //  return <WhiteComponent />;
      }
   };
  
   return (
      <>
-       <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+      {renderSwitch(activeBar)}
+       {/* <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
          <Paper
            ref={ref}
            className={
@@ -186,7 +188,7 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
          >
            {renderSwitch(activeBar)}
          </Paper>
-       </Slide>
+       </Slide> */}
      </>
   );
  });
