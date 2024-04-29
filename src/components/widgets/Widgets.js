@@ -33,8 +33,8 @@ const useStyles = makeStyles({
   },
 
   topLeftWidgets: {
-    top: "0px",
-    left: "0px",
+    top: "3vh",
+    left: "3vh ",
     position: "absolute",
     zIndex: 502,
     maxWidth: "425px",
@@ -138,7 +138,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
     loadFiltrosInfoIds();
   }, []);
   return (
-    <div className={classes.widgets}>
+    <div>
       <div className={classes.bottomWidgets}>
         <div className={classes.bottomRightWidgets}>
           <div className={classes.tools}>
@@ -153,14 +153,14 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       </div>
 
       <div className={classes.topLeftWidgets}>
-        <SearchbarContainer />
+        <SearchbarContainer temasNameFilter={temasNameFilter} programasNameFilter={programasNameFilter} />
         <UnderSearchContainer />
       </div>
       {/* <div className={classes.topRightWidgets}> */}
         {/* <InfoWidget/> */}
         {/* <UserWidget profile={profile} />
       </div> */}
-      <div className={classes.filters}>
+      {/* <div className={classes.filters}>
 
         <FiltrosBotoes orgaosNameFilter={orgaosNameFilter}
           temasNameFilter={temasNameFilter}
@@ -169,7 +169,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
           temasNameFilterIds={temasNameFilterIds} 
           programasNameFilterIds={programasNameFilterIds}
           setFiltros={setFiltros}></FiltrosBotoes>
-      </div>
+      </div> */}
     </div>
   );
 };

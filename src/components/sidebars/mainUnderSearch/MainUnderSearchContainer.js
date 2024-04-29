@@ -23,6 +23,10 @@ const MainUnderSearchContainer = (props) => {
     dispatch(loadDadosAgregadosAbaProgramasCidade());
   }, []);
 
+  useEffect(() => {
+   console.log("dadosAgregadosAbaSumarioStatusEntregasCidade, " , props.dadosAgregadosAbaSumarioStatusEntregasCidade)
+  }, [props.dadosAgregadosAbaSumarioStatusEntregasCidade]);
+
   return (
       <MainUnderSearchBar
         underSearchBar={props.underSearchBar}

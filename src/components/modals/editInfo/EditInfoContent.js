@@ -24,7 +24,7 @@ import { useEffect, useRef, useState } from "react";
 import PlaceIcon from '@mui/icons-material/Place';
 import { useCallback } from "react";
 import AddPhotoBlock from "../nested/AddPhotoBlock";
-import { createUpdateRealizacaoFromForm } from "../../../firebase";
+// import { createUpdateRealizacaoFromForm } from "../../../firebase";
 import clsx from "clsx";
 import MySchedule from "./MySchedule";
 import { getTileImage } from "../../../utils/getTileImage";
@@ -180,7 +180,8 @@ const EditInfoModal = ({
       profile,
       contentSnapshot: contentSnapshot
     };
-    await createUpdateRealizacaoFromForm(data);
+    // await createUpdateRealizacaoFromForm(data);
+    console.error("FORMS IS NOW DISABLED. PLEASE REPORT.")
 
     setOpenEditInfo(false);
     setDisabled(false);

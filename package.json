@@ -40,11 +40,14 @@
     "react-image-file-resizer": "^0.4.7",
     "react-lazy-load-image-component": "^1.5.1",
     "react-leaflet": ">=3.1.0 <3.2.0 || ^3.2.1",
+    "react-material-ui-carousel": "^3.4.2",
     "react-onclickoutside": "^6.11.2",
     "react-redux": "^7.2.4",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.21.3",
     "react-scripts": "4.0.3",
     "react-scroll-horizontal": "^1.6.6",
+    "react-slick": "^0.30.2",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
@@ -52,6 +55,7 @@
     "redux-thunk": "^2.3.0",
     "sass": "^1.35.2",
     "sharp": "^0.29.0",
+    "slick-carousel": "^1.8.1",
     "web-vitals": "^1.1.2"
   },
   "devDependencies": {

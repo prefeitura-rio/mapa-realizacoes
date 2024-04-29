@@ -9,13 +9,16 @@ import {
   makeStyles,
   ClickAwayListener,
   CircularProgress,
+  Popper,
+  Typography,
+  Fade,
 } from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import CloseIcon from "@material-ui/icons/Close";
-import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, SUBPREFEITURA_DESCRIPTION_BAR } from "../../../redux/active/actions";
+import { BAIRRO_DESCRIPTION_BAR, DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, PROGRAMA_DESCRIPTION_BAR, SUBPREFEITURA_DESCRIPTION_BAR, TEMA_DESCRIPTION_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
 import { getListBairroName, getListSubprefeituraName } from "../../../firebase";
@@ -23,26 +26,48 @@ import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../../../redux/subprefeituras/actions";
 import { loadDadosAgregadosAbaSumarioStatusEntregasBairro } from "../../../redux/bairros/actions";
 import { useNavigate } from 'react-router-dom';
+import Slide from '@mui/material/Slide';
+import { Stack } from "@mui/material";
+import { set } from "date-fns";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { setPrograma, setRealizacao, setTema } from "../../../redux/filtros/actions";
+import BackspaceIcon from '@mui/icons-material/Backspace';
+import { toSnakeCase } from "../../../utils/formatFile";
 
 const useStyles = makeStyles((theme) => {
   return {
     searchbar: {
-      position: "absolute",
+      position: "absolute !important",
       zIndex: 2,
-      left: "40px",
-      top: "40px",
     },
     paper: {
       width: "400px",
-      padding: "0 4px",
       display: "flex",
       alignItems: "center",
-      borderRadius: '40px',
-      height: "40px",
-      marginTop: "10px",
+      borderRadius: '20px',
+      height: "60px",
+      zIndex: 1000,
+    },
+    paperButton: {
+      position: "absolute",
+      marginTop: "60px",
+      width: "400px",
+      display: "flex",
+      alignItems: "center",
+      borderRadius: '20px',
+      height: "60px",
+      zIndex: 1000,
+    },
+    paperBackground: {
+      width: "400px",
+      display: "flex",
+      borderRadius: '20px',
+      height: "91.5vh",
+      zIndex: 1000,
+      paddingBottom: "20px",
     },
 
-    buttonStyle : {
+    buttonStyle: {
       backgroundColor: 'white',
       color: 'black',
       borderRadius: '20px',
@@ -63,7 +88,7 @@ const useStyles = makeStyles((theme) => {
     },
 
     colorSecondary: {
-      color: "#007E7D",
+      color: "grey"
     },
 
     input: {
@@ -116,6 +141,15 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
+
+const CustomPaperSearch = (props) => {
+  return (
+    <>
+      <Paper elevation={0} {...props} />
+    </>
+  )
+};
+
 const SearchBar = ({
   menuSidebar,
   setMenuSidebar,
@@ -132,16 +166,39 @@ const SearchBar = ({
   setPlacesData,
   setEhBairro,
   historyItems,
-  setRota
+  temasNameFilter,
+  programasNameFilter,
+  setRota,
+  setTema,
+  setPrograma,
+  setRealizacao,
+  tema,
+  programa,
+  realizacao,
+  setDescriptionData,
+  loadData
 }) => {
+  const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [showMenuBar, setShowMenuBar] = useState(false);
+  const [bairroName, setBairroName] = useState(null);
+  const [showTemas, setShowTemas] = useState(true);
+  const [showProgramas, setShowProgramas] = useState(false);
+  const [showRealizacoes, setShowRealizacoes] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("tema", tema)
+    console.log("programa", programa)
+    console.log("realizacao", realizacao)
+  }, [tema, programa, realizacao]);
+
   const handleBairroSubprefeituraChange = (event, name) => {
     if (name) {
       console.log('Bairro/prefeitura selecionado(a):', name);
+      setBairroName(name);
     }
-    
-  
     // Check if name is a prefeitura
     if (bairros.includes(name)) {
       setBairroData(name);
@@ -149,24 +206,70 @@ const SearchBar = ({
       setEhBairro(true);
       console.log('Bairro selecionado: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
-    } 
-    else if (prefeituras.includes(name)){
+      setInputValueBairroSubprefeitura(name);
+    }
+    else if (prefeituras.includes(name)) {
       setSubprefeituraData(name);
       setActiveBar(SUBPREFEITURA_DESCRIPTION_BAR);
       setEhBairro(false);
       console.log('Subprefeitura selecionada: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(name));
+      setInputValueBairroSubprefeitura(name);
     }
     else {
       console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
     }
   };
-  
+
+  const [inputValueTema, setInputValueTema] = useState(undefined);
+  const handleTemaChange = (event, newValue) => {
+    setInputValueTema(newValue);
+    setShowProgramas(true);
+    setShowTemas(false);
+    setShowRealizacoes(false);
+    setTema(newValue);
+    setActiveBar(TEMA_DESCRIPTION_BAR);
+  };
+  useEffect(() => {
+    // @Gabriel
+    // aqui faremos a chamada pra pegar todos os programas relacionado ao tema
+    // setProgramasFromTema(resultado da chamada);
+  }, [tema]);
+  const [programasFromTema, setProgramasFromTema] = useState(["Creches E Edi", "programa2", "programa3"]);
+
+  const [inputValuePrograma, setInputValuePrograma] = useState(undefined);
+  const handleProgramaChange = (event, newValue) => {
+    setInputValuePrograma(newValue);
+    setShowRealizacoes(true);
+    setShowTemas(false);
+    setShowProgramas(false);
+    setPrograma(newValue);
+    setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+  };
+
+  useEffect(() => {
+    // @Gabriel
+    // aqui faremos a chamada pra pegar todos as realizacoes relacionadas ao programa
+    // setRealizacoesFromPrograma(resultado da chamada);
+  }, [programa]);
+  const [realizacoesFromPrograma, setRealizacoesFromPrograma] = useState(["EDI Beth Carvalho", "realizacao2", "realizacao3"]);
+  const [inputValueRealizacao, setInputValueRealizacao] = useState(undefined);
+  const handleRealizacaoChange = (event, newValue) => {
+    setInputValueRealizacao(newValue);
+    setRealizacao(newValue);
+    setActiveBar(DESCRIPTION_BAR);
+    setDescriptionData(toSnakeCase(newValue));
+    loadData(toSnakeCase(newValue));
+  };
+  //mock
+
   const handleSearchPrompt = () => {
     setSearchPrompt();
   };
 
   const handleClickOutside = () => {
+    setShowSearchBar(false);
+    setShowMenuBar(false);
     if (searchPrompt) setSearchPrompt();
   };
 
@@ -174,8 +277,9 @@ const SearchBar = ({
     setMenuSidebar(!menuSidebar);
   };
 
-  const onDirectionsClick = () => {
-    handleClearInput();
+  const handleCleanBairroInput = () => {
+    console.log("clickei")
+    setInputValueBairroSubprefeitura("");
     setBairroData(null);
     setContent(null);
     setPlacesData(null);
@@ -184,28 +288,28 @@ const SearchBar = ({
     navigate(`/`);
   };
 
-  const handleOnfocus = () =>{
+  const handleOnfocus = () => {
     setUnderSearchBar(true);
     setActiveBar(MAIN_UNDERSEARCH_BAR);
   }
 
-  const inputRef = useRef(null);
   const classes = useStyles();
 
-  const [inputValue, setInputValue] = useState("");
   const [bairrosSubSubprefeituras, setBairrosSubprefeituras] = useState([]);
   const [prefeituras, setSubprefeituras] = useState([]);
   const [bairros, setBairros] = useState([]);
+  const [temaName, setTemaName] = useState(null);
+
   const handleClearInput = () => {
-    setInputValue('');
+    // setInputValue('');
   };
-  
+
   useEffect(() => {
     const loadBairros = async () => {
       try {
         const bairroRef = await getListBairroName();
         const prefeituraRef = await getListSubprefeituraName(); // Obter os nomes das prefeituras
-  
+
         if (!bairroRef.empty) {
           const bairrosSubSubprefeituras = [];
           const bairrosName = [];
@@ -216,7 +320,7 @@ const SearchBar = ({
             bairrosName.push(bairroName);
           });
           setBairros(bairrosName);
-  
+
           // Incluir os nomes das prefeituras na lista de bairros
           const prefeiturasNames = [];
           prefeituraRef.forEach((doc) => {
@@ -236,76 +340,410 @@ const SearchBar = ({
         console.error("Erro ao buscar nomes de bairros/prefeituras:", error);
       }
     };
-  
+
     loadBairros();
   }, []);
-  
-  
+
+
+  const CustomPaperMenu = (props) => {
+
+    return (
+      <>
+        <Paper elevation={0} {...props} />
+      </>
+    )
+  };
 
   return (
+
     <ClickAwayListener onClickAway={handleClickOutside}>
-      <div className={classes.searchbar}>
-        <Paper
-          component="form"
-          variant="elevation"
-          className={
-            searchPrompt && historyItems?.length
-              ? clsx(classes.paper, classes.bottomRound)
-              : classes.paper
-          }
-          elevation={searchPrompt ? 1 : 3}
-          onFocus={handleSearchPrompt}
-        >
-         
-         
-          <Autocomplete
-            freeSolo
-            className={classes.input}
-            value={inputValue}
-            onChange={handleBairroSubprefeituraChange}
-            disableClearable
-            options={bairrosSubSubprefeituras}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => {}}
-                placeholder="Busque por Bairro, Subprefeitura ou AP"
-                sx={{
-                  "& fieldset": { border: 'none' },
-                }}
-              />
-            )}
-          />
-         
-          <Divider className={classes.divider} orientation="vertical" />
-          <IconButton
-            type="submit"
-            color="secondary"
-            classes={{ colorSecondary: classes.colorSecondary }}
-            aria-label="search"
-            onClick={
-              activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => {}
-            }
-          >
-             {anyLoading ? (
-              <CircularProgress classes={{ colorPrimary: classes.colorLoading }} size={20} />
-            ) : activeBar == MAIN_UNDERSEARCH_BAR ?  <SearchIcon /> : <CloseIcon />
-            
-            }
-            
-          </IconButton>
-          {/* <IconButton
-            color="primary"
-            classes={{ colorPrimary: classes.colorInfo }}
-            aria-label="right btn"
-            onClick={
-              activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => {}
-            }
-          > */}
-           
-          {/* </IconButton> */}
-        </Paper>
-      </div>
+      <Stack direction="row" spacing={!showMenuBar && !showSearchBar ? 2 : (showMenuBar ? 52 : 8)}>
+        {!showMenuBar ?
+
+          (
+            <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
+              <IconButton
+                style={{ backgroundColor: 'transparent' }}
+                color="grey"
+                onClick={() => { setShowMenuBar(!showMenuBar); setShowSearchBar(showMenuBar) }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Paper>
+          )
+
+          :
+
+          (
+            // <Slide direction="down" in={showMenuBar} mountOnEnter unmountOnExit>
+            <div className={classes.searchbar}>
+              {/* bigger paper background */}
+              <Paper
+                component="form"
+                variant="elevation"
+                className={classes.paperBackground}
+                // elevation={searchPrompt ? 1 : 3}
+                elevation={3}
+              >
+                {/* header paper */}
+                <Paper
+                  component="form"
+                  variant="elevation"
+                  className={
+                    searchPrompt && historyItems?.length
+                      ? clsx(classes.paper, classes.bottomRound)
+                      : classes.paper
+                  }
+                  elevation={3}
+                  onFocus={handleSearchPrompt}
+                >
+                  {/* IDEIA PARA O BOTAO VOLTAR:showTemas, showProgramas, showRealizacoes */}
+                  {/* {(inputValueTema === undefined && inputValuePrograma === undefined) && */}
+                  {showTemas && !showProgramas &&
+                    <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>Temas</Typography>
+                  }
+
+                  {showTemas && !showProgramas && (
+                    <Autocomplete
+                      freeSolo
+                      className={classes.input}
+                      value={inputValueTema}
+                      onChange={handleTemaChange}
+                      disableClearable
+                      options={temasNameFilter}
+                      PaperComponent={CustomPaperMenu}
+                      ListboxProps={{ style: { maxHeight: "80vh" } }}
+                      inputprops={{
+                        style: {
+                          color: 'black'
+                        }
+                      }}
+                      componentsProps={{
+                        paper: {
+                          sx: {
+                            marginLeft: "-5px",
+                            marginTop: "15px",
+                            width: "392px",
+                            height: "80vh",
+                            overflowY: "hidden",
+                            borderRadius: '0px',
+                            // borderBottomLeftRadius: '5px',
+                            // borderBottomRightRadius: '25px',
+
+
+                          }
+                        }
+                      }}
+                      open={showMenuBar}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+
+                          onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                          placeholder="Temas"
+                          sx={{
+                            "& fieldset": { border: 'none' },
+                            input: {
+                              visibility: 'hidden',
+                              color: 'black',
+                              caretColor: 'transparent',
+                              "&::placeholder": {
+                                opacity: 0,
+                              },
+                            },
+                          }}
+
+                        />
+                      )}
+                    />)}
+
+                  {showProgramas && !showTemas &&
+                    <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>{inputValueTema}</Typography>
+                  }
+
+                  {showProgramas && !showTemas && (
+                    <Autocomplete
+                      freeSolo
+                      className={classes.input}
+                      value={inputValuePrograma}
+                      onChange={handleProgramaChange}
+                      disableClearable
+                      options={programasFromTema}
+                      PaperComponent={CustomPaperMenu}
+                      ListboxProps={{ style: { maxHeight: "80vh" } }}
+                      inputprops={{
+                        style: {
+                          color: 'black'
+                        }
+                      }}
+                      componentsProps={{
+                        paper: {
+                          sx: {
+                            marginLeft: "-5px",
+                            marginTop: "15px",
+                            width: "392px",
+                            height: "70vh",
+                            overflowY: "hidden",
+                            borderRadius: '0px',
+                            // borderBottomLeftRadius: '5px',
+                            // borderBottomRightRadius: '25px',
+
+
+                          }
+                        }
+                      }}
+                      open={showMenuBar}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+
+                          onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                          placeholder="Temas"
+                          sx={{
+                            "& fieldset": { border: 'none' },
+                            input: {
+                              visibility: 'hidden',
+                              color: 'black',
+                              caretColor: 'transparent',
+                              "&::placeholder": {
+                                opacity: 0,
+                              },
+                            },
+                          }}
+
+                        />
+                      )}
+                    />)}
+
+                  {showRealizacoes &&
+                    <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>{inputValuePrograma}</Typography>
+                  }
+                  {showRealizacoes && (
+                    <Autocomplete
+                      freeSolo
+                      className={classes.input}
+                      value={inputValueRealizacao}
+                      onChange={handleRealizacaoChange}
+                      disableClearable
+                      options={realizacoesFromPrograma}
+                      PaperComponent={CustomPaperMenu}
+                      ListboxProps={{ style: { maxHeight: "80vh" } }}
+                      inputprops={{
+                        style: {
+                          color: 'black'
+                        }
+                      }}
+                      componentsProps={{
+                        paper: {
+                          sx: {
+                            marginLeft: "-5px",
+                            marginTop: "15px",
+                            width: "392px",
+                            height: "70vh",
+                            overflowY: "hidden",
+                            borderRadius: '0px',
+                            // borderBottomLeftRadius: '5px',
+                            // borderBottomRightRadius: '25px',
+
+
+                          }
+                        }
+                      }}
+                      open={showMenuBar}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+
+                          onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                          placeholder="Temas"
+                          sx={{
+                            "& fieldset": { border: 'none' },
+                            input: {
+                              visibility: 'hidden',
+                              color: 'black',
+                              caretColor: 'transparent',
+                              "&::placeholder": {
+                                opacity: 0,
+                              },
+                            },
+                          }}
+
+                        />
+                      )}
+                    />)}
+
+
+                  {showProgramas ?
+
+                    <IconButton
+                      style={{ backgroundColor: 'transparent' }}
+                      color="grey"
+                      onClick={() => { setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(TEMA_DESCRIPTION_BAR) }}
+                    >
+                      <ArrowBackIosIcon />
+                    </IconButton>
+
+                    :
+
+                    (showRealizacoes ? <IconButton
+                      style={{ backgroundColor: 'transparent' }}
+                      color="grey"
+                      onClick={() => { setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}
+                    >
+                      <ArrowBackIosIcon />
+                    </IconButton> : "")
+
+                  }
+                  {inputValueTema &&
+                  <Divider className={classes.divider} orientation="vertical" />
+                  }
+                  <IconButton
+                    // type="submit"
+                    style={{ backgroundColor: 'transparent' }}
+                    color="secondary"
+                    classes={{ colorSecondary: classes.colorSecondary }}
+                    aria-label="search"
+
+                  >
+                    <CloseIcon onClick={() => setShowMenuBar(false)} />
+
+                  </IconButton>
+                </Paper>
+              </Paper>
+            </div>
+            // </Slide>
+          )}
+
+        {!showSearchBar ?
+
+          (
+            <Fade in={!inputValueRealizacao}>
+            <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
+              <IconButton
+                style={{ backgroundColor: 'transparent' }}
+                color="grey"
+                onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
+              >
+                <SearchIcon />
+              </IconButton>
+            </Paper>
+            </Fade>
+          )
+
+          :
+
+          (
+            // <Slide direction="down" in={showSearchBar} mountOnEnter unmountOnExit>
+            <div className={classes.searchbar}>
+
+              <Paper
+                component="form"
+                variant="elevation"
+                className={classes.paperBackground}
+                // elevation={searchPrompt ? 1 : 3}
+                elevation={3}
+              >
+                <Paper
+                  component="form"
+                  variant="elevation"
+                  className={
+                    searchPrompt && historyItems?.length
+                      ? clsx(classes.paper, classes.bottomRound)
+                      : classes.paper
+                  }
+                  // elevation={searchPrompt ? 1 : 3}
+                  elevation={3}
+                  onFocus={handleSearchPrompt}
+                >
+
+
+                  <Autocomplete
+                    freeSolo
+                    // disablePortal
+                    className={classes.input}
+                    value={inputValueBairroSubprefeitura}
+                    onChange={handleBairroSubprefeituraChange}
+                    disableClearable
+                    options={bairrosSubSubprefeituras}
+                    PaperComponent={CustomPaperSearch}
+                    ListboxProps={{ style: { maxHeight: "80vh" } }}
+                    componentsProps={{
+                      paper: {
+                        sx: {
+                          marginTop: "15px",
+                          marginLeft: "-5px",
+                          width: "392px",
+                          height: "80vh",
+                          overflowY: "hidden",
+                          borderRadius: '0px',
+                          borderBottomLeftRadius: '5px',
+                          borderBottomRightRadius: '25px',
+
+                        }
+                      }
+                    }}
+                    open={showSearchBar}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        autoFocus={true}
+                        // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                        placeholder="Busque por Bairro, Subprefeitura ou AP"
+                        sx={{
+                          "& fieldset": { border: 'none' }
+                        }}
+                      />
+                    )}
+                  />
+                  {inputValueBairroSubprefeitura?
+                    <IconButton
+                      style={{ position: 'relative',backgroundColor: 'transparent' }}
+                      // type="submit"
+                      color="secondary"
+                      classes={{ colorSecondary: classes.colorSecondary }}
+                      aria-label="search"
+                    // onClick={
+                    //   activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => { }
+                    // }
+                    >
+
+                      <BackspaceIcon onClick={handleCleanBairroInput} />
+
+
+                    </IconButton>
+                    :null
+                  }
+                  <Divider className={classes.divider} orientation="vertical" />
+                  <IconButton
+                    // type="submit"
+                    style={{ backgroundColor: 'transparent' }}
+                    color="secondary"
+                    classes={{ colorSecondary: classes.colorSecondary }}
+                    aria-label="search"
+                  // onClick={
+                  //   activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => { }
+                  // }
+                  >
+                    {anyLoading ? (
+                      <CircularProgress classes={{ colorPrimary: classes.colorLoading }} size={20} />
+                    ) : activeBar == MAIN_UNDERSEARCH_BAR ? <SearchIcon /> : <CloseIcon onClick={() => setShowSearchBar(false)} />
+
+                    }
+
+                  </IconButton>
+                </Paper>
+              </Paper>
+            </div>
+            // </Slide>
+          )}
+
+
+      </Stack>
+
+      {/* MenuBar */}
+
+      {/* SearchBar */}
+
     </ClickAwayListener>
   );
 };

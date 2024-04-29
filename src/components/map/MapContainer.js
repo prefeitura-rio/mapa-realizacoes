@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom"
 const MapContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadAllPlaces());
+    props.loadAllPlaces();
   }, []);
 
   const { id } = useParams();
@@ -43,6 +43,9 @@ const MapContainer = (props) => {
       rota = {props.rota}
       setRota = {props.setRota}
       underSearchBar = {props.underSearchBar}
+      tema = {props.tema}
+      programa = {props.programa}
+      realizacao = {props.realizacao}
     />
   );
 };
@@ -57,7 +60,10 @@ const mapStateToProps = (state) => {
     bairroNome: state.bairros.descriptionData,
     subprefeituraNome: state.subprefeituras.content,
     rota: state.rota,
-    underSearchBar: state.active.underSearchBar
+    underSearchBar: state.active.underSearchBar,
+    tema: state.filtros.tema,
+    programa: state.filtros.programa,
+    realizacao: state.filtros.realizacao
   };
 };
 

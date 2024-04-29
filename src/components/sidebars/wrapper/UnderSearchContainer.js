@@ -12,12 +12,12 @@ const UnderSearchContainer = (props) => {
   }, [props.placesData]);
 
   return (
-    <Slide direction="left" timeout={1000} in={props.underSearchBar} mountOnEnter unmountOnExit >
+    // <Slide direction="left" timeout={1000} in={props.underSearchBar} mountOnEnter unmountOnExit >
       <UnderSearchBar
         underSearchBar={props.underSearchBar}
         activeBar={props.activeBar}
       />
-    </Slide>
+    // </Slide>
   );
 };
 

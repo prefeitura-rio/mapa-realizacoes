@@ -1,26 +1,229 @@
-//
-import { useEffect, useState } from "react";
-import { Divider, Typography, makeStyles } from "@material-ui/core";
+// //
+// import { useEffect, useState } from "react";
+// import { Divider, Typography, makeStyles } from "@material-ui/core";
 
-import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
+// import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
 
-import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
-import PhotoCards from "./../../inlines/PhotoCards";
-import ListInfo from "./../../inlines/ListInfo";
-import BasicInfo from "./../../inlines/BasicInfo";
-import HeaderBar from "./../../inlines/HeaderBar";
-import BottomButton from "./../../inlines/BottomButton";
-import PlaceHolder from "../../assets/placeholder_blue.jpg"
+// import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
+// import PhotoCards from "./../../inlines/PhotoCards";
+// import ListInfo from "./../../inlines/ListInfo";
+// import BasicInfo from "./../../inlines/BasicInfo";
+// import HeaderBar from "./../../inlines/HeaderBar";
+// import BottomButton from "./../../inlines/BottomButton";
+// import PlaceHolder from "../../assets/placeholder_blue.jpg"
+
+// const useStyles = makeStyles((theme) => ({
+//   topImage: {
+//     overflow: "hidden",
+//     width: "100%",
+//     objectFit: "cover",
+//     height: "100%",
+//     borderBottomLeftRadius: "15px",
+//     borderBottomRightRadius: "15px",
+//   },
+
+//   listInfo: {
+//     padding: "6px 0",
+//   },
+
+//   photos: {
+//     // padding: "12px",
+//   },
+//   title:{
+//     fontSize: "15px",
+//     fontWeight: "bold",
+//     padding: "4px 24px 9px 24px",
+//   },
+
+//   directoryInput: {
+//     border: "1px solid",
+//     boxSizing: "border-box",
+//     borderRadius: "8px",
+//     borderColor: "rgba(0, 0, 0, 0.23)",
+//     padding: "0 16px",
+//     marginBottom: "8px",
+//     height: "36px",
+
+//     "&:focus": {
+//       border: "2px solid",
+//       padding: "0 15px",
+//       borderColor: theme.palette.primary.main,
+//     },
+//   },
+
+//   directoryFilters: {
+//     padding: "0 5%",
+//   },
+
+//   directoryInputWrapper: {
+//     width: "97%",
+//     margin: "0 1.5%",
+//   },
+
+//   iconButton: {
+//     border: "1px solid blue",
+//     fontSize: "1rem",
+//   },
+
+//   subheaderButton: {
+//     borderRadius: "100px",
+//     padding: "5px 15px",
+//     minWidth: "35px",
+//   },
+//   // searchShadow: {
+//   //   position: "fixed",
+//   //   width: "423px",
+//   //   height: "80px",
+//   //   background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
+//   // },
+//   signInButton: {
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     margin: "8px",
+//     whiteSpace: "nowrap",
+//   },
+//   addPhoto: {
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     margin: "8px",
+//     whiteSpace: "nowrap",
+//   },
+//   bottomInfo:{
+//     marginBottom:"80px"
+//   }
+// }));
+
+// const PlaceDescriptionBar = ({
+//   content,
+//   images,
+//   setOpenEdit,
+//   setOpenUploadPhoto,
+//   profile,
+//   login,
+//   setPhotoGallery,
+//   setImagesType
+// }) => {
+//   const [imagesList, setImagesList] = useState(images);
+//   const classes = useStyles();
+
+//   useEffect(() => {
+//   setImagesList(images);
+//   setTopImgSrc(images.length > 0 ? images[0] : PlaceHolder);
+// }, [images]);
+
+//   const handleOpenEdit = () => {
+//     setOpenEdit(true);
+//   };
+
+//   const handleOpenUploadPhoto = () => {
+//     setOpenUploadPhoto(true);
+//   };
+
+//   const [topImgSrc, setTopImgSrc] = useState(
+//     imagesList[0] ||
+//       PlaceHolder
+//   );
+
+//   const onTopImageError = () => {
+//     setTopImgSrc(
+//       PlaceHolder
+//     );
+//   };
+
+//   return (
+//     <div className={classes.root}>
+//       <div className={classes.searchShadow}></div>
+//       <img
+//         src={topImgSrc}
+//         onError={onTopImageError}
+//         alt="top image"
+//         className={classes.topImage}
+//       />
+//       <BasicInfo content={content} />
+//       <Divider />
+//       <div className={classes.listInfo}>
+//         <ListInfo content={content} />
+          
+//         <br></br>
+//         {}
+//         {/* {profile ? (
+//           <BottomButton
+//             title="Editar informações"
+//             startIcon={CreateOutlinedIcon}
+//             onClick={handleOpenEdit}
+//           />
+//         ) : (
+//           <div className={classes.signInButton}>
+//             <BottomButton onClick={login}
+//             title= "Faça login para editar"/>
+//           </div>
+//         )} */}
+
+//       </div>
+     
+//       <Divider />
+//       <div className={classes.photos}>
+//         <Typography className={classes.title}>
+//           Fotos
+//         </Typography>
+//         <PhotoCards images={imagesList} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
+//         {/* {profile ? (
+//            <div className={classes.addPhoto}> 
+//           <BottomButton
+//             title="Adicionar uma foto"
+//             startIcon={CameraAltOutlinedIcon}
+//             onClick={handleOpenUploadPhoto}
+//           />
+//           </div>
+//         ) : (
+//           <div className={classes.signInButton}>           
+//             <BottomButton title="Faça login para editar" color="primary" variant="outlined" onClick={login}/>
+//           </div>
+//         )} */}
+
+//       </div>
+//       <div className={classes.bottomInfo}></div>
+//       <Divider/>
+     
+//     </div>
+//   );
+// };
+
+// export default PlaceDescriptionBar;
+
+import {
+  Fab,
+  makeStyles,
+  ThemeProvider,
+  createTheme,
+  Slide,
+  Paper,
+  Box,
+  Typography,
+  CircularProgress
+} from "@material-ui/core";
+
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import { forwardRef, useEffect } from "react";
+import { useState } from "react";
+import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
+import rio_cover from "../../assets/rio_cover.jpg"
+import clsx from "clsx";
+import { Stack } from "@mui/material";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import { useDispatch } from "react-redux";
+import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
+import PlaceDescriptionContainer from "./PlaceDescriptionContainer";
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const useStyles = makeStyles((theme) => ({
-  topImage: {
-    overflow: "hidden",
-    width: "100%",
-    objectFit: "cover",
-    height: "100%",
-    borderBottomLeftRadius: "15px",
-    borderBottomRightRadius: "15px",
-  },
 
   listInfo: {
     padding: "6px 0",
@@ -28,11 +231,6 @@ const useStyles = makeStyles((theme) => ({
 
   photos: {
     // padding: "12px",
-  },
-  title:{
-    fontSize: "15px",
-    fontWeight: "bold",
-    padding: "4px 24px 9px 24px",
   },
 
   directoryInput: {
@@ -54,141 +252,331 @@ const useStyles = makeStyles((theme) => ({
   directoryFilters: {
     padding: "0 5%",
   },
+  fabContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
+
 
   directoryInputWrapper: {
     width: "97%",
     margin: "0 1.5%",
   },
 
-  iconButton: {
-    border: "1px solid blue",
-    fontSize: "1rem",
+  fab: {
+    position: "fixed",
+    bottom: "20px",
+    backgroundColor: "white",
+
+    textTransform: "none",
+    border: "1px solid #dadce0",
+    boxShadow: "0 1px 6px #007E7D",
+
+    "&:hover": {
+      borderColor: " #DADCE0",
+      backgroundColor: "#F1F3F4",
+      transition: "none",
+    },
   },
 
-  subheaderButton: {
-    borderRadius: "100px",
-    padding: "5px 15px",
-    minWidth: "35px",
+  searchShadow: {
+    position: "fixed",
+    width: "423px",
+    height: "80px",
+    background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
   },
-  // searchShadow: {
-  //   position: "fixed",
-  //   width: "423px",
-  //   height: "80px",
-  //   background: "-webkit-linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0))",
-  // },
-  signInButton: {
+
+  textSmall: {
+    fontSize: "0.75rem",
+  },
+  marginZero: {
+    margin: 0,
+  },
+  bottomInfo: {
+    marginBottom: "30px"
+  },
+  visible: {
+    display: "block",
+  },
+
+  close: {
+    display: "none",
+  },
+  "@media screen and (max-width: 540px)": {
+    underSearch: {
+      height: "100vh",
+      width: "100vw",
+      overflow: "auto",
+      position: "relative",
+    },
+  },
+  "@media screen and (min-width: 540px)": {
+    underSearch: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      position: "fixed",
+      top: "3vh",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "8.5vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch2: {
+      position: "fixed",
+      top: "14.5vh", //3vh + 8.5vh + 3vh
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "34vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch3: {
+      position: "fixed",
+      top: "51.5vh", //14.5vh + 34vh +3vh
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "8.5vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+    underSearch4: {
+      position: "fixed",
+      top: "63vh", // 51.5vh + 8.5vh + 3vh
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "34vh",
+      borderRadius: "15px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
+  },
+  basicInfo: {
+    padding: "3px 20px",
+  },
+  dadosAgregadosCidade: {
+    // padding: "3px 20px",
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "8px",
-    whiteSpace: "nowrap",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
   },
-  addPhoto: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "8px",
-    whiteSpace: "nowrap",
+  statusButton: {
+    pointerEvents: "none",
+    borderRadius: "39px",
+    backgroundColor: "#007E7D",
+    color: "#FFFFFF",
+    padding: "1px 8px 1px 8px"
   },
-  bottomInfo:{
-    marginBottom:"80px"
+  titulo: {
+    lineHeight: "20px",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+    marginBottom: "-5px"
+  },
+  subtitulo: {
+    // marginTop: "15px", 
+    opacity: 0.6,
+  },
+  sobreMunicipio: {
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+    // marginBottom:"-5px"
+  },
+  subtituloMunicipio: {
+    // marginTop: "15px", 
+    opacity: 0.8
   }
+
 }));
 
-const PlaceDescriptionBar = ({
-  content,
-  images,
-  setOpenEdit,
-  setOpenUploadPhoto,
-  profile,
-  login,
-  setPhotoGallery,
-  setImagesType
-}) => {
-  const [imagesList, setImagesList] = useState(images);
-  const classes = useStyles();
-
-  useEffect(() => {
-  setImagesList(images);
-  setTopImgSrc(images.length > 0 ? images[0] : PlaceHolder);
-}, [images]);
-
-  const handleOpenEdit = () => {
-    setOpenEdit(true);
-  };
-
-  const handleOpenUploadPhoto = () => {
-    setOpenUploadPhoto(true);
-  };
-
-  const [topImgSrc, setTopImgSrc] = useState(
-    imagesList[0] ||
-      PlaceHolder
-  );
-
-  const onTopImageError = () => {
-    setTopImgSrc(
-      PlaceHolder
-    );
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#007E7D",
+    },
+  },
+});
+const ImageCarousel = ({ images }) => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   };
 
   return (
-    <div className={classes.root}>
-      <div className={classes.searchShadow}></div>
-      <img
-        src={topImgSrc}
-        onError={onTopImageError}
-        alt="top image"
-        className={classes.topImage}
-      />
-      <BasicInfo content={content} />
-      <Divider />
-      <div className={classes.listInfo}>
-        <ListInfo content={content} />
-          
-        <br></br>
-        {}
-        {/* {profile ? (
-          <BottomButton
-            title="Editar informações"
-            startIcon={CreateOutlinedIcon}
-            onClick={handleOpenEdit}
-          />
-        ) : (
-          <div className={classes.signInButton}>
-            <BottomButton onClick={login}
-            title= "Faça login para editar"/>
-          </div>
-        )} */}
-
-      </div>
-     
-      <Divider />
-      <div className={classes.photos}>
-        <Typography className={classes.title}>
-          Fotos
-        </Typography>
-        <PhotoCards images={imagesList} setPhotoGallery={setPhotoGallery} setImagesType={setImagesType}/>
-        {/* {profile ? (
-           <div className={classes.addPhoto}> 
-          <BottomButton
-            title="Adicionar uma foto"
-            startIcon={CameraAltOutlinedIcon}
-            onClick={handleOpenUploadPhoto}
-          />
-          </div>
-        ) : (
-          <div className={classes.signInButton}>           
-            <BottomButton title="Faça login para editar" color="primary" variant="outlined" onClick={login}/>
-          </div>
-        )} */}
-
-      </div>
-      <div className={classes.bottomInfo}></div>
-      <Divider/>
-     
-    </div>
+    <Slider {...settings}>
+      {images.map((image, index) => (
+        <div key={index}>
+          <img src={image} alt={`carousel-${index}`} style={{ width: '100%', height: 'auto' }} />
+        </div>
+      ))}
+    </Slider>
   );
 };
+const PlaceDescriptionBar = forwardRef(
+  ({ underSearchBar,
+    cidades,
+    dadosAgregadosAbaTemaCidade,
+    dadosAgregadosAbaProgramasCidade,
+    dadosAgregadosAbaSumarioInfoBasicasCidade,
+    dadosAgregadosAbaSumarioStatusEntregasCidade,
+    images_cidade,
+    setPhotoGallery,
+    setImagesType,
+    setActiveBar,
+    setDescriptionData,
+    setUnderSearchBar,
+    loadData,
 
+    content,
+    tema,
+    programa,
+    realizacao
+
+
+
+  }, ref) => {
+
+    const classes = useStyles();
+
+    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal, setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
+        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
+        setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
+      }
+    }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
+
+    const images = [
+      "https://placehold.co/600x400",
+      "https://placehold.co/600x400",
+      "https://placehold.co/600x400"
+    ]
+    return (
+      <>
+
+        <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+          <Paper
+            elevation={6}
+            ref={ref}
+            className={classes.underSearch}
+          >
+            <div className={classes.basicInfo}>
+              <Typography className={classes.titulo}>{realizacao?realizacao:(content?content.nome:<CircularProgress size={25}/>)}</Typography>
+              <Typography className={classes.subtitulo}> {programa?programa:content?.programa}</Typography>
+            </div>
+          </Paper>
+        </Slide>
+        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+          <Paper
+            elevation={6}
+            className={classes.underSearch2}
+          >
+            <div className={classes.basicInfo}>
+              <Stack direction="row">
+
+                <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao?realizacao:content?.nome}`}>
+                  <IconButton>
+                    <InfoIcon sx={{ color: "black" }} />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+              <Typography className={classes.subtituloMunicipio}>Realização Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </Typography>
+            </div>
+          </Paper>
+        </Slide>
+        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+          <Paper
+            elevation={6}
+            className={classes.underSearch3}
+          >
+
+            <Box height="8.5vh" display="flex" justifyContent="space-between" alignItems="center">
+              <Box pl={2} display="flex" >
+                <AccountBalanceIcon />
+                <Box pl={0.5}>
+                  {/* TODO: valor agregado da qntdd de obras. */}
+                  <Typography>G obras</Typography>
+                </Box>
+              </Box>
+              <Box display="flex" >
+                <AccountBalanceIcon />
+                <Box pl={0.5}>
+                  {/* TODO: valor agregado das obras. */}
+                  <Typography>G bilhões</Typography>
+                </Box>
+              </Box>
+              <Box pr={2} display="flex">
+                <AccountBalanceIcon />
+                <Box pl={0.5}>
+                  {/* TODO: Puxar valor real */}
+                  <Typography>G mi de m²</Typography>
+                </Box>
+              </Box>
+
+            </Box>
+
+          </Paper>
+        </Slide>
+        <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+          <Paper
+            elevation={6}
+            className={classes.underSearch4}
+          >
+            <ImageCarousel images={images} />
+          </Paper>
+        </Slide>
+      </>
+    );
+  }
+);
 export default PlaceDescriptionBar;
