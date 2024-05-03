@@ -86,13 +86,8 @@ const ListInfo = ({ content }) => {
     });
   }
 
-  console.log("contenttt: ", (content))
-
   return (
     <>
-     <Typography className={classes.title}>
-        Informações Básicas
-      </Typography>
     <List>
       {listInfo.map((item, i) => (
         <React.Fragment key={i}>

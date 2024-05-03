@@ -137,7 +137,6 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
          return <PlaceDescriptionContainer />;
        default:
          return <MainUnderSearchContainer />;
-        //  return <WhiteComponent />;
      }
   };
  

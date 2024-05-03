@@ -874,3 +874,41 @@ export async function getListRealizacaoOrgaoIds() {
     throw error;
   }
 }
+
+export async function getListProgramasTema(id_tema) {
+  // return await db
+  //   .collection("programas_tema")
+  //   .where("id_tema", "==", id_tema)
+  //   .get();
+
+  //@Gabriel => Ajustar para o modelo de dados
+
+   // Mock data
+   const programas_tema_educação_e_desevolvimento = ['GETs'];
+ 
+   if (id_tema == 'educação_e_desenvolvimento') {
+     return programas_tema_educação_e_desevolvimento;
+   } else {
+     return ["escolha o tema Educação e desenvolvimento"];
+   }
+
+}
+
+export async function getListRealizacoesPrograma(id_programa) {
+  // return await db
+  //   .collection("realizacoes_programa")
+  //   .where("id_programa", "==", id_programa)
+  //   .get();
+
+  //@Gabriel => Ajustar para o modelo de dados
+
+   // Mock data
+   const realizacoes_programa_gets = ['GET Atenas', 'GET Bolívar', 'GET Cardeal Leme'];
+ 
+   if (id_programa == 'gets') {
+     return realizacoes_programa_gets;
+   } else {
+     return [];
+   }
+
+}

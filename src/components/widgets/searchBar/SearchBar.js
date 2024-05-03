@@ -21,7 +21,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { BAIRRO_DESCRIPTION_BAR, DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, PROGRAMA_DESCRIPTION_BAR, SUBPREFEITURA_DESCRIPTION_BAR, TEMA_DESCRIPTION_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
-import { getListBairroName, getListSubprefeituraName } from "../../../firebase";
+import { getListBairroName, getListProgramasTema, getListRealizacoesPrograma, getListSubprefeituraName } from "../../../firebase";
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../../../redux/subprefeituras/actions";
 import { loadDadosAgregadosAbaSumarioStatusEntregasBairro } from "../../../redux/bairros/actions";
@@ -230,12 +230,41 @@ const SearchBar = ({
     setTema(newValue);
     setActiveBar(TEMA_DESCRIPTION_BAR);
   };
+
+   // programas do tema -> programasTema vai aparecer na listagem de programas
+  const [programasTema, setProgramasTema] = useState([]);
   useEffect(() => {
-    // @Gabriel
-    // aqui faremos a chamada pra pegar todos os programas relacionado ao tema
-    // setProgramasFromTema(resultado da chamada);
+    const loadProgramasTema = async (t) => {
+      try {
+        const programasTemaRef = await getListProgramasTema(toSnakeCase(t));
+
+          setProgramasTema(programasTemaRef);
+       
+      } catch (error) {
+        console.error("Erro", error);
+      }
+    };
+
+    loadProgramasTema(tema);
   }, [tema]);
-  const [programasFromTema, setProgramasFromTema] = useState(["Creches E Edi", "programa2", "programa3"]);
+  
+  // realizacoes do programa -> realizacoesPrograma vai aparecer na listagem de realizacoes
+  const [realizacoesPrograma, setRealizacoesPrograma] = useState([]);
+  useEffect(() => {
+    const loadRealizacoesPrograma = async (p) => {
+      try {
+        const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
+
+        setRealizacoesPrograma(realizacoesProgramaRef);
+       
+      } catch (error) {
+        console.error("Erro", error);
+      }
+    };
+
+    loadRealizacoesPrograma(programa);
+  }, [programa]);
+
 
   const [inputValuePrograma, setInputValuePrograma] = useState(undefined);
   const handleProgramaChange = (event, newValue) => {
@@ -246,13 +275,7 @@ const SearchBar = ({
     setPrograma(newValue);
     setActiveBar(PROGRAMA_DESCRIPTION_BAR);
   };
-
-  useEffect(() => {
-    // @Gabriel
-    // aqui faremos a chamada pra pegar todos as realizacoes relacionadas ao programa
-    // setRealizacoesFromPrograma(resultado da chamada);
-  }, [programa]);
-  const [realizacoesFromPrograma, setRealizacoesFromPrograma] = useState(["EDI Beth Carvalho", "realizacao2", "realizacao3"]);
+  
   const [inputValueRealizacao, setInputValueRealizacao] = useState(undefined);
   const handleRealizacaoChange = (event, newValue) => {
     setInputValueRealizacao(newValue);
@@ -346,7 +369,6 @@ const SearchBar = ({
 
 
   const CustomPaperMenu = (props) => {
-
     return (
       <>
         <Paper elevation={0} {...props} />
@@ -468,7 +490,7 @@ const SearchBar = ({
                       value={inputValuePrograma}
                       onChange={handleProgramaChange}
                       disableClearable
-                      options={programasFromTema}
+                      options={programasTema?programasTema:[]}
                       PaperComponent={CustomPaperMenu}
                       ListboxProps={{ style: { maxHeight: "80vh" } }}
                       inputprops={{
@@ -525,7 +547,7 @@ const SearchBar = ({
                       value={inputValueRealizacao}
                       onChange={handleRealizacaoChange}
                       disableClearable
-                      options={realizacoesFromPrograma}
+                      options={realizacoesPrograma}
                       PaperComponent={CustomPaperMenu}
                       ListboxProps={{ style: { maxHeight: "80vh" } }}
                       inputprops={{
