@@ -486,6 +486,13 @@ export async function getRealizacoesPrograma(idPrograma) {
     .get();
 }
 
+export async function getRealizacoesProgramaByRealizacao(idRealizacao) {
+  return await db
+    .collection("realizacao_programa")
+    .where("id_realizacao", "==", idRealizacao)
+    .get();
+}
+
 export async function getRealizacoesTema(idTema) {
   return await db
     .collection("realizacao_tema")
@@ -876,39 +883,43 @@ export async function getListRealizacaoOrgaoIds() {
 }
 
 export async function getListProgramasTema(id_tema) {
-  // return await db
-  //   .collection("programas_tema")
-  //   .where("id_tema", "==", id_tema)
-  //   .get();
-
-  //@Gabriel => Ajustar para o modelo de dados
-
-   // Mock data
-   const programas_tema_educação_e_desevolvimento = ['GETs'];
- 
-   if (id_tema == 'educação_e_desenvolvimento') {
-     return programas_tema_educação_e_desevolvimento;
-   } else {
-     return ["escolha o tema Educação e desenvolvimento"];
-   }
-
+  // Look for realizacoes that have this theme
+  const realizacoesTheme = await getRealizacoesTema(id_tema);
+  const realizacoesThemeDocs = realizacoesTheme.docs;
+  // If length is 0, skip this theme
+  if (realizacoesThemeDocs.length === 0) {
+    return;
+  }
+  // Get the IDs of the realizacoes
+  const realizacoesIds = realizacoesThemeDocs.map((realizacao) => {
+    return realizacao.data().id_realizacao;
+  });
+  // Collect the program IDs that relate to these realizacoes
+  const idProgramas = new Set();
+  const realizacaoProgramaPromises = realizacoesIds.map((id) => getRealizacoesProgramaByRealizacao(id));
+  const realizacaoProgramaResults = await Promise.all(realizacaoProgramaPromises);
+  const realizacaoProgramaDocs = realizacaoProgramaResults.map((result) => result.docs);
+  for (let i = 0; i < realizacaoProgramaDocs.length; i++) {
+    const programasIds = realizacaoProgramaDocs[i].map((doc) => doc.data().id_programa);
+    for (let j = 0; j < programasIds.length; j++) {
+      idProgramas.add(programasIds[j]);
+    }
+  }
+  // Get the program names
+  const programaIds = Array.from(idProgramas);
+  const programaPromises = programaIds.map((id) => readPrograma(id));
+  const programaResults = await Promise.all(programaPromises);
+  const programas = programaResults.map((result) => result.nome);
+  return programas;
 }
 
 export async function getListRealizacoesPrograma(id_programa) {
-  // return await db
-  //   .collection("realizacoes_programa")
-  //   .where("id_programa", "==", id_programa)
-  //   .get();
-
-  //@Gabriel => Ajustar para o modelo de dados
-
-   // Mock data
-   const realizacoes_programa_gets = ['GET Atenas', 'GET Bolívar', 'GET Cardeal Leme'];
- 
-   if (id_programa == 'gets') {
-     return realizacoes_programa_gets;
-   } else {
-     return [];
-   }
-
+  // Look for realizacoes that have this programa
+  const realizacoesPrograma = await getRealizacoesPrograma(id_programa);
+  const realizacoesProgramaDocs = realizacoesPrograma.docs;
+  // Collect names
+  const realizacoesPromises = realizacoesProgramaDocs.map((doc) => readRealizacao(doc.data().id_realizacao));
+  const realizacoesResults = await Promise.all(realizacoesPromises);
+  const realizacoes = realizacoesResults.map((result) => result.nome);
+  return realizacoes;
 }
