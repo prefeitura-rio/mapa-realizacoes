@@ -145,7 +145,7 @@
 //       <Divider />
 //       <div className={classes.listInfo}>
 //         <ListInfo content={content} />
-          
+
 //         <br></br>
 //         {}
 //         {/* {profile ? (
@@ -162,7 +162,7 @@
 //         )} */}
 
 //       </div>
-     
+
 //       <Divider />
 //       <div className={classes.photos}>
 //         <Typography className={classes.title}>
@@ -186,7 +186,7 @@
 //       </div>
 //       <div className={classes.bottomInfo}></div>
 //       <Divider/>
-     
+
 //     </div>
 //   );
 // };
@@ -202,7 +202,9 @@ import {
   Paper,
   Box,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Button,
+  List
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -222,6 +224,7 @@ import PlaceDescriptionContainer from "./PlaceDescriptionContainer";
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ListInfo from "../../inlines/ListInfo";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -335,7 +338,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "14.5vh", //3vh + 8.5vh + 3vh
+      top: "12.0vh", //8.5vh + 3.0vh 0.5vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -346,7 +349,7 @@ const useStyles = makeStyles((theme) => ({
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
       "&::-webkit-scrollbar": {
-        width: "0.5em",
+        width: "0.2em",
         display: "none",
       },
       "&::-webkit-scrollbar-thumb": {
@@ -355,37 +358,38 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "51.5vh", //14.5vh + 34vh +3vh
+      top: "46.5vh", //12vh + 34vh + 0.5vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh",
+      height: "18vh",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
       "&::-webkit-scrollbar": {
-        width: "0.5em",
-        display: "none",
+        width: "0.2em",
+        // display: "none",
       },
-      "&::-webkit-scrollbar-thumb": {
-        display: "none",
-      },
+      // "&::-webkit-scrollbar-thumb": {
+      //   display: "none",
+      // },
+      overflow: "auto"
     },
     underSearch4: {
       position: "fixed",
-      top: "63vh", // 51.5vh + 8.5vh + 3vh
+      top: "65vh", // 46.5vh + 8.5vh + 0.5vh = 55.5vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "34vh",
+      height: "32vh",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
       "&::-webkit-scrollbar": {
-        width: "0.5em",
+        width: "0.2em",
         display: "none",
       },
       "&::-webkit-scrollbar-thumb": {
@@ -395,6 +399,10 @@ const useStyles = makeStyles((theme) => ({
   },
   basicInfo: {
     padding: "3px 20px",
+  },
+  sumarioInfo: {
+    // padding: "3px 20px",
+    maxWidth:"25vw"
   },
   dadosAgregadosCidade: {
     // padding: "3px 20px",
@@ -411,7 +419,11 @@ const useStyles = makeStyles((theme) => ({
     padding: "1px 8px 1px 8px"
   },
   titulo: {
-    lineHeight: "20px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: "20vw",
+    minWidth: "350px",
     fontSize: "1.5rem",
     fontWeight: "bold",
     marginBottom: "-5px"
@@ -427,8 +439,23 @@ const useStyles = makeStyles((theme) => ({
   },
   subtituloMunicipio: {
     // marginTop: "15px", 
-    opacity: 0.8
-  }
+    opacity: 0.8,
+    height: "20.5vh",
+    overflow: 'hidden',
+  },
+  bottomStatus: {
+    position: 'absolute',
+    bottom: '15px',
+    left: '20px',
+  },
+  statusButton: {
+    pointerEvents: "none",
+    borderRadius: "39px",
+    backgroundColor: "#007E7D",
+    color: "#FFFFFF",
+    padding: "1px 8px 1px 8px",
+    fontSize: "12px"
+  },
 
 }));
 
@@ -510,8 +537,10 @@ const PlaceDescriptionBar = forwardRef(
             className={classes.underSearch}
           >
             <div className={classes.basicInfo}>
-              <Typography className={classes.titulo}>{realizacao?realizacao:(content?content.nome:<CircularProgress size={25}/>)}</Typography>
-              <Typography className={classes.subtitulo}> {programa?programa:content?.programa}</Typography>
+            <Tooltip placement="left" title={realizacao ? realizacao : content ? content.nome : ""}>
+              <Typography className={classes.titulo}>{realizacao ? realizacao : (content ? content.nome : <CircularProgress size={25} />)}</Typography>
+             </Tooltip>
+              <Typography className={classes.subtitulo}> {programa ? programa : content?.programa}</Typography>
             </div>
           </Paper>
         </Slide>
@@ -524,14 +553,19 @@ const PlaceDescriptionBar = forwardRef(
               <Stack direction="row">
 
                 <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao?realizacao:content?.nome}`}>
+                <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
                   <IconButton>
                     <InfoIcon sx={{ color: "black" }} />
                   </IconButton>
                 </Tooltip>
               </Stack>
-              <Typography className={classes.subtituloMunicipio}>Realização Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </Typography>
+              <Typography className={classes.subtituloMunicipio}>Realização Lorem ipsum dolor sit amet Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet </Typography>
             </div>
+            <span className={classes.bottomStatus}>
+              <Button variant="contained" className={classes.statusButton}>
+                {content?.status}
+              </Button>
+            </span>
           </Paper>
         </Slide>
         <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
@@ -539,32 +573,11 @@ const PlaceDescriptionBar = forwardRef(
             elevation={6}
             className={classes.underSearch3}
           >
-
-            <Box height="8.5vh" display="flex" justifyContent="space-between" alignItems="center">
-              <Box pl={2} display="flex" >
-                <AccountBalanceIcon />
-                <Box pl={0.5}>
-                  {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography>G obras</Typography>
-                </Box>
-              </Box>
-              <Box display="flex" >
-                <AccountBalanceIcon />
-                <Box pl={0.5}>
-                  {/* TODO: valor agregado das obras. */}
-                  <Typography>G bilhões</Typography>
-                </Box>
-              </Box>
-              <Box pr={2} display="flex">
-                <AccountBalanceIcon />
-                <Box pl={0.5}>
-                  {/* TODO: Puxar valor real */}
-                  <Typography>G mi de m²</Typography>
-                </Box>
-              </Box>
-
-            </Box>
-
+            <div className={classes.sumarioInfo}>
+              
+               {content? <ListInfo content={content ? content : []} /> : <CircularProgress size={25} />}
+          
+            </div>
           </Paper>
         </Slide>
         <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>

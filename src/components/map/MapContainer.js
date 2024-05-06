@@ -46,6 +46,9 @@ const MapContainer = (props) => {
       tema = {props.tema}
       programa = {props.programa}
       realizacao = {props.realizacao}
+      bairro = {props.bairro}
+      subprefeitura = {props.subprefeitura}
+      zoomDefault={props.zoomDefault}
     />
   );
 };
@@ -63,7 +66,10 @@ const mapStateToProps = (state) => {
     underSearchBar: state.active.underSearchBar,
     tema: state.filtros.tema,
     programa: state.filtros.programa,
-    realizacao: state.filtros.realizacao
+    realizacao: state.filtros.realizacao,
+    bairro: state.filtros.bairro,
+    subprefeitura: state.filtros.subprefeitura,
+    zoomDefault: state.app.zoomDefault,
   };
 };
 

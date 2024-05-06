@@ -139,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "14.5vh", //3vh + 8.5vh + 3vh
+      top: "12.0vh", //8.5vh + 3.0vh 0.5vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -159,7 +159,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "51.5vh", //14.5vh + 34vh +3vh
+      top: "46.5vh", //12vh + 34vh + 0.5vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -179,11 +179,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "63vh", // 51.5vh + 8.5vh + 3vh
+      top: "55.5vh", // 46.5vh + 8.5vh + 0.5vh = 55.5vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "34vh",
+      height: "41.5vh",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -214,7 +214,12 @@ const useStyles = makeStyles((theme) => ({
     color: "#FFFFFF",
     padding: "1px 8px 1px 8px"
   },
-  titulo: {
+  programa: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: "20vw",
+    minWidth: "350px",
     fontSize: "1.5rem",
     fontWeight: "bold",
     marginBottom: "-5px"
@@ -311,7 +316,9 @@ const ProgramaDescriptionBar = forwardRef(
             className={classes.underSearch}
           >
             <div className={classes.basicInfo}>
-              <Typography className={classes.titulo}>{programa}</Typography>
+            <Tooltip placement="left" title={programa}>
+              <Typography className={classes.programa}>{programa}</Typography>
+             </Tooltip>
               <Typography className={classes.subtitulo}> {tema}</Typography>
             </div>
           </Paper>

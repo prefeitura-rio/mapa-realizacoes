@@ -7,6 +7,7 @@ import clsx from "clsx";
 import InfoIcon from '@mui/icons-material/Info';
 import { Stack } from "@mui/material";
 import NavigationOutlinedIcon from '@mui/icons-material/NavigationOutlined';
+import { MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
 const useStyles = makeStyles((theme) => ({
   root: {
     pointerEvents: "auto",
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar }) => {
+const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault }) => {
   const classes = useStyles();
 
   const zoomIn = () => {
@@ -59,6 +60,9 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar }) => {
   };
   const zoomOut = () => {
     setZoomDelta(-1);
+  };
+  const zoomDefault= () => {
+    setZoomDefault(-1);
   };
 
   const handleMenuSidebar = () => {
@@ -76,7 +80,7 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar }) => {
                 <IconButton
                   style={{ backgroundColor: 'transparent' }}
                   color="black"
-                  onClick={zoomIn}
+                  onClick={()=> {zoomDefault()}}
                 >
                   <NavigationOutlinedIcon fontSize="small" className={classes.textSecondary} />
                 </IconButton>

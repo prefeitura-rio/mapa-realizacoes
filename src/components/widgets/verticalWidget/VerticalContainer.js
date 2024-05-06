@@ -1,20 +1,25 @@
 import { connect } from "react-redux";
 import VerticalWidget from "./VerticalWidget";
-import { setZoomDelta } from "../../../redux/actions";
+import { setZoomDefault, setZoomDelta } from "../../../redux/actions";
 import { setMenuSidebar } from "./../../../redux/active/actions";
 
 const VerticalContainer = (props) => {
-  return <VerticalWidget setZoomDelta={props.setZoomDelta}
+  return <VerticalWidget 
+  setZoomDelta={props.setZoomDelta}
    menuSidebar={props.menuSidebar}
-  setMenuSidebar={props.setMenuSidebar}/>;
+  setZoomDefault={props.setZoomDefault}
+  />;
 };
 
 const mapStateToProps = (state) => {
-  return { menuSidebar: state.app.menuSidebar,};
+  return { 
+    menuSidebar: state.app.menuSidebar,
+  };
 };
 
 const mapDispatchToProps = {
   setZoomDelta,
+  setZoomDefault,
   setMenuSidebar,
 };
 
