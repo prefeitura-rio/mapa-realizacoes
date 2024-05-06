@@ -172,11 +172,14 @@ const SearchBar = ({
   setTema,
   setPrograma,
   setRealizacao,
+  setBairro,
+  setSubprefeitura,
   tema,
   programa,
   realizacao,
   setDescriptionData,
-  loadData
+  loadData,
+  setZoomDefault
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -207,6 +210,9 @@ const SearchBar = ({
       console.log('Bairro selecionado: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
       setInputValueBairroSubprefeitura(name);
+      setBairro(name);
+      setSubprefeitura(null);
+      setZoomDefault(0);
     }
     else if (prefeituras.includes(name)) {
       setSubprefeituraData(name);
@@ -215,6 +221,9 @@ const SearchBar = ({
       console.log('Subprefeitura selecionada: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(name));
       setInputValueBairroSubprefeitura(name);
+      setSubprefeitura(name);
+      setBairro(null);
+      setZoomDefault(0);
     }
     else {
       console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
@@ -303,7 +312,9 @@ const SearchBar = ({
   const handleCleanBairroInput = () => {
     console.log("clickei")
     setInputValueBairroSubprefeitura("");
-    setBairroData(null);
+    // setBairroData(null);
+    setBairro(null);
+    setSubprefeitura(null);
     setContent(null);
     setPlacesData(null);
     setActiveBar(MAIN_UNDERSEARCH_BAR);
@@ -538,7 +549,12 @@ const SearchBar = ({
                     />)}
 
                   {showRealizacoes &&
-                    <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>{inputValuePrograma}</Typography>
+                    <Typography variant="h6" style={{whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "19vw",
+                    maxWidth: "270px",
+                    minWidth: "270px", position: 'absolute', marginLeft: '20px', color: 'black' }}>{inputValuePrograma}</Typography>
                   }
                   {showRealizacoes && (
                     <Autocomplete

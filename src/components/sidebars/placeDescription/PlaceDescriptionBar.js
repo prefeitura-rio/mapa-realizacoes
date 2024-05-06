@@ -419,7 +419,11 @@ const useStyles = makeStyles((theme) => ({
     padding: "1px 8px 1px 8px"
   },
   titulo: {
-    lineHeight: "20px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: "20vw",
+    minWidth: "350px",
     fontSize: "1.5rem",
     fontWeight: "bold",
     marginBottom: "-5px"
@@ -533,7 +537,9 @@ const PlaceDescriptionBar = forwardRef(
             className={classes.underSearch}
           >
             <div className={classes.basicInfo}>
+            <Tooltip placement="left" title={realizacao ? realizacao : content ? content.nome : ""}>
               <Typography className={classes.titulo}>{realizacao ? realizacao : (content ? content.nome : <CircularProgress size={25} />)}</Typography>
+             </Tooltip>
               <Typography className={classes.subtitulo}> {programa ? programa : content?.programa}</Typography>
             </div>
           </Paper>

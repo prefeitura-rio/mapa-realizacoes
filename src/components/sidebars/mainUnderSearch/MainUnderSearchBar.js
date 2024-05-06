@@ -260,11 +260,12 @@ const MainUnderSearchBar = forwardRef(
     
     const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal,setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
 
-    const dispatch = useDispatch();
-
     useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasCidade){
-        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
+      if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
+        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento +
+          dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida +
+          dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida +
+          dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
         setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
       }
     }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);

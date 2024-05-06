@@ -2,12 +2,16 @@ import { SET_FILTROS_OPTIONS } from "./actions";
 import { SET_TEMA } from "./actions";
 import { SET_PROGRAMA } from "./actions";
 import { SET_REALIZACAO } from "./actions";
+import { SET_BAIRRO } from "./actions";
+import { SET_SUBPREFEITURA } from "./actions";
 
 const defaultState = {
   filtros: [],
   tema: null,
   programa: null,
-  realizacao: null
+  realizacao: null,
+  bairro: null,
+  subprefeitura: null
 };
 
 export const filtrosReducer = (state = defaultState, action) => {
@@ -31,6 +35,16 @@ export const filtrosReducer = (state = defaultState, action) => {
       return {
         ...state,
         realizacao: action.payload,
+      };
+    case SET_BAIRRO:
+      return {
+        ...state,
+        bairro: action.payload,
+      };
+    case SET_SUBPREFEITURA:
+      return {
+        ...state,
+        subprefeitura: action.payload,
       };
   }
   return state;

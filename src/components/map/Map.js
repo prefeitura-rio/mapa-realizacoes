@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import bairros_centros from "./centroideBairros";
+import subprefeituras_centros from "./centroideSubprefeituras";
 
 
 
@@ -45,7 +46,10 @@ const Map = ({
   underSearchBar,
   tema,
   programa,
-  realizacao
+  realizacao,
+  bairro,
+  subprefeitura,
+  zoomDefault,
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -76,6 +80,22 @@ const Map = ({
   }, [underSearchBar])
 
   useEffect(() => {
+    console.log("zoomDefault " + zoomDefault)
+    
+   if (map && zoomDefault == -1) {
+      const coords = [-22.9200, -43.3250];
+      map.flyTo(coords, 11)
+    }
+  }, [zoomDefault])
+
+  useEffect(() => {
+    
+   if (map) {
+      console.log("map", map)
+    }
+  }, [map])
+
+  useEffect(() => {
     if (map && bairroNome) {
       // Converte o nome do bairro para o formato correto (considerando acentuação)
       const bairroFormatado = bairroNome.toLowerCase();
@@ -90,6 +110,22 @@ const Map = ({
       }
     }
   }, [bairroNome, map]);
+
+  useEffect(() => {
+    if (map && subprefeituraNome) {
+      // Converte o nome do bairro para o formato correto (considerando acentuação)
+      const subprefeituraFormatada = subprefeituraNome;
+
+      // Busca as informações da subprefeitura no novo formato
+      const subprefeitura = subprefeituras_centros[subprefeituraFormatada];
+      console.log("subprefeitura ", subprefeitura);
+
+      if (subprefeitura) {
+        const coords = [subprefeitura.lat, subprefeitura.lng];
+        map.flyTo(coords, 12);
+      }
+    }
+  }, [subprefeituraNome, map]);
 
  
   const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
@@ -250,10 +286,10 @@ const Map = ({
         {points.map((point, index) => {
 
           // Verifica se o ponto corresponde ao bairro selecionado
-          const isBairroMatch = bairroNome ? toSnakeCase(bairroNome) === point.id_bairro : true;
+          const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
 
           // Verifica se o ponto corresponde ao subprefeitura selecionado
-          const isSubprefeituraMatch = subprefeituraNome ? toSnakeCase(subprefeituraNome) === point.id_subprefeitura : true;
+          const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
 
           // Verifica se o ponto corresponde ao tema selecionado
           const isTemaMatch = tema ? 
@@ -269,7 +305,7 @@ const Map = ({
           : true;
 
           // Renderiza o marcador se corresponder ao bairro e aos demais
-          if ((tema || bairroNome || subprefeituraNome || realizacao) && isBairroMatch && isTemaMatch && isProgramaMatch && isRealizacaoMatch && isSubprefeituraMatch) {
+          if ((tema || bairro || subprefeitura || realizacao) && isBairroMatch && isTemaMatch && isProgramaMatch && isRealizacaoMatch && isSubprefeituraMatch) {
             return renderMarker(point, index);
           }
 

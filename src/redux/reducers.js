@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { SET_ZOOM_DELTA } from "./actions";
+import { SET_ZOOM_DEFAULT } from "./actions";
 import modalReducer from "./modals/reducers";
 import activeReducer from "./active/reducers";
 import commentsReducer from "./comments/reducers";
@@ -18,6 +19,7 @@ import { rotaReducer } from "./rota/reducers";
 
 const defaultState = {
   zoomDelta: 0,
+  zoomDefault:0
 };
 
 export const appReducer = (state = defaultState, action) => {
@@ -26,6 +28,11 @@ export const appReducer = (state = defaultState, action) => {
       return {
         ...state,
         zoomDelta: action.payload,
+      };
+    case SET_ZOOM_DEFAULT:
+      return {
+        ...state,
+        zoomDefault: action.payload,
       };
   }
   return state;
