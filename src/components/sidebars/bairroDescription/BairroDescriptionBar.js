@@ -454,6 +454,7 @@ const BairroDescriptionBar = forwardRef(
   // o destaque conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
   const [destaquesBairro, setDestaquesBairro] = useState([]);
   useEffect(() => {
+    if (!bairro) return;
     const loadDestaquesBairro = async (id_bairro) => {
       try {
         const destaquesBairroRef = await getListDestaquesBairro(id_bairro);
@@ -465,8 +466,8 @@ const BairroDescriptionBar = forwardRef(
       }
     };
 
-    loadDestaquesBairro(bairro);
-  }, []);
+    loadDestaquesBairro(bairro.nome);
+  }, [bairro]);
 
   const handleTitleClick = (value) => {
     setDescriptionData(toSnakeCase(value));
