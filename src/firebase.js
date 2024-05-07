@@ -738,7 +738,7 @@ export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(
 
 // Obter array de id's de realizacao_orgao
 
-export async function getRealizacaoOrgaoIds() { // TODO: review
+export async function getRealizacaoOrgaoIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_orgao').get();
     const ids = snapshot.docs.map((doc) => doc.id);
@@ -749,7 +749,7 @@ export async function getRealizacaoOrgaoIds() { // TODO: review
   }
 }
 
-export async function getRealizacaoProgramaIds() { // TODO: review
+export async function getRealizacaoProgramaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_programa').get();
     const ids = snapshot.docs.map((doc) => doc.id);
@@ -760,7 +760,7 @@ export async function getRealizacaoProgramaIds() { // TODO: review
   }
 }
 
-export async function getRealizacaoTemaIds() { // TODO: review
+export async function getRealizacaoTemaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_tema').get();
     const ids = snapshot.docs.map((doc) => doc.id);
@@ -773,7 +773,7 @@ export async function getRealizacaoTemaIds() { // TODO: review
 
 // Obter array de id's de realizacao_orgao, realizacao_tema, realizacao_programa snake_case to Capitalized
 
-export async function getListRealizacaoTemaIds() { // TODO: review
+export async function getListRealizacaoTemaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_tema').get();
   const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_tema));
@@ -784,7 +784,7 @@ export async function getListRealizacaoTemaIds() { // TODO: review
   }
 }
 
-export async function getListRealizacaoProgramaIds() { // TODO: review
+export async function getListRealizacaoProgramaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_programa').get();
   const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_programa));
@@ -795,7 +795,7 @@ export async function getListRealizacaoProgramaIds() { // TODO: review
   }
 }
 
-export async function getListRealizacaoOrgaoIds() { // TODO: review
+export async function getListRealizacaoOrgaoIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_orgao').get();
   const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_orgao));
@@ -822,8 +822,11 @@ export async function getListRealizacoesPrograma(id_programa) {
 
 // o destaque do município conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
 export async function getListDestaquesMunicipio(id_municipio){
-
-  const realizacoesRef = await db.collection("realizacao").where("id_cidade", "==", id_municipio).orderBy("investimento", "desc").limit(3).get();
+  if (!id_municipio)
+    id_municipio = "rio_de_janeiro"
+  id_municipio = toSnakeCase(id_municipio)
+  const collection = db.collection("realizacao")
+  const realizacoesRef = await collection.where("id_cidade", "==", id_municipio).orderBy("investimento", "desc").limit(3).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
   const realizacoesDestaqueMunicipio = realizacoesData.map((realizacao) => {
     return {
@@ -836,6 +839,8 @@ export async function getListDestaquesMunicipio(id_municipio){
 
 // o destaque do bairro conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
 export async function getListDestaquesBairro(id_bairro){
+  id_bairro = toSnakeCase(id_bairro)
+  console.log("firebase: id_bairro", id_bairro)
   const realizacoesRef = await db.collection("realizacao").where("id_bairro", "==", id_bairro).orderBy("investimento", "desc").limit(3).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
   const realizacoesDestaqueBairro = realizacoesData.map((realizacao) => {
@@ -849,6 +854,8 @@ export async function getListDestaquesBairro(id_bairro){
 
 // o destaque da subprefeitura conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
 export async function getListDestaquesSubprefeitura(id_subprefeitura){
+  id_subprefeitura = toSnakeCase(id_subprefeitura)
+  console.log("firebase: id_subprefeitura", id_subprefeitura)
   const realizacoesRef = await db.collection("realizacao").where("id_subprefeitura", "==", id_subprefeitura).orderBy("investimento", "desc").limit(3).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
   const realizacoesDestaqueSubprefeitura = realizacoesData.map((realizacao) => {
@@ -862,6 +869,8 @@ export async function getListDestaquesSubprefeitura(id_subprefeitura){
 
 // o destaque do tema conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
 export async function getListDestaquesTema(id_tema){
+  id_tema = toSnakeCase(id_tema)
+  console.log("firebase: id_tema", id_tema)
   const realizacoesRef = await db.collection("realizacao").where("id_tema", "==", id_tema).orderBy("investimento", "desc").limit(3).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
   const realizacoesDestaqueTema = realizacoesData.map((realizacao) => {
