@@ -198,6 +198,7 @@ const SearchBar = ({
   }, [tema, programa, realizacao]);
 
   const handleBairroSubprefeituraChange = (event, name) => {
+    showSearchBar && setShowSearchBar(false);
     if (name) {
       console.log('Bairro/prefeitura selecionado(a):', name);
       setBairroName(name);
