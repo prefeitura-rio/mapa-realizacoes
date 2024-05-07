@@ -17,6 +17,8 @@ import rio_cover from "../../assets/rio_cover.jpg"
 import clsx from "clsx";
 import { Stack } from "@mui/material";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import GroupsIcon from '@mui/icons-material/Groups';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
@@ -228,13 +230,20 @@ const useStyles = makeStyles((theme) => ({
     // marginBottom:"-5px"
   },
   subtituloMunicipio: {
-    // marginTop: "15px", 
-    opacity: 0.8
+    opacity: 0.8,
+    display: '-webkit-box',
+    '-webkit-line-clamp': 4,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   },
   title_li: {
     fontWeight: "bold",
     cursor: "pointer",
-    fontSize: "1.2rem"
+    fontSize: "1.2rem",
+    display: '-webkit-box',
+    '-webkit-line-clamp': 2,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   }
 
 }));
@@ -349,21 +358,21 @@ const MainUnderSearchBar = forwardRef(
               <Box pl={2} display="flex" >
                 <AccountBalanceIcon />
                 <Box pl={0.5}>
-                  <Typography>{dadosAgregadosAbaSumarioStatusEntregasCidadeTotal} obras</Typography>
+                  <Typography style={{ fontSize: '0.8rem' }} >{dadosAgregadosAbaSumarioStatusEntregasCidadeTotal} <br></br>realizações</Typography>
                 </Box>
               </Box>
               <Box display="flex" >
-                <AccountBalanceIcon />
+                <AttachMoneyIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado das obras. */}
-                  <Typography>4 bilhões</Typography>
+                  <Typography style={{ fontSize: '0.8rem' }}>R$ 4bi <br></br> investidos</Typography>
                 </Box>
               </Box>
               <Box pr={2} display="flex">
-                <AccountBalanceIcon />
+                <GroupsIcon />
                 <Box pl={0.5}>
                   {/* TODO: Puxar valor real */}
-                  <Typography>5 mi de m²</Typography>
+                  <Typography style={{ fontSize: '0.8rem' }}>1.000.000 cidadãos <br></br>beneficiados</Typography>
                 </Box>
               </Box>
 

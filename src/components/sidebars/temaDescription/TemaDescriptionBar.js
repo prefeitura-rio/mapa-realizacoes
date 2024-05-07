@@ -26,6 +26,8 @@ import TemaDescriptionContainer from "./TemaDescriptionContainer";
 import { getListDestaquesTema } from "../../../firebase";
 import { toSnakeCase } from "../../../utils/formatFile";
 import { DESCRIPTION_BAR } from "../../../redux/active/actions";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -229,13 +231,20 @@ const useStyles = makeStyles((theme) => ({
     // marginBottom:"-5px"
   },
   subtituloMunicipio: {
-    // marginTop: "15px", 
-    opacity: 0.8
+    opacity: 0.8,
+    display: '-webkit-box',
+    '-webkit-line-clamp': 4,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   },
   title_li: {
     fontWeight: "bold",
     cursor: "pointer",
-    fontSize: "1.2rem"
+    fontSize: "1.2rem",
+    display: '-webkit-box',
+    '-webkit-line-clamp': 2,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   }
 
 }));
@@ -353,21 +362,21 @@ const TemaDescriptionBar = forwardRef(
                 <AccountBalanceIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography>G obras</Typography>
+                  <Typography  style={{ fontSize: '0.8rem' }} > 970 <br></br>realizações</Typography>
                 </Box>
               </Box>
               <Box display="flex" >
-              <AccountBalanceIcon />
+              <AttachMoneyIcon /> 
                 <Box pl={0.5}>
                   {/* TODO: valor agregado das obras. */}
-                  <Typography>G bilhões</Typography>
+                  <Typography style={{ fontSize: '0.8rem' }}>R$ 4bi <br></br> investidos</Typography>
                 </Box>
               </Box>
               <Box pr={2} display="flex">
-              <AccountBalanceIcon />
+              <GroupsIcon />
                 <Box pl={0.5}>
                    {/* TODO: Puxar valor real */}
-                  <Typography>G mi de m²</Typography>
+                   <Typography style={{ fontSize: '0.8rem' }}>1.000.000 cidadãos <br></br>beneficiados</Typography>
                 </Box>
               </Box>
 

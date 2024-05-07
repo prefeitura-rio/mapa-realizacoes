@@ -26,6 +26,8 @@ import ProgramaDescriptionContainer from "./ProgramaDescriptionContainer";
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -352,21 +354,21 @@ const ProgramaDescriptionBar = forwardRef(
                 <AccountBalanceIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography>G obras</Typography>
+                  <Typography  style={{ fontSize: '0.8rem' }} > 970 <br></br>realizações</Typography>
                 </Box>
               </Box>
               <Box display="flex" >
-                <AccountBalanceIcon />
+              <AttachMoneyIcon /> 
                 <Box pl={0.5}>
                   {/* TODO: valor agregado das obras. */}
-                  <Typography>G bilhões</Typography>
+                  <Typography style={{ fontSize: '0.8rem' }}>R$ 4bi <br></br> investidos</Typography>
                 </Box>
               </Box>
               <Box pr={2} display="flex">
-                <AccountBalanceIcon />
+              <GroupsIcon />
                 <Box pl={0.5}>
                   {/* TODO: Puxar valor real */}
-                  <Typography>G mi de m²</Typography>
+                  <Typography style={{ fontSize: '0.8rem' }}>1.000.000 cidadãos <br></br>beneficiados</Typography>
                 </Box>
               </Box>
 
