@@ -458,6 +458,7 @@ const BairroDescriptionBar = forwardRef(
     // o destaque conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
   const [destaquesSubprefeitura, setDestaquesSubprefeitura] = useState([]);
   useEffect(() => {
+  if (!subprefeituras) return;
     const loadDestaquesSubprefeitura = async (id_subprefeitura) => {
       try {
         const destaquesSubprefeituraRef = await getListDestaquesSubprefeitura(id_subprefeitura);
@@ -469,8 +470,8 @@ const BairroDescriptionBar = forwardRef(
       }
     };
 
-    loadDestaquesSubprefeitura(subprefeitura);
-  }, []);
+    loadDestaquesSubprefeitura(subprefeituras.nome);
+  }, [subprefeituras]);
 
   const handleTitleClick = (value) => {
     setDescriptionData(toSnakeCase(value));
