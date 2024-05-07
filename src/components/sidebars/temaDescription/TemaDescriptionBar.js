@@ -23,6 +23,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
 import TemaDescriptionContainer from "./TemaDescriptionContainer";
+import { getListDestaquesTema } from "../../../firebase";
+import { toSnakeCase } from "../../../utils/formatFile";
+import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -136,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "12.0vh", //8.5vh + 3.0vh 0.5vh
+      top: "12.5vh", //8.5vh + 3.0vh 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -156,7 +159,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "46.5vh", //12vh + 34vh + 0.5vh
+      top: "47.5vh", //12.5vh + 34vh + 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -176,7 +179,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "55.5vh", // 46.5vh + 8.5vh + 0.5vh = 55.5vh
+      top: "57vh", // 47.5vh + 8.5vh + 1vh = 55.5vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
@@ -228,6 +231,11 @@ const useStyles = makeStyles((theme) => ({
   subtituloMunicipio: {
     // marginTop: "15px", 
     opacity: 0.8
+  },
+  title_li: {
+    fontWeight: "bold",
+    cursor: "pointer",
+    fontSize: "1.2rem"
   }
 
 }));
@@ -274,6 +282,32 @@ const TemaDescriptionBar = forwardRef(
       }
     }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
     
+    
+    const handleTitleClick = (value) => {
+      setDescriptionData(toSnakeCase(value));
+      setUnderSearchBar(true);
+      setActiveBar(DESCRIPTION_BAR);
+      loadData(toSnakeCase(value));
+      console.log("clickei")
+    };
+
+  // o destaque conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
+  const [destaquesTema, setDestaquesTema] = useState([]);
+  useEffect(() => {
+    const loadDestaquesTema = async (id_tema) => {
+      try {
+        const destaquesTemaRef = await getListDestaquesTema(id_tema);
+
+          setDestaquesTema(destaquesTemaRef);
+       
+      } catch (error) {
+        console.error("Erro", error);
+      }
+    };
+
+    loadDestaquesTema(tema);
+  }, []);
+
     return (
 <>
 
@@ -349,15 +383,12 @@ const TemaDescriptionBar = forwardRef(
             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Destaques</Typography>
               <ul>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.</Typography>
-                </li>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...</Typography>
-                </li>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.</Typography>
-                </li>
+                {destaquesTema.map((item, index) => (
+                  <li key={index}>
+                    <Typography className={classes.title_li} onClick={()=>handleTitleClick(item.title)}>{item.title}</Typography>
+                    <Typography className={classes.subtituloMunicipio}>{item.description}</Typography>
+                  </li>
+                ))}
               </ul>
             </div>
           </Paper>

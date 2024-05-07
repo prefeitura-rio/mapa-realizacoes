@@ -923,3 +923,52 @@ export async function getListRealizacoesPrograma(id_programa) {
   const realizacoes = realizacoesResults.map((result) => result.nome);
   return realizacoes;
 }
+
+//@Gabriel 
+//// o destaque do município conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
+export async function getListDestaquesMunicipio(id_municipio){
+
+  const realizacoesDestaqueMunicipio = [
+    { title: 'Licença - transformação de uso 5', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
+    { title: 'Título 2', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...' },
+    { title: 'Título 3', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
+  ];
+
+  return realizacoesDestaqueMunicipio
+}
+
+//// o destaque do bairro conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
+export async function getListDestaquesBairro(id_bairro){
+
+  const realizacoesDestaqueBairro = [
+    { title: 'Licença - transformação de uso 5', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
+    { title: 'Título 2', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...' },
+    { title: 'Título 3', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
+  ];
+
+  return realizacoesDestaqueBairro
+}
+
+//// o destaque da subprefeitura conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
+export async function getListDestaquesSubprefeitura(id_subprefeitura){
+
+  const realizacoesDestaqueSubprefeitura = [
+    { title: 'Licença - transformação de uso 5', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
+    { title: 'Título 2', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...' },
+    { title: 'Título 3', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
+  ];
+
+  return realizacoesDestaqueSubprefeitura
+}
+
+//// o destaque do tema conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
+export async function getListDestaquesTema(id_tema){
+
+  const realizacoesDestaqueTema = [
+    { title: 'Licença - transformação de uso 5', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
+    { title: 'Título 2', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...' },
+    { title: 'Título 3', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
+  ];
+
+  return realizacoesDestaqueTema
+}

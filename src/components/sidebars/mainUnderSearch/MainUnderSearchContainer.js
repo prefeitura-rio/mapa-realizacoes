@@ -41,7 +41,7 @@ const MainUnderSearchContainer = (props) => {
         setActiveBar={props.setActiveBar}
         setDescriptionData={props.setDescriptionData}
         loadData={props.loadData}
-        
+        activeBar={props.activeBar}
 
         // remove if not useful
         profile={props.profile}
@@ -67,6 +67,7 @@ const mapStateToProps = (state) => {
     anyLoading: state.places.loading || state.place.loading,
     openCompletePhoto: state.active.openCompletePhoto,
     setImagesType: state.images.setImagesType,  
+    activeBar: state.active.activeBar
   };
 };
 

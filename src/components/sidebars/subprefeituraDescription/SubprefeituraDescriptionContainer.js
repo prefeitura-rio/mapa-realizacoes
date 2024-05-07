@@ -62,6 +62,7 @@ const mapStateToProps = (state) => {
     dadosAgregadosAbaSumarioInfoBasicasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
     dadosAgregadosAbaSumarioStatusEntregasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
     setImagesType: state.images.setImagesType,  
+    subprefeitura: state.filtros.subprefeitura,
     
   };
 };
