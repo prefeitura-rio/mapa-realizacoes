@@ -29,24 +29,6 @@ export async function getAllCidades(collection = "cidade") {
   return res.docs.map((doc) => doc.data());
 }
 
-export async function getRefMultipleRealizacaoOrgao(idRealizacao) {
-  return await db
-    .collection("realizacao_orgao")
-    .where("id_realizacao", "==", idRealizacao);
-}
-
-export async function getRefMultipleRealizacaoPrograma(idRealizacao) {
-  return await db
-    .collection("realizacao_programa")
-    .where("id_realizacao", "==", idRealizacao);
-}
-
-export async function getRefMultipleRealizacaoTema(idRealizacao) {
-  return await db
-    .collection("realizacao_tema")
-    .where("id_realizacao", "==", idRealizacao);
-}
-
 export async function readBairro(id) {
   const doc = await db.collection("bairro").doc(id).get();
   return doc.data();
@@ -418,47 +400,17 @@ export async function getRealizacaoInfo(document) {
   // get subprefeitura
   let dataSubprefeitura = await readSubprefeitura(dataBairro.id_subprefeitura);
   data.subprefeitura = dataSubprefeitura.nome;
-  // get temas
-  let idTemas = await db
-    .collection("realizacao_tema")
-    .where("id_realizacao", "==", document)
-    .get()
-    .then((querySnapshot) => {
-      return querySnapshot.docs.map((doc) => doc.data().id_tema);
-    });
-  let temas = [];
-  for (let i = 0; i < idTemas.length; i++) {
-    let dataTema = await readTema(idTemas[i]);
-    temas.push(dataTema.nome);
-  }
+  // in the "tema" collection, get the name of the tema with the id "data.id_tema"
+  let dataTema = await readTema(data.id_tema);
+  let temas = [dataTema.nome];
   data.tema = temas;
-  // get orgaos
-  let idOrgaos = await db
-    .collection("realizacao_orgao")
-    .where("id_realizacao", "==", document)
-    .get()
-    .then((querySnapshot) => {
-      return querySnapshot.docs.map((doc) => doc.data().id_orgao);
-    });
-  let orgaos = [];
-  for (let i = 0; i < idOrgaos.length; i++) {
-    let dataOrgao = await readOrgao(idOrgaos[i]);
-    orgaos.push(dataOrgao.nome);
-  }
+  // in the "orgao" collection, get the name of the tema with the id "data.id_orgao"
+  let dataOrgao = await readOrgao(data.id_orgao);
+  let orgaos = [dataOrgao.nome];
   data.orgao = orgaos;
-  // get programas
-  let idProgramas = await db
-    .collection("realizacao_programa")
-    .where("id_realizacao", "==", document)
-    .get()
-    .then((querySnapshot) => {
-      return querySnapshot.docs.map((doc) => doc.data().id_programa);
-    });
-  let programas = [];
-  for (let i = 0; i < idProgramas.length; i++) {
-    let dataPrograma = await readPrograma(idProgramas[i]);
-    programas.push(dataPrograma.nome);
-  }
+  // in the "programa" collection, get the name of the tema with the id "data.id_programa"
+  let dataPrograma = await readPrograma(data.id_programa);
+  let programas = [dataPrograma.nome];
   data.programa = programas;
   return data;
 }
@@ -477,27 +429,6 @@ export async function getSubprefeituraInfo(document) {
     .doc(document)
     .get()
     .then((doc) => doc.data());
-}
-
-export async function getRealizacoesPrograma(idPrograma) {
-  return await db
-    .collection("realizacao_programa")
-    .where("id_programa", "==", idPrograma)
-    .get();
-}
-
-export async function getRealizacoesProgramaByRealizacao(idRealizacao) {
-  return await db
-    .collection("realizacao_programa")
-    .where("id_realizacao", "==", idRealizacao)
-    .get();
-}
-
-export async function getRealizacoesTema(idTema) {
-  return await db
-    .collection("realizacao_tema")
-    .where("id_tema", "==", idTema)
-    .get();
 }
 
 // Município
@@ -614,18 +545,14 @@ export async function getDadosAgregadosAbaTema(
     await Promise.all(
       themeData.map(async (theme) => {
         // Look for realizacoes that have this theme
-        const realizacoesTheme = await getRealizacoesTema(theme.id);
-        const realizacoesThemeDocs = realizacoesTheme.docs;
+        const realizacoesByTheme = await db.collection("realizacao").where("id_tema", "==", theme.id).get();
+        const realizacoesDocs = realizacoesByTheme.docs;
         // If length is 0, skip this theme
-        if (realizacoesThemeDocs.length === 0) {
+        if (realizacoesDocs.length === 0) {
           return;
         }
-        // Append each realizacao to this theme's aggregate data
-        const realizacoesIds = realizacoesThemeDocs.map((realizacao) => {
-          return realizacao.data().id_realizacao;
-        });
-        let realizacoes = await getListRealizacaoData(realizacoesIds);
         // Check for filters
+        let realizacoes = realizacoesDocs.map((doc) => doc.data());
         if (inputFilters.id_bairro) {
           realizacoes = realizacoes.filter(
             (realizacao) => realizacao.id_bairro === inputFilters.id_bairro,
@@ -717,17 +644,14 @@ export async function getDadosAgregadosAbaProgramas(
     await Promise.all(
       programaData.map(async (programa) => {
         // Look for realizacoes that have this programa
-        const realizacoesPrograma = await getRealizacoesPrograma(programa.id);
-        const realizacoesProgramaDocs = realizacoesPrograma.docs;
+        const realizacoesByPrograma = await db.collection("realizacao").where("id_programa", "==", programa.id).get();
+        const realizacoesDocs = realizacoesByPrograma.docs;
         // If length is 0, skip this programa
-        if (realizacoesProgramaDocs.length === 0) {
+        if (realizacoesDocs.length === 0) {
           return;
         }
         // Append each realizacao to this programa's aggregate data
-        const realizacoesIds = realizacoesProgramaDocs.map((realizacao) => {
-          return realizacao.data().id_realizacao;
-        });
-        let realizacoes = await getListRealizacaoData(realizacoesIds);
+        let realizacoes = realizacoesDocs.map((doc) => doc.data());
         // Check for filters
         if (inputFilters.id_bairro) {
           realizacoes = realizacoes.filter(
@@ -814,7 +738,7 @@ export async function getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura(
 
 // Obter array de id's de realizacao_orgao
 
-export async function getRealizacaoOrgaoIds() {
+export async function getRealizacaoOrgaoIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_orgao').get();
     const ids = snapshot.docs.map((doc) => doc.id);
@@ -825,7 +749,7 @@ export async function getRealizacaoOrgaoIds() {
   }
 }
 
-export async function getRealizacaoProgramaIds() {
+export async function getRealizacaoProgramaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_programa').get();
     const ids = snapshot.docs.map((doc) => doc.id);
@@ -836,7 +760,7 @@ export async function getRealizacaoProgramaIds() {
   }
 }
 
-export async function getRealizacaoTemaIds() {
+export async function getRealizacaoTemaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_tema').get();
     const ids = snapshot.docs.map((doc) => doc.id);
@@ -849,7 +773,7 @@ export async function getRealizacaoTemaIds() {
 
 // Obter array de id's de realizacao_orgao, realizacao_tema, realizacao_programa snake_case to Capitalized
 
-export async function getListRealizacaoTemaIds() {
+export async function getListRealizacaoTemaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_tema').get();
   const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_tema));
@@ -860,7 +784,7 @@ export async function getListRealizacaoTemaIds() {
   }
 }
 
-export async function getListRealizacaoProgramaIds() {
+export async function getListRealizacaoProgramaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_programa').get();
   const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_programa));
@@ -871,7 +795,7 @@ export async function getListRealizacaoProgramaIds() {
   }
 }
 
-export async function getListRealizacaoOrgaoIds() {
+export async function getListRealizacaoOrgaoIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_orgao').get();
   const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_orgao));
@@ -883,92 +807,77 @@ export async function getListRealizacaoOrgaoIds() {
 }
 
 export async function getListProgramasTema(id_tema) {
-  // Look for realizacoes that have this theme
-  const realizacoesTheme = await getRealizacoesTema(id_tema);
-  const realizacoesThemeDocs = realizacoesTheme.docs;
-  // If length is 0, skip this theme
-  if (realizacoesThemeDocs.length === 0) {
-    return;
-  }
-  // Get the IDs of the realizacoes
-  const realizacoesIds = realizacoesThemeDocs.map((realizacao) => {
-    return realizacao.data().id_realizacao;
-  });
-  // Collect the program IDs that relate to these realizacoes
-  const idProgramas = new Set();
-  const realizacaoProgramaPromises = realizacoesIds.map((id) => getRealizacoesProgramaByRealizacao(id));
-  const realizacaoProgramaResults = await Promise.all(realizacaoProgramaPromises);
-  const realizacaoProgramaDocs = realizacaoProgramaResults.map((result) => result.docs);
-  for (let i = 0; i < realizacaoProgramaDocs.length; i++) {
-    const programasIds = realizacaoProgramaDocs[i].map((doc) => doc.data().id_programa);
-    for (let j = 0; j < programasIds.length; j++) {
-      idProgramas.add(programasIds[j]);
-    }
-  }
-  // Get the program names
-  const programaIds = Array.from(idProgramas);
-  const programaPromises = programaIds.map((id) => readPrograma(id));
-  const programaResults = await Promise.all(programaPromises);
-  const programas = programaResults.map((result) => result.nome);
+  const programasByTheme = await db.collection("programa").where("id_tema", "==", id_tema).get();
+  const programasDocs = programasByTheme.docs;
+  const programas = programasDocs.map((doc) => doc.data().nome);
   return programas;
 }
 
 export async function getListRealizacoesPrograma(id_programa) {
-  // Look for realizacoes that have this programa
-  const realizacoesPrograma = await getRealizacoesPrograma(id_programa);
-  const realizacoesProgramaDocs = realizacoesPrograma.docs;
-  // Collect names
-  const realizacoesPromises = realizacoesProgramaDocs.map((doc) => readRealizacao(doc.data().id_realizacao));
-  const realizacoesResults = await Promise.all(realizacoesPromises);
-  const realizacoes = realizacoesResults.map((result) => result.nome);
+  const realizacoesByPrograma = await db.collection("realizacao").where("id_programa", "==", id_programa).get();
+  const realizacoesDocs = realizacoesByPrograma.docs;
+  const realizacoes = realizacoesDocs.map((doc) => doc.data().nome);
   return realizacoes;
 }
 
-//@Gabriel 
-//// o destaque do município conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
+// o destaque do município conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
 export async function getListDestaquesMunicipio(id_municipio){
-
-  const realizacoesDestaqueMunicipio = [
-    { title: 'Licença - transformação de uso 5', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
-    { title: 'Título 2', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...' },
-    { title: 'Título 3', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
-  ];
-
+  if (!id_municipio)
+    id_municipio = "rio_de_janeiro"
+  id_municipio = toSnakeCase(id_municipio)
+  const collection = db.collection("realizacao")
+  const realizacoesRef = await collection.where("id_cidade", "==", id_municipio).orderBy("investimento", "desc").limit(3).get();
+  const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
+  const realizacoesDestaqueMunicipio = realizacoesData.map((realizacao) => {
+    return {
+      title: realizacao.nome,
+      description: realizacao.descricao,
+    };
+  });
   return realizacoesDestaqueMunicipio
 }
 
-//// o destaque do bairro conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
+// o destaque do bairro conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
 export async function getListDestaquesBairro(id_bairro){
-
-  const realizacoesDestaqueBairro = [
-    { title: 'Licença - transformação de uso 5', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
-    { title: 'Título 2', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...' },
-    { title: 'Título 3', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
-  ];
-
+  id_bairro = toSnakeCase(id_bairro)
+  console.log("firebase: id_bairro", id_bairro)
+  const realizacoesRef = await db.collection("realizacao").where("id_bairro", "==", id_bairro).orderBy("investimento", "desc").limit(3).get();
+  const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
+  const realizacoesDestaqueBairro = realizacoesData.map((realizacao) => {
+    return {
+      title: realizacao.nome,
+      description: realizacao.descricao,
+    };
+  });
   return realizacoesDestaqueBairro
 }
 
-//// o destaque da subprefeitura conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
+// o destaque da subprefeitura conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
 export async function getListDestaquesSubprefeitura(id_subprefeitura){
-
-  const realizacoesDestaqueSubprefeitura = [
-    { title: 'Licença - transformação de uso 5', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
-    { title: 'Título 2', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...' },
-    { title: 'Título 3', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
-  ];
-
+  id_subprefeitura = toSnakeCase(id_subprefeitura)
+  console.log("firebase: id_subprefeitura", id_subprefeitura)
+  const realizacoesRef = await db.collection("realizacao").where("id_subprefeitura", "==", id_subprefeitura).orderBy("investimento", "desc").limit(3).get();
+  const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
+  const realizacoesDestaqueSubprefeitura = realizacoesData.map((realizacao) => {
+    return {
+      title: realizacao.nome,
+      description: realizacao.descricao,
+    };
+  });
   return realizacoesDestaqueSubprefeitura
 }
 
-//// o destaque do tema conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
+// o destaque do tema conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
 export async function getListDestaquesTema(id_tema){
-
-  const realizacoesDestaqueTema = [
-    { title: 'Licença - transformação de uso 5', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
-    { title: 'Título 2', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...' },
-    { title: 'Título 3', description: 'O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.' },
-  ];
-
+  id_tema = toSnakeCase(id_tema)
+  console.log("firebase: id_tema", id_tema)
+  const realizacoesRef = await db.collection("realizacao").where("id_tema", "==", id_tema).orderBy("investimento", "desc").limit(3).get();
+  const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
+  const realizacoesDestaqueTema = realizacoesData.map((realizacao) => {
+    return {
+      title: realizacao.nome,
+      description: realizacao.descricao,
+    };
+  });
   return realizacoesDestaqueTema
 }
