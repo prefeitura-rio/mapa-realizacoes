@@ -124,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh",
+      height: "70px",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -139,12 +139,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "12.0vh", //8.5vh + 3.0vh 0.5vh
-      // bottom: "30px",
+      top:  "calc(4vh + 70px )", // 3vh + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "34vh",
+      height: "calc(91vh - 390px)",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -159,12 +158,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "46.5vh", //12vh + 34vh + 0.5vh
+      top: "calc(96vh - 320px)", //4vh + 70px + 91vh - 390px + 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh",
+      height: "70px",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -179,11 +178,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "55.5vh", // 46.5vh + 8.5vh + 0.5vh = 55.5vh
+      top: "calc(96vh - 320px + 70px + 1vh)", // 96vh - 320px + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "41.5vh",
+      height: "250px",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -215,14 +214,16 @@ const useStyles = makeStyles((theme) => ({
     padding: "1px 8px 1px 8px"
   },
   programa: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    width: "20vw",
+    // whiteSpace: "nowrap",
+    // overflow: "hidden",
+    // textOverflow: "ellipsis",
+    // width: "20vw",
     minWidth: "350px",
     fontSize: "1.5rem",
     fontWeight: "bold",
-    marginBottom: "-5px"
+    marginBottom: "-5px",
+    lineHeight:"20px",
+    paddingBottom:"5px"
   },
   subtitulo: {
     // marginTop: "15px", 
@@ -316,9 +317,7 @@ const ProgramaDescriptionBar = forwardRef(
             className={classes.underSearch}
           >
             <div className={classes.basicInfo}>
-            <Tooltip placement="left" title={programa}>
               <Typography className={classes.programa}>{programa}</Typography>
-             </Tooltip>
               <Typography className={classes.subtitulo}> {tema}</Typography>
             </div>
           </Paper>
@@ -348,7 +347,7 @@ const ProgramaDescriptionBar = forwardRef(
             className={classes.underSearch3}
           >
 
-            <Box height="8.5vh" display="flex" justifyContent="space-between" alignItems="center">
+            <Box height="70px" display="flex" justifyContent="space-between" alignItems="center">
               <Box pl={2} display="flex" >
                 <AccountBalanceIcon />
                 <Box pl={0.5}>

@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   listItemGutters: {
     paddingRight: "24px",
     paddingLeft: "24px",
+    whiteSpace: "nowrap"
   },
 }));
 

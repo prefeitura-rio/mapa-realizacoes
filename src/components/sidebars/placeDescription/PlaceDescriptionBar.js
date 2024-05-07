@@ -323,7 +323,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh",
+      height: "70px",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -338,12 +338,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "12.0vh", //8.5vh + 3.0vh 0.5vh
-      // bottom: "30px",
+      top:  "calc(4vh + 70px )", // 3vh + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "34vh",
+      height: "calc(45.5vh - 160px)",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -358,12 +357,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "46.5vh", //12vh + 34vh + 0.5vh
+      top: "calc(50.5vh - 90px )", //4vh + 70px + 45.5vh -160px 
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "18vh",
+      height: "calc(45.5vh - 160px)",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -379,11 +378,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "65vh", // 46.5vh + 8.5vh + 0.5vh = 55.5vh
+      top: "calc(96vh - 320px + 70px + 1vh)", // 96vh - 320px + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "32vh",
+      height: "250px",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -419,14 +418,10 @@ const useStyles = makeStyles((theme) => ({
     padding: "1px 8px 1px 8px"
   },
   titulo: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    width: "20vw",
-    minWidth: "350px",
+    // position:"relative",
+    lineHeight: "20px",
     fontSize: "1.5rem",
     fontWeight: "bold",
-    marginBottom: "-5px"
   },
   subtitulo: {
     // marginTop: "15px", 
@@ -537,9 +532,7 @@ const PlaceDescriptionBar = forwardRef(
             className={classes.underSearch}
           >
             <div className={classes.basicInfo}>
-            <Tooltip placement="left" title={realizacao ? realizacao : content ? content.nome : ""}>
               <Typography className={classes.titulo}>{realizacao ? realizacao : (content ? content.nome : <CircularProgress size={25} />)}</Typography>
-             </Tooltip>
               <Typography className={classes.subtitulo}> {programa ? programa : content?.programa}</Typography>
             </div>
           </Paper>
@@ -573,11 +566,9 @@ const PlaceDescriptionBar = forwardRef(
             elevation={6}
             className={classes.underSearch3}
           >
-            <div className={classes.sumarioInfo}>
-              
-               {content? <ListInfo content={content ? content : []} /> : <CircularProgress size={25} />}
-          
-            </div>
+             <div className={classes.sumarioInfo} style={{ display: 'flex' }}>
+    {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress size={25} />}
+  </div>
           </Paper>
         </Slide>
         <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>

@@ -197,6 +197,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
 import BairroDescriptionContainer from "./BairroDescriptionContainer";
+import { getListDestaquesBairro } from "../../../firebase";
+import { toSnakeCase } from "../../../utils/formatFile";
+import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -310,7 +313,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "12.0vh", //8.5vh + 3.0vh 0.5vh
+      top: "12.5vh", //8.5vh + 3.0vh 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -330,7 +333,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "46.5vh", //12vh + 34vh + 0.5vh
+      top: "47.5vh", //12.5vh + 34vh + 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -350,11 +353,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "55.5vh", // 46.5vh + 8.5vh + 0.5vh = 55.5vh
+      top: "57vh", // 47.5vh + 8.5vh + 1vh = 55.5vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "41.5vh",
+      height: "40vh",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -402,6 +405,11 @@ const useStyles = makeStyles((theme) => ({
   subtituloMunicipio: {
     // marginTop: "15px", 
     opacity: 0.8
+  },
+  title_li: {
+    fontWeight: "bold",
+    cursor: "pointer",
+    fontSize: "1.2rem"
   }
 
 }));
@@ -442,6 +450,31 @@ const BairroDescriptionBar = forwardRef(
         setDadosAgregadosAbaSumarioStatusEntregasBairroTotal(total);
       }
     }, [dadosAgregadosAbaSumarioStatusEntregasBairro]);
+
+  // o destaque conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
+  const [destaquesBairro, setDestaquesBairro] = useState([]);
+  useEffect(() => {
+    const loadDestaquesBairro = async (id_bairro) => {
+      try {
+        const destaquesBairroRef = await getListDestaquesBairro(id_bairro);
+
+          setDestaquesBairro(destaquesBairroRef);
+       
+      } catch (error) {
+        console.error("Erro", error);
+      }
+    };
+
+    loadDestaquesBairro(bairro);
+  }, []);
+
+  const handleTitleClick = (value) => {
+    setDescriptionData(toSnakeCase(value));
+    setUnderSearchBar(true);
+    setActiveBar(DESCRIPTION_BAR);
+    loadData(toSnakeCase(value));
+    console.log("clickei")
+  };
     
     return (
 <>
@@ -515,18 +548,15 @@ const BairroDescriptionBar = forwardRef(
             elevation={6}
             className={classes.underSearch4}
           >
-            <div className={classes.basicInfo}>
+             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Destaques</Typography>
               <ul>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.</Typography>
-                </li>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...</Typography>
-                </li>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.</Typography>
-                </li>
+                {destaquesBairro.map((item, index) => (
+                  <li key={index}>
+                    <Typography className={classes.title_li} onClick={()=>handleTitleClick(item.title)}>{item.title}</Typography>
+                    <Typography className={classes.subtituloMunicipio}>{item.description}</Typography>
+                  </li>
+                ))}
               </ul>
             </div>
           </Paper>

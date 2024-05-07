@@ -22,6 +22,9 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
+import { toSnakeCase } from "../../../utils/formatFile";
+import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
+import { getListDestaquesMunicipio } from "../../../firebase";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -135,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "12.0vh", //8.5vh + 3.0vh 0.5vh
+      top: "12.5vh", //8.5vh + 3.0vh 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -155,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "46.5vh", //12vh + 34vh + 0.5vh
+      top: "47.5vh", //12.5vh + 34vh + 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -175,11 +178,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "55.5vh", // 46.5vh + 8.5vh + 0.5vh = 55.5vh
+      top: "57vh", // 47.5vh + 8.5vh + 1vh = 55.5vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "41.5vh",
+      height: "40vh",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -227,6 +230,11 @@ const useStyles = makeStyles((theme) => ({
   subtituloMunicipio: {
     // marginTop: "15px", 
     opacity: 0.8
+  },
+  title_li: {
+    fontWeight: "bold",
+    cursor: "pointer",
+    fontSize: "1.2rem"
   }
 
 }));
@@ -252,13 +260,14 @@ const MainUnderSearchBar = forwardRef(
     setActiveBar,
     setDescriptionData,
     setUnderSearchBar,
-    loadData
+    loadData,
+    activeBar
 
   }, ref) => {
 
     const classes = useStyles();
-    
-    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal,setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
+
+    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal, setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
 
     useEffect(() => {
       if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
@@ -269,40 +278,35 @@ const MainUnderSearchBar = forwardRef(
         setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
       }
     }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
-    
+
+    const handleTitleClick = (value) => {
+      setDescriptionData(toSnakeCase(value));
+      setUnderSearchBar(true);
+      setActiveBar(DESCRIPTION_BAR);
+      loadData(toSnakeCase(value));
+      console.log("clickei")
+    };
+
+  // o destaque conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
+  const [destaquesMunicipio, setDestaquesMunicipio] = useState([]);
+  useEffect(() => {
+    const loadDestaquesMunicipio = async () => {
+      try {
+        const destaquesMunicipioRef = await getListDestaquesMunicipio();
+
+          setDestaquesMunicipio(destaquesMunicipioRef);
+       
+      } catch (error) {
+        console.error("Erro", error);
+      }
+    };
+
+    loadDestaquesMunicipio();
+  }, []);
+
+
     return (
       <div ref={ref}>
-
-        {/* <DadosAgregados
-            dadosAgregadosAbaTemaCidade={dadosAgregadosAbaTemaCidade}
-            dadosAgregadosAbaProgramasCidade={dadosAgregadosAbaProgramasCidade}
-            dadosAgregadosAbaSumarioInfoBasicasCidade={dadosAgregadosAbaSumarioInfoBasicasCidade}
-            dadosAgregadosAbaSumarioStatusEntregasCidade={dadosAgregadosAbaSumarioStatusEntregasCidade}
-            setActiveBar={setActiveBar} 
-            loadData={loadData} 
-            setDescriptionData={setDescriptionData}
-            setUnderSearchBar={setUnderSearchBar}
-            cidades={cidades}
-            topImgSrc={rio_cover}
-            tabValue={tabValue}
-            setTabValue={setTabValue}
-            images={images_cidade}
-            setPhotoGallery={setPhotoGallery} 
-            setImagesType={setImagesType}
-          />
-
-        <div className={classes.fabContainer}>
-          <Fab
-            size="small"
-            variant="extended"
-            className={classes.fab}
-            onClick={() => {
-              handleUnderSearchBar();
-            }}
-          >
-            <ExpandLessIcon className={classes.extendedIcon} />
-          </Fab>
-        </div> */}
 
         <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
           <Paper
@@ -327,7 +331,7 @@ const MainUnderSearchBar = forwardRef(
                 <Typography className={classes.sobreMunicipio}>Sobre</Typography>
                 <Tooltip placement="right" title="O Rio de Janeiro continua lindo...">
                   <IconButton>
-                    <InfoIcon sx={{color:"black"}}/>
+                    <InfoIcon sx={{ color: "black" }} />
                   </IconButton>
                 </Tooltip>
               </Stack>
@@ -349,16 +353,16 @@ const MainUnderSearchBar = forwardRef(
                 </Box>
               </Box>
               <Box display="flex" >
-              <AccountBalanceIcon />
+                <AccountBalanceIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado das obras. */}
                   <Typography>4 bilhões</Typography>
                 </Box>
               </Box>
               <Box pr={2} display="flex">
-              <AccountBalanceIcon />
+                <AccountBalanceIcon />
                 <Box pl={0.5}>
-                   {/* TODO: Puxar valor real */}
+                  {/* TODO: Puxar valor real */}
                   <Typography>5 mi de m²</Typography>
                 </Box>
               </Box>
@@ -375,15 +379,12 @@ const MainUnderSearchBar = forwardRef(
             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Destaques</Typography>
               <ul>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.</Typography>
-                </li>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e ...</Typography>
-                </li>
-                <li>
-                  <Typography className={classes.subtituloMunicipio}>O Bairro Maravilha é um projeto de urbanização da Prefeitura do Rio de Janeiro, focado nas zonas Norte e Oeste, com investimento de mais de R$ 981 milhões.</Typography>
-                </li>
+                {destaquesMunicipio.map((item, index) => (
+                  <li key={index}>
+                    <Typography className={classes.title_li} onClick={()=>handleTitleClick(item.title)}>{item.title}</Typography>
+                    <Typography className={classes.subtituloMunicipio}>{item.description}</Typography>
+                  </li>
+                ))}
               </ul>
             </div>
           </Paper>
