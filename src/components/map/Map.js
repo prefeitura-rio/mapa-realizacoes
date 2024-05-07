@@ -292,13 +292,9 @@ const Map = ({
           const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
 
           // Verifica se o ponto corresponde ao tema selecionado
-          const isTemaMatch = tema ? 
-          listRealizacaoTema.includes(point.id + "__" + toSnakeCase(tema)) 
-          : true;
+          const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
 
-          const isProgramaMatch = programa ? 
-          listRealizacaoPrograma.includes(point.id + "__" + toSnakeCase(programa)) 
-          : true;
+          const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
           
           const isRealizacaoMatch = realizacao ? 
           point.id === toSnakeCase(realizacao)
