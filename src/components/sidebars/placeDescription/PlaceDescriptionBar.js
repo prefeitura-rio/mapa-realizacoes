@@ -338,7 +338,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top:  "calc(4vh + 70px )", // 3vh + 70px + 1vh
+      top: "calc(4vh + 70px )", // 3vh + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
@@ -401,7 +401,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sumarioInfo: {
     // padding: "3px 20px",
-    maxWidth:"25vw"
+    maxWidth: "25vw"
   },
   dadosAgregadosCidade: {
     // padding: "3px 20px",
@@ -432,16 +432,17 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     // marginBottom:"-5px"
   },
-  subtituloMunicipio: {
-    // marginTop: "15px", 
+  subtituloRealizacao: {
     opacity: 0.8,
-    height: "20.5vh",
-    overflow: 'hidden',
+    height: "10.5vh",
+    // overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    // whiteSpace: 'nowrap',
   },
-  bottomStatus: {
+  buttonStatus: {
     position: 'absolute',
-    bottom: '15px',
-    left: '20px',
+    top: '12px',
+    right: '20px',
   },
   statusButton: {
     pointerEvents: "none",
@@ -552,13 +553,15 @@ const PlaceDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip>
               </Stack>
-              <Typography className={classes.subtituloMunicipio}>Realização Lorem ipsum dolor sit amet Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet </Typography>
+              <Typography className={classes.subtituloRealizacao}>Realização Lorem ipsum dolor sit amet Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet </Typography>
             </div>
-            <span className={classes.bottomStatus}>
+            {content?.status && 
+            <span className={classes.buttonStatus}>
               <Button variant="contained" className={classes.statusButton}>
                 {content?.status}
               </Button>
             </span>
+  }
           </Paper>
         </Slide>
         <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
@@ -566,9 +569,9 @@ const PlaceDescriptionBar = forwardRef(
             elevation={6}
             className={classes.underSearch3}
           >
-             <div className={classes.sumarioInfo} style={{ display: 'flex' }}>
-    {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress size={25} />}
-  </div>
+            <div className={classes.sumarioInfo} style={{ display: 'flex' }}>
+              {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress size={25} />}
+            </div>
           </Paper>
         </Slide>
         <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
