@@ -52,6 +52,7 @@ const TemaDescriptionContainer = (props) => {
 
 
         tema={props.tema}
+        temaData={props.temaData}
       />
   );
 };
@@ -73,6 +74,7 @@ const mapStateToProps = (state) => {
 
 
     tema: state.filtros.tema,
+    temaData: state.filtros.temaData,
   };
 };
 

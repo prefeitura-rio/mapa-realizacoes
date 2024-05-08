@@ -276,7 +276,8 @@ const TemaDescriptionBar = forwardRef(
     setUnderSearchBar,
     loadData,
 
-    tema
+    tema,
+    temaData
 
 
 
@@ -351,7 +352,7 @@ const TemaDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip>
               </Stack>
-              <Typography className={classes.subtituloMunicipio}>Tema Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </Typography>
+              <Typography className={classes.subtituloMunicipio}>{temaData?.descricao?temaData.descricao:"Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde."} </Typography>
             </div>
           </Paper>
         </Slide>
