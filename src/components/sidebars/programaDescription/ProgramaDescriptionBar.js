@@ -374,10 +374,10 @@ const ProgramaDescriptionBar = forwardRef(
               </Tooltip>
               <Tooltip title="Cidadãos Beneficiados">
               <Box pr={2} display="flex">
-              <GroupsIcon />
-                <Box pl={0.5}>
+              <GroupsIcon sx={{fontSize:"1.8rem"}}/>
+                <Box pl={1} pt={0.5}>
                    {/* TODO: Puxar valor real */}
-                   <Typography >1.000.000 </Typography>
+                   <Typography sx={{marginTop:"2rem !important"}} >1.000.000 </Typography>
                 </Box>
               </Box>
               </Tooltip>
