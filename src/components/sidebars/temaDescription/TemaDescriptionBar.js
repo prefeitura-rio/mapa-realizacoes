@@ -276,7 +276,8 @@ const TemaDescriptionBar = forwardRef(
     setUnderSearchBar,
     loadData,
 
-    tema
+    tema,
+    temaData
 
 
 
@@ -351,7 +352,7 @@ const TemaDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip>
               </Stack>
-              <Typography className={classes.subtituloMunicipio}>Tema Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </Typography>
+              <Typography className={classes.subtituloMunicipio}>{temaData?.descricao?temaData.descricao:"Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde."} </Typography>
             </div>
           </Paper>
         </Slide>
@@ -382,10 +383,10 @@ const TemaDescriptionBar = forwardRef(
               </Tooltip>
               <Tooltip title="Cidadãos Beneficiados">
               <Box pr={2} display="flex">
-              <GroupsIcon />
-                <Box pl={0.5}>
+              <GroupsIcon sx={{fontSize:"1.8rem"}}/>
+                <Box pl={1} pt={0.5}>
                    {/* TODO: Puxar valor real */}
-                   <Typography >1.000.000 </Typography>
+                   <Typography sx={{marginTop:"2rem !important"}} >1.000.000 </Typography>
                 </Box>
               </Box>
               </Tooltip>

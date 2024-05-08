@@ -21,7 +21,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { BAIRRO_DESCRIPTION_BAR, DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, PROGRAMA_DESCRIPTION_BAR, SUBPREFEITURA_DESCRIPTION_BAR, TEMA_DESCRIPTION_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
-import { getListBairroName, getListProgramasTema, getListRealizacoesPrograma, getListSubprefeituraName } from "../../../firebase";
+import { getListBairroName, getListProgramasTema, getListRealizacoesPrograma, getListSubprefeituraName, readPrograma, readTema } from "../../../firebase";
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../../../redux/subprefeituras/actions";
 import { loadDadosAgregadosAbaSumarioStatusEntregasBairro } from "../../../redux/bairros/actions";
@@ -170,7 +170,9 @@ const SearchBar = ({
   programasNameFilter,
   setRota,
   setTema,
+  setTemaData,
   setPrograma,
+  setProgramaData,
   setRealizacao,
   setBairro,
   setSubprefeitura,
@@ -241,23 +243,36 @@ const SearchBar = ({
     setActiveBar(TEMA_DESCRIPTION_BAR);
   };
 
-   // programas do tema -> programasTema vai aparecer na listagem de programas
+  // programas do tema -> programasTema vai aparecer na listagem de programas
   const [programasTema, setProgramasTema] = useState([]);
   useEffect(() => {
     const loadProgramasTema = async (t) => {
       try {
         const programasTemaRef = await getListProgramasTema(toSnakeCase(t));
 
-          setProgramasTema(programasTemaRef);
-       
+        setProgramasTema(programasTemaRef);
       } catch (error) {
         console.error("Erro", error);
       }
     };
+    const loadTemaInfo = async (p) => {
 
+      try {
+        const temaRef = await readTema(toSnakeCase(p));
+
+        setTemaData(temaRef);
+
+        console.log("temaRef", temaRef)
+
+      } catch (error) {
+        console.error("Erro", error);
+      }
+    }
+    
+    loadTemaInfo(tema)
     loadProgramasTema(tema);
   }, [tema]);
-  
+
   // realizacoes do programa -> realizacoesPrograma vai aparecer na listagem de realizacoes
   const [realizacoesPrograma, setRealizacoesPrograma] = useState([]);
   useEffect(() => {
@@ -266,15 +281,29 @@ const SearchBar = ({
         const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
 
         setRealizacoesPrograma(realizacoesProgramaRef);
-       
+
       } catch (error) {
         console.error("Erro", error);
       }
     };
 
-    loadRealizacoesPrograma(programa);
-  }, [programa]);
+    const loadProgramaInfo = async (p) => {
 
+      try {
+        const programaRef = await readPrograma(toSnakeCase(p));
+
+        setProgramaData(programaRef);
+
+        console.log("programaRef", programaRef)
+
+      } catch (error) {
+        console.error("Erro", error);
+      }
+    }
+
+    loadRealizacoesPrograma(programa);
+    loadProgramaInfo(programa);
+  }, [programa]);
 
   const [inputValuePrograma, setInputValuePrograma] = useState(undefined);
   const handleProgramaChange = (event, newValue) => {
@@ -285,7 +314,9 @@ const SearchBar = ({
     setPrograma(newValue);
     setActiveBar(PROGRAMA_DESCRIPTION_BAR);
   };
-  
+
+
+
   const [inputValueRealizacao, setInputValueRealizacao] = useState(undefined);
   const handleRealizacaoChange = (event, newValue) => {
     setInputValueRealizacao(newValue);
@@ -502,7 +533,7 @@ const SearchBar = ({
                       value={inputValuePrograma}
                       onChange={handleProgramaChange}
                       disableClearable
-                      options={programasTema?programasTema:[]}
+                      options={programasTema ? programasTema : []}
                       PaperComponent={CustomPaperMenu}
                       ListboxProps={{ style: { maxHeight: "80vh" } }}
                       inputprops={{
@@ -550,12 +581,14 @@ const SearchBar = ({
                     />)}
 
                   {showRealizacoes &&
-                    <Typography variant="h6" style={{whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    width: "19vw",
-                    maxWidth: "270px",
-                    minWidth: "270px", position: 'absolute', marginLeft: '20px', color: 'black' }}>{inputValuePrograma}</Typography>
+                    <Typography variant="h6" style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      width: "19vw",
+                      maxWidth: "270px",
+                      minWidth: "270px", position: 'absolute', marginLeft: '20px', color: 'black'
+                    }}>{inputValuePrograma}</Typography>
                   }
                   {showRealizacoes && (
                     <Autocomplete
@@ -634,7 +667,7 @@ const SearchBar = ({
 
                   }
                   {inputValueTema &&
-                  <Divider className={classes.divider} orientation="vertical" />
+                    <Divider className={classes.divider} orientation="vertical" />
                   }
                   <IconButton
                     // type="submit"
@@ -657,15 +690,15 @@ const SearchBar = ({
 
           (
             <Fade in={!inputValueRealizacao}>
-            <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
-              <IconButton
-                style={{ backgroundColor: 'transparent' }}
-                color="grey"
-                onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
-              >
-                <SearchIcon />
-              </IconButton>
-            </Paper>
+              <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
+                <IconButton
+                  style={{ backgroundColor: 'transparent' }}
+                  color="grey"
+                  onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
+                >
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
             </Fade>
           )
 
@@ -734,9 +767,9 @@ const SearchBar = ({
                       />
                     )}
                   />
-                  {inputValueBairroSubprefeitura?
+                  {inputValueBairroSubprefeitura ?
                     <IconButton
-                      style={{ position: 'relative',backgroundColor: 'transparent' }}
+                      style={{ position: 'relative', backgroundColor: 'transparent' }}
                       // type="submit"
                       color="secondary"
                       classes={{ colorSecondary: classes.colorSecondary }}
@@ -750,7 +783,7 @@ const SearchBar = ({
 
 
                     </IconButton>
-                    :null
+                    : null
                   }
                   <Divider className={classes.divider} orientation="vertical" />
                   <IconButton

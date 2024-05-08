@@ -323,7 +323,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "70px",
+      height: "80px",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -338,7 +338,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "calc(4vh + 70px )", // 3vh + 70px + 1vh
+      top: "calc(4vh + 80px )", // 3vh + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
@@ -357,7 +357,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "calc(50.5vh - 90px )", //4vh + 70px + 45.5vh -160px 
+      top: "calc(50.5vh - 80px )", //4vh + 80px + 45.5vh -160px 
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -378,11 +378,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "calc(96vh - 320px + 70px + 1vh)", // 96vh - 320px + 70px + 1vh
+      top: "calc(96vh - 320px + 80px + 1vh)", // 96vh - 320px + 80px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "250px",
+      height: "240px",
       borderRadius: "15px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -426,6 +426,8 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
+    marginTop:"3px",
+    marginBottom:"3px"
   },
   subtitulo: {
     // marginTop: "15px", 
