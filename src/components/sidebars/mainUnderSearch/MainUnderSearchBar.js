@@ -231,6 +231,10 @@ const useStyles = makeStyles((theme) => ({
   },
   subtituloMunicipio: {
     opacity: 0.8,
+    textAlign: "justify"
+  },
+  subtituloDestaques: {
+    opacity: 0.8,
     display: '-webkit-box',
     '-webkit-line-clamp': 4,
     '-webkit-box-orient': 'vertical',
@@ -296,22 +300,22 @@ const MainUnderSearchBar = forwardRef(
       console.log("clickei")
     };
 
-  // o destaque conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
-  const [destaquesMunicipio, setDestaquesMunicipio] = useState([]);
-  useEffect(() => {
-    const loadDestaquesMunicipio = async () => {
-      try {
-        const destaquesMunicipioRef = await getListDestaquesMunicipio();
+    // o destaque conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
+    const [destaquesMunicipio, setDestaquesMunicipio] = useState([]);
+    useEffect(() => {
+      const loadDestaquesMunicipio = async () => {
+        try {
+          const destaquesMunicipioRef = await getListDestaquesMunicipio();
 
           setDestaquesMunicipio(destaquesMunicipioRef);
-       
-      } catch (error) {
-        console.error("Erro", error);
-      }
-    };
 
-    loadDestaquesMunicipio();
-  }, []);
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+
+      loadDestaquesMunicipio();
+    }, []);
 
 
     return (
@@ -344,7 +348,13 @@ const MainUnderSearchBar = forwardRef(
                   </IconButton>
                 </Tooltip>
               </Stack>
-              <Typography className={classes.subtituloMunicipio}> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </Typography>
+              <Typography className={classes.subtituloMunicipio}>O Mapa de Realizações da Cidade do Rio de Janeiro é
+                uma iniciativa inovadora que visa aumentar a transparência,
+                eficiência e responsabilidade no uso de recursos públicos destinados
+                a obras e projetos de desenvolvimento urbano. Desenvolvido com a cooperação
+                dos desenvolvedores do Escritório de Dados, este mapa digital
+                interativo serve como um ponto focal para o acompanhamento em tempo real do status,
+                progresso e impacto de diversas obras em toda a cidade. </Typography>
             </div>
           </Paper>
         </Slide>
@@ -355,27 +365,35 @@ const MainUnderSearchBar = forwardRef(
           >
 
             <Box height="8.5vh" display="flex" justifyContent="space-between" alignItems="center">
-              <Box pl={2} display="flex" >
-                <AccountBalanceIcon />
-                <Box pl={0.5}>
-                  <Typography style={{ fontSize: '0.8rem' }} >{dadosAgregadosAbaSumarioStatusEntregasCidadeTotal} <br></br>realizações</Typography>
-                </Box>
-              </Box>
-              <Box display="flex" >
-                <AttachMoneyIcon />
-                <Box pl={0.5}>
-                  {/* TODO: valor agregado das obras. */}
-                  <Typography style={{ fontSize: '0.8rem' }}>R$ 4bi <br></br> investidos</Typography>
-                </Box>
-              </Box>
-              <Box pr={2} display="flex">
-                <GroupsIcon />
-                <Box pl={0.5}>
-                  {/* TODO: Puxar valor real */}
-                  <Typography style={{ fontSize: '0.8rem' }}>1.000.000 cidadãos <br></br>beneficiados</Typography>
-                </Box>
-              </Box>
+              <Tooltip title="Realizações">
 
+                <Box pl={2} display="flex" >
+
+                  <AccountBalanceIcon />
+                  <Box pl={0.5}>
+                    <Typography  >{dadosAgregadosAbaSumarioStatusEntregasCidadeTotal}</Typography>
+                  </Box>
+                </Box>
+              </Tooltip>
+              <Tooltip title="Investimento">
+                <Box display="flex" >
+                  <AttachMoneyIcon />
+                  <Box pl={0.5}>
+                    {/* TODO: valor agregado das obras. */}
+                    <Typography >R$ 4.000.000.000 </Typography>
+                  </Box>
+                </Box>
+              </Tooltip>
+
+              <Tooltip title="Cidadãos Beneficiados">
+                <Box pr={2} display="flex">
+                  <GroupsIcon />
+                  <Box pl={0.5}>
+                    {/* TODO: Puxar valor real */}
+                    <Typography >1.000.000 </Typography>
+                  </Box>
+                </Box>
+              </Tooltip>
             </Box>
 
           </Paper>
@@ -390,8 +408,8 @@ const MainUnderSearchBar = forwardRef(
               <ul>
                 {destaquesMunicipio.map((item, index) => (
                   <li key={index}>
-                    <Typography className={classes.title_li} onClick={()=>handleTitleClick(item.title)}>{item.title}</Typography>
-                    <Typography className={classes.subtituloMunicipio}>{item.description}</Typography>
+                    <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title}</Typography>
+                    <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
                   </li>
                 ))}
               </ul>

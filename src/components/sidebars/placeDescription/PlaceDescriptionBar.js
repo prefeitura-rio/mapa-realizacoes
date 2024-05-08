@@ -422,6 +422,10 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "20px",
     fontSize: "1.5rem",
     fontWeight: "bold",
+    display: '-webkit-box',
+    '-webkit-line-clamp': 2,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   },
   subtitulo: {
     // marginTop: "15px", 
@@ -544,24 +548,29 @@ const PlaceDescriptionBar = forwardRef(
             className={classes.underSearch2}
           >
             <div className={classes.basicInfo}>
-              <Stack direction="row">
-
-                <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
-                  <IconButton>
-                    <InfoIcon sx={{ color: "black" }} />
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-              <Typography className={classes.subtituloRealizacao}>Realização Lorem ipsum dolor sit amet Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet  Realização Lorem ipsum dolor sit amet </Typography>
+              {realizacao || content?.nome ? (
+                <>
+                  <Stack direction="row">
+                    <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                    <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
+                      <IconButton>
+                        <InfoIcon sx={{ color: "black" }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
+                  <Typography className={classes.subtituloRealizacao}>{content?.descricao}</Typography>
+                </>
+              ) : (
+                <CircularProgress style={{ marginTop:"1rem"}} size={25} />
+              )}
             </div>
-            {content?.status && 
-            <span className={classes.buttonStatus}>
-              <Button variant="contained" className={classes.statusButton}>
-                {content?.status}
-              </Button>
-            </span>
-  }
+            {content?.status &&
+              <span className={classes.buttonStatus}>
+                <Button variant="contained" className={classes.statusButton}>
+                  {content?.status}
+                </Button>
+              </span>
+            }
           </Paper>
         </Slide>
         <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
@@ -569,8 +578,9 @@ const PlaceDescriptionBar = forwardRef(
             elevation={6}
             className={classes.underSearch3}
           >
+
             <div className={classes.sumarioInfo} style={{ display: 'flex' }}>
-              {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress size={25} />}
+              {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress style={{ marginTop:"1rem",marginLeft:"1.2rem"}} size={25} />}
             </div>
           </Paper>
         </Slide>

@@ -225,7 +225,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     marginBottom: "-5px",
     lineHeight:"20px",
-    paddingBottom:"5px"
+    paddingBottom:"5px",
+    display: '-webkit-box',
+    '-webkit-line-clamp': 2,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   },
   subtitulo: {
     // marginTop: "15px", 
@@ -350,27 +354,34 @@ const ProgramaDescriptionBar = forwardRef(
           >
 
             <Box height="70px" display="flex" justifyContent="space-between" alignItems="center">
+            <Tooltip title="Realizações">
               <Box pl={2} display="flex" >
                 <AccountBalanceIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography  style={{ fontSize: '0.8rem' }} > 970 <br></br>realizações</Typography>
+                  <Typography> 970 </Typography>
                 </Box>
               </Box>
+              </Tooltip>
+              <Tooltip title="Investimento">
               <Box display="flex" >
               <AttachMoneyIcon /> 
                 <Box pl={0.5}>
                   {/* TODO: valor agregado das obras. */}
-                  <Typography style={{ fontSize: '0.8rem' }}>R$ 4bi <br></br> investidos</Typography>
+                  <Typography >R$ 4.000.000.000 </Typography>
                 </Box>
               </Box>
+              </Tooltip>
+              <Tooltip title="Cidadãos Beneficiados">
               <Box pr={2} display="flex">
               <GroupsIcon />
                 <Box pl={0.5}>
-                  {/* TODO: Puxar valor real */}
-                  <Typography style={{ fontSize: '0.8rem' }}>1.000.000 cidadãos <br></br>beneficiados</Typography>
+                   {/* TODO: Puxar valor real */}
+                   <Typography >1.000.000 </Typography>
                 </Box>
               </Box>
+              </Tooltip>
+
 
             </Box>
 
