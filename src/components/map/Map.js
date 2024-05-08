@@ -82,7 +82,7 @@ const Map = ({
   useEffect(() => {
     console.log("zoomDefault " + zoomDefault)
     
-   if (map && zoomDefault == -1) {
+   if (map && zoomDefault != 0) {
       const coords = [-22.9200, -43.3250];
       map.flyTo(coords, 11)
     }

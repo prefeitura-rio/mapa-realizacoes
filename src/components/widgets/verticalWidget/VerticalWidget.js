@@ -62,7 +62,7 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
     setZoomDelta(-1);
   };
   const zoomDefault= () => {
-    setZoomDefault(-1);
+    setZoomDefault((Math.random() * 999 + 1));
   };
 
   const handleMenuSidebar = () => {
