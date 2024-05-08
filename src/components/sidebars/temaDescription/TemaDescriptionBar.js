@@ -320,7 +320,7 @@ const TemaDescriptionBar = forwardRef(
     };
 
     loadDestaquesTema(tema);
-  }, []);
+  }, [tema]);
 
     return (
 <>
