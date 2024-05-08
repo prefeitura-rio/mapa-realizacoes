@@ -535,7 +535,7 @@ const SearchBar = ({
                       disableClearable
                       options={programasTema ? programasTema : []}
                       PaperComponent={CustomPaperMenu}
-                      ListboxProps={{ style: { maxHeight: "80vh" } }}
+                      ListboxProps={{ style: { maxHeight: "100%", paddingBottom:"20px"} }}
                       inputprops={{
                         style: {
                           color: 'black'

@@ -419,19 +419,23 @@ const useStyles = makeStyles((theme) => ({
   },
   titulo: {
     // position:"relative",
-    lineHeight: "20px",
+    lineHeight: "26px",
     fontSize: "1.5rem",
     fontWeight: "bold",
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
-    marginTop:"3px",
-    marginBottom:"3px"
+    marginTop:"-1px",
+    marginBottom:"-1px"
   },
   subtitulo: {
     // marginTop: "15px", 
     opacity: 0.6,
+    display: '-webkit-box',
+    '-webkit-line-clamp': 1,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   },
   sobreMunicipio: {
     fontSize: "1.5rem",
