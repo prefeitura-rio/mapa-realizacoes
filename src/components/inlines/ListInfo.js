@@ -59,7 +59,7 @@ const ListInfo = ({ content }) => {
     // { text: "R$ " +  content.investimento + " investidos", iconComponent: PublicIcon },
     { text: "R$ " + parseFloat(content.investimento).toLocaleString('pt-BR') + ",00 " + "investidos", iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/> },
     // { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: PublicIcon },
-    { text: parseInt(content.cariocas_atendidos).toLocaleString('pt-BR') + " população do bairro", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
+    { text: parseInt(content.cariocas_atendidos).toLocaleString('pt-BR') + " população beneficiada", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     
   ];
 

@@ -76,27 +76,27 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
 
           <Stack spacing={1}>
         
-              <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
+              <Paper elevation={4} style={{ borderRadius: "10px",position: "relative", backgroundColor: 'white' }}>
                 <IconButton
                   style={{ backgroundColor: 'transparent' }}
-                  color="black"
+                  
                   onClick={()=> {zoomDefault()}}
                 >
-                  <NavigationOutlinedIcon fontSize="small" className={classes.textSecondary} />
+                  <NavigationOutlinedIcon sx={{color:"#373737"}} fontSize="small" className={classes.textSecondary} />
                 </IconButton>
               </Paper>
               
-              <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
+              <Paper elevation={4} style={{ borderRadius: "10px",position: "relative", backgroundColor: 'white' }}>
                 <IconButton
                   style={{ backgroundColor: 'transparent' }}
                   color="grey"
                   onClick={zoomIn}
                 >
-                  <AddIcon fontSize="small" className={classes.textSecondary} />
+                  <AddIcon sx={{color:"#373737"}} fontSize="small" className={classes.textSecondary} />
                 </IconButton>
               </Paper>
         
-              <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
+              <Paper elevation={4} style={{ borderRadius: "10px",position: "relative", backgroundColor: 'white' }}>
                 <IconButton
                   style={{ backgroundColor: 'transparent' }}
                   color="grey"

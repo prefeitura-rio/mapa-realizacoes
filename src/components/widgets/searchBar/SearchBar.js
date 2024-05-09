@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => {
       width: "400px",
       display: "flex",
       alignItems: "center",
-      borderRadius: '20px',
-      height: "60px",
+      borderRadius: '10px',
+      height: "47px",
       zIndex: 1000,
     },
     paperButton: {
@@ -54,14 +54,14 @@ const useStyles = makeStyles((theme) => {
       width: "400px",
       display: "flex",
       alignItems: "center",
-      borderRadius: '20px',
+      borderRadius: '10px',
       height: "60px",
       zIndex: 1000,
     },
     paperBackground: {
       width: "400px",
       display: "flex",
-      borderRadius: '20px',
+      borderRadius: '10px',
       height: "91.5vh",
       zIndex: 1000,
       paddingBottom: "20px",
@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => {
     },
     divider: {
       height: "28px",
-      margin: "4px",
+      // margin: "4px",
     },
 
     listItemText: {
@@ -426,7 +426,7 @@ const SearchBar = ({
         {!showMenuBar ?
 
           (
-            <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
+            <Paper elevation={4} style={{ borderRadius:"10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display:"flex", alignItems:"center", justifyContent:"center" }}>
               <IconButton
                 style={{ backgroundColor: 'transparent' }}
                 color="grey"
@@ -652,7 +652,7 @@ const SearchBar = ({
                       color="grey"
                       onClick={() => { setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(TEMA_DESCRIPTION_BAR) }}
                     >
-                      <ArrowBackIosIcon />
+                      <ArrowBackIosIcon  sx={{fontSize:"20px", marginRight:"-4px"}}/>
                     </IconButton>
 
                     :
@@ -690,7 +690,7 @@ const SearchBar = ({
 
           (
             <Fade in={!inputValueRealizacao}>
-              <Paper elevation={4} style={{ position: "relative", backgroundColor: 'white' }}>
+            <Paper elevation={4} style={{ borderRadius:"10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display:"flex", alignItems:"center", justifyContent:"center" }}>
                 <IconButton
                   style={{ backgroundColor: 'transparent' }}
                   color="grey"
@@ -769,7 +769,7 @@ const SearchBar = ({
                   />
                   {inputValueBairroSubprefeitura ?
                     <IconButton
-                      style={{ position: 'relative', backgroundColor: 'transparent' }}
+                      style={{ backgroundColor: 'transparent' }}
                       // type="submit"
                       color="secondary"
                       classes={{ colorSecondary: classes.colorSecondary }}
@@ -779,7 +779,7 @@ const SearchBar = ({
                     // }
                     >
 
-                      <BackspaceIcon onClick={handleCleanBairroInput} />
+                      <BackspaceIcon sx={{marginRight:"5px",fontSize:"20px"}} onClick={handleCleanBairroInput} />
 
 
                     </IconButton>
