@@ -303,7 +303,7 @@ const useStyles = makeStyles((theme) => ({
       width: "25vw",
       minWidth: "385px",
       height: "8.5vh",
-      borderRadius: "15px",
+      borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
@@ -323,7 +323,7 @@ const useStyles = makeStyles((theme) => ({
       width: "25vw",
       minWidth: "385px",
       height: "34vh",
-      borderRadius: "15px",
+      borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
@@ -343,7 +343,7 @@ const useStyles = makeStyles((theme) => ({
       width: "25vw",
       minWidth: "385px",
       height: "8.5vh",
-      borderRadius: "15px",
+      borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
@@ -362,7 +362,7 @@ const useStyles = makeStyles((theme) => ({
       width: "25vw",
       minWidth: "385px",
       height: "41.5vh",
-      borderRadius: "15px",
+      borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
