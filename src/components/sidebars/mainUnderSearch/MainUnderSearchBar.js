@@ -6,7 +6,8 @@ import {
   Slide,
   Paper,
   Box,
-  Typography
+  Typography,
+  CircularProgress
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -364,36 +365,30 @@ const MainUnderSearchBar = forwardRef(
             className={classes.underSearch3}
           >
 
-            <Box height="8.5vh" display="flex" justifyContent="space-between" alignItems="center">
-              <Tooltip title="Realizações">
+            <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+              {(!dadosAgregadosAbaSumarioStatusEntregasCidadeTotal) ? < CircularProgress /> :
+                <>
+                  <Tooltip title="Realizações">
 
-                <Box pl={2} display="flex" >
+                    <Box display="flex" >
 
-                  <AccountBalanceIcon />
-                  <Box pl={0.5}>
-                    <Typography  >{dadosAgregadosAbaSumarioStatusEntregasCidadeTotal}</Typography>
-                  </Box>
-                </Box>
-              </Tooltip>
-              <Tooltip title="Investimento">
-                <Box display="flex" >
-                  <AttachMoneyIcon />
-                  <Box pl={0.5}>
-                    {/* TODO: valor agregado das obras. */}
-                    <Typography >{dadosAgregadosAbaSumarioStatusEntregasCidade?dadosAgregadosAbaSumarioStatusEntregasCidade[1].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL',minimumFractionDigits: 0, maximumFractionDigits: 0 }):0}</Typography>
-                  </Box>
-                </Box>
-              </Tooltip>
-
-              <Tooltip title="Cidadãos Beneficiados">
-              <Box pr={2} display="flex">
-              <GroupsIcon sx={{fontSize:"1.8rem"}}/>
-                <Box pl={1} pt={0.5}>
-                   {/* TODO: Puxar valor real */}
-                   <Typography sx={{marginTop:"2rem !important"}} >1.000.000 </Typography>
-                </Box>
-              </Box>
-              </Tooltip>
+                      <AccountBalanceIcon />
+                      <Box pl={0.5}>
+                        <Typography  >{dadosAgregadosAbaSumarioStatusEntregasCidadeTotal}</Typography>
+                      </Box>
+                    </Box>
+                  </Tooltip>
+                  <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
+                  <Tooltip title="Investimento">
+                    <Box display="flex" >
+                      <AttachMoneyIcon />
+                      <Box pl={0.5}>
+                        {/* TODO: valor agregado das obras. */}
+                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasCidade ? dadosAgregadosAbaSumarioStatusEntregasCidade[1].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0}</Typography>
+                      </Box>
+                    </Box>
+                  </Tooltip>
+                </>}
             </Box>
 
           </Paper>

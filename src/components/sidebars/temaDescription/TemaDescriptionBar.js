@@ -6,7 +6,8 @@ import {
   Slide,
   Paper,
   Box,
-  Typography
+  Typography,
+  CircularProgress
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -383,9 +384,11 @@ const TemaDescriptionBar = forwardRef(
             className={classes.underSearch3}
           >
 
-            <Box height="8.5vh" display="flex" justifyContent="space-between" alignItems="center">
+            <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+              { (!temaLength || !temaTotalInvestiment) ? < CircularProgress /> :
+              <>
             <Tooltip title="Realizações">
-              <Box pl={2} display="flex" >
+              <Box display="flex" >
                 <AccountBalanceIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado da qntdd de obras. */}
@@ -393,6 +396,7 @@ const TemaDescriptionBar = forwardRef(
                 </Box>
               </Box>
               </Tooltip>
+              <span style={{paddingLeft: "20px", paddingRight:"20px"}}></span>
               <Tooltip title="Investimento">
               <Box display="flex" >
               <AttachMoneyIcon /> 
@@ -402,16 +406,8 @@ const TemaDescriptionBar = forwardRef(
                 </Box>
               </Box>
               </Tooltip>
-              <Tooltip title="Cidadãos Beneficiados">
-              <Box pr={2} display="flex">
-              <GroupsIcon sx={{fontSize:"1.8rem"}}/>
-                <Box pl={1} pt={0.5}>
-                   {/* TODO: Puxar valor real */}
-                   <Typography sx={{marginTop:"2rem !important"}} >1.000.000 </Typography>
-                </Box>
-              </Box>
-              </Tooltip>
-
+              </>
+              }
 
             </Box>
 
