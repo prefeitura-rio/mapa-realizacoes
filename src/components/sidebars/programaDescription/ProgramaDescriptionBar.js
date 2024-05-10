@@ -276,7 +276,6 @@ const ImageCarousel = ({ images }) => {
 const ProgramaDescriptionBar = forwardRef(
   ({ underSearchBar,
     cidades,
-    dadosAgregadosAbaTemaCidade,
     dadosAgregadosAbaProgramasCidade,
     dadosAgregadosAbaSumarioInfoBasicasCidade,
     dadosAgregadosAbaSumarioStatusEntregasCidade,
@@ -297,16 +296,38 @@ const ProgramaDescriptionBar = forwardRef(
 
     const classes = useStyles();
 
-    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal, setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
-
-    const dispatch = useDispatch();
+    const [programaLength, setProgramaLength] = useState(0)
+    const [programaTotalInvestiment, setProgramaTotalInvestiment] = useState(0)
+    
 
     useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
-        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
-        setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
+      if (dadosAgregadosAbaProgramasCidade){
+
+      const calculateLengthOfPrograma = (dadosAgregadosAbaProgramasCidade, programa) => {
+        // filter the array baset on the programa value
+        const filteredData = dadosAgregadosAbaProgramasCidade.filter(item => item.tema === programa);
+      
+        // grab the length of the "realizacoes" array for each filtered item
+        const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
+      
+        console.log("dadosAgregadosAbaProgramasCidade", dadosAgregadosAbaProgramasCidade)
+        return length;
       }
-    }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
+      const calculateTotalInvestment = (dadosAgregadosAbaProgramasCidade, programa) => {
+        // filter the array based on the programa value
+        const filteredData = dadosAgregadosAbaProgramasCidade.filter(item => item.tema === programa);
+      
+        // sum up the investiments values for each realizacao item in the filtered data
+        const totalInvestment = filteredData.reduce((total, item) => {
+          return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
+        }, 0);
+      
+        return totalInvestment;
+      }
+      setProgramaLength(calculateLengthOfPrograma(dadosAgregadosAbaProgramasCidade, programa))
+      setProgramaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaProgramasCidade, programa))
+    }
+    }, [dadosAgregadosAbaProgramasCidade]);
 
     const images = [
       "https://placehold.co/600x400",
@@ -324,7 +345,7 @@ const ProgramaDescriptionBar = forwardRef(
           >
             <div className={classes.basicInfo}>
               <Typography className={classes.programa}>{programa}</Typography>
-              <Typography className={classes.subtitulo}> {tema}</Typography>
+              <Typography className={classes.subtitulo}> {programa}</Typography>
             </div>
           </Paper>
         </Slide>
@@ -359,7 +380,7 @@ const ProgramaDescriptionBar = forwardRef(
                 <AccountBalanceIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography> 970 </Typography>
+                  <Typography> {programaLength&&programaLength} </Typography>
                 </Box>
               </Box>
               </Tooltip>
@@ -368,7 +389,7 @@ const ProgramaDescriptionBar = forwardRef(
               <AttachMoneyIcon /> 
                 <Box pl={0.5}>
                   {/* TODO: valor agregado das obras. */}
-                  <Typography >R$ 4.000.000.000 </Typography>
+                  <Typography >{programaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
                 </Box>
               </Box>
               </Tooltip>

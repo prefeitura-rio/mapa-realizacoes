@@ -19,7 +19,7 @@ const TemaDescriptionContainer = (props) => {
     // dispatch(loadAllCidades());
     // dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
     // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
-    // dispatch(loadDadosAgregadosAbaTemaCidade());
+    dispatch(loadDadosAgregadosAbaTemaCidade());
     // dispatch(loadDadosAgregadosAbaProgramasCidade());
   }, []);
 

@@ -19,8 +19,7 @@ const MainUnderSearchContainer = (props) => {
     dispatch(loadAllCidades());
     dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
     dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
-    dispatch(loadDadosAgregadosAbaTemaCidade());
-    dispatch(loadDadosAgregadosAbaProgramasCidade());
+    // dispatch(loadDadosAgregadosAbaProgramasCidade());
   }, []);
 
   useEffect(() => {

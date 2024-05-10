@@ -9,7 +9,7 @@ import DefaultIcon from '@material-ui/icons/Place'; // Default icon
 import ReactDOMServer from 'react-dom/server';
 
 
-const createMuiIcon = (MuiIcon, iconSize = 35, iconColor = 'default') => {
+const createMuiIcon = (MuiIcon, iconSize = 15, iconColor = 'default') => {
   const iconHtml = ReactDOMServer.renderToString(
     <MuiIcon style={{ fontSize: iconSize, color: iconColor }} />
   );

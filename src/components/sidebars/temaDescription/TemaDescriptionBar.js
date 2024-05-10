@@ -285,16 +285,37 @@ const TemaDescriptionBar = forwardRef(
 
     const classes = useStyles();
     
-    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal,setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
-
-    const dispatch = useDispatch();
+    const [temaLength, setTemaLength] = useState(0)
+    const [temaTotalInvestiment, setTemaTotalInvestiment] = useState(0)
+    
 
     useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasCidade){
-        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
-        setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
+      if (dadosAgregadosAbaTemaCidade){
+
+      const calculateLengthOfTema = (dadosAgregadosAbaTemaCidade, tema) => {
+        // filter the array baset on the tema value
+        const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
+      
+        // grab the length of the "realizacoes" array for each filtered item
+        const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
+      
+        return length;
       }
-    }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
+      const calculateTotalInvestment = (dadosAgregadosAbaTemaCidade, tema) => {
+        // filter the array based on the tema value
+        const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
+      
+        // sum up the investiments values for each realizacao item in the filtered data
+        const totalInvestment = filteredData.reduce((total, item) => {
+          return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
+        }, 0);
+      
+        return totalInvestment;
+      }
+      setTemaLength(calculateLengthOfTema(dadosAgregadosAbaTemaCidade, tema))
+      setTemaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaTemaCidade, tema))
+    }
+    }, [dadosAgregadosAbaTemaCidade]);
     
     
     const handleTitleClick = (value) => {
@@ -368,7 +389,7 @@ const TemaDescriptionBar = forwardRef(
                 <AccountBalanceIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography> 970 </Typography>
+                  <Typography> {temaLength&&temaLength} </Typography>
                 </Box>
               </Box>
               </Tooltip>
@@ -377,7 +398,7 @@ const TemaDescriptionBar = forwardRef(
               <AttachMoneyIcon /> 
                 <Box pl={0.5}>
                   {/* TODO: valor agregado das obras. */}
-                  <Typography >R$ 4.000.000.000 </Typography>
+                  <Typography >{temaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
                 </Box>
               </Box>
               </Tooltip>

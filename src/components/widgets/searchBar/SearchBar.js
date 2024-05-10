@@ -686,7 +686,7 @@ const SearchBar = ({
             // </Slide>
           )}
 
-        {!showSearchBar ?
+        {/* {!showSearchBar ?
 
           (
             <Fade in={!inputValueRealizacao}>
@@ -807,7 +807,7 @@ const SearchBar = ({
               </Paper>
             </div>
             // </Slide>
-          )}
+          )} */}
 
 
       </Stack>

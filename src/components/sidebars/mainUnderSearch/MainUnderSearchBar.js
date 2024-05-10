@@ -284,10 +284,10 @@ const MainUnderSearchBar = forwardRef(
 
     useEffect(() => {
       if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
-        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento +
-          dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida +
-          dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida +
-          dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
+        const total = dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.em_andamento +
+          dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.concluida +
+          dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.interrompida +
+          dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.em_licitacao;
         setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
       }
     }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
@@ -380,7 +380,7 @@ const MainUnderSearchBar = forwardRef(
                   <AttachMoneyIcon />
                   <Box pl={0.5}>
                     {/* TODO: valor agregado das obras. */}
-                    <Typography >R$ 4.000.000.000 </Typography>
+                    <Typography >{dadosAgregadosAbaSumarioStatusEntregasCidade?dadosAgregadosAbaSumarioStatusEntregasCidade[1].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL',minimumFractionDigits: 0, maximumFractionDigits: 0 }):0}</Typography>
                   </Box>
                 </Box>
               </Tooltip>

@@ -469,7 +469,7 @@ export async function getDadosAgregadosAbaSumarioStatusEntregas(
     id_subprefeitura: null,
     ...filters,
   };
-  try {
+  try { 
     const realizacaoIds = await getListRealizacaoIds(inputFilters);
     const data = await getListRealizacaoData(realizacaoIds);
     const contagemStatus = {
@@ -478,6 +478,11 @@ export async function getDadosAgregadosAbaSumarioStatusEntregas(
       interrompida: 0,
       em_licitacao: 0,
     };
+    const investimentoTotal = data.reduce((acc, realizacao) => {
+      acc += realizacao.investimento;
+      return acc;
+    }, 0);
+
     data.forEach((realizacao) => {
       switch (realizacao.id_status) {
         case "em_andamento":
@@ -496,7 +501,8 @@ export async function getDadosAgregadosAbaSumarioStatusEntregas(
           break;
       }
     });
-    return contagemStatus;
+    return [contagemStatus, investimentoTotal];
+
   } catch (error) {
     console.error(
       "Erro ao obter dados agregados (informações básicas):",
@@ -580,6 +586,8 @@ export async function getDadosAgregadosAbaTema(
           realizacoes.map(async (realizacao) => {
             const realizacaoTheme = {
               titulo: realizacao.nome,
+              // pra calcular o investimento total
+              investimento: realizacao.investimento,
               status: statusDataMap[realizacao.id_status],
               imageUrl: await getRealizacaoFirstImageUrl(realizacao.nome) || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
             };
@@ -680,6 +688,8 @@ export async function getDadosAgregadosAbaProgramas(
           realizacoes.map(async (realizacao) => {
             const realizacaoPrograma = {
               titulo: realizacao.nome,
+                 // pra calcular o investimento total
+                 investimento: realizacao.investimento,
               status: statusDataMap[realizacao.id_status],
               imageUrl: await getRealizacaoFirstImageUrl(realizacao.nome) || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
             };
