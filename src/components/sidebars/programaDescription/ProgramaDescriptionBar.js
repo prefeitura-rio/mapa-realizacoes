@@ -6,7 +6,8 @@ import {
   Slide,
   Paper,
   Box,
-  Typography
+  Typography,
+  CircularProgress
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -141,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top:  "calc(4vh + 70px )", // 3vh + 70px + 1vh
+      top: "calc(4vh + 70px )", // 3vh + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
@@ -224,8 +225,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.5rem",
     fontWeight: "bold",
     marginBottom: "-5px",
-    lineHeight:"20px",
-    paddingBottom:"5px",
+    lineHeight: "20px",
+    paddingBottom: "5px",
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
@@ -234,6 +235,10 @@ const useStyles = makeStyles((theme) => ({
   subtitulo: {
     // marginTop: "15px", 
     opacity: 0.6,
+    display: '-webkit-box',
+    '-webkit-line-clamp': 1,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   },
   sobreMunicipio: {
     fontSize: "1.5rem",
@@ -276,7 +281,6 @@ const ImageCarousel = ({ images }) => {
 const ProgramaDescriptionBar = forwardRef(
   ({ underSearchBar,
     cidades,
-    dadosAgregadosAbaTemaCidade,
     dadosAgregadosAbaProgramasCidade,
     dadosAgregadosAbaSumarioInfoBasicasCidade,
     dadosAgregadosAbaSumarioStatusEntregasCidade,
@@ -297,16 +301,38 @@ const ProgramaDescriptionBar = forwardRef(
 
     const classes = useStyles();
 
-    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal, setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
+    const [programaLength, setProgramaLength] = useState(0)
+    const [programaTotalInvestiment, setProgramaTotalInvestiment] = useState(0)
 
-    const dispatch = useDispatch();
 
     useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
-        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
-        setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
+      if (dadosAgregadosAbaProgramasCidade) {
+
+        const calculateLengthOfPrograma = (dadosAgregadosAbaProgramasCidade, programa) => {
+          // filter the array baset on the programa value
+          const filteredData = dadosAgregadosAbaProgramasCidade.filter(item => item.tema === programa);
+
+          // grab the length of the "realizacoes" array for each filtered item
+          const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
+
+          console.log("dadosAgregadosAbaProgramasCidade", dadosAgregadosAbaProgramasCidade)
+          return length;
+        }
+        const calculateTotalInvestment = (dadosAgregadosAbaProgramasCidade, programa) => {
+          // filter the array based on the programa value
+          const filteredData = dadosAgregadosAbaProgramasCidade.filter(item => item.tema === programa);
+
+          // sum up the investiments values for each realizacao item in the filtered data
+          const totalInvestment = filteredData.reduce((total, item) => {
+            return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
+          }, 0);
+
+          return totalInvestment;
+        }
+        setProgramaLength(calculateLengthOfPrograma(dadosAgregadosAbaProgramasCidade, programa))
+        setProgramaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaProgramasCidade, programa))
       }
-    }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
+    }, [dadosAgregadosAbaProgramasCidade]);
 
     const images = [
       "https://placehold.co/600x400",
@@ -324,7 +350,7 @@ const ProgramaDescriptionBar = forwardRef(
           >
             <div className={classes.basicInfo}>
               <Typography className={classes.programa}>{programa}</Typography>
-              <Typography className={classes.subtitulo}> {tema}</Typography>
+              <Typography className={classes.subtitulo}> {programa}</Typography>
             </div>
           </Paper>
         </Slide>
@@ -343,7 +369,7 @@ const ProgramaDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip>
               </Stack>
-              <Typography className={classes.subtituloMunicipio}>{programaData?.descricao?programaData.descricao:"Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde."}</Typography>
+              <Typography className={classes.subtituloMunicipio}>{programaData?.descricao ? programaData.descricao : "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde."}</Typography>
             </div>
           </Paper>
         </Slide>
@@ -353,36 +379,31 @@ const ProgramaDescriptionBar = forwardRef(
             className={classes.underSearch3}
           >
 
-            <Box height="70px" display="flex" justifyContent="space-between" alignItems="center">
-            <Tooltip title="Realizações">
-              <Box pl={2} display="flex" >
-                <AccountBalanceIcon />
-                <Box pl={0.5}>
-                  {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography> 970 </Typography>
-                </Box>
-              </Box>
-              </Tooltip>
-              <Tooltip title="Investimento">
-              <Box display="flex" >
-              <AttachMoneyIcon /> 
-                <Box pl={0.5}>
-                  {/* TODO: valor agregado das obras. */}
-                  <Typography >R$ 4.000.000.000 </Typography>
-                </Box>
-              </Box>
-              </Tooltip>
-              <Tooltip title="Cidadãos Beneficiados">
-              <Box pr={2} display="flex">
-              <GroupsIcon sx={{fontSize:"1.8rem"}}/>
-                <Box pl={1} pt={0.5}>
-                   {/* TODO: Puxar valor real */}
-                   <Typography sx={{marginTop:"2rem !important"}} >1.000.000 </Typography>
-                </Box>
-              </Box>
-              </Tooltip>
+            <Box height="70px" display="flex" justifyContent="center" alignItems="center">
+              {(!programaLength || !programaTotalInvestiment) ? < CircularProgress /> :
+                <>
+                  <Tooltip title="Realizações">
+                    <Box display="flex" >
+                      <AccountBalanceIcon />
+                      <Box pl={0.5}>
+                        {/* TODO: valor agregado da qntdd de obras. */}
+                        <Typography> {programaLength && programaLength} </Typography>
+                      </Box>
+                    </Box>
+                  </Tooltip>
+                  <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
+                  <Tooltip title="Investimento">
+                    <Box display="flex" >
+                      <AttachMoneyIcon />
+                      <Box pl={0.5}>
+                        {/* TODO: valor agregado das obras. */}
+                        <Typography >{programaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                      </Box>
+                    </Box>
+                  </Tooltip>
 
-
+                </>
+              }
             </Box>
 
           </Paper>

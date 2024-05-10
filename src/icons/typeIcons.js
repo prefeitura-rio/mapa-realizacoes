@@ -9,7 +9,7 @@ import DefaultIcon from '@material-ui/icons/Place'; // Default icon
 import ReactDOMServer from 'react-dom/server';
 
 
-const createMuiIcon = (MuiIcon, iconSize = 35, iconColor = 'default') => {
+const createMuiIcon = (MuiIcon, iconSize = 15, iconColor = 'default') => {
   const iconHtml = ReactDOMServer.renderToString(
     <MuiIcon style={{ fontSize: iconSize, color: iconColor }} />
   );
@@ -39,9 +39,9 @@ export const getIcon = (name) => {
     case "restaurant":
     case "cafe":
       return createMuiIcon(RestaurantIcon);
-    case "bar":
-      return createMuiIcon(BarIcon);
+    case "redicon":
+      return createMuiIcon(DefaultIcon, 35, "red");
     default:
-      return createMuiIcon(DefaultIcon, 35, "#007E7D");
+      return createMuiIcon(DefaultIcon, 25, "#007E7D");
   }
 };

@@ -20,12 +20,8 @@ const ProgramaDescriptionContainer = (props) => {
     // dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
     // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
     // dispatch(loadDadosAgregadosAbaTemaCidade());
-    // dispatch(loadDadosAgregadosAbaProgramasCidade());
+    dispatch(loadDadosAgregadosAbaProgramasCidade());
   }, []);
-
-  useEffect(() => {
-   console.log("dadosAgregadosAbaSumarioStatusEntregasCidade, " , props.dadosAgregadosAbaSumarioStatusEntregasCidade)
-  }, [props.dadosAgregadosAbaSumarioStatusEntregasCidade]);
 
   return (
       <ProgramaDescriptionBar

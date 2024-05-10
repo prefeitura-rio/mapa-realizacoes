@@ -6,7 +6,8 @@ import {
   Slide,
   Paper,
   Box,
-  Typography
+  Typography,
+  CircularProgress
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -285,16 +286,37 @@ const TemaDescriptionBar = forwardRef(
 
     const classes = useStyles();
     
-    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal,setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
-
-    const dispatch = useDispatch();
+    const [temaLength, setTemaLength] = useState(0)
+    const [temaTotalInvestiment, setTemaTotalInvestiment] = useState(0)
+    
 
     useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasCidade){
-        const total = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao;
-        setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
+      if (dadosAgregadosAbaTemaCidade){
+
+      const calculateLengthOfTema = (dadosAgregadosAbaTemaCidade, tema) => {
+        // filter the array baset on the tema value
+        const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
+      
+        // grab the length of the "realizacoes" array for each filtered item
+        const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
+      
+        return length;
       }
-    }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
+      const calculateTotalInvestment = (dadosAgregadosAbaTemaCidade, tema) => {
+        // filter the array based on the tema value
+        const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
+      
+        // sum up the investiments values for each realizacao item in the filtered data
+        const totalInvestment = filteredData.reduce((total, item) => {
+          return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
+        }, 0);
+      
+        return totalInvestment;
+      }
+      setTemaLength(calculateLengthOfTema(dadosAgregadosAbaTemaCidade, tema))
+      setTemaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaTemaCidade, tema))
+    }
+    }, [dadosAgregadosAbaTemaCidade]);
     
     
     const handleTitleClick = (value) => {
@@ -362,35 +384,30 @@ const TemaDescriptionBar = forwardRef(
             className={classes.underSearch3}
           >
 
-            <Box height="8.5vh" display="flex" justifyContent="space-between" alignItems="center">
+            <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+              { (!temaLength || !temaTotalInvestiment) ? < CircularProgress /> :
+              <>
             <Tooltip title="Realizações">
-              <Box pl={2} display="flex" >
+              <Box display="flex" >
                 <AccountBalanceIcon />
                 <Box pl={0.5}>
                   {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography> 970 </Typography>
+                  <Typography> {temaLength&&temaLength} </Typography>
                 </Box>
               </Box>
               </Tooltip>
+              <span style={{paddingLeft: "20px", paddingRight:"20px"}}></span>
               <Tooltip title="Investimento">
               <Box display="flex" >
               <AttachMoneyIcon /> 
                 <Box pl={0.5}>
                   {/* TODO: valor agregado das obras. */}
-                  <Typography >R$ 4.000.000.000 </Typography>
+                  <Typography >{temaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
                 </Box>
               </Box>
               </Tooltip>
-              <Tooltip title="Cidadãos Beneficiados">
-              <Box pr={2} display="flex">
-              <GroupsIcon sx={{fontSize:"1.8rem"}}/>
-                <Box pl={1} pt={0.5}>
-                   {/* TODO: Puxar valor real */}
-                   <Typography sx={{marginTop:"2rem !important"}} >1.000.000 </Typography>
-                </Box>
-              </Box>
-              </Tooltip>
-
+              </>
+              }
 
             </Box>
 
