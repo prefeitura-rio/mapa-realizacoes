@@ -7,7 +7,8 @@ import {
   Paper,
   Box,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Button
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -28,6 +29,7 @@ import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux
 import { toSnakeCase } from "../../../utils/formatFile";
 import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
 import { getListDestaquesMunicipio } from "../../../firebase";
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -198,9 +200,24 @@ const useStyles = makeStyles((theme) => ({
         display: "none",
       },
     },
+    listStyle: {
+      overflowY: "scroll",
+      "-ms-overflow-style": "auto",
+
+      scrollbarWidth: "auto", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.2em",
+        // display: "auto",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "red",
+        borderRadius: "10px",
+        // display: "auto",
+      },
+    }
   },
   basicInfo: {
-    padding: "3px 20px",
+    padding: "25px 35px",
   },
   dadosAgregadosCidade: {
     // padding: "3px 20px",
@@ -226,13 +243,14 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0.6,
   },
   sobreMunicipio: {
-    fontSize: "1.5rem",
+    fontSize: "1.3rem",
     fontWeight: "bold",
     // marginBottom:"-5px"
   },
   subtituloMunicipio: {
     opacity: 0.8,
-    textAlign: "justify"
+    textAlign: "justify",
+    // paddingBottom:"15px"
   },
   subtituloDestaques: {
     opacity: 0.8,
@@ -240,11 +258,14 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-line-clamp': 4,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
+    textAlign: "justify",
+    paddingRight: "20px",
+    fontSize: "0.9rem",
   },
   title_li: {
     fontWeight: "bold",
     cursor: "pointer",
-    fontSize: "1.2rem",
+    fontSize: "1.0rem",
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
@@ -318,6 +339,23 @@ const MainUnderSearchBar = forwardRef(
       loadDestaquesMunicipio();
     }, []);
 
+    useEffect(() => {
+      if (window.innerHeight >= 1000) {
+        setTextExpanded(true);
+      }
+    }, []);
+
+    const [isTextExpanded, setTextExpanded] = useState(false);
+
+    const fullText = `O Mapa de Realizações da Cidade do Rio de Janeiro é
+      uma iniciativa inovadora que visa aumentar a transparência,
+      eficiência e responsabilidade no uso de recursos públicos destinados
+      a obras e projetos de desenvolvimento urbano. Desenvolvido com a cooperação
+      dos desenvolvedores do Escritório de Dados, este mapa digital
+      interativo serve como um ponto focal para o acompanhamento em tempo real do status,
+      progresso e impacto de diversas obras em toda a cidade.`;
+
+    const shortText = `${fullText.substring(0, 205)} ...`;
 
     return (
       <div ref={ref}>
@@ -340,22 +378,16 @@ const MainUnderSearchBar = forwardRef(
             className={classes.underSearch2}
           >
             <div className={classes.basicInfo}>
-              <Stack direction="row">
-
-                <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                <Tooltip placement="right" title="O Rio de Janeiro continua lindo...">
-                  <IconButton>
-                    <InfoIcon sx={{ color: "black" }} />
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-              <Typography className={classes.subtituloMunicipio}>O Mapa de Realizações da Cidade do Rio de Janeiro é
-                uma iniciativa inovadora que visa aumentar a transparência,
-                eficiência e responsabilidade no uso de recursos públicos destinados
-                a obras e projetos de desenvolvimento urbano. Desenvolvido com a cooperação
-                dos desenvolvedores do Escritório de Dados, este mapa digital
-                interativo serve como um ponto focal para o acompanhamento em tempo real do status,
-                progresso e impacto de diversas obras em toda a cidade. </Typography>
+              <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+              <Typography className={classes.subtituloMunicipio}>
+    {isTextExpanded ? fullText : shortText}
+    {window.innerHeight < 1000 && (
+      <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+        {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+      </Button>
+    )}
+  </Typography>
+             
             </div>
           </Paper>
         </Slide>
@@ -400,10 +432,10 @@ const MainUnderSearchBar = forwardRef(
           >
             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-              <ul>
+              <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
                 {destaquesMunicipio.map((item, index) => (
-                  <li key={index}>
-                    <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title}</Typography>
+                  <li key={index} style={{ paddingBottom: "15px" }}>
+                    <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
                     <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
                   </li>
                 ))}

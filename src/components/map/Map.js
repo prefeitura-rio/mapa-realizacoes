@@ -4,6 +4,7 @@ import {
   TileLayer,
   Tooltip,
 } from "react-leaflet";
+import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import "./map.css";
 import { useEffect, useState } from "react";
@@ -17,7 +18,7 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import bairros_centros from "./centroideBairros";
 import subprefeituras_centros from "./centroideSubprefeituras";
-
+import MarkerClusterGroup from "react-leaflet-markercluster";
 
 
 const capitalizeFirstLetter = (str) => {
@@ -55,7 +56,7 @@ const Map = ({
   const [filtered, setFiltered] = useState([]);
   points = points || [];
 
-  const [realizacaoOk2, setRealizacaoOk]= useState(null)
+  const [realizacaoOk2, setRealizacaoOk] = useState(null)
   const [alertOpen, setAlertOpen] = useState(false);
   const [contextCoords, setContextCoords] = useState(null);
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ const Map = ({
     if (map && !underSearchBar) {
       const coords = [-22.9200, -43.4250];
       map.flyTo(coords, 12)
-    }else if (map && underSearchBar) {
+    } else if (map && underSearchBar) {
       const coords = [-22.9200, -43.3250];
       map.flyTo(coords, 11)
     }
@@ -81,16 +82,16 @@ const Map = ({
 
   useEffect(() => {
     console.log("zoomDefault " + zoomDefault)
-    
-   if (map && zoomDefault != 0) {
+
+    if (map && zoomDefault != 0) {
       const coords = [-22.9200, -43.3250];
       map.flyTo(coords, 11)
     }
   }, [zoomDefault])
 
   useEffect(() => {
-    
-   if (map) {
+
+    if (map) {
       console.log("map", map)
     }
   }, [map])
@@ -127,27 +128,27 @@ const Map = ({
     }
   }, [subprefeituraNome, map]);
 
- 
+
   const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
 
-  useEffect(()=>{
-   if( realizacaoOk?.nome){
-    setRealizacaoOk(realizacaoOk.image_folder)
-   }
-  },[realizacaoOk])
+  useEffect(() => {
+    if (realizacaoOk?.nome) {
+      setRealizacaoOk(realizacaoOk.image_folder)
+    }
+  }, [realizacaoOk])
 
   useEffect(() => {
 
     console.log(">> realizacaoOk2: ", realizacaoOk2?.nome);
-    
-    if (realizacaoId && realizacaoOk2){
+
+    if (realizacaoId && realizacaoOk2) {
       setUnderSearchBar(true);
       setDescriptionData(realizacaoId);
       setActiveBar(DESCRIPTION_BAR);
       loadData(realizacaoId);
       setAlertOpen(false)
     }
-    if (realizacaoId && realizacaoOk == undefined){
+    if (realizacaoId && realizacaoOk == undefined) {
       setAlertOpen(true)
     }
   }, [realizacaoOk2]);
@@ -232,16 +233,28 @@ const Map = ({
     if (map) {
       if (point) {
         map.flyTo({
-          lat: point.coords.latitude,
-          lng: point.coords.longitude,
-        }, 14);
+          lat: point?.coords?.latitude,
+          lng: point?.coords?.longitude,
+          // },12);
+        });
       }
     }
     setRota(toSnakeCase(point.nome))
+    setCurrentClickedPoint(point)
   };
 
 
   const [opened, setOpened] = useState(false);
+
+  const [currentClickedPoint, setCurrentClickedPoint] = useState("");
+
+  const createClusterCustomIcon = function (cluster) {
+    return L.divIcon({
+      html: `<span>${cluster.getChildCount()}</span>`,
+      className: 'marker-cluster-custom',
+      iconSize: L.point(40, 40, true),
+    });
+  };
 
   // Função auxiliar para renderizar o marcador
   function renderMarker(point, index) {
@@ -249,7 +262,8 @@ const Map = ({
       <Marker
         key={point.id + index}
         position={Object.values(point.coords)}
-        icon={getIcon("anyIcon")}
+        // icon={getIcon("anyIcon")}
+        icon={getIcon(point == currentClickedPoint ? "redicon" : "anyIcon")}
         eventHandlers={{
           click: (e) => onMarkerClick(point),
         }}
@@ -260,12 +274,12 @@ const Map = ({
       </Marker>
     );
   }
- console.log("AAHAHUHEU points: ", points)
+
   return (
     <>
-      <Snackbar open={alertOpen} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={() => setAlertOpen(false)}>
+      <Snackbar open={alertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={() => setAlertOpen(false)}>
         <Alert onClose={() => setAlertOpen(false)} severity="warning">
-         A URL deve conter o id da realização.<br></br> Para mais informações entre em contato com o Escritório de Dados.
+          A URL deve conter o id da realização.<br></br> Para mais informações entre em contato com o Escritório de Dados.
         </Alert>
       </Snackbar>
       <MapContainer
@@ -274,6 +288,7 @@ const Map = ({
         scrollWheelZoom={true}
         zoomControl={false}
         whenCreated={setMap}
+        className="markercluster-map"
       >
         <TileLayer
           url="https://api.mapbox.com/styles/v1/escritoriodedados/clvr1l62d05bp01pe1ejf6iuc/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZXNjcml0b3Jpb2RlZGFkb3MiLCJhIjoiY2t3bWdmcHpjMmJ2cTJucWJ4MGQ1Mm1kbiJ9.4hHJX-1pSevYoBbja7Pq4w"
@@ -282,30 +297,32 @@ const Map = ({
           tileSize={512}
           zoomOffset={-1}
         />
+        <MarkerClusterGroup showCoverageOnHover={false}
+          spiderfyDistanceMultiplier={2}
+          iconCreateFunction={createClusterCustomIcon}>
+          {points.map((point, index) => {
 
-        {points.map((point, index) => {
+            // Verifica se o ponto corresponde ao bairro selecionado
+            const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
 
-          // Verifica se o ponto corresponde ao bairro selecionado
-          const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
+            // Verifica se o ponto corresponde ao subprefeitura selecionado
+            const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
 
-          // Verifica se o ponto corresponde ao subprefeitura selecionado
-          const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
+            // Verifica se o ponto corresponde ao tema selecionado
+            const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
 
-          // Verifica se o ponto corresponde ao tema selecionado
-          const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
+            const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
 
-          const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
-          
-          const isRealizacaoMatch = realizacao ? 
-          point.id === toSnakeCase(realizacao)
-          : true;
+            const isRealizacaoMatch = realizacao ?
+              point.id === toSnakeCase(realizacao)
+              : true;
 
-          // Renderiza o marcador se corresponder ao bairro e aos demais
-          if ((tema || bairro || subprefeitura || realizacao) && isBairroMatch && isTemaMatch && isProgramaMatch && isRealizacaoMatch && isSubprefeituraMatch) {
-            return renderMarker(point, index);
-          }
-
-        })}
+            // Renderiza o marcador se corresponder ao bairro e aos demais
+            if ((tema || bairro || subprefeitura || realizacao) && isBairroMatch && isTemaMatch && isProgramaMatch && isRealizacaoMatch && isSubprefeituraMatch) {
+              return renderMarker(point, index);
+            }
+          })}
+        </MarkerClusterGroup>
 
       </MapContainer>
 

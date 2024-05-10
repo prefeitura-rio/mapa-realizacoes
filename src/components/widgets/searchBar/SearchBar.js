@@ -12,6 +12,7 @@ import {
   Popper,
   Typography,
   Fade,
+  Tooltip,
 } from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -33,6 +34,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { setPrograma, setRealizacao, setTema } from "../../../redux/filtros/actions";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import { toSnakeCase } from "../../../utils/formatFile";
+import Badge from '@material-ui/core/Badge';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -268,7 +270,7 @@ const SearchBar = ({
         console.error("Erro", error);
       }
     }
-    
+
     loadTemaInfo(tema)
     loadProgramasTema(tema);
   }, [tema]);
@@ -426,14 +428,18 @@ const SearchBar = ({
         {!showMenuBar ?
 
           (
-            <Paper elevation={4} style={{ borderRadius:"10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <IconButton
-                style={{ backgroundColor: 'transparent' }}
-                color="grey"
-                onClick={() => { setShowMenuBar(!showMenuBar); setShowSearchBar(showMenuBar) }}
-              >
-                <MenuIcon />
-              </IconButton>
+            <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Tooltip title={tema && !programa && !realizacao?`Tema: ${tema}`:tema && programa && !realizacao?`Tema: ${tema} | Programa: ${programa}`:tema && programa && realizacao?`Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}`:""} placement="right">
+                <Badge  badgeContent={tema && !programa && !realizacao?1:tema && programa && !realizacao?2:tema && programa && realizacao?3:0} color="primary">
+                  <IconButton
+                    style={{ backgroundColor: 'transparent' }}
+                    color="grey"
+                    onClick={() => { setShowMenuBar(!showMenuBar); setShowSearchBar(showMenuBar) }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </Badge>
+              </Tooltip>
             </Paper>
           )
 
@@ -535,7 +541,7 @@ const SearchBar = ({
                       disableClearable
                       options={programasTema ? programasTema : []}
                       PaperComponent={CustomPaperMenu}
-                      ListboxProps={{ style: { maxHeight: "100%", paddingBottom:"20px"} }}
+                      ListboxProps={{ style: { maxHeight: "100%", paddingBottom: "20px" } }}
                       inputprops={{
                         style: {
                           color: 'black'
@@ -652,7 +658,7 @@ const SearchBar = ({
                       color="grey"
                       onClick={() => { setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(TEMA_DESCRIPTION_BAR) }}
                     >
-                      <ArrowBackIosIcon  sx={{fontSize:"20px", marginRight:"-4px"}}/>
+                      <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                     </IconButton>
 
                     :

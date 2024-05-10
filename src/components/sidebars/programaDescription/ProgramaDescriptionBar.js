@@ -235,6 +235,10 @@ const useStyles = makeStyles((theme) => ({
   subtitulo: {
     // marginTop: "15px", 
     opacity: 0.6,
+    display: '-webkit-box',
+    '-webkit-line-clamp': 1,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
   },
   sobreMunicipio: {
     fontSize: "1.5rem",
