@@ -120,15 +120,13 @@ const useStyles = makeStyles((theme) => ({
   },
   "@media screen and (min-width: 540px)": {
     underSearch: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
+
       position: "fixed",
       top: "3vh",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh",
+      height: "80px",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -143,12 +141,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "12.5vh", //8.5vh + 3.0vh 1vh
+      top: "calc( 80px + 4vh )", //80px + 3.0vh 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "34vh",
+      height: "calc( 41.5vh - 40px )",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -163,12 +161,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "47.5vh", //12.5vh + 34vh + 1vh
+      top: "calc( 80px + 4vh + 41.5vh - 40px + 1vh )", //
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh",
+      height: "8.5vh", // 
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -183,11 +181,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "57vh", // 47.5vh + 8.5vh + 1vh = 55.5vh
+      top: "calc( 80px + 4vh + 41.5vh - 40px + 1vh + 8.5vh + 1vh )", // 47.5vh + 8.5vh + 1vh = 55.5vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "40vh",
+      height: "calc( 41.5vh - 40px )",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -217,7 +215,10 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   basicInfo: {
-    padding: "25px 35px",
+    paddingLeft: "25px",
+    paddingRight: "25px",
+    paddingTop: "13px",
+    paddingBottom: "13px",
   },
   dadosAgregadosCidade: {
     // padding: "3px 20px",
@@ -243,7 +244,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0.6,
   },
   sobreMunicipio: {
-    fontSize: "1.3rem",
+    fontSize: "1.1rem",
     fontWeight: "bold",
     // marginBottom:"-5px"
   },
@@ -355,7 +356,12 @@ const MainUnderSearchBar = forwardRef(
       interativo serve como um ponto focal para o acompanhamento em tempo real do status,
       progresso e impacto de diversas obras em toda a cidade.`;
 
-    const shortText = `${fullText.substring(0, 205)} ...`;
+    // Obtém a altura da janela em pixels
+    const windowHeight = window.innerHeight;
+    // Calcule o número de caracteres com base na altura da janela
+    const numChars = Math.floor(windowHeight / 2.5);
+
+    const shortText = `${fullText.substring(0, numChars)} ...`;
 
     return (
       <div ref={ref}>
@@ -380,14 +386,14 @@ const MainUnderSearchBar = forwardRef(
             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Sobre</Typography>
               <Typography className={classes.subtituloMunicipio}>
-    {isTextExpanded ? fullText : shortText}
-    {window.innerHeight < 1000 && (
-      <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-        {isTextExpanded ? 'Leia menos' : 'Leia mais'}
-      </Button>
-    )}
-  </Typography>
-             
+                {isTextExpanded ? fullText : shortText}
+                {window.innerHeight < 850 && (
+                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                    {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                  </Button>
+                )}
+              </Typography>
+
             </div>
           </Paper>
         </Slide>

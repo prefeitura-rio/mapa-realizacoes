@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "70px",
+      height: "80px",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -142,11 +142,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "calc(4vh + 70px )", // 3vh + 70px + 1vh
+      top: "calc(4vh + 80px )", // 3vh + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc(91vh - 390px)",
+      height: "calc(82.5vh - 330px)",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -161,12 +161,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "calc(96vh - 320px)", //4vh + 70px + 91vh - 390px + 1vh
+      top: "calc(4vh + 80px + 82.5vh - 330px + 1vh)", //4vh + 70px + 91vh - 390px + 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "70px",
+      height: "8.5vh",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -181,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "calc(96vh - 320px + 70px + 1vh)", // 96vh - 320px + 70px + 1vh
+      top: "calc(4vh + 80px + 82.5vh - 330px + 1vh + 8.5vh + 1vh)", // 96vh - 320px + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
@@ -200,7 +200,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   basicInfo: {
-    padding: "3px 20px",
+    paddingLeft: "25px",
+    paddingRight: "25px",
+    paddingTop: "13px",
+    paddingBottom: "13px",
   },
   dadosAgregadosCidade: {
     // padding: "3px 20px",
@@ -221,16 +224,15 @@ const useStyles = makeStyles((theme) => ({
     // overflow: "hidden",
     // textOverflow: "ellipsis",
     // width: "20vw",
-    minWidth: "350px",
+    lineHeight: "26px",
     fontSize: "1.5rem",
     fontWeight: "bold",
-    marginBottom: "-5px",
-    lineHeight: "20px",
-    paddingBottom: "5px",
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
+    marginTop:"-1px",
+    marginBottom:"-1px"
   },
   subtitulo: {
     // marginTop: "15px", 
@@ -363,11 +365,11 @@ const ProgramaDescriptionBar = forwardRef(
               <Stack direction="row">
 
                 <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                <Tooltip placement="right" title={`Detalhe sobre o ${programa}`}>
+                {/* <Tooltip placement="right" title={`Detalhe sobre o ${programa}`}>
                   <IconButton>
                     <InfoIcon sx={{ color: "black" }} />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </Stack>
               <Typography className={classes.subtituloMunicipio}>{programaData?.descricao ? programaData.descricao : "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde."}</Typography>
             </div>
@@ -379,7 +381,7 @@ const ProgramaDescriptionBar = forwardRef(
             className={classes.underSearch3}
           >
 
-            <Box height="70px" display="flex" justifyContent="center" alignItems="center">
+            <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
               {(!programaLength || !programaTotalInvestiment) ? < CircularProgress /> :
                 <>
                   <Tooltip title="Realizações">

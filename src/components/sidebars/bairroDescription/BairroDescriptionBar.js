@@ -510,11 +510,11 @@ const BairroDescriptionBar = forwardRef(
               <Stack direction="row">
 
                 <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                <Tooltip placement="right" title={`Detalhe sobre o bairro ${tema}`}>
+                {/* <Tooltip placement="right" title={`Detalhe sobre o bairro ${tema}`}>
                   <IconButton>
                     <InfoIcon sx={{color:"black"}}/>
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </Stack>
               <Typography className={classes.subtituloMunicipio}>Bairro Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </Typography>
             </div>
