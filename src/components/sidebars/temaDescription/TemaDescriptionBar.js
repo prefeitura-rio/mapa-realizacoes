@@ -7,7 +7,8 @@ import {
   Paper,
   Box,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Button
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -29,6 +30,7 @@ import { toSnakeCase } from "../../../utils/formatFile";
 import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -119,15 +121,13 @@ const useStyles = makeStyles((theme) => ({
   },
   "@media screen and (min-width: 540px)": {
     underSearch: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
+
       position: "fixed",
       top: "3vh",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh",
+      height: "80px",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -142,12 +142,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "12.5vh", //8.5vh + 3.0vh 1vh
+      top: "calc( 80px + 4vh )", //80px + 3.0vh 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "34vh",
+      height: "calc( 41.5vh - 40px )",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -162,12 +162,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "47.5vh", //12.5vh + 34vh + 1vh
+      top: "calc( 80px + 4vh + 41.5vh - 40px + 1vh )", //
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh",
+      height: "8.5vh", // 
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -182,11 +182,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "57vh", // 47.5vh + 8.5vh + 1vh = 55.5vh
+      top: "calc( 80px + 4vh + 41.5vh - 40px + 1vh + 8.5vh + 1vh )", // 47.5vh + 8.5vh + 1vh = 55.5vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "41.5vh",
+      height: "calc( 41.5vh - 40px )",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -201,7 +201,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   basicInfo: {
-    padding: "3px 20px",
+    paddingLeft: "25px",
+    paddingRight: "25px",
+    paddingTop: "13px",
+    paddingBottom: "13px",
   },
   dadosAgregadosCidade: {
     // padding: "3px 20px",
@@ -218,22 +221,30 @@ const useStyles = makeStyles((theme) => ({
     padding: "1px 8px 1px 8px"
   },
   titulo: {
+    minWidth: "350px",
     fontSize: "1.5rem",
     fontWeight: "bold",
-    marginBottom: "-5px"
+    marginBottom: "-5px",
+    // lineHeight: "20px",
+    display: '-webkit-box',
+    '-webkit-line-clamp': 2,
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden',
+
   },
   subtitulo: {
     // marginTop: "15px", 
     opacity: 0.6,
   },
   sobreMunicipio: {
-    fontSize: "1.5rem",
+    fontSize: "1.1rem",
     fontWeight: "bold",
     // marginBottom:"-5px"
   },
   subtituloMunicipio: {
     opacity: 0.8,
-   
+    textAlign: "justify",
+
   },
   subtituloDestaques: {
     opacity: 0.8,
@@ -241,15 +252,33 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-line-clamp': 4,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
+    fontSize: "0.85rem",
+    paddingRight: "20px",
+    textAlign: "justify",
   },
   title_li: {
     fontWeight: "bold",
     cursor: "pointer",
-    fontSize: "1.2rem",
+    fontSize: "0.9rem",
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
+  },
+  listStyle: {
+    overflowY: "scroll",
+    "-ms-overflow-style": "auto",
+
+    scrollbarWidth: "auto", /* Ocultar a barra de rolagem no Firefox */
+    "&::-webkit-scrollbar": {
+      width: "0.2em",
+      // display: "auto",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "red",
+      borderRadius: "10px",
+      // display: "auto",
+    },
   }
 
 }));
@@ -285,40 +314,40 @@ const TemaDescriptionBar = forwardRef(
   }, ref) => {
 
     const classes = useStyles();
-    
+
     const [temaLength, setTemaLength] = useState(0)
     const [temaTotalInvestiment, setTemaTotalInvestiment] = useState(0)
-    
+
 
     useEffect(() => {
-      if (dadosAgregadosAbaTemaCidade){
+      if (dadosAgregadosAbaTemaCidade) {
 
-      const calculateLengthOfTema = (dadosAgregadosAbaTemaCidade, tema) => {
-        // filter the array baset on the tema value
-        const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
-      
-        // grab the length of the "realizacoes" array for each filtered item
-        const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
-      
-        return length;
+        const calculateLengthOfTema = (dadosAgregadosAbaTemaCidade, tema) => {
+          // filter the array baset on the tema value
+          const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
+
+          // grab the length of the "realizacoes" array for each filtered item
+          const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
+
+          return length;
+        }
+        const calculateTotalInvestment = (dadosAgregadosAbaTemaCidade, tema) => {
+          // filter the array based on the tema value
+          const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
+
+          // sum up the investiments values for each realizacao item in the filtered data
+          const totalInvestment = filteredData.reduce((total, item) => {
+            return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
+          }, 0);
+
+          return totalInvestment;
+        }
+        setTemaLength(calculateLengthOfTema(dadosAgregadosAbaTemaCidade, tema))
+        setTemaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaTemaCidade, tema))
       }
-      const calculateTotalInvestment = (dadosAgregadosAbaTemaCidade, tema) => {
-        // filter the array based on the tema value
-        const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
-      
-        // sum up the investiments values for each realizacao item in the filtered data
-        const totalInvestment = filteredData.reduce((total, item) => {
-          return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
-        }, 0);
-      
-        return totalInvestment;
-      }
-      setTemaLength(calculateLengthOfTema(dadosAgregadosAbaTemaCidade, tema))
-      setTemaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaTemaCidade, tema))
-    }
     }, [dadosAgregadosAbaTemaCidade]);
-    
-    
+
+
     const handleTitleClick = (value) => {
       setDescriptionData(toSnakeCase(value));
       setUnderSearchBar(true);
@@ -327,25 +356,53 @@ const TemaDescriptionBar = forwardRef(
       console.log("clickei")
     };
 
-  // o destaque conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
-  const [destaquesTema, setDestaquesTema] = useState([]);
-  useEffect(() => {
-    const loadDestaquesTema = async (id_tema) => {
-      try {
-        const destaquesTemaRef = await getListDestaquesTema(id_tema);
+    // o destaque conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
+    const [destaquesTema, setDestaquesTema] = useState([]);
+    useEffect(() => {
+      const loadDestaquesTema = async (id_tema) => {
+        try {
+          const destaquesTemaRef = await getListDestaquesTema(id_tema);
 
           setDestaquesTema(destaquesTemaRef);
-       
-      } catch (error) {
-        console.error("Erro", error);
-      }
-    };
 
-    loadDestaquesTema(tema);
-  }, [tema]);
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+
+      loadDestaquesTema(tema);
+    }, [tema]);
+
+    useEffect(() => {
+      if (window.innerHeight <= 500) {
+        setTextScreen500(true);
+        setTextScreen900(false);
+      }
+      else if (window.innerHeight>500 && window.innerHeight <= 900) {
+        setTextScreen900(true);
+        setTextScreen500(false);
+      }
+      else if (window.innerHeight>=900) {
+        setTextScreen500(false);
+        setTextScreen900(false);
+      }
+    }, [window.innerHeight]);
+    
+    const [isTextExpanded, setTextExpanded] = useState(false);
+    const [isScreen900, setTextScreen900] = useState(false);
+    const [isScreen500, setTextScreen500] = useState(false);
+
+    const fullText = temaData?.descricao;
+
+    // Obtém a altura da janela em pixels
+    const windowHeight = window.innerHeight;
+    // Calcule o número de caracteres com base na altura da janela
+    const numChars = Math.floor(windowHeight / (isScreen900?3:(isScreen500?4:1.8  )));
+
+    const shortText = `${fullText?.substring(0, numChars)} ...`;
 
     return (
-<>
+      <>
 
         <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
           <Paper
@@ -368,14 +425,20 @@ const TemaDescriptionBar = forwardRef(
               <Stack direction="row">
 
                 <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                <Tooltip placement="right" title={`Detalhe sobre o ${tema}`}>
+                {/* <Tooltip placement="right" title={`Detalhe sobre o ${tema}`}>
                   <IconButton>
                     <InfoIcon sx={{color:"black"}}/>
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </Stack>
-              <Typography className={classes.subtituloMunicipio}>{temaData?.descricao?temaData.descricao:"Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde."} </Typography>
-            </div>
+              <Typography className={classes.subtituloMunicipio}>
+                {isTextExpanded ? fullText : shortText=="undefined ..."? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde.":shortText}
+               
+                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                    {isTextExpanded ? 'Leia menos' : (shortText || fullText)? "" :'Leia mais'}
+                  </Button>
+            
+              </Typography>            </div>
           </Paper>
         </Slide>
         <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
@@ -385,28 +448,28 @@ const TemaDescriptionBar = forwardRef(
           >
 
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-              { (!temaLength || !temaTotalInvestiment) ? < CircularProgress /> :
-              <>
-            <Tooltip title="Realizações">
-              <Box display="flex" >
-                <AccountBalanceIcon />
-                <Box pl={0.5}>
-                  {/* TODO: valor agregado da qntdd de obras. */}
-                  <Typography> {temaLength&&temaLength} </Typography>
-                </Box>
-              </Box>
-              </Tooltip>
-              <span style={{paddingLeft: "20px", paddingRight:"20px"}}></span>
-              <Tooltip title="Investimento">
-              <Box display="flex" >
-              <AttachMoneyIcon /> 
-                <Box pl={0.5}>
-                  {/* TODO: valor agregado das obras. */}
-                  <Typography >{temaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL',minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
-                </Box>
-              </Box>
-              </Tooltip>
-              </>
+              {(!temaLength || !temaTotalInvestiment) ? < CircularProgress /> :
+                <>
+                  <Tooltip title="Realizações">
+                    <Box display="flex" >
+                      <AccountBalanceIcon />
+                      <Box pl={0.5}>
+                        {/* TODO: valor agregado da qntdd de obras. */}
+                        <Typography> {temaLength && temaLength} </Typography>
+                      </Box>
+                    </Box>
+                  </Tooltip>
+                  <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
+                  <Tooltip title="Investimento">
+                    <Box display="flex" >
+                      <AttachMoneyIcon />
+                      <Box pl={0.5}>
+                        {/* TODO: valor agregado das obras. */}
+                        <Typography >{temaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                      </Box>
+                    </Box>
+                  </Tooltip>
+                </>
               }
 
             </Box>
@@ -420,10 +483,10 @@ const TemaDescriptionBar = forwardRef(
           >
             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-              <ul>
+              <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
                 {destaquesTema.map((item, index) => (
-                  <li key={index}>
-                    <Typography className={classes.title_li} onClick={()=>handleTitleClick(item.title)}>{item.title}</Typography>
+                  <li key={index} style={{ paddingBottom: "15px" }}>
+                    <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
                     <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
                   </li>
                 ))}
@@ -431,7 +494,7 @@ const TemaDescriptionBar = forwardRef(
             </div>
           </Paper>
         </Slide>
-        </>
+      </>
     );
   }
 );

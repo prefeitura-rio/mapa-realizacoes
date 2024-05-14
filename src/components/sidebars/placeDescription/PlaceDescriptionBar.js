@@ -397,7 +397,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   basicInfo: {
-    padding: "3px 20px",
+    paddingLeft: "25px",
+    paddingRight: "25px",
+    paddingTop: "13px",
+    paddingBottom: "13px",
   },
   sumarioInfo: {
     // padding: "3px 20px",
@@ -440,7 +443,7 @@ const useStyles = makeStyles((theme) => ({
   sobreMunicipio: {
     fontSize: "1.5rem",
     fontWeight: "bold",
-    // marginBottom:"-5px"
+    // marginBottom:"-5px",
   },
   subtituloRealizacao: {
     opacity: 0.8,
@@ -448,10 +451,11 @@ const useStyles = makeStyles((theme) => ({
     // overflow: 'hidden',
     textOverflow: 'ellipsis',
     // whiteSpace: 'nowrap',
+    textAlign: "justify",
   },
   buttonStatus: {
     position: 'absolute',
-    top: '12px',
+    top: '18px',
     right: '20px',
   },
   statusButton: {
@@ -558,11 +562,11 @@ const PlaceDescriptionBar = forwardRef(
                 <>
                   <Stack direction="row">
                     <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                    <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
+                    {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
                       <IconButton>
                         <InfoIcon sx={{ color: "black" }} />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                   </Stack>
                   <Typography className={classes.subtituloRealizacao}>{content?.descricao}</Typography>
                 </>
