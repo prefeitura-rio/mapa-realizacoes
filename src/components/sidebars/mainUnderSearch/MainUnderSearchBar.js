@@ -346,22 +346,44 @@ const MainUnderSearchBar = forwardRef(
       }
     }, []);
 
-    const [isTextExpanded, setTextExpanded] = useState(false);
+    const fullText = `O Rio de Janeiro é de todos os brasileiros. É uma das cidades mais conhecidas do mundo. Sua relevância abrange diversos aspectos culturais, históricos, econômicos e belezas naturais. Tem uma forte presença no cenário internacional, com capacidade para sediar eventos de importância global. É a capital da inovação na América Latina e da oportunidade!
 
-    const fullText = `O Mapa de Realizações da Cidade do Rio de Janeiro é
-      uma iniciativa inovadora que visa aumentar a transparência,
-      eficiência e responsabilidade no uso de recursos públicos destinados
-      a obras e projetos de desenvolvimento urbano. Desenvolvido com a cooperação
-      dos desenvolvedores do Escritório de Dados, este mapa digital
-      interativo serve como um ponto focal para o acompanhamento em tempo real do status,
-      progresso e impacto de diversas obras em toda a cidade.`;
+    No Mapa de Realizações, veremos, de forma interativa e iniciativa inovadora, em tempo real, as principais obras e projetos espalhadas nos quatro cantos do Rio, com transparência, eficiência e responsabilidade com o dinheiro público para melhorar a vida dos cariocas.`;
+
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+      const handleResize = () => setWindowHeight(window.innerHeight);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+      if (windowHeight <= 500) {
+        setTextScreen500(true);
+        setTextScreen900(false);
+      }
+      else if (windowHeight > 500 && windowHeight <= 900) {
+        setTextScreen900(true);
+        setTextScreen500(false);
+      }
+      else if (windowHeight >= 900) {
+        setTextScreen500(false);
+        setTextScreen900(false);
+      }
+    }, [windowHeight]);
+
+    const [isTextExpanded, setTextExpanded] = useState(false);
+    const [isScreen900, setTextScreen900] = useState(false);
+    const [isScreen500, setTextScreen500] = useState(false);
+
 
     // Obtém a altura da janela em pixels
-    const windowHeight = window.innerHeight;
-    // Calcule o número de caracteres com base na altura da janela
-    const numChars = Math.floor(windowHeight / 2.5);
 
-    const shortText = `${fullText.substring(0, numChars)} ...`;
+    // Calcule o número de caracteres com base na altura da janela
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 3 : (isScreen500 ? 4 : 1.8)));
+
+    const shortText = `${fullText?.substring(0, numChars)} ...`;
 
     return (
       <div ref={ref}>

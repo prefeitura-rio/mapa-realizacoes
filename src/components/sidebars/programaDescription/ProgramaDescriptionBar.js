@@ -7,7 +7,8 @@ import {
   Paper,
   Box,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Button
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -249,6 +250,7 @@ const useStyles = makeStyles((theme) => ({
   },
   subtituloMunicipio: {
     // marginTop: "15px", 
+    textAlign: "justify",
     opacity: 0.8
   }
 
@@ -341,6 +343,42 @@ const ProgramaDescriptionBar = forwardRef(
       "https://placehold.co/600x400",
       "https://placehold.co/600x400"
     ]
+
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+      const handleResize = () => setWindowHeight(window.innerHeight);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+      if (windowHeight <= 500) {
+        setTextScreen500(true);
+        setTextScreen900(false);
+      }
+      else if (windowHeight > 500 && windowHeight <= 900) {
+        setTextScreen900(true);
+        setTextScreen500(false);
+      }
+      else if (windowHeight >= 900) {
+        setTextScreen500(false);
+        setTextScreen900(false);
+      }
+    }, [windowHeight]);
+
+    const [isTextExpanded, setTextExpanded] = useState(false);
+    const [isScreen900, setTextScreen900] = useState(false);
+    const [isScreen500, setTextScreen500] = useState(false);
+
+
+    const fullText = programaData?.descricao;
+
+    // Calcule o número de caracteres com base na altura da janela
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 3.5 : (isScreen500 ? 4.5 : 1)));
+
+    const shortText = `${fullText?.substring(0, numChars)} ...`;
+
     return (
       <>
 
@@ -371,7 +409,14 @@ const ProgramaDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip> */}
               </Stack>
-              <Typography className={classes.subtituloMunicipio}>{programaData?.descricao ? programaData.descricao : "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde."}</Typography>
+              <Typography className={classes.subtituloMunicipio}>
+              {isTextExpanded ? fullText : shortText=="undefined ..."? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde.":shortText}
+              {fullText != shortText + " ...?" ? null :
+                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                    {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                  </Button>
+  }
+              </Typography>
             </div>
           </Paper>
         </Slide>
