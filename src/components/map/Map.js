@@ -269,7 +269,8 @@ const Map = ({
         }}
       >
         <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-          <span>{point.nome}</span>
+          {point.id_programa=="rio_em_forma"?<span>Rio em Forma - {point.nome}</span>:
+          <span>{point.nome}</span>}
         </Tooltip>
       </Marker>
     );

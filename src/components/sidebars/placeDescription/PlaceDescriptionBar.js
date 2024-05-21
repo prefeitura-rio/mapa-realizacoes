@@ -225,6 +225,7 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ListInfo from "../../inlines/ListInfo";
+import no_imagem from "../../assets/no_image.jpg"
 
 const useStyles = makeStyles((theme) => ({
 
@@ -384,7 +385,7 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "385px",
       height: "240px",
       borderRadius: "10px",
-      overflowY: "scroll",
+      overflowY: "hide",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
       "&::-webkit-scrollbar": {
@@ -429,8 +430,8 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
-    marginTop:"-1px",
-    marginBottom:"-1px"
+    marginTop: "-1px",
+    marginBottom: "-1px"
   },
   subtitulo: {
     // marginTop: "15px", 
@@ -478,23 +479,46 @@ const theme = createTheme({
 });
 const ImageCarousel = ({ images }) => {
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: false,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows:false
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = 'broken-image.png'; 
   };
 
   return (
     <Slider {...settings}>
       {images.map((image, index) => (
         <div key={index}>
-          <img src={image} alt={`carousel-${index}`} style={{ width: '100%', height: 'auto' }} />
+          {image != null ? 
+          <div style={{display:"flex",justifyContent:"center", alignItems:"center", height:"250px"}}>
+          < CircularProgress size={80}/>
+          </div>
+           :
+           image == null ? 
+           <div style={{display:"flex",justifyContent:"center", alignItems:"center", height:"250px"}}>
+         <img height="200px" width="auto" src={no_imagem}/>
+          </div>
+           :
+          <img 
+            src={image} 
+            alt={`carousel-${index}`} 
+            style={{ borderRadius: "10px",width: '100%', height: 'auto' }} 
+            loading="lazy"
+            onError={handleImageError}
+          />
+          }
         </div>
       ))}
     </Slider>
   );
 };
+
 const PlaceDescriptionBar = forwardRef(
   ({ underSearchBar,
     cidades,
@@ -532,11 +556,43 @@ const PlaceDescriptionBar = forwardRef(
       }
     }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
 
-    const images = [
-      "https://placehold.co/600x400",
-      "https://placehold.co/600x400",
-      "https://placehold.co/600x400"
-    ]
+
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+      const handleResize = () => setWindowHeight(window.innerHeight);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+      if (windowHeight <= 600) {
+        setTextScreen600(true);
+        setTextScreen900(false);
+      }
+      else if (windowHeight > 600 && windowHeight <= 900) {
+        setTextScreen900(true);
+        setTextScreen600(false);
+      }
+      else if (windowHeight >= 900) {
+        setTextScreen600(false);
+        setTextScreen900(false);
+      }
+    }, [windowHeight]);
+
+    const [isTextExpanded, setTextExpanded] = useState(false);
+    const [isScreen900, setTextScreen900] = useState(false);
+    const [isScreen600, setTextScreen600] = useState(false);
+
+
+    const fullText = content?.descricao;
+
+    // Calcule o número de caracteres com base na altura da janela
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 7 : (isScreen600 ? 20 : 2.3)));
+
+    const shortText = `${fullText?.substring(0, numChars)} ...`;
+
+
     return (
       <>
 
@@ -568,10 +624,18 @@ const PlaceDescriptionBar = forwardRef(
                       </IconButton>
                     </Tooltip> */}
                   </Stack>
-                  <Typography className={classes.subtituloRealizacao}>{content?.descricao}</Typography>
+                  <Typography className={classes.subtituloMunicipio}>
+                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+
+                    {fullText + " ..." === shortText ? null :
+                      <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                        {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                      </Button>
+                    }
+                  </Typography>
                 </>
               ) : (
-                <CircularProgress style={{ marginTop:"1rem"}} size={25} />
+                <CircularProgress style={{ marginTop: "1rem" }} size={25} />
               )}
             </div>
             {content?.status &&
@@ -590,7 +654,7 @@ const PlaceDescriptionBar = forwardRef(
           >
 
             <div className={classes.sumarioInfo} style={{ display: 'flex' }}>
-              {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress style={{ marginTop:"1rem",marginLeft:"1.2rem"}} size={25} />}
+              {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
             </div>
           </Paper>
         </Slide>
@@ -599,7 +663,7 @@ const PlaceDescriptionBar = forwardRef(
             elevation={6}
             className={classes.underSearch4}
           >
-            <ImageCarousel images={images} />
+            <ImageCarousel images={[content?.image_url]} />
           </Paper>
         </Slide>
       </>

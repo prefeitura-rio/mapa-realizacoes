@@ -19,13 +19,13 @@ const TemaDescriptionContainer = (props) => {
     // dispatch(loadAllCidades());
     // dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
     // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
-    dispatch(loadDadosAgregadosAbaTemaCidade());
+    // dispatch(loadDadosAgregadosAbaTemaCidade());
     // dispatch(loadDadosAgregadosAbaProgramasCidade());
   }, []);
 
-  useEffect(() => {
-   console.log("dadosAgregadosAbaSumarioStatusEntregasCidade, " , props.dadosAgregadosAbaSumarioStatusEntregasCidade)
-  }, [props.dadosAgregadosAbaSumarioStatusEntregasCidade]);
+  // useEffect(() => {
+  //  console.log("dadosAgregadosAbaSumarioStatusEntregasCidade, " , props.dadosAgregadosAbaSumarioStatusEntregasCidade)
+  // }, [props.dadosAgregadosAbaSumarioStatusEntregasCidade]);
 
   return (
       <TemaDescriptionBar

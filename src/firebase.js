@@ -891,3 +891,37 @@ export async function getListDestaquesTema(id_tema){
   });
   return realizacoesDestaqueTema
 }
+
+export async function getAggregatedData(tema = null, programa = null, bairro = null, subprefeitura = null) {
+  // Create the filters array
+  const filters = [
+      bairro ? ["bairro", bairro] : null,
+      programa ? ["programa", programa] : null,
+      subprefeitura ? ["subprefeitura", subprefeitura] : null,
+      tema ? ["tema", tema] : null
+  ];
+
+  // Create the key dynamically based on provided filters
+  const keyParts = filters.filter(f => f !== null);
+  let key = JSON.stringify(keyParts);
+  key = key.replace(/\[/g, '(').replace(/\]/g, ')').replace(/,\)$/, ')');
+
+  try {
+      // List all documents in the collection
+      const aggregatedDataCollection = await db.collection("aggregated_data").get();
+      let result = { count: 0, investment: 0 };
+
+      // For each document, look for the key. If found, return the data. Otherwise, return the default value
+      aggregatedDataCollection.docs.forEach(doc => {
+          const data = doc.data();
+          if (data[key]) {
+              result = data[key];
+          }
+      });
+
+      return result;
+  } catch (error) {
+      console.error("Error getting documents: ", error);
+      return { count: 0, investment: 0 };
+  }
+}

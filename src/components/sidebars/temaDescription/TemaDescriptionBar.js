@@ -25,7 +25,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
 import TemaDescriptionContainer from "./TemaDescriptionContainer";
-import { getListDestaquesTema } from "../../../firebase";
+import { getAggregatedData, getListDestaquesTema } from "../../../firebase";
 import { toSnakeCase } from "../../../utils/formatFile";
 import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -315,37 +315,21 @@ const TemaDescriptionBar = forwardRef(
 
     const classes = useStyles();
 
-    const [temaLength, setTemaLength] = useState(0)
-    const [temaTotalInvestiment, setTemaTotalInvestiment] = useState(0)
-
+    const [dadosAgregadosAbaSumarioStatusEntregasTema, setDadosAgregadosAbaSumarioStatusEntregasTema] = useState(0)
 
     useEffect(() => {
-      if (dadosAgregadosAbaTemaCidade) {
+    const loadDadosAgregadosTema = async () => {
+      try {
+        const dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, null, null);;
+        console.log("dadosAgregadosTema", dadosAgregadosTema)
+        setDadosAgregadosAbaSumarioStatusEntregasTema(dadosAgregadosTema)
 
-        const calculateLengthOfTema = (dadosAgregadosAbaTemaCidade, tema) => {
-          // filter the array baset on the tema value
-          const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
-
-          // grab the length of the "realizacoes" array for each filtered item
-          const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
-
-          return length;
-        }
-        const calculateTotalInvestment = (dadosAgregadosAbaTemaCidade, tema) => {
-          // filter the array based on the tema value
-          const filteredData = dadosAgregadosAbaTemaCidade.filter(item => item.tema === tema);
-
-          // sum up the investiments values for each realizacao item in the filtered data
-          const totalInvestment = filteredData.reduce((total, item) => {
-            return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
-          }, 0);
-
-          return totalInvestment;
-        }
-        setTemaLength(calculateLengthOfTema(dadosAgregadosAbaTemaCidade, tema))
-        setTemaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaTemaCidade, tema))
+      } catch (error) {
+        console.error("Erro", error);
       }
-    }, [dadosAgregadosAbaTemaCidade]);
+    };
+    loadDadosAgregadosTema();
+  }, [tema]);
 
 
     const handleTitleClick = (value) => {
@@ -373,33 +357,41 @@ const TemaDescriptionBar = forwardRef(
       loadDestaquesTema(tema);
     }, [tema]);
 
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
     useEffect(() => {
-      if (window.innerHeight <= 500) {
+      const handleResize = () => setWindowHeight(window.innerHeight);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+      if (windowHeight <= 500) {
         setTextScreen500(true);
         setTextScreen900(false);
       }
-      else if (window.innerHeight>500 && window.innerHeight <= 900) {
+      else if (windowHeight > 500 && windowHeight <= 900) {
         setTextScreen900(true);
         setTextScreen500(false);
       }
-      else if (window.innerHeight>=900) {
+      else if (windowHeight >= 900) {
         setTextScreen500(false);
         setTextScreen900(false);
       }
-    }, [window.innerHeight]);
-    
+    }, [windowHeight]);
+
     const [isTextExpanded, setTextExpanded] = useState(false);
     const [isScreen900, setTextScreen900] = useState(false);
     const [isScreen500, setTextScreen500] = useState(false);
 
+
     const fullText = temaData?.descricao;
 
-    // Obtém a altura da janela em pixels
-    const windowHeight = window.innerHeight;
     // Calcule o número de caracteres com base na altura da janela
-    const numChars = Math.floor(windowHeight / (isScreen900?3:(isScreen500?4:1.8  )));
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 3 : (isScreen500 ? 4 : 1.8)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
+
 
     return (
       <>
@@ -432,13 +424,14 @@ const TemaDescriptionBar = forwardRef(
                 </Tooltip> */}
               </Stack>
               <Typography className={classes.subtituloMunicipio}>
-                {isTextExpanded ? fullText : shortText=="undefined ..."? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde.":shortText}
-               
-                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                    {isTextExpanded ? 'Leia menos' : (shortText || fullText)? "" :'Leia mais'}
-                  </Button>
-            
-              </Typography>            </div>
+                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : shortText}
+
+                <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                  {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                </Button>
+              </Typography>
+              
+            </div>
           </Paper>
         </Slide>
         <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
@@ -448,14 +441,14 @@ const TemaDescriptionBar = forwardRef(
           >
 
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-              {(!temaLength || !temaTotalInvestiment) ? < CircularProgress /> :
+              {!dadosAgregadosAbaSumarioStatusEntregasTema ? < CircularProgress /> :
                 <>
                   <Tooltip title="Realizações">
                     <Box display="flex" >
                       <AccountBalanceIcon />
                       <Box pl={0.5}>
                         {/* TODO: valor agregado da qntdd de obras. */}
-                        <Typography> {temaLength && temaLength} </Typography>
+                        <Typography> {dadosAgregadosAbaSumarioStatusEntregasTema?.count} </Typography>
                       </Box>
                     </Box>
                   </Tooltip>
@@ -465,7 +458,7 @@ const TemaDescriptionBar = forwardRef(
                       <AttachMoneyIcon />
                       <Box pl={0.5}>
                         {/* TODO: valor agregado das obras. */}
-                        <Typography >{temaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasTema?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
                       </Box>
                     </Box>
                   </Tooltip>

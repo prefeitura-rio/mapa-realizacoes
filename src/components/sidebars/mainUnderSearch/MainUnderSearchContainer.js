@@ -17,14 +17,14 @@ const MainUnderSearchContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadAllCidades());
-    dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
-    dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
+    // dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
+    // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
     // dispatch(loadDadosAgregadosAbaProgramasCidade());
   }, []);
 
-  useEffect(() => {
-   console.log("dadosAgregadosAbaSumarioStatusEntregasCidade, " , props.dadosAgregadosAbaSumarioStatusEntregasCidade)
-  }, [props.dadosAgregadosAbaSumarioStatusEntregasCidade]);
+  // useEffect(() => {
+  //  console.log("dadosAgregadosAbaSumarioStatusEntregasCidade, " , props.dadosAgregadosAbaSumarioStatusEntregasCidade)
+  // }, [props.dadosAgregadosAbaSumarioStatusEntregasCidade]);
 
   return (
       <MainUnderSearchBar

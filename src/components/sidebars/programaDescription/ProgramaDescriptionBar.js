@@ -7,7 +7,8 @@ import {
   Paper,
   Box,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Button
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -29,6 +30,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
+import { toSnakeCase } from "../../../utils/formatFile";
+import { getAggregatedData } from "../../../firebase";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -187,7 +190,7 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "385px",
       height: "250px",
       borderRadius: "10px",
-      overflowY: "scroll",
+      overflowY: "hide",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
       "&::-webkit-scrollbar": {
@@ -249,6 +252,7 @@ const useStyles = makeStyles((theme) => ({
   },
   subtituloMunicipio: {
     // marginTop: "15px", 
+    textAlign: "justify",
     opacity: 0.8
   }
 
@@ -263,23 +267,41 @@ const theme = createTheme({
 });
 const ImageCarousel = ({ images }) => {
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: false,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows:false
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = 'broken-image.png'; 
   };
 
   return (
     <Slider {...settings}>
       {images.map((image, index) => (
         <div key={index}>
-          <img src={image} alt={`carousel-${index}`} style={{ width: '100%', height: 'auto' }} />
+          {!image ? 
+          <div style={{display:"flex",justifyContent:"center", alignItems:"center", height:"250px"}}>
+          < CircularProgress size={80}/>
+          </div>
+           :
+          <img 
+            src={image} 
+            alt={`carousel-${index}`} 
+            style={{ borderRadius: "10px",width: '100%', height: 'auto' }} 
+            loading="lazy"
+            onError={handleImageError}
+          />
+          }
         </div>
       ))}
     </Slider>
   );
 };
+
 const ProgramaDescriptionBar = forwardRef(
   ({ underSearchBar,
     cidades,
@@ -303,44 +325,57 @@ const ProgramaDescriptionBar = forwardRef(
 
     const classes = useStyles();
 
-    const [programaLength, setProgramaLength] = useState(0)
-    const [programaTotalInvestiment, setProgramaTotalInvestiment] = useState(0)
-
+    const [dadosAgregadosAbaSumarioStatusEntregasPrograma, setDadosAgregadosAbaSumarioStatusEntregasPrograma] = useState(0)
 
     useEffect(() => {
-      if (dadosAgregadosAbaProgramasCidade) {
+    const loadDadosAgregadosPrograma = async () => {
+      try {
+        const dadosAgregadosPrograma = await getAggregatedData(toSnakeCase(programa), null, null, null);;
+        console.log("dadosAgregadosPrograma", dadosAgregadosPrograma)
+        setDadosAgregadosAbaSumarioStatusEntregasPrograma(dadosAgregadosPrograma)
 
-        const calculateLengthOfPrograma = (dadosAgregadosAbaProgramasCidade, programa) => {
-          // filter the array baset on the programa value
-          const filteredData = dadosAgregadosAbaProgramasCidade.filter(item => item.tema === programa);
-
-          // grab the length of the "realizacoes" array for each filtered item
-          const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
-
-          console.log("dadosAgregadosAbaProgramasCidade", dadosAgregadosAbaProgramasCidade)
-          return length;
-        }
-        const calculateTotalInvestment = (dadosAgregadosAbaProgramasCidade, programa) => {
-          // filter the array based on the programa value
-          const filteredData = dadosAgregadosAbaProgramasCidade.filter(item => item.tema === programa);
-
-          // sum up the investiments values for each realizacao item in the filtered data
-          const totalInvestment = filteredData.reduce((total, item) => {
-            return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
-          }, 0);
-
-          return totalInvestment;
-        }
-        setProgramaLength(calculateLengthOfPrograma(dadosAgregadosAbaProgramasCidade, programa))
-        setProgramaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaProgramasCidade, programa))
+      } catch (error) {
+        console.error("Erro", error);
       }
-    }, [dadosAgregadosAbaProgramasCidade]);
+    };
+    loadDadosAgregadosPrograma();
+  }, [programa]);
 
-    const images = [
-      "https://placehold.co/600x400",
-      "https://placehold.co/600x400",
-      "https://placehold.co/600x400"
-    ]
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+      const handleResize = () => setWindowHeight(window.innerHeight);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+      if (windowHeight <= 500) {
+        setTextScreen500(true);
+        setTextScreen900(false);
+      }
+      else if (windowHeight > 500 && windowHeight <= 900) {
+        setTextScreen900(true);
+        setTextScreen500(false);
+      }
+      else if (windowHeight >= 900) {
+        setTextScreen500(false);
+        setTextScreen900(false);
+      }
+    }, [windowHeight]);
+
+    const [isTextExpanded, setTextExpanded] = useState(false);
+    const [isScreen900, setTextScreen900] = useState(false);
+    const [isScreen500, setTextScreen500] = useState(false);
+
+
+    const fullText = programaData?.descricao;
+
+    // Calcule o número de caracteres com base na altura da janela
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 3.3 : (isScreen500 ? 4 : 1.1)));
+
+    const shortText = `${fullText?.substring(0, numChars)} ...`;
+
     return (
       <>
 
@@ -352,7 +387,7 @@ const ProgramaDescriptionBar = forwardRef(
           >
             <div className={classes.basicInfo}>
               <Typography className={classes.programa}>{programa}</Typography>
-              <Typography className={classes.subtitulo}> {programa}</Typography>
+              <Typography className={classes.subtitulo}> Programas</Typography>
             </div>
           </Paper>
         </Slide>
@@ -371,7 +406,16 @@ const ProgramaDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip> */}
               </Stack>
-              <Typography className={classes.subtituloMunicipio}>{programaData?.descricao ? programaData.descricao : "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde."}</Typography>
+
+              <Typography className={classes.subtituloMunicipio}>
+                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText)?fullText:shortText}
+
+                {fullText + " ..." === shortText ? null :
+                <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                  {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                </Button>
+  }
+              </Typography>
             </div>
           </Paper>
         </Slide>
@@ -382,14 +426,13 @@ const ProgramaDescriptionBar = forwardRef(
           >
 
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-              {(!programaLength || !programaTotalInvestiment) ? < CircularProgress /> :
+            {!dadosAgregadosAbaSumarioStatusEntregasPrograma? < CircularProgress /> :
                 <>
                   <Tooltip title="Realizações">
                     <Box display="flex" >
                       <AccountBalanceIcon />
                       <Box pl={0.5}>
-                        {/* TODO: valor agregado da qntdd de obras. */}
-                        <Typography> {programaLength && programaLength} </Typography>
+                        <Typography> {dadosAgregadosAbaSumarioStatusEntregasPrograma?.count} </Typography>
                       </Box>
                     </Box>
                   </Tooltip>
@@ -398,8 +441,7 @@ const ProgramaDescriptionBar = forwardRef(
                     <Box display="flex" >
                       <AttachMoneyIcon />
                       <Box pl={0.5}>
-                        {/* TODO: valor agregado das obras. */}
-                        <Typography >{programaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasPrograma?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
                       </Box>
                     </Box>
                   </Tooltip>
@@ -415,7 +457,7 @@ const ProgramaDescriptionBar = forwardRef(
             elevation={6}
             className={classes.underSearch4}
           >
-            <ImageCarousel images={images} />
+            <ImageCarousel images={[programaData?.image_url]} />
           </Paper>
         </Slide>
       </>
