@@ -17,7 +17,7 @@ import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
 import clsx from "clsx";
-import { Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -208,7 +208,7 @@ const useStyles = makeStyles((theme) => ({
         // display: "auto",
       },
       "&::-webkit-scrollbar-thumb": {
-        backgroundColor: "red",
+        // backgroundColor: "black",
         borderRadius: "10px",
         // display: "auto",
       },
@@ -474,12 +474,26 @@ const MainUnderSearchBar = forwardRef(
             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Destaques</Typography>
               <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                {destaquesMunicipio.map((item, index) => (
-                  <li key={index} style={{ paddingBottom: "15px" }}>
-                    <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                    <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                  </li>
-                ))}
+                {destaquesMunicipio.length==0 ? (
+                  <>
+                  <Skeleton variant="text" />
+                  <Skeleton height="15px" width="80%" />
+                  <Skeleton height="15px" width="60%" />
+                  <Skeleton height="15px" width="73%" />
+                  <br></br>
+                  <Skeleton variant="text" />
+                  <Skeleton height="15px" width="40%" />
+                  <Skeleton height="15px" width="60%" />
+                  <Skeleton height="15px" width="73%" />
+                  </>
+                ) : (
+                  destaquesMunicipio.map((item, index) => (
+                    <li key={index} style={{ paddingBottom: "15px" }}>
+                      <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                      <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
           </Paper>
