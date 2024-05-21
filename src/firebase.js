@@ -894,17 +894,23 @@ export async function getListDestaquesTema(id_tema){
 
 export async function getAggregatedData(tema = null, programa = null, bairro = null, subprefeitura = null) {
   // Create the filters array
-  const filters = [
-      bairro ? ["bairro", bairro] : null,
-      programa ? ["programa", programa] : null,
-      subprefeitura ? ["subprefeitura", subprefeitura] : null,
-      tema ? ["tema", tema] : null
-  ];
+  let filters = [];
+  if (bairro) {
+      filters.push(`bairro___${bairro}`);
+  }
+  if (subprefeitura) {
+      filters.push(`subprefeitura___${subprefeitura}`);
+  }
+  if (tema) {
+      filters.push(`tema___${tema}`);
+  }
+  if (programa) {
+      filters.push(`programa___${programa}`);
+  }
 
-  // Create the key dynamically based on provided filters
-  const keyParts = filters.filter(f => f !== null);
-  let key = JSON.stringify(keyParts);
-  key = key.replace(/\[/g, '(').replace(/\]/g, ')').replace(/,\)$/, ')');
+  // Python: key = "___".join(keys) if keys else "all"
+  // JavaScript:
+  let key = filters.length > 0 ? filters.join("___") : "all";
 
   try {
       // List all documents in the collection
