@@ -188,7 +188,7 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "385px",
       height: "250px",
       borderRadius: "10px",
-      overflowY: "scroll",
+      overflowY: "hide",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
       scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
       "&::-webkit-scrollbar": {
@@ -265,23 +265,41 @@ const theme = createTheme({
 });
 const ImageCarousel = ({ images }) => {
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: false,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows:false
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = 'broken-image.png'; 
   };
 
   return (
     <Slider {...settings}>
       {images.map((image, index) => (
         <div key={index}>
-          <img src={image} alt={`carousel-${index}`} style={{ width: '100%', height: 'auto' }} />
+          {!image ? 
+          <div style={{display:"flex",justifyContent:"center", alignItems:"center", height:"250px"}}>
+          < CircularProgress size={80}/>
+          </div>
+           :
+          <img 
+            src={image} 
+            alt={`carousel-${index}`} 
+            style={{ borderRadius: "10px",width: '100%', height: 'auto' }} 
+            loading="lazy"
+            onError={handleImageError}
+          />
+          }
         </div>
       ))}
     </Slider>
   );
 };
+
 const ProgramaDescriptionBar = forwardRef(
   ({ underSearchBar,
     cidades,
@@ -337,12 +355,6 @@ const ProgramaDescriptionBar = forwardRef(
         setProgramaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaProgramasCidade, programa))
       }
     }, [dadosAgregadosAbaProgramasCidade]);
-
-    const images = [
-      "https://placehold.co/600x400",
-      "https://placehold.co/600x400",
-      "https://placehold.co/600x400"
-    ]
 
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
@@ -462,7 +474,7 @@ const ProgramaDescriptionBar = forwardRef(
             elevation={6}
             className={classes.underSearch4}
           >
-            <ImageCarousel images={images} />
+            <ImageCarousel images={[programaData?.image_url]} />
           </Paper>
         </Slide>
       </>
