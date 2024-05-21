@@ -28,7 +28,7 @@ import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
 import { toSnakeCase } from "../../../utils/formatFile";
 import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
-import { getListDestaquesMunicipio } from "../../../firebase";
+import { getAggregatedData, getListDestaquesMunicipio } from "../../../firebase";
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 const useStyles = makeStyles((theme) => ({
@@ -289,7 +289,7 @@ const MainUnderSearchBar = forwardRef(
     dadosAgregadosAbaTemaCidade,
     dadosAgregadosAbaProgramasCidade,
     dadosAgregadosAbaSumarioInfoBasicasCidade,
-    dadosAgregadosAbaSumarioStatusEntregasCidade,
+    // dadosAgregadosAbaSumarioStatusEntregasCidade,
     images_cidade,
     setPhotoGallery,
     setImagesType,
@@ -303,17 +303,30 @@ const MainUnderSearchBar = forwardRef(
 
     const classes = useStyles();
 
-    const [dadosAgregadosAbaSumarioStatusEntregasCidadeTotal, setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal] = useState(0)
+    const [dadosAgregadosAbaSumarioStatusEntregasCidade, setDadosAgregadosAbaSumarioStatusEntregasCidade] = useState(0)
 
     useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
-        const total = dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.em_andamento +
-          dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.concluida +
-          dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.interrompida +
-          dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.em_licitacao;
-        setDadosAgregadosAbaSumarioStatusEntregasCidadeTotal(total);
-      }
-    }, [dadosAgregadosAbaSumarioStatusEntregasCidade]);
+      // if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
+      //   const total = dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.em_andamento +
+      //     dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.concluida +
+      //     dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.interrompida +
+      //     dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.em_licitacao;
+      //   setdadosAgregadosAbaSumarioStatusEntregasCidade(total);
+      // }
+
+      const loadDadosAgregadosMunicipio = async () => {
+        try {
+          const dadosAgregadosMunicipio = await getAggregatedData();
+          console.log("dadosAgregadosMunicipio", dadosAgregadosMunicipio)
+          setDadosAgregadosAbaSumarioStatusEntregasCidade(dadosAgregadosMunicipio)
+
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+
+      loadDadosAgregadosMunicipio();
+    }, []);
 
     const handleTitleClick = (value) => {
       setDescriptionData(toSnakeCase(value));
@@ -426,7 +439,7 @@ const MainUnderSearchBar = forwardRef(
           >
 
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-              {(!dadosAgregadosAbaSumarioStatusEntregasCidadeTotal) ? < CircularProgress /> :
+              {(!dadosAgregadosAbaSumarioStatusEntregasCidade) ? < CircularProgress /> :
                 <>
                   <Tooltip title="Realizações">
 
@@ -434,7 +447,7 @@ const MainUnderSearchBar = forwardRef(
 
                       <AccountBalanceIcon />
                       <Box pl={0.5}>
-                        <Typography  >{dadosAgregadosAbaSumarioStatusEntregasCidadeTotal}</Typography>
+                        <Typography  >{dadosAgregadosAbaSumarioStatusEntregasCidade?.count}</Typography>
                       </Box>
                     </Box>
                   </Tooltip>
@@ -444,7 +457,7 @@ const MainUnderSearchBar = forwardRef(
                       <AttachMoneyIcon />
                       <Box pl={0.5}>
                         {/* TODO: valor agregado das obras. */}
-                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasCidade ? dadosAgregadosAbaSumarioStatusEntregasCidade[1].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0}</Typography>
+                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasCidade ? dadosAgregadosAbaSumarioStatusEntregasCidade?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0}</Typography>
                       </Box>
                     </Box>
                   </Tooltip>
