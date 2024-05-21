@@ -330,7 +330,7 @@ const ProgramaDescriptionBar = forwardRef(
     useEffect(() => {
     const loadDadosAgregadosPrograma = async () => {
       try {
-        const dadosAgregadosPrograma = await getAggregatedData(toSnakeCase(programa), null, null, null);;
+        const dadosAgregadosPrograma = await getAggregatedData(null, toSnakeCase(programa), null, null);;
         console.log("dadosAgregadosPrograma", dadosAgregadosPrograma)
         setDadosAgregadosAbaSumarioStatusEntregasPrograma(dadosAgregadosPrograma)
 
@@ -375,6 +375,13 @@ const ProgramaDescriptionBar = forwardRef(
     const numChars = Math.floor(windowHeight / (isScreen900 ? 3.3 : (isScreen500 ? 4 : 1.1)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
+
+    // const [images, setImages] = useState([]);
+    // useEffect(() => {
+    //   if (programaData?.image_url){
+    //     setImages([programaData?.image_url])
+    //   }
+    // }, [programa]);
 
     return (
       <>
