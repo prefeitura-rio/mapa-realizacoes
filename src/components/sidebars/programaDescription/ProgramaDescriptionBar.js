@@ -30,6 +30,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
+import { toSnakeCase } from "../../../utils/formatFile";
+import { getAggregatedData } from "../../../firebase";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -323,38 +325,21 @@ const ProgramaDescriptionBar = forwardRef(
 
     const classes = useStyles();
 
-    const [programaLength, setProgramaLength] = useState(0)
-    const [programaTotalInvestiment, setProgramaTotalInvestiment] = useState(0)
-
+    const [dadosAgregadosAbaSumarioStatusEntregasPrograma, setDadosAgregadosAbaSumarioStatusEntregasPrograma] = useState(0)
 
     useEffect(() => {
-      if (dadosAgregadosAbaProgramasCidade) {
+    const loadDadosAgregadosPrograma = async () => {
+      try {
+        const dadosAgregadosPrograma = await getAggregatedData(toSnakeCase(programa), null, null, null);;
+        console.log("dadosAgregadosPrograma", dadosAgregadosPrograma)
+        setDadosAgregadosAbaSumarioStatusEntregasPrograma(dadosAgregadosPrograma)
 
-        const calculateLengthOfPrograma = (dadosAgregadosAbaProgramasCidade, programa) => {
-          // filter the array baset on the programa value
-          const filteredData = dadosAgregadosAbaProgramasCidade.filter(item => item.tema === programa);
-
-          // grab the length of the "realizacoes" array for each filtered item
-          const length = filteredData.reduce((total, item) => total + item.realizacoes.length, 0);
-
-          console.log("dadosAgregadosAbaProgramasCidade", dadosAgregadosAbaProgramasCidade)
-          return length;
-        }
-        const calculateTotalInvestment = (dadosAgregadosAbaProgramasCidade, programa) => {
-          // filter the array based on the programa value
-          const filteredData = dadosAgregadosAbaProgramasCidade.filter(item => item.tema === programa);
-
-          // sum up the investiments values for each realizacao item in the filtered data
-          const totalInvestment = filteredData.reduce((total, item) => {
-            return total + item.realizacoes.reduce((subTotal, realizacao) => subTotal + realizacao.investimento, 0);
-          }, 0);
-
-          return totalInvestment;
-        }
-        setProgramaLength(calculateLengthOfPrograma(dadosAgregadosAbaProgramasCidade, programa))
-        setProgramaTotalInvestiment(calculateTotalInvestment(dadosAgregadosAbaProgramasCidade, programa))
+      } catch (error) {
+        console.error("Erro", error);
       }
-    }, [dadosAgregadosAbaProgramasCidade]);
+    };
+    loadDadosAgregadosPrograma();
+  }, [programa]);
 
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
@@ -441,14 +426,13 @@ const ProgramaDescriptionBar = forwardRef(
           >
 
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-              {(!programaLength || !programaTotalInvestiment) ? < CircularProgress /> :
+            {!dadosAgregadosAbaSumarioStatusEntregasPrograma? < CircularProgress /> :
                 <>
                   <Tooltip title="Realizações">
                     <Box display="flex" >
                       <AccountBalanceIcon />
                       <Box pl={0.5}>
-                        {/* TODO: valor agregado da qntdd de obras. */}
-                        <Typography> {programaLength && programaLength} </Typography>
+                        <Typography> {dadosAgregadosAbaSumarioStatusEntregasPrograma?.count} </Typography>
                       </Box>
                     </Box>
                   </Tooltip>
@@ -457,8 +441,7 @@ const ProgramaDescriptionBar = forwardRef(
                     <Box display="flex" >
                       <AttachMoneyIcon />
                       <Box pl={0.5}>
-                        {/* TODO: valor agregado das obras. */}
-                        <Typography >{programaTotalInvestiment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasPrograma?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
                       </Box>
                     </Box>
                   </Tooltip>

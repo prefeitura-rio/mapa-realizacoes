@@ -318,9 +318,9 @@ const TemaDescriptionBar = forwardRef(
     const [dadosAgregadosAbaSumarioStatusEntregasTema, setDadosAgregadosAbaSumarioStatusEntregasTema] = useState(0)
 
     useEffect(() => {
-    const loadDadosAgregadosTema = async (id_tema) => {
+    const loadDadosAgregadosTema = async () => {
       try {
-        const dadosAgregadosTema = await getAggregatedData('saúde', null, null, null);;
+        const dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, null, null);;
         console.log("dadosAgregadosTema", dadosAgregadosTema)
         setDadosAgregadosAbaSumarioStatusEntregasTema(dadosAgregadosTema)
 
@@ -328,7 +328,7 @@ const TemaDescriptionBar = forwardRef(
         console.error("Erro", error);
       }
     };
-    loadDadosAgregadosTema(toSnakeCase(tema));
+    loadDadosAgregadosTema();
   }, [tema]);
 
 
