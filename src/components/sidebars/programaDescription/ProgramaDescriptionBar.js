@@ -375,7 +375,7 @@ const ProgramaDescriptionBar = forwardRef(
     const fullText = programaData?.descricao;
 
     // Calcule o número de caracteres com base na altura da janela
-    const numChars = Math.floor(windowHeight / (isScreen900 ? 3.5 : (isScreen500 ? 4.5 : 1)));
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 3.3 : (isScreen500 ? 4 : 1.1)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
 
@@ -390,7 +390,7 @@ const ProgramaDescriptionBar = forwardRef(
           >
             <div className={classes.basicInfo}>
               <Typography className={classes.programa}>{programa}</Typography>
-              <Typography className={classes.subtitulo}> {programa}</Typography>
+              <Typography className={classes.subtitulo}> Programas</Typography>
             </div>
           </Paper>
         </Slide>
@@ -409,12 +409,14 @@ const ProgramaDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip> */}
               </Stack>
+
               <Typography className={classes.subtituloMunicipio}>
-              {isTextExpanded ? fullText : shortText=="undefined ..."? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde.":shortText}
-              {fullText != shortText + " ...?" ? null :
-                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                    {isTextExpanded ? 'Leia menos' : 'Leia mais'}
-                  </Button>
+                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText)?fullText:shortText}
+
+                {fullText + " ..." === shortText ? null :
+                <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                  {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                </Button>
   }
               </Typography>
             </div>

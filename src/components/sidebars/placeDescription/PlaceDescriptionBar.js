@@ -429,8 +429,8 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
-    marginTop:"-1px",
-    marginBottom:"-1px"
+    marginTop: "-1px",
+    marginBottom: "-1px"
   },
   subtitulo: {
     // marginTop: "15px", 
@@ -537,6 +537,42 @@ const PlaceDescriptionBar = forwardRef(
       "https://placehold.co/600x400",
       "https://placehold.co/600x400"
     ]
+
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+      const handleResize = () => setWindowHeight(window.innerHeight);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+      if (windowHeight <= 600) {
+        setTextScreen600(true);
+        setTextScreen900(false);
+      }
+      else if (windowHeight > 600 && windowHeight <= 900) {
+        setTextScreen900(true);
+        setTextScreen600(false);
+      }
+      else if (windowHeight >= 900) {
+        setTextScreen600(false);
+        setTextScreen900(false);
+      }
+    }, [windowHeight]);
+
+    const [isTextExpanded, setTextExpanded] = useState(false);
+    const [isScreen900, setTextScreen900] = useState(false);
+    const [isScreen600, setTextScreen600] = useState(false);
+
+
+    const fullText = content?.descricao;
+
+    // Calcule o número de caracteres com base na altura da janela
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 7 : (isScreen600 ? 20 : 2.3)));
+
+    const shortText = `${fullText?.substring(0, numChars)} ...`;
+
     return (
       <>
 
@@ -568,10 +604,18 @@ const PlaceDescriptionBar = forwardRef(
                       </IconButton>
                     </Tooltip> */}
                   </Stack>
-                  <Typography className={classes.subtituloRealizacao}>{content?.descricao}</Typography>
+                  <Typography className={classes.subtituloMunicipio}>
+                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+
+                    {fullText + " ..." === shortText ? null :
+                      <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                        {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                      </Button>
+                    }
+                  </Typography>
                 </>
               ) : (
-                <CircularProgress style={{ marginTop:"1rem"}} size={25} />
+                <CircularProgress style={{ marginTop: "1rem" }} size={25} />
               )}
             </div>
             {content?.status &&
@@ -590,7 +634,7 @@ const PlaceDescriptionBar = forwardRef(
           >
 
             <div className={classes.sumarioInfo} style={{ display: 'flex' }}>
-              {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress style={{ marginTop:"1rem",marginLeft:"1.2rem"}} size={25} />}
+              {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
             </div>
           </Paper>
         </Slide>

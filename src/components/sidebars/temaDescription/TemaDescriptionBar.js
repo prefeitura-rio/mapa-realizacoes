@@ -440,14 +440,14 @@ const TemaDescriptionBar = forwardRef(
                 </Tooltip> */}
               </Stack>
               <Typography className={classes.subtituloMunicipio}>
-                {isTextExpanded ? fullText : shortText=="undefined ..."? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde.":shortText}
-                
-                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                    {isTextExpanded ? 'Leia menos' : 'Leia mais'}
-                  </Button>
-            
-            
-              </Typography>            </div>
+                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : shortText}
+
+                <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                  {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                </Button>
+              </Typography>
+              
+            </div>
           </Paper>
         </Slide>
         <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>

@@ -17,7 +17,7 @@ import programaIcon from '../../icons/programa.png';
 import subprefeituraIcon from '../../icons/subprefeitura.png';
 import temaIcon from '../../icons/tema.png';
 import cariocasAtendidosIcon from '../../icons/cariocas_atendidos.png';
-
+import BusinessIcon from '@mui/icons-material/Business';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -54,6 +54,7 @@ const ListInfo = ({ content }) => {
     { text: content.tema, iconComponent: () => <img src={temaIcon} alt="Tema" style={{width: '20px', height: '20px'}}/> },
     // { text: content.bairro, iconComponent: PublicIcon },
     { text: content.bairro, iconComponent: () => <img src={bairroIcon} alt="Bairro" style={{width: '20px', height: '20px'}}/> },
+    { text: content.endereco, iconComponent: () => <BusinessIcon sx={{color:"#007E7D" ,width: '20px', height: '20px'}} /> },
     // { text: content.subprefeitura, iconComponent: PublicIcon },
     { text: content.subprefeitura, iconComponent: () => <img src={subprefeituraIcon} alt="Subprefeitura" style={{width: '20px', height: '20px'}}/> },
     // { text: "R$ " +  content.investimento + " investidos", iconComponent: PublicIcon },
