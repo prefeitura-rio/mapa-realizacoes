@@ -904,7 +904,7 @@ export async function getAggregatedData(tema = null, programa = null, bairro = n
   // Create the key dynamically based on provided filters
   const keyParts = filters.filter(f => f !== null);
   let key = JSON.stringify(keyParts);
-  key = key.replace(/\[/g, '(').replace(/\]/g, ')');
+  key = key.replace(/\[/g, '(').replace(/\]/g, ')').replace(/,\)$/, ')');
 
   try {
       // List all documents in the collection
