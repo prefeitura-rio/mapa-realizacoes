@@ -232,11 +232,13 @@ const Map = ({
     navigate(`/${toSnakeCase(point.nome)}`);
     if (map) {
       if (point) {
-        map.flyTo({
+        let currentZoom = map.getZoom();
+        let targetZoom = currentZoom > 12 ? currentZoom : 13;
+        map.setView({
           lat: point?.coords?.latitude,
           lng: point?.coords?.longitude,
-          // },12);
-        });
+      }, targetZoom);
+        // });
       }
     }
     setRota(toSnakeCase(point.nome))
