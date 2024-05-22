@@ -656,7 +656,7 @@ const SearchBar = ({
                     <IconButton
                       style={{ backgroundColor: 'transparent' }}
                       color="grey"
-                      onClick={() => { setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(TEMA_DESCRIPTION_BAR) }}
+                      onClick={() => { setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(TEMA_DESCRIPTION_BAR);setZoomDefault((Math.random() * 999 + 1)); }}
                     >
                       <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                     </IconButton>

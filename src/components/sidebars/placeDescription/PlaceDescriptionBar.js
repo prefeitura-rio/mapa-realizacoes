@@ -484,34 +484,29 @@ const ImageCarousel = ({ images }) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows:false
+    arrows: false
   };
 
   const handleImageError = (e) => {
-    e.target.src = 'broken-image.png'; 
+    e.target.src = 'broken-image.png';
   };
 
   return (
     <Slider {...settings}>
       {images.map((image, index) => (
         <div key={index}>
-          {image != null ? 
-          <div style={{display:"flex",justifyContent:"center", alignItems:"center", height:"250px"}}>
-          < CircularProgress size={80}/>
-          </div>
+          {!image ?
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "250px" }}>
+              < CircularProgress size={80} />
+            </div>
            :
-           image == null ? 
-           <div style={{display:"flex",justifyContent:"center", alignItems:"center", height:"250px"}}>
-         <img height="200px" width="auto" src={no_imagem}/>
-          </div>
-           :
-          <img 
-            src={image} 
-            alt={`carousel-${index}`} 
-            style={{ borderRadius: "10px",width: '100%', height: 'auto' }} 
-            loading="lazy"
-            onError={handleImageError}
-          />
+              <img
+                src={image}
+                alt={`carousel-${index}`}
+                style={{ borderRadius: "10px", width: '100%', height: 'auto' }}
+                loading="lazy"
+                onError={handleImageError}
+              />
           }
         </div>
       ))}
@@ -658,14 +653,16 @@ const PlaceDescriptionBar = forwardRef(
             </div>
           </Paper>
         </Slide>
-        <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            className={classes.underSearch4}
-          >
-            <ImageCarousel images={[content?.image_url]} />
-          </Paper>
-        </Slide>
+        {content?.image_url &&
+          <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+            <Paper
+              elevation={6}
+              className={classes.underSearch4}
+            >
+              <ImageCarousel images={[content?.image_url]} />
+            </Paper>
+          </Slide>
+        }
       </>
     );
   }

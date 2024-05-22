@@ -161,6 +161,22 @@ const Map = ({
     }
   }, [zoomDelta, map]);
 
+
+  useEffect(() => {
+    if (map) {
+      if (realizacao) {
+        let point = points.find(point => realizacao === point.nome);
+        if (point) {
+          let currentZoom = map.getZoom();
+          let targetZoom = currentZoom > 13 ? currentZoom : 13;
+          map.setView({
+            lat: point?.coords?.latitude,
+            lng: point?.coords?.longitude,
+          }, targetZoom);
+        }
+ }
+ }}, [realizacao]);
+
   const [listRealizacaoOrgao, setOrgaosNameFilter] = useState([]);
   const [listRealizacaoPrograma, setTemasNameFilter] = useState([]);
   const [listRealizacaoTema, setProgramasNameFilter] = useState([]);
