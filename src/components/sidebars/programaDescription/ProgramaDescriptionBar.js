@@ -234,8 +234,8 @@ const useStyles = makeStyles((theme) => ({
     '-webkit-line-clamp': 2,
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden',
-    marginTop:"-1px",
-    marginBottom:"-1px"
+    marginTop: "-1px",
+    marginBottom: "-1px"
   },
   subtitulo: {
     // marginTop: "15px", 
@@ -272,29 +272,29 @@ const ImageCarousel = ({ images }) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows:false
+    arrows: false
   };
 
   const handleImageError = (e) => {
-    e.target.src = 'broken-image.png'; 
+    e.target.src = 'broken-image.png';
   };
 
   return (
     <Slider {...settings}>
       {images.map((image, index) => (
         <div key={index}>
-          {!image ? 
-          <div style={{display:"flex",justifyContent:"center", alignItems:"center", height:"250px"}}>
-          < CircularProgress size={80}/>
-          </div>
-           :
-          <img 
-            src={image} 
-            alt={`carousel-${index}`} 
-            style={{ borderRadius: "10px",width: '100%', height: 'auto' }} 
-            loading="lazy"
-            onError={handleImageError}
-          />
+          {!image ?
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "250px" }}>
+              < CircularProgress size={80} />
+            </div>
+            :
+            <img
+              src={image}
+              alt={`carousel-${index}`}
+              style={{ borderRadius: "10px", width: '100%', height: 'auto' }}
+              loading="lazy"
+              onError={handleImageError}
+            />
           }
         </div>
       ))}
@@ -328,18 +328,18 @@ const ProgramaDescriptionBar = forwardRef(
     const [dadosAgregadosAbaSumarioStatusEntregasPrograma, setDadosAgregadosAbaSumarioStatusEntregasPrograma] = useState(0)
 
     useEffect(() => {
-    const loadDadosAgregadosPrograma = async () => {
-      try {
-        const dadosAgregadosPrograma = await getAggregatedData(null, toSnakeCase(programa), null, null);;
-        console.log("dadosAgregadosPrograma", dadosAgregadosPrograma)
-        setDadosAgregadosAbaSumarioStatusEntregasPrograma(dadosAgregadosPrograma)
+      const loadDadosAgregadosPrograma = async () => {
+        try {
+          const dadosAgregadosPrograma = await getAggregatedData(null, toSnakeCase(programa), null, null);;
+          console.log("dadosAgregadosPrograma", dadosAgregadosPrograma)
+          setDadosAgregadosAbaSumarioStatusEntregasPrograma(dadosAgregadosPrograma)
 
-      } catch (error) {
-        console.error("Erro", error);
-      }
-    };
-    loadDadosAgregadosPrograma();
-  }, [programa]);
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+      loadDadosAgregadosPrograma();
+    }, [programa]);
 
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
@@ -415,13 +415,13 @@ const ProgramaDescriptionBar = forwardRef(
               </Stack>
 
               <Typography className={classes.subtituloMunicipio}>
-                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText)?fullText:shortText}
+                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
 
                 {fullText + " ..." === shortText ? null :
-                <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                  {isTextExpanded ? 'Leia menos' : 'Leia mais'}
-                </Button>
-  }
+                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                    {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                  </Button>
+                }
               </Typography>
             </div>
           </Paper>
@@ -433,7 +433,7 @@ const ProgramaDescriptionBar = forwardRef(
           >
 
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-            {!dadosAgregadosAbaSumarioStatusEntregasPrograma? < CircularProgress /> :
+              {!dadosAgregadosAbaSumarioStatusEntregasPrograma ? < CircularProgress /> :
                 <>
                   <Tooltip title="Realizações">
                     <Box display="flex" >
@@ -459,14 +459,17 @@ const ProgramaDescriptionBar = forwardRef(
 
           </Paper>
         </Slide>
-        <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            className={classes.underSearch4}
-          >
-            <ImageCarousel images={[programaData?.image_url]} />
-          </Paper>
-        </Slide>
+        {programaData?.image_url &&
+          <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+            <Paper
+              elevation={6}
+              className={classes.underSearch4}
+            >
+              <ImageCarousel images={[programaData?.image_url]} />
+            </Paper>
+          </Slide>
+        }
+
       </>
     );
   }
