@@ -310,7 +310,7 @@ const Map = ({
         className="markercluster-map"
       >
         <TileLayer
-          url="https://api.mapbox.com/styles/v1/escritoriodedados/clvr1l62d05bp01pe1ejf6iuc/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZXNjcml0b3Jpb2RlZGFkb3MiLCJhIjoiY2t3bWdmcHpjMmJ2cTJucWJ4MGQ1Mm1kbiJ9.4hHJX-1pSevYoBbja7Pq4w"
+          url="https://api.mapbox.com/styles/v1/escritoriodedados/clwjhapz4001r01phheax6qvi/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZXNjcml0b3Jpb2RlZGFkb3MiLCJhIjoiY2t3bWdmcHpjMmJ2cTJucWJ4MGQ1Mm1kbiJ9.4hHJX-1pSevYoBbja7Pq4w"
           maxZoom={19}
           minZoom={11}
           tileSize={512}
