@@ -620,7 +620,7 @@ const PlaceDescriptionBar = forwardRef(
                     </Tooltip> */}
                   </Stack>
                   <Typography className={classes.subtituloMunicipio}>
-                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
 
                     {fullText + " ..." === shortText ? null :
                       <Button onClick={() => setTextExpanded(!isTextExpanded)}>

@@ -35,7 +35,7 @@ import { setPrograma, setRealizacao, setTema } from "../../../redux/filtros/acti
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import { toSnakeCase } from "../../../utils/formatFile";
 import Badge from '@material-ui/core/Badge';
-
+import lupa_mapa from '../../../icons/lupa_mapa.png'
 const useStyles = makeStyles((theme) => {
   return {
     searchbar: {
@@ -183,7 +183,9 @@ const SearchBar = ({
   realizacao,
   setDescriptionData,
   loadData,
-  setZoomDefault
+  setZoomDefault,
+  bairro,
+  subprefeitura,
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -692,18 +694,23 @@ const SearchBar = ({
             // </Slide>
           )}
 
-        {/* {!showSearchBar ?
+        {!showSearchBar ?
 
           (
             <Fade in={!inputValueRealizacao}>
             <Paper elevation={4} style={{ borderRadius:"10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <Tooltip title={inputValueBairroSubprefeitura?`${inputValueBairroSubprefeitura} está atuando como filtro.`: ""} placement="right">
+                <Badge  badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
+
                 <IconButton
-                  style={{ backgroundColor: 'transparent' }}
+                  style={{ backgroundColor: 'transparent', padding:7 }}
                   color="grey"
                   onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
                 >
-                  <SearchIcon />
+                  <img width={33} src={lupa_mapa}/>
                 </IconButton>
+                </Badge>
+              </Tooltip>
               </Paper>
             </Fade>
           )
@@ -813,7 +820,7 @@ const SearchBar = ({
               </Paper>
             </div>
             // </Slide>
-          )} */}
+          )}
 
 
       </Stack>

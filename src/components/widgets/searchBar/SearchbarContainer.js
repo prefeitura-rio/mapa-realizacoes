@@ -57,6 +57,8 @@ const SearchbarContainer = (props) => {
       setDescriptionData={props.setDescriptionData}
       loadData={props.loadData}
       setZoomDefault={props.setZoomDefault}
+      bairro={props.bairro}
+      subprefeitura={props.subprefeitura}
     />
   );
 };
@@ -73,7 +75,9 @@ const mapStateToProps = (state) => {
     rota: state.rota,
     tema:state.filtros.tema,
     programa:state.filtros.programa,
-    realizacao:state.filtros.realizacao
+    realizacao:state.filtros.realizacao,
+    bairro: state.bairros.descriptionData,
+    subprefeitura: state.subprefeituras.descriptionData,
   };
 };
 
