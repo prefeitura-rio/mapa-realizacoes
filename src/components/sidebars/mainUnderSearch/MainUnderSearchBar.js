@@ -451,16 +451,7 @@ const MainUnderSearchBar = forwardRef(
                       </Box>
                     </Box>
                   </Tooltip>
-                  <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
-                  <Tooltip title="Investimento">
-                    <Box display="flex" >
-                      <AttachMoneyIcon />
-                      <Box pl={0.5}>
-                        {/* TODO: valor agregado das obras. */}
-                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasCidade ? dadosAgregadosAbaSumarioStatusEntregasCidade?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0}</Typography>
-                      </Box>
-                    </Box>
-                  </Tooltip>
+                 
                 </>}
             </Box>
 
