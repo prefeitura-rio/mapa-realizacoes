@@ -7,7 +7,7 @@ import {
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import "./map.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContextMenu from "./ContextMenu";
 import { getIcon } from "../../icons/typeIcons";
 import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
@@ -19,8 +19,8 @@ import Snackbar from '@mui/material/Snackbar';
 import bairros_centros from "./centroideBairros";
 import subprefeituras_centros from "./centroideSubprefeituras";
 import MarkerClusterGroup from "react-leaflet-markercluster";
-
-
+import shapeFileBairros from "./shapeFileBairros.json"
+import { parse } from 'terraformer-wkt-parser';
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
 };
@@ -96,21 +96,53 @@ const Map = ({
     }
   }, [map])
 
+// Use a ref to store the current layer
+const currentLayer = useRef(null);
   useEffect(() => {
     if (map && bairroNome) {
       // Converte o nome do bairro para o formato correto (considerando acentuação)
       const bairroFormatado = bairroNome.toLowerCase();
 
       // Busca as informações do bairro no novo formato
-      const bairro = bairros_centros[bairroFormatado];
-      console.log("bairro ", bairro);
+      const bairro_centro = bairros_centros[bairroFormatado];
+    
 
-      if (bairro) {
-        const coords = [bairro.lat, bairro.lng];
+      if (bairro_centro) {
+        const coords = [bairro_centro.lat, bairro_centro.lng];
         map.flyTo(coords, 13);
+
+      }
+      // Find the correct bairro object
+      const bairroData = shapeFileBairros.find(b => b.nome === bairroNome);
+      if (bairroData) {
+        // Convert WKT to GeoJSON
+        const geoJsonData = parse(bairroData.geometry_wkt);
+
+       // If there's a current layer, remove it from the map
+       if (currentLayer.current) {
+        map.removeLayer(currentLayer.current);
+      }
+      // Create a new GeoJSON layer and add it to the map
+      currentLayer.current = L.geoJSON(geoJsonData, {
+        style: {
+          color: '#007E7D',  // Boundary color
+          weight: 3, // Boundary thickness 
+          fillColor: '#007E7D',  //BG
+          fillOpacity: 0.2  // BGs opacity  (0 is fully transparent, 1 is fully opaque)
+        }
+      }).addTo(map);
       }
     }
   }, [bairroNome, map]);
+
+  useEffect(() => {
+    if (map) {
+      if (!bairro) {
+        map.removeLayer(currentLayer.current);
+      }
+    }
+  }, [bairro]);
+
 
   useEffect(() => {
     if (map && subprefeituraNome) {
@@ -174,8 +206,9 @@ const Map = ({
             lng: point?.coords?.longitude,
           }, targetZoom);
         }
- }
- }}, [realizacao]);
+      }
+    }
+  }, [realizacao]);
 
   const [listRealizacaoOrgao, setOrgaosNameFilter] = useState([]);
   const [listRealizacaoPrograma, setTemasNameFilter] = useState([]);
@@ -253,7 +286,7 @@ const Map = ({
         map.setView({
           lat: point?.coords?.latitude,
           lng: point?.coords?.longitude,
-      }, targetZoom);
+        }, targetZoom);
         // });
       }
     }
@@ -287,8 +320,8 @@ const Map = ({
         }}
       >
         <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-          {point.id_programa=="rio_em_forma"?<span>Rio em Forma - {point.nome}</span>:
-          <span>{point.nome}</span>}
+          {point.id_programa == "rio_em_forma" ? <span>Rio em Forma - {point.nome}</span> :
+            <span>{point.nome}</span>}
         </Tooltip>
       </Marker>
     );
