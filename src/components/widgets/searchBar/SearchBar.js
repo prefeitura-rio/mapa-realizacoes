@@ -212,7 +212,9 @@ const SearchBar = ({
     // Check if name is a prefeitura
     if (bairros.includes(name)) {
       setBairroData(name);
-      setActiveBar(BAIRRO_DESCRIPTION_BAR);
+      if(!tema){
+        setActiveBar(BAIRRO_DESCRIPTION_BAR);
+      }
       setEhBairro(true);
       console.log('Bairro selecionado: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
@@ -391,15 +393,15 @@ const SearchBar = ({
           });
           setBairros(bairrosName);
 
-          // Incluir os nomes das prefeituras na lista de bairros
-          const prefeiturasNames = [];
-          prefeituraRef.forEach((doc) => {
-            const prefeiturasData = doc.data();
-            const prefeituraName = prefeiturasData.nome;
-            bairrosSubSubprefeituras.push(prefeituraName);
-            prefeiturasNames.push(prefeituraName);
-          });
-          setSubprefeituras(prefeiturasNames);
+          // // Incluir os nomes das prefeituras na lista de bairros
+          // const prefeiturasNames = [];
+          // prefeituraRef.forEach((doc) => {
+          //   const prefeiturasData = doc.data();
+          //   const prefeituraName = prefeiturasData.nome;
+          //   bairrosSubSubprefeituras.push(prefeituraName);
+          //   prefeiturasNames.push(prefeituraName);
+          // });
+          // setSubprefeituras(prefeiturasNames);
 
 
           setBairrosSubprefeituras(bairrosSubSubprefeituras);
@@ -543,7 +545,7 @@ const SearchBar = ({
                       disableClearable
                       options={programasTema ? programasTema : []}
                       PaperComponent={CustomPaperMenu}
-                      ListboxProps={{ style: { maxHeight: "100%", paddingBottom: "20px" } }}
+                      ListboxProps={{ style: { maxHeight: "80vh" } }}
                       inputprops={{
                         style: {
                           color: 'black'
@@ -773,7 +775,7 @@ const SearchBar = ({
                         {...params}
                         autoFocus={true}
                         // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                        placeholder="Busque por Bairro, Subprefeitura ou AP"
+                        placeholder="Filtre por Bairro"
                         sx={{
                           "& fieldset": { border: 'none' }
                         }}

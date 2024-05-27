@@ -318,7 +318,8 @@ const ProgramaDescriptionBar = forwardRef(
 
     tema,
     programa,
-    programaData
+    programaData,
+    bairro
 
 
   }, ref) => {
@@ -329,8 +330,16 @@ const ProgramaDescriptionBar = forwardRef(
 
     useEffect(() => {
       const loadDadosAgregadosPrograma = async () => {
+        // for place loading everytime the programa/bairro changes
+        setDadosAgregadosAbaSumarioStatusEntregasPrograma(null);
+
         try {
-          const dadosAgregadosPrograma = await getAggregatedData(null, toSnakeCase(programa), null, null);;
+          let dadosAgregadosPrograma;
+          if (!bairro){
+            dadosAgregadosPrograma = await getAggregatedData(null, toSnakeCase(programa), null, null);
+          }else{
+            dadosAgregadosPrograma = await getAggregatedData(null, toSnakeCase(programa), toSnakeCase(bairro), null);
+          }
           console.log("dadosAgregadosPrograma", dadosAgregadosPrograma)
           setDadosAgregadosAbaSumarioStatusEntregasPrograma(dadosAgregadosPrograma)
 
@@ -339,7 +348,7 @@ const ProgramaDescriptionBar = forwardRef(
         }
       };
       loadDadosAgregadosPrograma();
-    }, [programa]);
+    }, [programa, bairro]);
 
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
