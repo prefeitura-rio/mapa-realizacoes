@@ -212,7 +212,9 @@ const SearchBar = ({
     // Check if name is a prefeitura
     if (bairros.includes(name)) {
       setBairroData(name);
-      setActiveBar(BAIRRO_DESCRIPTION_BAR);
+      if(!tema){
+        setActiveBar(BAIRRO_DESCRIPTION_BAR);
+      }
       setEhBairro(true);
       console.log('Bairro selecionado: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
