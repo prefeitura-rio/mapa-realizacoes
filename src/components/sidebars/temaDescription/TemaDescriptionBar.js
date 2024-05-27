@@ -307,7 +307,8 @@ const TemaDescriptionBar = forwardRef(
     loadData,
 
     tema,
-    temaData
+    temaData,
+    bairro
 
 
 
@@ -319,8 +320,15 @@ const TemaDescriptionBar = forwardRef(
 
     useEffect(() => {
     const loadDadosAgregadosTema = async () => {
+      // for place loading everytime the tema/bairro changes
+      setDadosAgregadosAbaSumarioStatusEntregasTema(null);
       try {
-        const dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, null, null);;
+        let dadosAgregadosTema;
+        if (!bairro){
+          dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, null, null);;
+        }else{
+          dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, toSnakeCase(bairro), null);
+        }
         console.log("dadosAgregadosTema", dadosAgregadosTema)
         setDadosAgregadosAbaSumarioStatusEntregasTema(dadosAgregadosTema)
 
@@ -329,7 +337,7 @@ const TemaDescriptionBar = forwardRef(
       }
     };
     loadDadosAgregadosTema();
-  }, [tema]);
+  }, [tema,bairro]);
 
 
     const handleTitleClick = (value) => {

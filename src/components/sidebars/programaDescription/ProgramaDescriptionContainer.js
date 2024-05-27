@@ -50,6 +50,7 @@ const ProgramaDescriptionContainer = (props) => {
         tema={props.tema}
         programa={props.programa}
         programaData={props.programaData}
+        bairro={props.bairro}
       />
   );
 };
@@ -73,6 +74,7 @@ const mapStateToProps = (state) => {
     tema: state.filtros.tema,
     programa: state.filtros.programa,
     programaData: state.filtros.programaData,
+    bairro: state.filtros.bairro,
   };
 };
 

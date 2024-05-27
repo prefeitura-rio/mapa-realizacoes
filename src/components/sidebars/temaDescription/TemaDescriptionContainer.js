@@ -53,6 +53,7 @@ const TemaDescriptionContainer = (props) => {
 
         tema={props.tema}
         temaData={props.temaData}
+        bairro={props.bairro}
       />
   );
 };
@@ -75,6 +76,7 @@ const mapStateToProps = (state) => {
 
     tema: state.filtros.tema,
     temaData: state.filtros.temaData,
+    bairro: state.filtros.bairro,
   };
 };
 
