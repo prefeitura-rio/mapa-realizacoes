@@ -352,6 +352,7 @@ const TemaDescriptionBar = forwardRef(
     const [destaquesTema, setDestaquesTema] = useState([]);
     useEffect(() => {
       const loadDestaquesTema = async (id_tema) => {
+        setDestaquesTema([]);
         try {
           const destaquesTemaRef = await getListDestaquesTema(id_tema);
 
