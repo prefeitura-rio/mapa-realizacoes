@@ -391,15 +391,15 @@ const SearchBar = ({
           });
           setBairros(bairrosName);
 
-          // Incluir os nomes das prefeituras na lista de bairros
-          const prefeiturasNames = [];
-          prefeituraRef.forEach((doc) => {
-            const prefeiturasData = doc.data();
-            const prefeituraName = prefeiturasData.nome;
-            bairrosSubSubprefeituras.push(prefeituraName);
-            prefeiturasNames.push(prefeituraName);
-          });
-          setSubprefeituras(prefeiturasNames);
+          // // Incluir os nomes das prefeituras na lista de bairros
+          // const prefeiturasNames = [];
+          // prefeituraRef.forEach((doc) => {
+          //   const prefeiturasData = doc.data();
+          //   const prefeituraName = prefeiturasData.nome;
+          //   bairrosSubSubprefeituras.push(prefeituraName);
+          //   prefeiturasNames.push(prefeituraName);
+          // });
+          // setSubprefeituras(prefeiturasNames);
 
 
           setBairrosSubprefeituras(bairrosSubSubprefeituras);
@@ -773,7 +773,7 @@ const SearchBar = ({
                         {...params}
                         autoFocus={true}
                         // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                        placeholder="Busque por Bairro, Subprefeitura ou AP"
+                        placeholder="Filtre por Bairro"
                         sx={{
                           "& fieldset": { border: 'none' }
                         }}
