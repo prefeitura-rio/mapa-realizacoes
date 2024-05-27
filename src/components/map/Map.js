@@ -113,7 +113,7 @@ const currentLayer = useRef(null);
 
       }
       // Find the correct bairro object
-      const bairroData = shapeFileBairros.find(b => b.nome === bairroNome);
+      const bairroData = shapeFileBairros.find(b => (b.nome).toLowerCase() === (bairroNome).toLowerCase());
       if (bairroData) {
         // Convert WKT to GeoJSON
         const geoJsonData = parse(bairroData.geometry_wkt);
