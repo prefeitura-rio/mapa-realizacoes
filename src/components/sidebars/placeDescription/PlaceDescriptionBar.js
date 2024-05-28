@@ -377,6 +377,28 @@ const useStyles = makeStyles((theme) => ({
       // },
       overflow: "auto"
     },
+    underSearch3NoImage: {
+      position: "fixed",
+      top: "calc(50.5vh - 80px )", //4vh + 80px + 45.5vh -160px 
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      paddingTop: "10px",
+      height: "calc(46.5vh + 80px)",
+      borderRadius: "10px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.2em",
+        // display: "none",
+      },
+      // "&::-webkit-scrollbar-thumb": {
+      //   display: "none",
+      // },
+      overflow: "auto"
+    },
     underSearch4: {
       position: "fixed",
       top: "calc(96vh - 320px + 80px + 1vh)", // 96vh - 320px + 80px + 1vh
@@ -645,7 +667,7 @@ const PlaceDescriptionBar = forwardRef(
         <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
           <Paper
             elevation={6}
-            className={classes.underSearch3}
+            className={content?.image_url?classes.underSearch3:classes.underSearch3NoImage}
           >
 
             <div className={classes.sumarioInfo} style={{ display: 'flex' }}>
