@@ -672,7 +672,7 @@ const SearchBar = ({
                       color="grey"
                       onClick={() => { setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}
                     >
-                      <ArrowBackIosIcon />
+                      <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                     </IconButton> : "")
 
                   }
