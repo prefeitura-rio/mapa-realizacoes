@@ -699,7 +699,6 @@ const SearchBar = ({
         {!showSearchBar ?
 
           (
-            <Fade in={!inputValueRealizacao}>
             <Paper elevation={4} style={{ borderRadius:"10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display:"flex", alignItems:"center", justifyContent:"center" }}>
             <Tooltip title={inputValueBairroSubprefeitura?`${inputValueBairroSubprefeitura} está atuando como filtro.`: ""} placement="right">
                 <Badge  badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
@@ -714,7 +713,6 @@ const SearchBar = ({
                 </Badge>
               </Tooltip>
               </Paper>
-            </Fade>
           )
 
           :
