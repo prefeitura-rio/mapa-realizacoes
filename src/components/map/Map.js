@@ -96,8 +96,8 @@ const Map = ({
     }
   }, [map])
 
-// Use a ref to store the current layer
-const currentLayer = useRef(null);
+  // Use a ref to store the current layer
+  const currentLayer = useRef(null);
   useEffect(() => {
     if (map && bairroNome) {
       // Converte o nome do bairro para o formato correto (considerando acentuação)
@@ -105,7 +105,7 @@ const currentLayer = useRef(null);
 
       // Busca as informações do bairro no novo formato
       const bairro_centro = bairros_centros[bairroFormatado];
-    
+
 
       if (bairro_centro) {
         const coords = [bairro_centro.lat, bairro_centro.lng];
@@ -118,19 +118,19 @@ const currentLayer = useRef(null);
         // Convert WKT to GeoJSON
         const geoJsonData = parse(bairroData.geometry_wkt);
 
-       // If there's a current layer, remove it from the map
-       if (currentLayer.current) {
-        map.removeLayer(currentLayer.current);
-      }
-      // Create a new GeoJSON layer and add it to the map
-      currentLayer.current = L.geoJSON(geoJsonData, {
-        style: {
-          color: '#007E7D',  // Boundary color
-          weight: 3, // Boundary thickness 
-          fillColor: '#007E7D',  //BG
-          fillOpacity: 0.2  // BGs opacity  (0 is fully transparent, 1 is fully opaque)
+        // If there's a current layer, remove it from the map
+        if (currentLayer.current) {
+          map.removeLayer(currentLayer.current);
         }
-      }).addTo(map);
+        // Create a new GeoJSON layer and add it to the map
+        currentLayer.current = L.geoJSON(geoJsonData, {
+          style: {
+            color: '#007E7D',  // Boundary color
+            weight: 3, // Boundary thickness 
+            fillColor: '#007E7D',  //BG
+            fillOpacity: 0.2  // BGs opacity  (0 is fully transparent, 1 is fully opaque)
+          }
+        }).addTo(map);
       }
     }
   }, [bairroNome, map]);
@@ -370,7 +370,7 @@ const currentLayer = useRef(null);
               : true;
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
-            if ((tema || bairro || subprefeitura || realizacao) && isBairroMatch && isTemaMatch && isProgramaMatch && isRealizacaoMatch && isSubprefeituraMatch) {
+            if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
               return renderMarker(point, index);
             }
           })}
