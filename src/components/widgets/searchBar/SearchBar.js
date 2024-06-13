@@ -252,6 +252,7 @@ const SearchBar = ({
   // programas do tema -> programasTema vai aparecer na listagem de programas
   const [programasTema, setProgramasTema] = useState([]);
   useEffect(() => {
+    if (tema){
     const loadProgramasTema = async (t) => {
       try {
         const programasTemaRef = await getListProgramasTema(toSnakeCase(t));
@@ -277,11 +278,13 @@ const SearchBar = ({
 
     loadTemaInfo(tema)
     loadProgramasTema(tema);
+  }
   }, [tema]);
 
   // realizacoes do programa -> realizacoesPrograma vai aparecer na listagem de realizacoes
   const [realizacoesPrograma, setRealizacoesPrograma] = useState([]);
   useEffect(() => {
+    if (programa){
     const loadRealizacoesPrograma = async (p) => {
       try {
         const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
@@ -309,6 +312,7 @@ const SearchBar = ({
 
     loadRealizacoesPrograma(programa);
     loadProgramaInfo(programa);
+  }
   }, [programa]);
 
   const [inputValuePrograma, setInputValuePrograma] = useState(undefined);

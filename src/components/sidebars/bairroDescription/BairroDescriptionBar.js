@@ -285,17 +285,11 @@ const theme = createTheme({
 
 const BairroDescriptionBar = forwardRef(
   ({ underSearchBar,
-    tema,
     bairro,
-    images_bairro,
     dadosAgregadosAbaSumarioStatusEntregasBairro,
-    dadosAgregadosAbaTemaBairro,
-    dadosAgregadosAbaProgramaBairro,
     setDescriptionData,
     setUnderSearchBar,
     loadData,
-    setPhotoGallery,
-    setImagesType,
     setActiveBar
   }, ref) => {
 
@@ -353,27 +347,6 @@ const BairroDescriptionBar = forwardRef(
             </div>
           </Paper>
         </Slide>
-        {
-        // <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-        //   <Paper
-        //     elevation={6}
-        //     className={classes.underSearch2}
-        //   >
-        //     <div className={classes.basicInfo}>
-        //       <Stack direction="row">
-
-        //         <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-        //         {/* <Tooltip placement="right" title={`Detalhe sobre o bairro ${tema}`}>
-        //           <IconButton>
-        //             <InfoIcon sx={{color:"black"}}/>
-        //           </IconButton>
-        //         </Tooltip> */}
-        //       </Stack>
-        //       <Typography className={classes.subtituloMunicipio}>Bairro Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </Typography>
-        //     </div>
-        //   </Paper>
-        // </Slide>
-       }
         <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
           <Paper
             elevation={6}

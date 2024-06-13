@@ -896,16 +896,16 @@ export async function getAggregatedData(tema = null, programa = null, bairro = n
   // Create the filters array
   let filters = [];
   if (bairro) {
-      filters.push(`bairro___${bairro}`);
+      filters.push(`bairro__${bairro}`);
   }
   if (subprefeitura) {
-      filters.push(`subprefeitura___${subprefeitura}`);
+      filters.push(`subprefeitura__${subprefeitura}`);
   }
   if (tema) {
-      filters.push(`tema___${tema}`);
+      filters.push(`tema__${tema}`);
   }
   if (programa) {
-      filters.push(`programa___${programa}`);
+      filters.push(`programa__${programa}`);
   }
 
   // Python: key = "___".join(keys) if keys else "all"

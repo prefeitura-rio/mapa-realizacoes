@@ -1,4 +1,4 @@
-import { REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED } from "../cidade/actions";
+// import { REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED } from "../cidade/actions";
 import {
   REQUEST_BAIRRO_DATA,
   REQUEST_BAIRRO_DATA_FAILED,
@@ -101,13 +101,13 @@ const bairrosReducer = (state = defaultState, action) => {
           loading: false,
           error: false,
         };
-      case REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED:
-        return {
-          ...state,
-          dadosAgregadosAbaTemaBairro: null,
-          loading: false,
-          error: true,
-        };
+      // case REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED:
+      //   return {
+      //     ...state,
+      //     dadosAgregadosAbaTemaBairro: null,
+      //     loading: false,
+      //     error: true,
+      //   };
       case REQUEST_DADOS_AGREGADOS_ABA_PROGRAMA_BAIRRO:
         return {
           ...state,

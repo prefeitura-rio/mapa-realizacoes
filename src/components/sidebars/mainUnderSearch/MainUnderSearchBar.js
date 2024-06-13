@@ -285,48 +285,17 @@ const theme = createTheme({
 
 const MainUnderSearchBar = forwardRef(
   ({ underSearchBar,
-    cidades,
-    dadosAgregadosAbaTemaCidade,
-    dadosAgregadosAbaProgramasCidade,
-    dadosAgregadosAbaSumarioInfoBasicasCidade,
-    // dadosAgregadosAbaSumarioStatusEntregasCidade,
-    images_cidade,
-    setPhotoGallery,
-    setImagesType,
     setActiveBar,
     setDescriptionData,
     setUnderSearchBar,
     loadData,
-    activeBar
-
+    dadosAgregadosCidade,
+    dadosDestaquesCidade,
+    loading
   }, ref) => {
 
     const classes = useStyles();
 
-    const [dadosAgregadosAbaSumarioStatusEntregasCidade, setDadosAgregadosAbaSumarioStatusEntregasCidade] = useState(0)
-
-    useEffect(() => {
-      // if (dadosAgregadosAbaSumarioStatusEntregasCidade) {
-      //   const total = dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.em_andamento +
-      //     dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.concluida +
-      //     dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.interrompida +
-      //     dadosAgregadosAbaSumarioStatusEntregasCidade[0]?.em_licitacao;
-      //   setdadosAgregadosAbaSumarioStatusEntregasCidade(total);
-      // }
-
-      const loadDadosAgregadosMunicipio = async () => {
-        try {
-          const dadosAgregadosMunicipio = await getAggregatedData();
-          console.log("dadosAgregadosMunicipio", dadosAgregadosMunicipio)
-          setDadosAgregadosAbaSumarioStatusEntregasCidade(dadosAgregadosMunicipio)
-
-        } catch (error) {
-          console.error("Erro", error);
-        }
-      };
-
-      loadDadosAgregadosMunicipio();
-    }, []);
 
     const handleTitleClick = (value) => {
       setDescriptionData(toSnakeCase(value));
@@ -336,22 +305,23 @@ const MainUnderSearchBar = forwardRef(
       console.log("clickei")
     };
 
+
     // o destaque conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
-    const [destaquesMunicipio, setDestaquesMunicipio] = useState([]);
-    useEffect(() => {
-      const loadDestaquesMunicipio = async () => {
-        try {
-          const destaquesMunicipioRef = await getListDestaquesMunicipio();
+    // const [dadosDestaquesCidade, setDestaquesMunicipio] = useState([]);
+    // useEffect(() => {
+    //   const loadDestaquesMunicipio = async () => {
+    //     try {
+    //       const destaquesMunicipioRef = await getListDestaquesMunicipio();
 
-          setDestaquesMunicipio(destaquesMunicipioRef);
+    //       setDestaquesMunicipio(destaquesMunicipioRef);
 
-        } catch (error) {
-          console.error("Erro", error);
-        }
-      };
+    //     } catch (error) {
+    //       console.error("Erro", error);
+    //     }
+    //   };
 
-      loadDestaquesMunicipio();
-    }, []);
+    //   loadDestaquesMunicipio();
+    // }, []);
 
     useEffect(() => {
       if (window.innerHeight >= 1000) {
@@ -439,7 +409,7 @@ const MainUnderSearchBar = forwardRef(
           >
 
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-              {(!dadosAgregadosAbaSumarioStatusEntregasCidade) ? < CircularProgress /> :
+              {(!dadosAgregadosCidade) ? < CircularProgress /> :
                 <>
                   <Tooltip title="Realizações">
 
@@ -447,7 +417,7 @@ const MainUnderSearchBar = forwardRef(
 
                       <AccountBalanceIcon />
                       <Box pl={0.5}>
-                        <Typography  >{dadosAgregadosAbaSumarioStatusEntregasCidade?.count}</Typography>
+                        <Typography  >{dadosAgregadosCidade?.count}</Typography>
                       </Box>
                     </Box>
                   </Tooltip>
@@ -465,7 +435,7 @@ const MainUnderSearchBar = forwardRef(
             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Destaques</Typography>
               <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                {destaquesMunicipio.length==0 ? (
+                {!dadosDestaquesCidade ? (
                   <>
                   <Skeleton variant="text" />
                   <Skeleton height="15px" width="80%" />
@@ -478,7 +448,7 @@ const MainUnderSearchBar = forwardRef(
                   <Skeleton height="15px" width="73%" />
                   </>
                 ) : (
-                  destaquesMunicipio.map((item, index) => (
+                  dadosDestaquesCidade?.map((item, index) => (
                     <li key={index} style={{ paddingBottom: "15px" }}>
                       <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
                       <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
