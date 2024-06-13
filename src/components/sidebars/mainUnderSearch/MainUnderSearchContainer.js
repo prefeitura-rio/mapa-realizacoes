@@ -10,21 +10,9 @@ import {
 } from "./../../../redux/active/actions";
 import { setImagesType } from "../../../redux/images/actions";
 import { useEffect } from "react";
-import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaSumarioInfoBasicasCidade, loadDadosAgregadosAbaSumarioStatusEntregasCidade, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
+import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaSumarioInfoBasicasCidade, loadDadosAgregadosAbaSumarioStatusEntregasCidade, loadDadosAgregadosAbaTemaCidade, loadDadosAgregadosCidade } from "../../../redux/cidade/actions";
 
 const MainUnderSearchContainer = (props) => {
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loadAllCidades());
-    // dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
-    // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
-    // dispatch(loadDadosAgregadosAbaProgramasCidade());
-  }, []);
-
-  // useEffect(() => {
-  //  console.log("dadosAgregadosAbaSumarioStatusEntregasCidade, " , props.dadosAgregadosAbaSumarioStatusEntregasCidade)
-  // }, [props.dadosAgregadosAbaSumarioStatusEntregasCidade]);
 
   return (
       <MainUnderSearchBar
@@ -32,7 +20,8 @@ const MainUnderSearchContainer = (props) => {
         content={props.content}
         images_cidade={props.images_cidade}
         cidades={props.cidades}
-        dadosAgregadosAbaTemaCidade={props.dadosAgregadosAbaTemaCidade}
+        dadosAgregadosCidade={props.dadosAgregadosCidade}
+        dadosDestaquesCidade={props.dadosDestaquesCidade}
         dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
         dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
         dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
@@ -57,7 +46,9 @@ const mapStateToProps = (state) => {
     underSearchBar: state.active.underSearchBar,
     content: state.place.content,
     cidades: state.cidades.all,
-    dadosAgregadosAbaTemaCidade: state.cidades.dadosAgregadosAbaTemaCidade,
+    dadosAgregadosCidade: state.cidades.dadosAgregadosCidade,
+    dadosDestaquesCidade: state.cidades.dadosDestaquesCidade,
+    loading: state.cidades.loading,
     dadosAgregadosAbaProgramasCidade: state.cidades.dadosAgregadosAbaProgramasCidade,
     dadosAgregadosAbaSumarioInfoBasicasCidade: state.cidades.dadosAgregadosAbaSumarioInfoBasicasCidade,
     dadosAgregadosAbaSumarioStatusEntregasCidade: state.cidades.dadosAgregadosAbaSumarioStatusEntregasCidade,

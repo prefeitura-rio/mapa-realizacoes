@@ -1,5 +1,5 @@
 import { takeEvery, put, call, fork, all } from "redux-saga/effects";
-import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTema, getDadosAgregadosAbaProgramas, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregas, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, getListImageUrls } from "../firebase";
+import { auth, getRealizacaoInfo, getListRealizacaoData, storageRef, getAllCidades, getBairroInfo, getSubprefeituraInfo, getDadosAgregadosAbaTema, getDadosAgregadosAbaProgramas, getDadosAgregadosAbaSumarioInfoBasicasCidade, getDadosAgregadosAbaSumarioStatusEntregas, getDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, getListImageUrls, getAggregatedData, getListDestaquesMunicipio } from "../firebase";
 // import {
 //   LOAD_COMMENTS,
 //   requestComments,
@@ -52,6 +52,8 @@ import {
   LOAD_DADOS_AGREGADOS_ABA_PROGRAMAS_CIDADE, 
   LOAD_DADOS_AGREGADOS_ABA_SUMARIO_INFO_BASICAS_CIDADE, 
   LOAD_DADOS_AGREGADOS_ABA_TEMA_CIDADE, 
+  LOAD_DADOS_AGREGADOS_CIDADE, 
+  LOAD_DESTAQUES_CIDADE, 
   requestAllCidades, 
   requestAllCidadesFailed, 
   requestAllCidadesSuccess,
@@ -66,7 +68,13 @@ import {
   requestDadosAgregadosAbaSumarioStatusEntregasCidadeSuccess,
   requestDadosAgregadosAbaTemaCidade,
   requestDadosAgregadosAbaTemaCidadeFailed,
-  requestDadosAgregadosAbaTemaCidadeSuccess
+  requestDadosAgregadosAbaTemaCidadeSuccess,
+  requestDadosAgregadosCidade,
+  requestDadosAgregadosCidadeFailed,
+  requestDadosAgregadosCidadeSuccess,
+  requestDestaquesCidade,
+  requestDestaquesCidadeFailed,
+  requestDestaquesCidadeSuccess
 } from "./cidade/actions";
 import { byCategory } from "../components/modals/editCategory/categoryItems";
 import {
@@ -223,19 +231,32 @@ export function* watchLoadAllCidades() {
 }
 
 // Municipio
-function* workerLoadDadosAgregadosAbaTemaCidade() {
+function* workerLoadDadosAgregadosCidade() {
   try {
-    yield put(requestDadosAgregadosAbaTemaCidade());
-    const data = yield call(getDadosAgregadosAbaTema, {id_cidade: "rio_de_janeiro"});
-    console.log("dados aba tema cidade: ", data)
-    yield put(requestDadosAgregadosAbaTemaCidadeSuccess(data));
+    yield put(requestDadosAgregadosCidade());
+    const data = yield call(getAggregatedData);
+    yield put(requestDadosAgregadosCidadeSuccess(data));
   } catch (error) {
     console.error("Erro: "+ error);
-    yield put(requestDadosAgregadosAbaTemaCidadeFailed());
+    yield put(requestDadosAgregadosCidadeFailed());
   }
 }
-export function* watchLoadDadosAgregadosAbaTemaCidade() {
-  yield takeEvery(LOAD_DADOS_AGREGADOS_ABA_TEMA_CIDADE, workerLoadDadosAgregadosAbaTemaCidade);
+export function* watchLoadDadosAgregadosCidade() {
+  yield takeEvery(LOAD_DADOS_AGREGADOS_CIDADE, workerLoadDadosAgregadosCidade);
+}
+// destaques
+function* workerLoadDestaquesCidade() {
+  try {
+    yield put(requestDestaquesCidade());
+    const data = yield call(getListDestaquesMunicipio);
+    yield put(requestDestaquesCidadeSuccess(data));
+  } catch (error) {
+    console.error("Erro: "+ error);
+    yield put(requestDestaquesCidadeFailed());
+  }
+}
+export function* watchLoadDestaquesCidade() {
+  yield takeEvery(LOAD_DESTAQUES_CIDADE, workerLoadDestaquesCidade);
 }
 
 function* workerLoadDadosAgregadosAbaProgramasCidade() {
@@ -474,7 +495,8 @@ export function* rootSaga() {
     fork(watchLoadPlaces),
     fork(watchLoadAllPlaces),
     fork(watchLoadAllCidades),
-    fork(watchLoadDadosAgregadosAbaTemaCidade),
+    fork(watchLoadDadosAgregadosCidade),
+    fork(watchLoadDestaquesCidade),
     fork(watchLoadDadosAgregadosAbaProgramasCidade),
     fork(watchLoadDadosAgregadosAbaSumarioInfoBasicasCidade),
     fork(watchLoadDadosAgregadosAbaSumarioStatusEntregasCidade),

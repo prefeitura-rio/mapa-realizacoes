@@ -143,51 +143,6 @@ const UnderSearchBar = forwardRef(({ underSearchBar, activeBar }, ref) => {
   return (
      <>
       {renderSwitch(activeBar)}
-       {/* <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-         <Paper
-           ref={ref}
-           className={
-             underSearchBar
-               ? clsx(classes.underSearch, classes.open)
-               : clsx(classes.underSearch, classes.close)
-           }
-         >
-           {renderSwitch(activeBar)}
-         </Paper>
-       </Slide>
-       <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-         <Paper
-           className={
-             underSearchBar
-               ? clsx(classes.underSearch2, classes.open)
-               : clsx(classes.underSearch2, classes.close)
-           }
-         >
-           {renderSwitch(activeBar)}
-         </Paper>
-       </Slide>
-       <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-         <Paper
-           className={
-             underSearchBar
-               ? clsx(classes.underSearch3, classes.open)
-               : clsx(classes.underSearch3, classes.close)
-           }
-         >
-           {renderSwitch(activeBar)}
-         </Paper>
-       </Slide>
-       <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-         <Paper
-           className={
-             underSearchBar
-               ? clsx(classes.underSearch4, classes.open)
-               : clsx(classes.underSearch4, classes.close)
-           }
-         >
-           {renderSwitch(activeBar)}
-         </Paper>
-       </Slide> */}
      </>
   );
  });
