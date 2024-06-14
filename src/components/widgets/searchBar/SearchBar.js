@@ -307,6 +307,7 @@ const SearchBar = ({
     setShowProgramas(false);
     setPrograma(newValue);
     setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+    setZoomDefault((Math.random() * 999 + 1));
     dispatch(loadProgramaData(newValue));
   };
 
