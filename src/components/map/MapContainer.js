@@ -1,7 +1,7 @@
 import Map from "./Map";
 import { setZoomDelta } from "../../redux/actions";
 import { connect, useDispatch } from "react-redux";
-import { setOpenEditInfo } from "./../../redux/active/actions";
+import { setCurrentClickedPoint, setOpenEditInfo } from "./../../redux/active/actions";
 import { setContent, setContentSnapshot } from "./../../redux/place/actions";
 import { useEffect } from "react";
 // import { loadAllPoints } from "../../redux/points/actions";
@@ -49,6 +49,7 @@ const MapContainer = (props) => {
       bairro = {props.bairro}
       subprefeitura = {props.subprefeitura}
       zoomDefault={props.zoomDefault}
+      currentClickedPoint={props.currentClickedPoint}
     />
   );
 };
@@ -70,6 +71,7 @@ const mapStateToProps = (state) => {
     bairro: state.filtros.bairro,
     subprefeitura: state.filtros.subprefeitura,
     zoomDefault: state.app.zoomDefault,
+    currentClickedPoint: state.active.currentClickedPoint,
   };
 };
 
