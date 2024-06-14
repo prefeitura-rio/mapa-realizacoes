@@ -637,7 +637,7 @@ const SearchBar = ({
                     <IconButton
                       style={{ backgroundColor: 'transparent' }}
                       color="grey"
-                      onClick={() => { setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); setZoomDefault((Math.random() * 999 + 1)); }}
+                      onClick={() => { setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); setZoomDefault((Math.random() * 999 + 1)); }}
                     >
                       <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                     </IconButton>
@@ -647,7 +647,7 @@ const SearchBar = ({
                     (showRealizacoes ? <IconButton
                       style={{ backgroundColor: 'transparent' }}
                       color="grey"
-                      onClick={() => { setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}
+                      onClick={() => { setRealizacoesPrograma([]);setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}
                     >
                       <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                     </IconButton> : "")
