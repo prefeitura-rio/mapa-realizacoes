@@ -21,6 +21,7 @@ import subprefeituras_centros from "./centroideSubprefeituras";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import shapeFileBairros from "./shapeFileBairros.json"
 import { parse } from 'terraformer-wkt-parser';
+import { toTitleCase } from "../../utils/formatFile";
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
 };
@@ -321,7 +322,14 @@ const Map = ({
       >
         <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
           {point.id_programa == "rio_em_forma" ? <span>Rio em Forma - {point.nome}</span> :
-            <span>{point.nome}</span>}
+          <>
+            <span><b>Título</b> {point.nome}</span>
+            <br></br>
+            {
+            point.id_bairro &&
+            <span><b>Bairro</b> {toTitleCase(point.id_bairro??"")}</span>
+  }
+          </>}
         </Tooltip>
       </Marker>
     );
