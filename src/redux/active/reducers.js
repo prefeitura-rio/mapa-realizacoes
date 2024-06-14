@@ -20,7 +20,8 @@ import {
   SET_LOCATION_MODAL,
   SET_PHOTO_GALLERY,
   SET_SHOWN_MORE,
-  SET_INFO_MODAL
+  SET_INFO_MODAL,
+  SET_CURRENT_CLICKED_POINT
 } from "./actions";
 
 export const isDesktop = () => {
@@ -153,6 +154,11 @@ export const activeReducer = (state = defaultState, action) => {
       return {
         ...state,
         shownMore: action.payload,
+      };
+    case SET_CURRENT_CLICKED_POINT:
+      return {
+        ...state,
+        currentClickedPoint: action.payload,
       };
   }
   return state;

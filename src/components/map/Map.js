@@ -10,7 +10,7 @@ import "./map.css";
 import { useEffect, useRef, useState } from "react";
 import ContextMenu from "./ContextMenu";
 import { getIcon } from "../../icons/typeIcons";
-import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR } from "../../redux/active/actions";
+import { DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, setCurrentClickedPoint } from "../../redux/active/actions";
 import { getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
 import { isDesktop } from "../../redux/active/reducers";
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import shapeFileBairros from "./shapeFileBairros.json"
 import { parse } from 'terraformer-wkt-parser';
 import { toTitleCase } from "../../utils/formatFile";
+import { useDispatch } from "react-redux";
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
 };
@@ -52,6 +53,7 @@ const Map = ({
   bairro,
   subprefeitura,
   zoomDefault,
+  currentClickedPoint,
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -61,6 +63,7 @@ const Map = ({
   const [alertOpen, setAlertOpen] = useState(false);
   const [contextCoords, setContextCoords] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // console.log("ROTAROTA " + JSON.stringify(rota.rota))
@@ -205,7 +208,8 @@ const Map = ({
           map.setView({
             lat: point?.coords?.latitude,
             lng: point?.coords?.longitude,
-          }, targetZoom);
+            }, targetZoom);
+          dispatch(setCurrentClickedPoint(point))
         }
       }
     }
@@ -292,13 +296,11 @@ const Map = ({
       }
     }
     setRota(toSnakeCase(point.nome))
-    setCurrentClickedPoint(point)
+    dispatch(setCurrentClickedPoint(point))
   };
 
 
   const [opened, setOpened] = useState(false);
-
-  const [currentClickedPoint, setCurrentClickedPoint] = useState("");
 
   const createClusterCustomIcon = function (cluster) {
     return L.divIcon({
