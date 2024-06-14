@@ -47,11 +47,11 @@ const placesReducer = (state = defaultState, action) => {
         error: false,
       };
     case REQUEST_ALL_PLACES_SUCCESS:
-      const anyPlaces = state.placesData ? state.anyPlaces : action.payload;
+      // const anyPlaces = state.placesData ? state.anyPlaces : action.payload;
       return {
         ...state,
         allPlaces: action.payload,
-        anyPlaces,
+        // anyPlaces,
         loading: false,
         error: false,
       };

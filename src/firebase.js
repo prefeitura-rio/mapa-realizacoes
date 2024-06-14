@@ -4,6 +4,7 @@ import firebaseCredentials from "./firebaseconfig";
 import { toSnakeCase, toTitleCase, concatSnakeCase, snakeToCapitalized } from "./utils/formatFile";
 import * as turf from "@turf/turf";
 import { compareContent } from "./utils/data";
+import store from './redux/store';
 
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
@@ -385,33 +386,55 @@ export async function getListSubprefeituraName() {
   }
 }
 
+// export async function getRealizacaoInfo(document) {
+//   let data = await db
+//     .collection("realizacao")
+//     .doc(document)
+//     .get()
+//     .then((doc) => doc.data());
+//   // get status
+//   let dataStatus = await readStatus(data.id_status);
+//   data.status = dataStatus.nome;
+//   // get bairro
+//   let dataBairro = await readBairro(data.id_bairro);
+//   data.bairro = dataBairro.nome;
+//   // get subprefeitura
+//   let dataSubprefeitura = await readSubprefeitura(dataBairro.id_subprefeitura);
+//   data.subprefeitura = dataSubprefeitura.nome;
+//   // in the "tema" collection, get the name of the tema with the id "data.id_tema"
+//   let dataTema = await readTema(data.id_tema);
+//   let temas = [dataTema.nome];
+//   data.tema = temas;
+//   // in the "orgao" collection, get the name of the tema with the id "data.id_orgao"
+//   let dataOrgao = await readOrgao(data.id_orgao);
+//   let orgaos = [dataOrgao.nome];
+//   data.orgao = orgaos;
+//   // in the "programa" collection, get the name of the tema with the id "data.id_programa"
+//   let dataPrograma = await readPrograma(data.id_programa);
+//   let programas = [dataPrograma.nome];
+//   data.programa = programas;
+//   return data;
+// }
+
+//@Gabriel, solução temporária para o problema de performance. 
 export async function getRealizacaoInfo(document) {
-  let data = await db
-    .collection("realizacao")
-    .doc(document)
-    .get()
-    .then((doc) => doc.data());
+  const state = store.getState();
+  const realizacoes = state.places.allPlaces;
+
+  let data = await realizacoes.find((place) => place.id === document);
   // get status
-  let dataStatus = await readStatus(data.id_status);
-  data.status = dataStatus.nome;
+
+  data.status = snakeToCapitalized(data.id_status??"");
   // get bairro
-  let dataBairro = await readBairro(data.id_bairro);
-  data.bairro = dataBairro.nome;
+  data.bairro = snakeToCapitalized(data.id_bairro??"");
   // get subprefeitura
-  let dataSubprefeitura = await readSubprefeitura(dataBairro.id_subprefeitura);
-  data.subprefeitura = dataSubprefeitura.nome;
-  // in the "tema" collection, get the name of the tema with the id "data.id_tema"
-  let dataTema = await readTema(data.id_tema);
-  let temas = [dataTema.nome];
-  data.tema = temas;
-  // in the "orgao" collection, get the name of the tema with the id "data.id_orgao"
-  let dataOrgao = await readOrgao(data.id_orgao);
-  let orgaos = [dataOrgao.nome];
-  data.orgao = orgaos;
-  // in the "programa" collection, get the name of the tema with the id "data.id_programa"
-  let dataPrograma = await readPrograma(data.id_programa);
-  let programas = [dataPrograma.nome];
-  data.programa = programas;
+  data.subprefeitura = snakeToCapitalized(data.id_subprefeitura??"");
+  // get tema
+  data.tema =snakeToCapitalized(data.id_tema??"") ;
+  // get orgao
+  data.orgao = snakeToCapitalized(data.id_orgao??"");
+  // get programa
+  data.programa = snakeToCapitalized(data.id_programa??"");
   return data;
 }
 
@@ -850,7 +873,6 @@ export async function getListDestaquesMunicipio(id_municipio){
 // o destaque do bairro conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
 export async function getListDestaquesBairro(id_bairro){
   id_bairro = toSnakeCase(id_bairro)
-  console.log("firebase: id_bairro", id_bairro)
   const realizacoesRef = await db.collection("realizacao").where("id_bairro", "==", id_bairro).orderBy("investimento", "desc").limit(3).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
   const realizacoesDestaqueBairro = realizacoesData.map((realizacao) => {
@@ -865,7 +887,6 @@ export async function getListDestaquesBairro(id_bairro){
 // o destaque da subprefeitura conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
 export async function getListDestaquesSubprefeitura(id_subprefeitura){
   id_subprefeitura = toSnakeCase(id_subprefeitura)
-  console.log("firebase: id_subprefeitura", id_subprefeitura)
   const realizacoesRef = await db.collection("realizacao").where("id_subprefeitura", "==", id_subprefeitura).orderBy("investimento", "desc").limit(3).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
   const realizacoesDestaqueSubprefeitura = realizacoesData.map((realizacao) => {
@@ -880,7 +901,6 @@ export async function getListDestaquesSubprefeitura(id_subprefeitura){
 // o destaque do tema conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
 export async function getListDestaquesTema(id_tema){
   id_tema = toSnakeCase(id_tema)
-  console.log("firebase: id_tema", id_tema)
   const realizacoesRef = await db.collection("realizacao").where("id_tema", "==", id_tema).orderBy("investimento", "desc").limit(3).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
   const realizacoesDestaqueTema = realizacoesData.map((realizacao) => {

@@ -339,7 +339,7 @@ const BairroDescriptionBar = forwardRef(
       setUnderSearchBar(true);
       setActiveBar(DESCRIPTION_BAR);
       loadData(toSnakeCase(value));
-      console.log("clickei")
+      // console.log("clickei")
     };
 
     return (

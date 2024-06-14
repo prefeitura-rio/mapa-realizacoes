@@ -329,7 +329,7 @@ const TemaDescriptionBar = forwardRef(
         }else{
           dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, toSnakeCase(bairro), null);
         }
-        console.log("dadosAgregadosTema", dadosAgregadosTema)
+        // console.log("dadosAgregadosTema", dadosAgregadosTema)
         setDadosAgregadosAbaSumarioStatusEntregasTema(dadosAgregadosTema)
 
       } catch (error) {
@@ -345,7 +345,7 @@ const TemaDescriptionBar = forwardRef(
       setUnderSearchBar(true);
       setActiveBar(DESCRIPTION_BAR);
       loadData(toSnakeCase(value));
-      console.log("clickei")
+      // console.log("clickei")
     };
 
     // o destaque conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização

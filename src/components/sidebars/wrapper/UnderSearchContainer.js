@@ -9,9 +9,9 @@ const UnderSearchContainer = (props) => {
   const dispatch = useDispatch();
 
   
-  useEffect(() => {
-    if (props.placesData) dispatch(loadAllPlaces(props.placesData));
-  }, [props.placesData]);
+  // useEffect(() => {
+  //   if (props.placesData) dispatch(loadAllPlaces(props.placesData));
+  // }, [props.placesData]);
 
   useEffect(() => {
     dispatch(loadAllCidades());

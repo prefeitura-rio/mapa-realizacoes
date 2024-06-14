@@ -340,7 +340,7 @@ const ProgramaDescriptionBar = forwardRef(
           }else{
             dadosAgregadosPrograma = await getAggregatedData(null, toSnakeCase(programa), toSnakeCase(bairro), null);
           }
-          console.log("dadosAgregadosPrograma", dadosAgregadosPrograma)
+          // console.log("dadosAgregadosPrograma", dadosAgregadosPrograma)
           setDadosAgregadosAbaSumarioStatusEntregasPrograma(dadosAgregadosPrograma)
 
         } catch (error) {

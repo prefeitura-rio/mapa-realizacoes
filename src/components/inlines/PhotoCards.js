@@ -100,7 +100,6 @@ const PhotoCards = ({ images, setPhotoGallery, setImagesType,activeBar}) => {
     setImagesType(TYPE_ALL_PHOTOS_SUBPREFEITURA);
     }
     setPhotoGallery(true);
-    console.log(activeBar)
   };
 
   return (

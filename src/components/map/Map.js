@@ -62,7 +62,7 @@ const Map = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("ROTAROTA " + JSON.stringify(rota.rota))
+    // console.log("ROTAROTA " + JSON.stringify(rota.rota))
     if (rota.rota == null && map) {
       const coords = [-22.9200, -43.3250];
       map.flyTo(coords, 11)
@@ -70,7 +70,7 @@ const Map = ({
   }, [rota]);
 
   useEffect(() => {
-    console.log("underSearchBar " + underSearchBar)
+    // console.log("underSearchBar " + underSearchBar)
     if (map && !underSearchBar) {
       const coords = [-22.9200, -43.4250];
       map.flyTo(coords, 12)
@@ -81,7 +81,7 @@ const Map = ({
   }, [underSearchBar])
 
   useEffect(() => {
-    console.log("zoomDefault " + zoomDefault)
+    // console.log("zoomDefault " + zoomDefault)
 
     if (map && zoomDefault != 0) {
       const coords = [-22.9200, -43.3250];
@@ -92,7 +92,7 @@ const Map = ({
   useEffect(() => {
 
     if (map) {
-      console.log("map", map)
+      // console.log("map", map)
     }
   }, [map])
 
@@ -151,7 +151,7 @@ const Map = ({
 
       // Busca as informações da subprefeitura no novo formato
       const subprefeitura = subprefeituras_centros[subprefeituraFormatada];
-      console.log("subprefeitura ", subprefeitura);
+      // console.log("subprefeitura ", subprefeitura);
 
       if (subprefeitura) {
         const coords = [subprefeitura.lat, subprefeitura.lng];
@@ -171,7 +171,7 @@ const Map = ({
 
   useEffect(() => {
 
-    console.log(">> realizacaoOk2: ", realizacaoOk2?.nome);
+    // console.log(">> realizacaoOk2: ", realizacaoOk2?.nome);
 
     if (realizacaoId && realizacaoOk2) {
       setUnderSearchBar(true);
