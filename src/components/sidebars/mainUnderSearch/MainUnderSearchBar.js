@@ -120,7 +120,9 @@ const useStyles = makeStyles((theme) => ({
   },
   "@media screen and (min-width: 540px)": {
     underSearch: {
-
+      display:"flex",
+      flexDirection: "column",
+      justifyContent: "center",
       position: "fixed",
       top: "3vh",
       right: "3vh",
@@ -377,7 +379,7 @@ const MainUnderSearchBar = forwardRef(
             ref={ref}
             className={classes.underSearch}
           >
-            <div className={classes.basicInfo}>
+            <div style={{paddingLeft:"25px"}}>
               <Typography className={classes.titulo}>Rio de Janeiro</Typography>
               <Typography className={classes.subtitulo}> Mapa de Realizações </Typography>
             </div>

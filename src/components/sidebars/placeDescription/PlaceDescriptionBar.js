@@ -163,12 +163,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "calc(50.5vh - 80px )", //4vh + 80px + 45.5vh -160px 
+      top: "calc(50.5vh - 80px )", //4vh +1vh+ + 80px + 45.5vh -160px 
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc(45.5vh - 160px)",
+      height: "calc(46.5vh + 80px)",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -184,12 +184,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3NoImage: {
       position: "fixed",
-      top: "calc(50.5vh - 80px )", //4vh + 80px + 45.5vh -160px 
+      top: "calc(50.5vh - 80px )", //4vh +1vh+ + 80px + 45.5vh -160px 
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      paddingTop: "10px",
       height: "calc(46.5vh + 80px)",
       borderRadius: "10px",
       overflowY: "scroll",
@@ -424,7 +423,7 @@ const PlaceDescriptionBar = forwardRef(
             ref={ref}
             className={classes.underSearch}
           >
-            <div className={classes.basicInfo}>
+            <div style={{paddingLeft:"25px",paddingRight:"25px"}}>
               <Typography className={classes.titulo}>{realizacao ? realizacao : (content ? content.nome : <CircularProgress size={25} />)}</Typography>
               <Typography className={classes.subtitulo}> {programa ? programa : content?.programa}</Typography>
             </div>

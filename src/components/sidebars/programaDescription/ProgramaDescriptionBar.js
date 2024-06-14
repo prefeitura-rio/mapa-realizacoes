@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
   },
   "@media screen and (min-width: 540px)": {
     underSearch: {
-      display: "flex",
+      display:"flex",
       flexDirection: "column",
       justifyContent: "center",
       position: "fixed",
@@ -401,7 +401,7 @@ const ProgramaDescriptionBar = forwardRef(
             ref={ref}
             className={classes.underSearch}
           >
-            <div className={classes.basicInfo}>
+            <div style={{paddingLeft:"25px",paddingRight:"25px"}}>
               <Typography className={classes.programa}>{programa}</Typography>
               <Typography className={classes.subtitulo}> Programas</Typography>
             </div>
