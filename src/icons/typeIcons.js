@@ -40,8 +40,8 @@ export const getIcon = (name) => {
     case "cafe":
       return createMuiIcon(RestaurantIcon);
     case "redicon":
-      return createMuiIcon(DefaultIcon, 35, "#0b4747");
+      return createMuiIcon(DefaultIcon, 45, "#0b4747");
     default:
-      return createMuiIcon(DefaultIcon, 25, "#007E7D"); 
+      return createMuiIcon(DefaultIcon, 35, "#007E7D"); 
   }
 };

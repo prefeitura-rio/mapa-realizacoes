@@ -424,7 +424,7 @@ const PlaceDescriptionBar = forwardRef(
             className={classes.underSearch}
           >
             <div style={{paddingLeft:"25px",paddingRight:"25px"}}>
-              <Typography className={classes.titulo}>{realizacao ? realizacao : (content ? content.nome : <CircularProgress size={25} />)}</Typography>
+              <Typography className={classes.titulo}>{content?.nome ?? <CircularProgress size={25} />}</Typography>
               <Typography className={classes.subtitulo}> {programa ? programa : content?.programa}</Typography>
             </div>
           </Paper>

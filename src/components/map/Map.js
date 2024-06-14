@@ -325,11 +325,11 @@ const Map = ({
         <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
           {point.id_programa == "rio_em_forma" ? <span>Rio em Forma - {point.nome}</span> :
           <>
-            <span><b>Título</b> {point.nome}</span>
+            <span><b>Título:</b> {point.nome}</span>
             <br></br>
             {
             point.id_bairro &&
-            <span><b>Bairro</b> {toTitleCase(point.id_bairro??"")}</span>
+            <span><b>Bairro:</b> {toTitleCase(point.id_bairro??"")}</span>
   }
           </>}
         </Tooltip>
@@ -361,6 +361,7 @@ const Map = ({
         />
         <MarkerClusterGroup showCoverageOnHover={false}
           spiderfyDistanceMultiplier={2}
+          disableClusteringAtZoom={13} 
           iconCreateFunction={createClusterCustomIcon}>
           {points.map((point, index) => {
 
