@@ -474,8 +474,8 @@ const PlaceDescriptionBar = forwardRef(
             className={content?.image_url?classes.underSearch3:classes.underSearch3NoImage}
           >
 
-            <div className={classes.sumarioInfo} style={{ display: 'flex' }}>
-              {content ? <ListInfo content={content ? content : []} style={{ flexGrow: 1 }} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
+            <div className={classes.sumarioInfo} >
+              {content ? <ListInfo content={content ? content : []} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
             </div>
           </Paper>
         </Slide>

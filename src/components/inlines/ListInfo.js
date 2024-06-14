@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   listItemGutters: {
     paddingRight: "24px",
     paddingLeft: "24px",
-    whiteSpace: "nowrap"
+    // whiteSpace: "nowrap"
   },
 }));
 
@@ -108,7 +108,7 @@ const ListInfo = ({ content }) => {
 
   return (
     <>
-    <List>
+    <List style={{maxWidth:"25vw"}}>
       {listInfo.map((item, i) => (
         <React.Fragment key={i}>
           {Array.isArray(item.text) ? (
