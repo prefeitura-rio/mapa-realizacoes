@@ -361,6 +361,7 @@ const Map = ({
         />
         <MarkerClusterGroup showCoverageOnHover={false}
           spiderfyDistanceMultiplier={2}
+          disableClusteringAtZoom={13} 
           iconCreateFunction={createClusterCustomIcon}>
           {points.map((point, index) => {
 
