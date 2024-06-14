@@ -260,7 +260,7 @@ const EditInfoModal = ({
     return false
   }
 
-  console.log("content here", content)
+  // console.log("content here", content)
 
   return (
     <>

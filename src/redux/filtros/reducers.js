@@ -1,4 +1,4 @@
-import { SET_FILTROS_OPTIONS, SET_PROGRAMA_DATA, SET_TEMA_DATA } from "./actions";
+import { REQUEST_PROGRAMA_DATA, REQUEST_PROGRAMA_DATA_FAILED, REQUEST_PROGRAMA_DATA_SUCCESS, SET_FILTROS_OPTIONS, SET_PROGRAMA_DATA, SET_TEMA_DATA } from "./actions";
 import { SET_TEMA } from "./actions";
 import { SET_PROGRAMA } from "./actions";
 import { SET_REALIZACAO } from "./actions";
@@ -31,16 +31,39 @@ export const filtrosReducer = (state = defaultState, action) => {
         ...state,
         temaData: action.payload,
       };
+      // PROGRAMA
     case SET_PROGRAMA:
       return {
         ...state,
         programa: action.payload,
       };
-    case SET_PROGRAMA_DATA:
+    // case SET_PROGRAMA_DATA:
+    //   return {
+    //     ...state,
+    //     programaData: action.payload,
+    //   };
+      case REQUEST_PROGRAMA_DATA:
+      return {
+        ...state,
+        programaData: null,
+        loading: true,
+        error: false,
+      };
+    case REQUEST_PROGRAMA_DATA_SUCCESS:
       return {
         ...state,
         programaData: action.payload,
+        loading: false,
+        error: false,
       };
+    case REQUEST_PROGRAMA_DATA_FAILED:
+      return {
+        ...state,
+        programaData: null,
+        loading: false,
+        error: true,
+      };
+      //
     case SET_REALIZACAO:
       return {
         ...state,

@@ -70,7 +70,7 @@ const mapStateToProps = (state) => {
     searchPrompt: state.active.searchPrompt,
     menuSidebar: state.app.menuSidebar,
     anyLoading: state.places.loading || state.place.loading,
-    anyPlaces: state.places.anyPlaces,
+    // anyPlaces: state.places.anyPlaces,
     historyItems: state.search.historyItems,
     rota: state.rota,
     tema:state.filtros.tema,

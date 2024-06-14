@@ -31,7 +31,7 @@ import Slide from '@mui/material/Slide';
 import { Stack } from "@mui/material";
 import { set } from "date-fns";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { setPrograma, setRealizacao, setTema } from "../../../redux/filtros/actions";
+import { loadProgramaData, setPrograma, setRealizacao, setTema } from "../../../redux/filtros/actions";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import { toSnakeCase } from "../../../utils/formatFile";
 import Badge from '@material-ui/core/Badge';
@@ -198,25 +198,25 @@ const SearchBar = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("tema", tema)
-    console.log("programa", programa)
-    console.log("realizacao", realizacao)
+    // console.log("tema", tema)
+    // console.log("programa", programa)
+    // console.log("realizacao", realizacao)
   }, [tema, programa, realizacao]);
 
   const handleBairroSubprefeituraChange = (event, name) => {
     showSearchBar && setShowSearchBar(false);
     if (name) {
-      console.log('Bairro/prefeitura selecionado(a):', name);
+      // console.log('Bairro/prefeitura selecionado(a):', name);
       setBairroName(name);
     }
     // Check if name is a prefeitura
     if (bairros.includes(name)) {
       setBairroData(name);
-      if(!tema){
+      if (!tema) {
         setActiveBar(BAIRRO_DESCRIPTION_BAR);
       }
       setEhBairro(true);
-      console.log('Bairro selecionado: ', name);
+      // console.log('Bairro selecionado: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
       setInputValueBairroSubprefeitura(name);
       setBairro(name);
@@ -227,7 +227,7 @@ const SearchBar = ({
       setSubprefeituraData(name);
       setActiveBar(SUBPREFEITURA_DESCRIPTION_BAR);
       setEhBairro(false);
-      console.log('Subprefeitura selecionada: ', name);
+      // console.log('Subprefeitura selecionada: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(name));
       setInputValueBairroSubprefeitura(name);
       setSubprefeitura(name);
@@ -252,67 +252,51 @@ const SearchBar = ({
   // programas do tema -> programasTema vai aparecer na listagem de programas
   const [programasTema, setProgramasTema] = useState([]);
   useEffect(() => {
-    if (tema){
-    const loadProgramasTema = async (t) => {
-      try {
-        const programasTemaRef = await getListProgramasTema(toSnakeCase(t));
+    if (tema) {
+      const loadProgramasTema = async (t) => {
+        try {
+          const programasTemaRef = await getListProgramasTema(toSnakeCase(t));
 
-        setProgramasTema(programasTemaRef);
-      } catch (error) {
-        console.error("Erro", error);
+          setProgramasTema(programasTemaRef);
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+      const loadTemaInfo = async (p) => {
+
+        try {
+          const temaRef = await readTema(toSnakeCase(p));
+
+          setTemaData(temaRef);
+
+          // console.log("temaRef", temaRef)
+
+        } catch (error) {
+          console.error("Erro", error);
+        }
       }
-    };
-    const loadTemaInfo = async (p) => {
 
-      try {
-        const temaRef = await readTema(toSnakeCase(p));
-
-        setTemaData(temaRef);
-
-        console.log("temaRef", temaRef)
-
-      } catch (error) {
-        console.error("Erro", error);
-      }
+      loadTemaInfo(tema)
+      loadProgramasTema(tema);
     }
-
-    loadTemaInfo(tema)
-    loadProgramasTema(tema);
-  }
   }, [tema]);
 
   // realizacoes do programa -> realizacoesPrograma vai aparecer na listagem de realizacoes
   const [realizacoesPrograma, setRealizacoesPrograma] = useState([]);
   useEffect(() => {
-    if (programa){
-    const loadRealizacoesPrograma = async (p) => {
-      try {
-        const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
+    if (programa) {
+      const loadRealizacoesPrograma = async (p) => {
+        try {
+          const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
 
-        setRealizacoesPrograma(realizacoesProgramaRef);
+          setRealizacoesPrograma(realizacoesProgramaRef);
 
-      } catch (error) {
-        console.error("Erro", error);
-      }
-    };
-
-    const loadProgramaInfo = async (p) => {
-
-      try {
-        const programaRef = await readPrograma(toSnakeCase(p));
-
-        setProgramaData(programaRef);
-
-        console.log("programaRef", programaRef)
-
-      } catch (error) {
-        console.error("Erro", error);
-      }
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+      loadRealizacoesPrograma(programa);
     }
-
-    loadRealizacoesPrograma(programa);
-    loadProgramaInfo(programa);
-  }
   }, [programa]);
 
   const [inputValuePrograma, setInputValuePrograma] = useState(undefined);
@@ -323,6 +307,7 @@ const SearchBar = ({
     setShowProgramas(false);
     setPrograma(newValue);
     setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+    dispatch(loadProgramaData(newValue));
   };
 
 
@@ -352,7 +337,7 @@ const SearchBar = ({
   };
 
   const handleCleanBairroInput = () => {
-    console.log("clickei")
+    // console.log("clickei")
     setInputValueBairroSubprefeitura("");
     // setBairroData(null);
     setBairro(null);
@@ -437,8 +422,8 @@ const SearchBar = ({
 
           (
             <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Tooltip title={tema && !programa && !realizacao?`Tema: ${tema}`:tema && programa && !realizacao?`Tema: ${tema} | Programa: ${programa}`:tema && programa && realizacao?`Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}`:""} placement="right">
-                <Badge  badgeContent={tema && !programa && !realizacao?1:tema && programa && !realizacao?2:tema && programa && realizacao?3:0} color="primary">
+              <Tooltip title={tema && !programa && !realizacao ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="right">
+                <Badge badgeContent={tema && !programa && !realizacao ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
                   <IconButton
                     style={{ backgroundColor: 'transparent' }}
                     color="grey"
@@ -492,23 +477,17 @@ const SearchBar = ({
                       options={temasNameFilter}
                       PaperComponent={CustomPaperMenu}
                       ListboxProps={{ style: { maxHeight: "80vh" } }}
-                      inputprops={{
-                        style: {
-                          color: 'black'
-                        }
-                      }}
                       componentsProps={{
                         paper: {
                           sx: {
-                            marginLeft: "-5px",
                             marginTop: "15px",
+                            marginLeft: "-5px",
                             width: "392px",
                             height: "80vh",
                             overflowY: "hidden",
                             borderRadius: '0px',
-                            // borderBottomLeftRadius: '5px',
-                            // borderBottomRightRadius: '25px',
-
+                            borderBottomLeftRadius: '5px',
+                            borderBottomRightRadius: '25px',
 
                           }
                         }
@@ -614,23 +593,17 @@ const SearchBar = ({
                       options={realizacoesPrograma}
                       PaperComponent={CustomPaperMenu}
                       ListboxProps={{ style: { maxHeight: "80vh" } }}
-                      inputprops={{
-                        style: {
-                          color: 'black'
-                        }
-                      }}
                       componentsProps={{
                         paper: {
                           sx: {
-                            marginLeft: "-5px",
                             marginTop: "15px",
+                            marginLeft: "-5px",
                             width: "392px",
-                            height: "70vh",
+                            height: "80vh",
                             overflowY: "hidden",
                             borderRadius: '0px',
-                            // borderBottomLeftRadius: '5px',
-                            // borderBottomRightRadius: '25px',
-
+                            borderBottomLeftRadius: '5px',
+                            borderBottomRightRadius: '25px',
 
                           }
                         }
@@ -664,7 +637,7 @@ const SearchBar = ({
                     <IconButton
                       style={{ backgroundColor: 'transparent' }}
                       color="grey"
-                      onClick={() => { setInputValueTema(null);setTema(null);setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR);setZoomDefault((Math.random() * 999 + 1)); }}
+                      onClick={() => { setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); setZoomDefault((Math.random() * 999 + 1)); }}
                     >
                       <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                     </IconButton>
@@ -703,20 +676,20 @@ const SearchBar = ({
         {!showSearchBar ?
 
           (
-            <Paper elevation={4} style={{ borderRadius:"10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display:"flex", alignItems:"center", justifyContent:"center" }}>
-            <Tooltip title={inputValueBairroSubprefeitura?`${inputValueBairroSubprefeitura} está atuando como filtro.`: ""} placement="right">
-                <Badge  badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
+            <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Tooltip title={inputValueBairroSubprefeitura ? `${inputValueBairroSubprefeitura} está atuando como filtro.` : ""} placement="right">
+                <Badge badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
 
-                <IconButton
-                  style={{ backgroundColor: 'transparent', padding:7 }}
-                  color="grey"
-                  onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
-                >
-                  <img width={33} src={lupa_mapa}/>
-                </IconButton>
+                  <IconButton
+                    style={{ backgroundColor: 'transparent', padding: 7 }}
+                    color="grey"
+                    onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
+                  >
+                    <img width={33} src={lupa_mapa} />
+                  </IconButton>
                 </Badge>
               </Tooltip>
-              </Paper>
+            </Paper>
           )
 
           :
@@ -796,7 +769,7 @@ const SearchBar = ({
                     // }
                     >
 
-                      <BackspaceIcon sx={{marginRight:"5px",fontSize:"20px"}} onClick={handleCleanBairroInput} />
+                      <BackspaceIcon sx={{ marginRight: "5px", fontSize: "20px" }} onClick={handleCleanBairroInput} />
 
 
                     </IconButton>

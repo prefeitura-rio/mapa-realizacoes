@@ -20,7 +20,8 @@ const ProgramaDescriptionContainer = (props) => {
     // dispatch(loadDadosAgregadosAbaSumarioInfoBasicasCidade());
     // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
     // dispatch(loadDadosAgregadosAbaTemaCidade());
-    dispatch(loadDadosAgregadosAbaProgramasCidade());
+    // dispatch(loadDadosAgregadosAbaProgramasCidade());
+    
   }, []);
 
   return (

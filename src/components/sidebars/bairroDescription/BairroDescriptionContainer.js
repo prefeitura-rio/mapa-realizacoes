@@ -12,7 +12,7 @@ import { loadAllImagesBairro,setImagesType } from "../../../redux/images/actions
 
 const BairroDescriptionContainer = (props) => {
 
-  console.log("BairroDescriptionContainer.js props: ", props)
+  // console.log("BairroDescriptionContainer.js props: ", props)
 
   const dispatch = useDispatch();
   useEffect(() => {
