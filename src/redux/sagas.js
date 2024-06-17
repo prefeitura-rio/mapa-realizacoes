@@ -203,7 +203,7 @@ function* workerLoadAllPlaces(action) {
   try {
     yield put(requestAllPlaces());
     const data = yield call(getListRealizacaoData, action.payload);
-    console.log("Data em workerLoadAllPlaces:", data); 
+    // console.log("Data em workerLoadAllPlaces:", data); 
     yield put(requestAllPlacesSuccess(data));
   } catch (error) {
     // console.log("Erro em workerLoadAllPlaces:", error); 
