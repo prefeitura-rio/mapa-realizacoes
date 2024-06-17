@@ -103,9 +103,9 @@ const Map = ({
   // Use a ref to store the current layer
   const currentLayer = useRef(null);
   useEffect(() => {
-    if (map && bairroNome) {
+    if (map && bairro) {
       // Converte o nome do bairro para o formato correto (considerando acentuação)
-      const bairroFormatado = bairroNome.toLowerCase();
+      const bairroFormatado = bairro.toLowerCase();
 
       // Busca as informações do bairro no novo formato
       const bairro_centro = bairros_centros[bairroFormatado];
@@ -117,7 +117,7 @@ const Map = ({
 
       }
       // Find the correct bairro object
-      const bairroData = shapeFileBairros.find(b => (b.nome).toLowerCase() === (bairroNome).toLowerCase());
+      const bairroData = shapeFileBairros.find(b => (b.nome).toLowerCase() === (bairro).toLowerCase());
       if (bairroData) {
         // Convert WKT to GeoJSON
         const geoJsonData = parse(bairroData.geometry_wkt);
@@ -137,7 +137,7 @@ const Map = ({
         }).addTo(map);
       }
     }
-  }, [bairroNome, map]);
+  }, [bairro, map]);
 
   useEffect(() => {
     if (map) {
