@@ -208,7 +208,7 @@ const Map = ({
           map.setView({
             lat: point?.coords?.latitude,
             lng: point?.coords?.longitude,
-            }, targetZoom);
+          }, targetZoom);
           dispatch(setCurrentClickedPoint(point))
         }
       }
@@ -310,6 +310,13 @@ const Map = ({
     });
   };
 
+  const iconMapping = {
+    "brts_transolímpica": "brts_transolimpicas_icon",
+    "brts_transbrasil": "brts_transbrasil_icon",
+    "brts_transoeste": "brts_transoeste_icon",
+    "brts_transcarioca": "brts_transcarioca_icon"
+  };
+  
   // Função auxiliar para renderizar o marcador
   function renderMarker(point, index) {
     return (
@@ -317,25 +324,28 @@ const Map = ({
         key={point.id + index}
         position={Object.values(point.coords)}
         // icon={getIcon("anyIcon")}
-        icon={getIcon(point == currentClickedPoint ? "redicon" : "anyIcon")}
+        icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? "redicon" : "anyIcon"), point === currentClickedPoint)}
         eventHandlers={{
           click: (e) => onMarkerClick(point),
         }}
       >
         <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
           {point.id_programa == "rio_em_forma" ? <span>Rio em Forma - {point.nome}</span> :
-          <>
-            <span><b>Título:</b> {point.nome}</span>
-            <br></br>
-            {
-            point.id_bairro &&
-            <span><b>Bairro:</b> {toTitleCase(point.id_bairro??"")}</span>
-  }
-          </>}
+            <>
+              <span><b>Título:</b> {point.nome}</span>
+              <br></br>
+              {
+                point.id_bairro &&
+                <span><b>Bairro:</b> {toTitleCase(point.id_bairro ?? "")}</span>
+              }
+            </>}
         </Tooltip>
       </Marker>
     );
   }
+
+  const mobilidadePoints = points.filter(point => toSnakeCase('Mobilidade') === point.id_tema);
+  const otherPoints = points.filter(point => toSnakeCase('Mobilidade') !== point.id_tema);
 
   return (
     <>
@@ -361,9 +371,9 @@ const Map = ({
         />
         <MarkerClusterGroup showCoverageOnHover={false}
           spiderfyDistanceMultiplier={2}
-          disableClusteringAtZoom={13} 
+          disableClusteringAtZoom={13}
           iconCreateFunction={createClusterCustomIcon}>
-          {points.map((point, index) => {
+          {otherPoints.map((point, index) => {
 
             // Verifica se o ponto corresponde ao bairro selecionado
             const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
@@ -376,9 +386,9 @@ const Map = ({
 
             const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
 
-            const isRealizacaoMatch = realizacao ?
-              point.id === toSnakeCase(realizacao)
-              : true;
+            // const isRealizacaoMatch = realizacao ?
+            //   point.id === toSnakeCase(realizacao)
+            //   : true;
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
             if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
@@ -386,6 +396,14 @@ const Map = ({
             }
           })}
         </MarkerClusterGroup>
+
+        {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
+          const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
+          // Render the marker for points with the "Mobilidade" theme
+          if (isProgramaMatch) {
+            return renderMarker(point, index);
+          }
+        })}
 
       </MapContainer>
 
