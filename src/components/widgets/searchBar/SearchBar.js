@@ -13,6 +13,7 @@ import {
   Typography,
   Fade,
   Tooltip,
+  Box,
 } from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -307,7 +308,7 @@ const SearchBar = ({
     setShowProgramas(false);
     setPrograma(newValue);
     setActiveBar(PROGRAMA_DESCRIPTION_BAR);
-    if(!bairro) {
+    if (!bairro) {
       setZoomDefault((Math.random() * 999 + 1));
     }
     dispatch(loadProgramaData(newValue));
@@ -415,6 +416,13 @@ const SearchBar = ({
         <Paper elevation={0} {...props} />
       </>
     )
+  };
+
+  const brtLineColors = {
+    "BRTs Transbrasil": '#ED3237',
+    "BRTs Transcarioca": '#ED7422',
+    "BRTs Transoeste": '#208DCD',
+    "BRTs Transolímpica": '#1DA64D'
   };
 
   return (
@@ -554,6 +562,16 @@ const SearchBar = ({
                         }
                       }}
                       open={showMenuBar}
+                      renderOption={(props, option, { selected }) => (
+                        <Box
+                          component="li"
+                          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: "40px", paddingTop: "8px", paddingBottom: "8px" }}
+                          {...props}
+                        >
+                          <Typography>{option}</Typography>
+                          {(option in brtLineColors) && <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: brtLineColors[option] }} />}
+                        </Box>
+                      )}
                       renderInput={(params) => (
                         <TextField
                           {...params}
@@ -640,7 +658,7 @@ const SearchBar = ({
                     <IconButton
                       style={{ backgroundColor: 'transparent' }}
                       color="grey"
-                      onClick={() => { setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); if(!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
+                      onClick={() => { setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
                     >
                       <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                     </IconButton>
@@ -650,7 +668,7 @@ const SearchBar = ({
                     (showRealizacoes ? <IconButton
                       style={{ backgroundColor: 'transparent' }}
                       color="grey"
-                      onClick={() => { setRealizacoesPrograma([]);setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR);if(!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                      onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
                     >
                       <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                     </IconButton> : "")
