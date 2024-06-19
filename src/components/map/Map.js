@@ -23,6 +23,8 @@ import shapeFileBairros from "./shapeFileBairros.json"
 import { parse } from 'terraformer-wkt-parser';
 import { toTitleCase } from "../../utils/formatFile";
 import { useDispatch } from "react-redux";
+import brtsLines from "./brtsLines.json";
+
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
 };
@@ -100,8 +102,97 @@ const Map = ({
     }
   }, [map])
 
+  const currentLayerTransBrasil = useRef(null);
+  const currentLayerTransOeste = useRef(null);
+  const currentLayerTransCarioca = useRef(null);
+  const currentLayerTransOlímpica = useRef(null);
+
+  const filterLines = (nome) => {
+    return {
+      ...brtsLines,
+      features: brtsLines.features.filter(feature => feature.properties.nome === nome)
+    };
+  };
+
+  useEffect(() => {
+    const removeLayers = () => {
+      if (currentLayerTransBrasil.current) {
+        map.removeLayer(currentLayerTransBrasil.current);
+      }
+      if (currentLayerTransOeste.current) {
+        map.removeLayer(currentLayerTransOeste.current);
+      }
+      if (currentLayerTransCarioca.current) {
+        map.removeLayer(currentLayerTransCarioca.current);
+      }
+      if (currentLayerTransOlímpica.current) {
+        map.removeLayer(currentLayerTransOlímpica.current);
+      }
+    };
+  
+    if (map) {
+      if (tema == "Mobilidade") {
+        const addLayer = (nome, layerRef, color) => {
+          if (layerRef.current) {
+            map.removeLayer(layerRef.current);
+          }
+          layerRef.current = L.geoJSON(filterLines(nome), {
+            style: { color: color, weight: 4 }
+          }).addTo(map);
+        };
+  
+        addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
+        addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
+        addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
+        addLayer('TransOlímpica', currentLayerTransOlímpica, '#1DA64D');
+      } else {
+        removeLayers();
+      }
+    }
+  }, [map, tema]);
+
+useEffect(() => {
+  if (map && programa) {
+    const removeLayers = () => {
+      if (currentLayerTransBrasil.current) {
+        map.removeLayer(currentLayerTransBrasil.current);
+      }
+      if (currentLayerTransOeste.current) {
+        map.removeLayer(currentLayerTransOeste.current);
+      }
+      if (currentLayerTransCarioca.current) {
+        map.removeLayer(currentLayerTransCarioca.current);
+      }
+      if (currentLayerTransOlímpica.current) {
+        map.removeLayer(currentLayerTransOlímpica.current);
+      }
+    };
+
+    const addLayer = (nome, layerRef, color) => {
+      layerRef.current = L.geoJSON(filterLines(nome), {
+        style: { color: color, weight: 4 }
+      }).addTo(map);
+    };
+
+    removeLayers();
+
+    if (programa == "BRTs Transbrasil") {
+      addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
+    } else if (programa == "BRTs Transoeste") {
+      addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
+    } else if (programa == "BRTs Transcarioca") {
+      addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
+    } else if (programa == "BRTs Transolímpica") {
+      addLayer('TransOlímpica', currentLayerTransOlímpica, '#1DA64D');
+    }
+  }
+}, [map, programa]);
+
+
+  
   // Use a ref to store the current layer
   const currentLayer = useRef(null);
+ 
   useEffect(() => {
     if (map && bairro) {
       // Converte o nome do bairro para o formato correto (considerando acentuação)
