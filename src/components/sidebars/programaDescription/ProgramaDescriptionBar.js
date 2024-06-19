@@ -441,30 +441,31 @@ const ProgramaDescriptionBar = forwardRef(
             className={classes.underSearch3}
           >
 
-            <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-              {!dadosAgregadosAbaSumarioStatusEntregasPrograma ? < CircularProgress /> :
-                <>
-                  <Tooltip title="Realizações">
-                    <Box display="flex" >
-                      <AccountBalanceIcon />
-                      <Box pl={0.5}>
-                        <Typography> {dadosAgregadosAbaSumarioStatusEntregasPrograma?.count} </Typography>
-                      </Box>
-                    </Box>
-                  </Tooltip>
-                  <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
-                  <Tooltip title="Investimento">
-                    <Box display="flex" >
-                      <AttachMoneyIcon />
-                      <Box pl={0.5}>
-                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasPrograma?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
-                      </Box>
-                    </Box>
-                  </Tooltip>
-
-                </>
-              }
+<Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+  {!dadosAgregadosAbaSumarioStatusEntregasPrograma ? < CircularProgress /> :
+    <>
+      <Tooltip title="Realizações">
+        <Box display="flex" >
+          <AccountBalanceIcon />
+          <Box pl={0.5}>
+            <Typography> {dadosAgregadosAbaSumarioStatusEntregasPrograma?.count} </Typography>
+          </Box>
+        </Box>
+      </Tooltip>
+      <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
+      {dadosAgregadosAbaSumarioStatusEntregasPrograma?.investment !== 0 && (
+        <Tooltip title="Investimento">
+          <Box display="flex" >
+            <AttachMoneyIcon />
+            <Box pl={0.5}>
+              <Typography >{dadosAgregadosAbaSumarioStatusEntregasPrograma?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
             </Box>
+          </Box>
+        </Tooltip>
+      )}
+    </>
+  }
+</Box>
 
           </Paper>
         </Slide>

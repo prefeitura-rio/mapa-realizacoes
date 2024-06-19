@@ -464,6 +464,7 @@ const TemaDescriptionBar = forwardRef(
                     </Box>
                   </Tooltip>
                   <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
+                  {dadosAgregadosAbaSumarioStatusEntregasTema?.investment !== 0 && (
                   <Tooltip title="Investimento">
                     <Box display="flex" >
                       <AttachMoneyIcon />
@@ -473,6 +474,7 @@ const TemaDescriptionBar = forwardRef(
                       </Box>
                     </Box>
                   </Tooltip>
+                  )}
                 </>
               }
 
