@@ -565,7 +565,7 @@ const SearchBar = ({
                       renderOption={(props, option, { selected }) => (
                         <Box
                           component="li"
-                          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: "40px", paddingTop: "8px", paddingBottom: "8px" }}
+                          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: tema == "Mobilidade" ? "40px" : 0 , paddingTop: tema == "Mobilidade" ? "8px" : "6px", paddingBottom: tema == "Mobilidade" ? "8px" : "6px" }}
                           {...props}
                         >
                           <Typography>{option}</Typography>
