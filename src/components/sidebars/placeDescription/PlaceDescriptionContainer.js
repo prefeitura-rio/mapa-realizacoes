@@ -50,6 +50,7 @@ const PlaceDescriptionContainer = (props) => {
         tema={props.tema}
         programa={props.programa}
         realizacao={props.realizacao}
+        error={props.error}
       />
   );
 };
@@ -58,6 +59,7 @@ const mapStateToProps = (state) => {
   return {
     underSearchBar: state.active.underSearchBar,
     content: state.place.content,
+    error: state.place.error,
     cidades: state.cidades.all,
     dadosAgregadosAbaTemaCidade: state.cidades.dadosAgregadosAbaTemaCidade,
     dadosAgregadosAbaProgramasCidade: state.cidades.dadosAgregadosAbaProgramasCidade,

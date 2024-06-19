@@ -142,6 +142,29 @@ const useStyles = makeStyles((theme) => ({
         display: "none",
       },
     },
+    underSearchError: {
+      backgroundColor:"pink",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      position: "fixed",
+      top: "3vh",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "160px",
+      borderRadius: "10px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+        display: "none",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        display: "none",
+      },
+    },
     underSearch2: {
       position: "fixed",
       top: "calc(4vh + 80px )", // 3vh + 70px + 1vh
@@ -259,6 +282,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "-1px",
     marginBottom: "-1px"
   },
+  noInfoTitulo: {
+    // position:"relative",
+    lineHeight: "26px",
+    fontSize: "1.2rem",
+    fontWeight: "bold",
+  },
   subtitulo: {
     // marginTop: "15px", 
     opacity: 0.6,
@@ -358,7 +387,8 @@ const PlaceDescriptionBar = forwardRef(
     content,
     tema,
     programa,
-    realizacao
+    realizacao,
+    error
 
 
 
@@ -416,81 +446,88 @@ const PlaceDescriptionBar = forwardRef(
 
     return (
       <>
-
-        <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            ref={ref}
-            className={classes.underSearch}
-          >
-            <div style={{paddingLeft:"25px",paddingRight:"25px"}}>
-              <Typography className={classes.titulo}>{content?.nome ?? <CircularProgress size={25} />}</Typography>
-              <Typography className={classes.subtitulo}> {programa ? programa : content?.programa}</Typography>
-            </div>
-          </Paper>
-        </Slide>
-        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            className={classes.underSearch2}
-          >
-            <div className={classes.basicInfo}>
-              {realizacao || content?.nome ? (
-                <>
-                  <Stack direction="row">
-                    <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                    {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
-                      <IconButton>
-                        <InfoIcon sx={{ color: "black" }} />
-                      </IconButton>
-                    </Tooltip> */}
-                  </Stack>
-                  <Typography className={classes.subtituloMunicipio}>
-                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
-
-                    {fullText + " ..." === shortText ? null :
-                      <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                        {isTextExpanded ? 'Leia menos' : 'Leia mais'}
-                      </Button>
-                    }
-                  </Typography>
-                </>
-              ) : (
-                <CircularProgress style={{ marginTop: "1rem" }} size={25} />
-              )}
-            </div>
-            {content?.status &&
-              <span className={classes.buttonStatus}>
-                <Button variant="contained" className={classes.statusButton}>
-                  {content?.status}
-                </Button>
-              </span>
-            }
-          </Paper>
-        </Slide>
-        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            className={content?.image_url?classes.underSearch3:classes.underSearch3NoImage}
-          >
-
-            <div className={classes.sumarioInfo} >
-              {content ? <ListInfo content={content ? content : []} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
-            </div>
-          </Paper>
-        </Slide>
-        {content?.image_url &&
-          <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-            <Paper
-              elevation={6}
-              className={classes.underSearch4}
-            >
-              <ImageCarousel images={[content?.image_url]} />
+        {error ? (
+          <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+            <Paper elevation={6} ref={ref} className={classes.underSearchError}>
+              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                <Typography className={classes.noInfoTitulo}>
+                  Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o Escritório de Dados.
+                </Typography>
+               
+              </div>
             </Paper>
           </Slide>
-        }
+        ) : (
+          <>
+          <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+            <Paper elevation={6} ref={ref} className={classes.underSearch}>
+              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                <Typography className={classes.titulo}>
+                  {content?.nome ?? <CircularProgress size={25} />}
+                </Typography>
+                <Typography className={classes.subtitulo}>
+                  {programa ? programa : content?.programa}
+                </Typography>
+              </div>
+            </Paper>
+          </Slide>
+            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper elevation={6} className={classes.underSearch2}>
+                <div className={classes.basicInfo}>
+                  {realizacao || content?.nome ? (
+                    <>
+                      <Stack direction="row">
+                        <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                        {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
+                          <IconButton>
+                            <InfoIcon sx={{ color: "black" }} />
+                          </IconButton>
+                        </Tooltip> */}
+                      </Stack>
+                      <Typography className={classes.subtituloMunicipio}>
+                        {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+  
+                        {fullText + " ..." === shortText ? null :
+                          <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                            {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                          </Button>
+                        }
+                      </Typography>
+                    </>
+                  ) : (
+                    <CircularProgress style={{ marginTop: "1rem" }} size={25} />
+                  )}
+                </div>
+                {content?.status && (
+                  <span className={classes.buttonStatus}>
+                    <Button variant="contained" className={classes.statusButton}>
+                      {content?.status}
+                    </Button>
+                  </span>
+                )}
+              </Paper>
+            </Slide>
+            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={content?.image_url ? classes.underSearch3 : classes.underSearch3NoImage}
+              >
+                <div className={classes.sumarioInfo}>
+                  {content ? <ListInfo content={content ? content : []} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
+                </div>
+              </Paper>
+            </Slide>
+            {content?.image_url && (
+              <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                <Paper elevation={6} className={classes.underSearch4}>
+                  <ImageCarousel images={[content?.image_url]} />
+                </Paper>
+              </Slide>
+            )}
+          </>
+        )}
       </>
     );
-  }
-);
-export default PlaceDescriptionBar;
+  });
+  
+  export default PlaceDescriptionBar;
