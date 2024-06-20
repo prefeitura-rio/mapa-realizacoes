@@ -428,12 +428,12 @@ const ProgramaDescriptionBar = forwardRef(
             </div>
           </Paper>
         </Slide>
+          {dadosAgregadosAbaSumarioStatusEntregasPrograma?.count !=0 && 
         <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
           <Paper
             elevation={6}
             className={classes.underSearch3}
           >
-
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
               {!dadosAgregadosAbaSumarioStatusEntregasPrograma ? < CircularProgress /> :
                 <>
@@ -462,6 +462,7 @@ const ProgramaDescriptionBar = forwardRef(
 
           </Paper>
         </Slide>
+  }
         {programaData?.image_url &&
           <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
             <Paper
