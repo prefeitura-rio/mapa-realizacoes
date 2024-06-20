@@ -750,7 +750,7 @@ const SearchBar = ({
                     value={inputValueBairroSubprefeitura}
                     onChange={handleBairroSubprefeituraChange}
                     disableClearable
-                    options={bairrosSubSubprefeituras}
+                    options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                     PaperComponent={CustomPaperSearch}
                     ListboxProps={{ style: { maxHeight: "80vh" } }}
                     componentsProps={{
