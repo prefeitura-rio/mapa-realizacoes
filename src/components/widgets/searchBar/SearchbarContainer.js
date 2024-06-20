@@ -15,12 +15,14 @@ import { useEffect } from "react";
 import { setRota } from "../../../redux/rota/actions";
 import { setBairro, setPrograma,setProgramaData, setRealizacao, setSubprefeitura, setTema, setTemaData } from "../../../redux/filtros/actions";
 import { setZoomDefault } from "../../../redux/actions";
-
+import { useParams } from "react-router-dom"
 
 const SearchbarContainer = (props) => {
   // useEffect(() => {
   //   props.tema&&props.loadAllPlaces();
   // }, [props.tema]);
+
+  const { id } = useParams();
 
   return (
     <SearchBar
@@ -41,6 +43,7 @@ const SearchbarContainer = (props) => {
       setPlacesData={props.setPlacesData}
       historyItems={props.historyItems}
       rota = {props.rota}
+      realizacaoId = {id}
       setRota = {props.setRota}
       temasNameFilter = {props.temasNameFilter}
       programasNameFilter = {props.programasNameFilter}

@@ -69,7 +69,7 @@ const Map = ({
 
   useEffect(() => {
     // console.log("ROTAROTA " + JSON.stringify(rota.rota))
-    if (rota.rota == null && map) {
+    if (rota == null && map) {
       const coords = [-22.9200, -43.3250];
       map.flyTo(coords, 11)
     }
@@ -260,7 +260,7 @@ useEffect(() => {
 
   useEffect(() => {
     if (realizacaoOk?.nome) {
-      setRealizacaoOk(realizacaoOk.image_folder)
+      setRealizacaoOk(realizacaoOk.id)
     }
   }, [realizacaoOk])
 
@@ -268,7 +268,7 @@ useEffect(() => {
 
     // console.log(">> realizacaoOk2: ", realizacaoOk2?.nome);
 
-    if (realizacaoId && realizacaoOk2) {
+    if (realizacaoId && points.length != 0) {
       setUnderSearchBar(true);
       setDescriptionData(realizacaoId);
       setActiveBar(DESCRIPTION_BAR);

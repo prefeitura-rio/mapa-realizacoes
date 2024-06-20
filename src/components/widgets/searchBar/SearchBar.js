@@ -187,6 +187,7 @@ const SearchBar = ({
   setZoomDefault,
   bairro,
   subprefeitura,
+  realizacaoId
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -323,6 +324,8 @@ const SearchBar = ({
     setActiveBar(DESCRIPTION_BAR);
     setDescriptionData(toSnakeCase(newValue));
     loadData(toSnakeCase(newValue));
+    setRota(toSnakeCase(newValue));
+    navigate(`/${toSnakeCase(newValue)}`);
   };
   //mock
 

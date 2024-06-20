@@ -63,7 +63,7 @@ const mapStateToProps = (state) => {
     filtros: state.filtros.filtros,
     bairroNome: state.bairros.descriptionData,
     subprefeituraNome: state.subprefeituras.content,
-    rota: state.rota,
+    rota: state.rota.rota,
     underSearchBar: state.active.underSearchBar,
     tema: state.filtros.tema,
     programa: state.filtros.programa,
