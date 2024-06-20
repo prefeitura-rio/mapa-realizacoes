@@ -75,7 +75,7 @@ const ContextMenu = ({
 
           <ListItem button className={classes.listItem}>
             <ListItemText
-              primary={"Busque por AP, Bairro, Subprefeitura."}
+              primary={"Filtre por Tema, Programa e Bairro."}
               secondary={"Clique em uma obra para ver detalhes."}
             ></ListItemText>
           </ListItem>
