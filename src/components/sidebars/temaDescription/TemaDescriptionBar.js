@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
@@ -31,6 +31,8 @@ import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import { isDesktop } from "../../../redux/active/reducers";
+import { BottomSheet } from "react-spring-bottom-sheet";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -118,10 +120,13 @@ const useStyles = makeStyles((theme) => ({
       overflow: "auto",
       position: "relative",
     },
+    underSearchMobile: {
+      padding: "12px 0",
+    },
   },
   "@media screen and (min-width: 540px)": {
     underSearch: {
-      display:"flex",
+      display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       position: "fixed",
@@ -310,7 +315,8 @@ const TemaDescriptionBar = forwardRef(
 
     tema,
     temaData,
-    bairro
+    bairro,
+    openedPopup
 
 
 
@@ -321,30 +327,30 @@ const TemaDescriptionBar = forwardRef(
     const [dadosAgregadosAbaSumarioStatusEntregasTema, setDadosAgregadosAbaSumarioStatusEntregasTema] = useState(0)
 
     useEffect(() => {
-    const loadDadosAgregadosTema = async () => {
-      // for place loading everytime the tema/bairro changes
-      setDadosAgregadosAbaSumarioStatusEntregasTema(null);
-      try {
-        let dadosAgregadosTema;
-        if (!bairro){
-          dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, null, null);;
-        }else{
-          dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, toSnakeCase(bairro), null);
-        }
-        // console.log("dadosAgregadosTema", dadosAgregadosTema)
-        setDadosAgregadosAbaSumarioStatusEntregasTema(dadosAgregadosTema)
+      const loadDadosAgregadosTema = async () => {
+        // for place loading everytime the tema/bairro changes
+        setDadosAgregadosAbaSumarioStatusEntregasTema(null);
+        try {
+          let dadosAgregadosTema;
+          if (!bairro) {
+            dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, null, null);;
+          } else {
+            dadosAgregadosTema = await getAggregatedData(toSnakeCase(tema), null, toSnakeCase(bairro), null);
+          }
+          // console.log("dadosAgregadosTema", dadosAgregadosTema)
+          setDadosAgregadosAbaSumarioStatusEntregasTema(dadosAgregadosTema)
 
-      } catch (error) {
-        console.error("Erro", error);
-      }
-    };
-    loadDadosAgregadosTema();
-  }, [tema,bairro]);
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+      loadDadosAgregadosTema();
+    }, [tema, bairro]);
 
 
     const handleTitleClick = (value) => {
+      // setUnderSearchBar(true);
       setDescriptionData(toSnakeCase(value));
-      setUnderSearchBar(true);
       setActiveBar(DESCRIPTION_BAR);
       loadData(toSnakeCase(value));
       // console.log("clickei")
@@ -403,26 +409,23 @@ const TemaDescriptionBar = forwardRef(
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
 
-
-    return (
-      <>
-
-        <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+    function SheetContentTemaDescriptionBar() {
+      return (
+        <Stack m={2} mt={2} spacing={2}>
           <Paper
             elevation={6}
             ref={ref}
-            className={classes.underSearch}
+            className={classes.underSearchMobile}
           >
-             <div style={{paddingLeft:"25px"}}>
+            <div style={{ paddingLeft: "25px" }}>
               <Typography className={classes.titulo}>{tema}</Typography>
               <Typography className={classes.subtitulo}> Temas</Typography>
             </div>
           </Paper>
-        </Slide>
-        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+
           <Paper
             elevation={6}
-            className={classes.underSearch2}
+            className={classes.underSearch2Mobile}
           >
             <div className={classes.basicInfo}>
               <Stack direction="row">
@@ -434,25 +437,24 @@ const TemaDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip> */}
               </Stack>
-        
+
 
               <Typography className={classes.subtituloMunicipio}>
-  {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
 
-  {fullText && fullText !== "" && fullText + " ..."!== shortText &&
-    <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-      {isTextExpanded ? 'Leia menos' : 'Leia mais'}
-    </Button>
-  }
-</Typography>
-              
+                {fullText && fullText !== "" && fullText + " ..." !== shortText &&
+                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                    {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                  </Button>
+                }
+              </Typography>
+
             </div>
           </Paper>
-        </Slide>
-        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+
           <Paper
             elevation={6}
-            className={classes.underSearch3}
+            className={classes.underSearch3Mobile}
           >
 
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
@@ -469,15 +471,15 @@ const TemaDescriptionBar = forwardRef(
                   </Tooltip>
                   <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
                   {dadosAgregadosAbaSumarioStatusEntregasTema?.investment !== 0 && (
-                  <Tooltip title="Investimento">
-                    <Box display="flex" >
-                      <AttachMoneyIcon />
-                      <Box pl={0.5}>
-                        {/* TODO: valor agregado das obras. */}
-                        <Typography >{dadosAgregadosAbaSumarioStatusEntregasTema?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                    <Tooltip title="Investimento">
+                      <Box display="flex" >
+                        <AttachMoneyIcon />
+                        <Box pl={0.5}>
+                          {/* TODO: valor agregado das obras. */}
+                          <Typography >{dadosAgregadosAbaSumarioStatusEntregasTema?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Tooltip>
+                    </Tooltip>
                   )}
                 </>
               }
@@ -485,41 +487,206 @@ const TemaDescriptionBar = forwardRef(
             </Box>
 
           </Paper>
-        </Slide>
-        <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+
           <Paper
             elevation={6}
-            className={classes.underSearch4}
+            className={classes.underSearch4Mobile}
           >
             <div className={classes.basicInfo}>
               <Typography className={classes.sobreMunicipio}>Destaques</Typography>
               <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-              {destaquesTema.length==0 ? (
+                {destaquesTema.length == 0 ? (
                   <>
-                  <Skeleton variant="text" />
-                  <Skeleton height="15px" width="80%" />
-                  <Skeleton height="15px" width="60%" />
-                  <Skeleton height="15px" width="73%" />
-                  <br></br>
-                  <Skeleton variant="text" />
-                  <Skeleton height="15px" width="40%" />
-                  <Skeleton height="15px" width="60%" />
-                  <Skeleton height="15px" width="73%" />
+                    <Skeleton variant="text" />
+                    <Skeleton height="15px" width="80%" />
+                    <Skeleton height="15px" width="60%" />
+                    <Skeleton height="15px" width="73%" />
+                    <br></br>
+                    <Skeleton variant="text" />
+                    <Skeleton height="15px" width="40%" />
+                    <Skeleton height="15px" width="60%" />
+                    <Skeleton height="15px" width="73%" />
                   </>
-              )
+                )
                   :
-              (
-                destaquesTema.map((item, index) => (
-                  <li key={index} style={{ paddingBottom: "15px" }}>
-                    <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                    <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                    </li>
-                  ))
-                )}
+                  (
+                    destaquesTema.map((item, index) => (
+                      <li key={index} style={{ paddingBottom: "15px" }}>
+                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                      </li>
+                    ))
+                  )}
               </ul>
             </div>
           </Paper>
-        </Slide>
+
+        </Stack>
+      );
+    }
+
+    const [value, setValue] = useState(1);
+    const [openSheet, setOpenSheet] = useState(0);
+    const sheetRef = useRef();
+
+    const handleOpenSheet = (sheet) => {
+      setOpenSheet(sheet);
+    };
+
+
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+
+    const handleCloseSheet = () => {
+      setIsBottomSheetOpen(false);
+    };
+
+    useEffect(() => {
+      if ( openedPopup == null && tema){
+        setIsBottomSheetOpen(true);
+      }
+    }, [openedPopup]);
+
+
+    return (
+      <>
+        {isDesktop() && (
+          <div >
+
+            <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                ref={ref}
+                className={classes.underSearch}
+              >
+                <div style={{ paddingLeft: "25px" }}>
+                  <Typography className={classes.titulo}>{tema}</Typography>
+                  <Typography className={classes.subtitulo}> Temas</Typography>
+                </div>
+              </Paper>
+            </Slide>
+            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch2}
+              >
+                <div className={classes.basicInfo}>
+                  <Stack direction="row">
+
+                    <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                    {/* <Tooltip placement="right" title={`Detalhe sobre o ${tema}`}>
+                  <IconButton>
+                    <InfoIcon sx={{color:"black"}}/>
+                  </IconButton>
+                </Tooltip> */}
+                  </Stack>
+
+
+                  <Typography className={classes.subtituloMunicipio}>
+                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+
+                    {fullText && fullText !== "" && fullText + " ..." !== shortText &&
+                      <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                        {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                      </Button>
+                    }
+                  </Typography>
+
+                </div>
+              </Paper>
+            </Slide>
+            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch3}
+              >
+
+                <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+                  {!dadosAgregadosAbaSumarioStatusEntregasTema ? < CircularProgress /> :
+                    <>
+                      <Tooltip title="Realizações">
+                        <Box display="flex" >
+                          <AccountBalanceIcon />
+                          <Box pl={0.5}>
+                            {/* TODO: valor agregado da qntdd de obras. */}
+                            <Typography> {dadosAgregadosAbaSumarioStatusEntregasTema?.count} </Typography>
+                          </Box>
+                        </Box>
+                      </Tooltip>
+                      <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
+                      {dadosAgregadosAbaSumarioStatusEntregasTema?.investment !== 0 && (
+                        <Tooltip title="Investimento">
+                          <Box display="flex" >
+                            <AttachMoneyIcon />
+                            <Box pl={0.5}>
+                              {/* TODO: valor agregado das obras. */}
+                              <Typography >{dadosAgregadosAbaSumarioStatusEntregasTema?.investment.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                            </Box>
+                          </Box>
+                        </Tooltip>
+                      )}
+                    </>
+                  }
+
+                </Box>
+
+              </Paper>
+            </Slide>
+            <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch4}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                    {destaquesTema.length == 0 ? (
+                      <>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                      </>
+                    )
+                      :
+                      (
+                        destaquesTema.map((item, index) => (
+                          <li key={index} style={{ paddingBottom: "15px" }}>
+                            <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                            <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                          </li>
+                        ))
+                      )}
+                  </ul>
+                </div>
+              </Paper>
+            </Slide>
+          </div>
+        )}
+
+        {!isDesktop() && openedPopup == null && tema && (
+          <div>
+
+            <BottomSheet
+              style={{ zIndex: 507, position: "absolute" }}
+              open={isBottomSheetOpen}
+              onDismiss={handleCloseSheet}
+              ref={sheetRef}
+              defaultSnap={({ maxHeight }) => maxHeight / 2}
+              snapPoints={({ maxHeight }) => [
+                maxHeight - maxHeight / 10,
+                maxHeight / 4,
+                maxHeight * 0.6,
+              ]}
+            >
+              <SheetContentTemaDescriptionBar />
+            </BottomSheet>
+          </div>
+        )}
       </>
     );
   }

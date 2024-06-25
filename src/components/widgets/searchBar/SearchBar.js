@@ -14,6 +14,12 @@ import {
   Fade,
   Tooltip,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+  Button,
 } from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -37,8 +43,21 @@ import BackspaceIcon from '@mui/icons-material/Backspace';
 import { toSnakeCase } from "../../../utils/formatFile";
 import Badge from '@material-ui/core/Badge';
 import lupa_mapa from '../../../icons/lupa_mapa.png'
+import { BottomNavigation, BottomNavigationAction, ButtonBase } from "@material-ui/core";
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import 'react-spring-bottom-sheet/dist/style.css';
+import { isDesktop } from "../../../redux/active/reducers";
+
 const useStyles = makeStyles((theme) => {
   return {
+    root: {
+      width: '100%',
+      overflow: 'hidden',
+      position: 'fixed',
+      right: 0,
+      bottom: 0,
+      height: '70px'
+    },
     searchbar: {
       position: "absolute !important",
       zIndex: 2,
@@ -114,21 +133,8 @@ const useStyles = makeStyles((theme) => {
       marginLeft: "3px",
       color: theme.palette.grey[500],
     },
-    "@media screen and (max-width: 540px)": {
-      paper: {
-        width: "385px",
-        display: "flex",
-        alignItems: "center",
-      },
-      searchbar: {
-        position: "absolute",
-        zIndex: 2,
-        top: "7px",
-        left: "7px",
-      },
-    },
 
-    "@media screen and (max-width: 410px)": {
+    "@media screen and (max-width: 540px)": {
       paper: {
         width: "calc(100vw - 23px)",
         display: "flex",
@@ -137,8 +143,15 @@ const useStyles = makeStyles((theme) => {
       searchbar: {
         position: "absolute",
         zIndex: 2,
-        top: "7px",
-        left: "7px",
+
+      },
+      paperBackground: {
+        width: "100%",
+        display: "flex",
+        borderRadius: '10px',
+        height: "68vh",
+        zIndex: 1000,
+        paddingBottom: "20px",
       },
     },
   };
@@ -187,7 +200,8 @@ const SearchBar = ({
   setZoomDefault,
   bairro,
   subprefeitura,
-  realizacaoId
+  realizacaoId,
+  setOpenedPopup
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -351,13 +365,15 @@ const SearchBar = ({
     setSubprefeitura(null);
     setContent(null);
     setPlacesData(null);
-    setActiveBar(MAIN_UNDERSEARCH_BAR);
+    if (underSearchBar) {
+      setActiveBar(MAIN_UNDERSEARCH_BAR);
+    }
     setRota(null);
     navigate(`/`);
   };
 
   const handleOnfocus = () => {
-    setUnderSearchBar(true);
+    // setUnderSearchBar(true);
     setActiveBar(MAIN_UNDERSEARCH_BAR);
   }
 
@@ -428,409 +444,821 @@ const SearchBar = ({
     "BRTs Transolímpica": '#1DA64D'
   };
 
-  return (
 
-    <ClickAwayListener onClickAway={handleClickOutside}>
-      <Stack direction="row" spacing={!showMenuBar && !showSearchBar ? 2 : (showMenuBar ? 52 : 8)}>
-        {!showMenuBar ?
+  const [value, setValue] = useState(0);
 
-          (
-            <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Tooltip title={tema && !programa && !realizacao ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="right">
-                <Badge badgeContent={tema && !programa && !realizacao ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
-                  <IconButton
-                    style={{ backgroundColor: 'transparent' }}
-                    color="grey"
-                    onClick={() => { setShowMenuBar(!showMenuBar); setShowSearchBar(showMenuBar) }}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                </Badge>
-              </Tooltip>
-            </Paper>
-          )
+  const [openPopup, setOpenPopup] = useState(null);
 
-          :
+  const handleOpenPopup = (sheet) => {
+    setOpenPopup(sheet);
+  };
 
-          (
-            // <Slide direction="down" in={showMenuBar} mountOnEnter unmountOnExit>
-            <div className={classes.searchbar}>
-              {/* bigger paper background */}
-              <Paper
-                component="form"
-                variant="elevation"
-                className={classes.paperBackground}
-                // elevation={searchPrompt ? 1 : 3}
-                elevation={3}
-              >
-                {/* header paper */}
-                <Paper
-                  component="form"
-                  variant="elevation"
-                  className={
-                    searchPrompt && historyItems?.length
-                      ? clsx(classes.paper, classes.bottomRound)
-                      : classes.paper
-                  }
-                  elevation={3}
-                  onFocus={handleSearchPrompt}
-                >
-                  {/* IDEIA PARA O BOTAO VOLTAR:showTemas, showProgramas, showRealizacoes */}
-                  {/* {(inputValueTema === undefined && inputValuePrograma === undefined) && */}
-                  {showTemas && !showProgramas &&
-                    <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>Temas</Typography>
-                  }
+  const handleClosePopup = () => {
+    setOpenPopup(null);
+    setOpenedPopup(null);
+  };
 
-                  {showTemas && !showProgramas && (
-                    <Autocomplete
-                      freeSolo
-                      className={classes.input}
-                      value={inputValueTema}
-                      onChange={handleTemaChange}
-                      disableClearable
-                      options={temasNameFilter}
-                      PaperComponent={CustomPaperMenu}
-                      ListboxProps={{ style: { maxHeight: "80vh" } }}
-                      componentsProps={{
-                        paper: {
-                          sx: {
-                            marginTop: "15px",
-                            marginLeft: "-5px",
-                            width: "392px",
-                            height: "80vh",
-                            overflowY: "hidden",
-                            borderRadius: '0px',
-                            borderBottomLeftRadius: '5px',
-                            borderBottomRightRadius: '25px',
+  function SheetContentTemas() {
+    return (
+      // <div className={classes.searchbar}>
+      <div >
+        {/* bigger paper background */}
+        <Paper
+          component="form"
+          variant="elevation"
+          className={classes.paperBackground}
+          // elevation={searchPrompt ? 1 : 3}
+          elevation={3}
+        >
+          {/* header paper */}
+          <Paper
+            component="form"
+            variant="elevation"
+            className={
+              searchPrompt && historyItems?.length
+                ? clsx(classes.paper, classes.bottomRound)
+                : classes.paper
+            }
+            elevation={3}
+          >
+            {/* IDEIA PARA O BOTAO VOLTAR:showTemas, showProgramas, showRealizacoes */}
+            {/* {(inputValueTema === undefined && inputValuePrograma === undefined) && */}
+            {showTemas && !showProgramas &&
+              <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>Temas</Typography>
+            }
 
-                          }
-                        }
-                      }}
-                      open={showMenuBar}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-
-                          onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                          placeholder="Temas"
-                          sx={{
-                            "& fieldset": { border: 'none' },
-                            input: {
-                              visibility: 'hidden',
-                              color: 'black',
-                              caretColor: 'transparent',
-                              "&::placeholder": {
-                                opacity: 0,
-                              },
-                            },
-                          }}
-
-                        />
-                      )}
-                    />)}
-
-                  {showProgramas && !showTemas &&
-                    <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>{inputValueTema}</Typography>
-                  }
-
-                  {showProgramas && !showTemas && (
-                    <Autocomplete
-                      freeSolo
-                      className={classes.input}
-                      value={inputValuePrograma}
-                      onChange={handleProgramaChange}
-                      disableClearable
-                      options={programasTema ? programasTema : []}
-                      PaperComponent={CustomPaperMenu}
-                      ListboxProps={{ style: { maxHeight: "80vh" } }}
-                      inputprops={{
-                        style: {
-                          color: 'black'
-                        }
-                      }}
-                      componentsProps={{
-                        paper: {
-                          sx: {
-                            marginLeft: "-5px",
-                            marginTop: "15px",
-                            width: "392px",
-                            height: "70vh",
-                            overflowY: "hidden",
-                            borderRadius: '0px',
-                            // borderBottomLeftRadius: '5px',
-                            // borderBottomRightRadius: '25px',
-
-
-                          }
-                        }
-                      }}
-                      open={showMenuBar}
-                      renderOption={(props, option, { selected }) => (
-                        <Box
-                          component="li"
-                          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: tema == "Mobilidade" ? "40px" : 0 , paddingTop: tema == "Mobilidade" ? "8px" : "6px", paddingBottom: tema == "Mobilidade" ? "8px" : "6px" }}
-                          {...props}
-                        >
-                          <Typography>{option}</Typography>
-                          {(option in brtLineColors) && <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: brtLineColors[option] }} />}
-                        </Box>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-
-                          onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                          placeholder="Temas"
-                          sx={{
-                            "& fieldset": { border: 'none' },
-                            input: {
-                              visibility: 'hidden',
-                              color: 'black',
-                              caretColor: 'transparent',
-                              "&::placeholder": {
-                                opacity: 0,
-                              },
-                            },
-                          }}
-
-                        />
-                      )}
-                    />)}
-
-                  {showRealizacoes &&
-                    <Typography variant="h6" style={{
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      width: "19vw",
-                      maxWidth: "270px",
-                      minWidth: "270px", position: 'absolute', marginLeft: '20px', color: 'black'
-                    }}>{inputValuePrograma}</Typography>
-                  }
-                  {showRealizacoes && (
-                    <Autocomplete
-                      freeSolo
-                      className={classes.input}
-                      value={inputValueRealizacao}
-                      onChange={handleRealizacaoChange}
-                      disableClearable
-                      options={realizacoesPrograma}
-                      PaperComponent={CustomPaperMenu}
-                      ListboxProps={{ style: { maxHeight: "80vh" } }}
-                      componentsProps={{
-                        paper: {
-                          sx: {
-                            marginTop: "15px",
-                            marginLeft: "-5px",
-                            width: "392px",
-                            height: "80vh",
-                            overflowY: "hidden",
-                            borderRadius: '0px',
-                            borderBottomLeftRadius: '5px',
-                            borderBottomRightRadius: '25px',
-
-                          }
-                        }
-                      }}
-                      open={showMenuBar}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-
-                          onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                          placeholder="Temas"
-                          sx={{
-                            "& fieldset": { border: 'none' },
-                            input: {
-                              visibility: 'hidden',
-                              color: 'black',
-                              caretColor: 'transparent',
-                              "&::placeholder": {
-                                opacity: 0,
-                              },
-                            },
-                          }}
-
-                        />
-                      )}
-                    />)}
-
-
-                  {showProgramas ?
-
-                    <IconButton
-                      style={{ backgroundColor: 'transparent' }}
-                      color="grey"
-                      onClick={() => { setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
-                    >
-                      <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
-                    </IconButton>
-
-                    :
-
-                    (showRealizacoes ? <IconButton
-                      style={{ backgroundColor: 'transparent' }}
-                      color="grey"
-                      onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
-                    >
-                      <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
-                    </IconButton> : "")
-
-                  }
-                  {inputValueTema &&
-                    <Divider className={classes.divider} orientation="vertical" />
-                  }
-                  <IconButton
-                    // type="submit"
-                    style={{ backgroundColor: 'transparent' }}
-                    color="secondary"
-                    classes={{ colorSecondary: classes.colorSecondary }}
-                    aria-label="search"
-
-                  >
-                    <CloseIcon onClick={() => setShowMenuBar(false)} />
-
-                  </IconButton>
-                </Paper>
-              </Paper>
-            </div>
-            // </Slide>
-          )}
-
-        {!showSearchBar ?
-
-          (
-            <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Tooltip title={inputValueBairroSubprefeitura ? `${inputValueBairroSubprefeitura} está atuando como filtro.` : ""} placement="right">
-                <Badge badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
-
-                  <IconButton
-                    style={{ backgroundColor: 'transparent', padding: 7 }}
-                    color="grey"
-                    onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
-                  >
-                    <img width={33} src={lupa_mapa} />
-                  </IconButton>
-                </Badge>
-              </Tooltip>
-            </Paper>
-          )
-
-          :
-
-          (
-            // <Slide direction="down" in={showSearchBar} mountOnEnter unmountOnExit>
-            <div className={classes.searchbar}>
-
-              <Paper
-                component="form"
-                variant="elevation"
-                className={classes.paperBackground}
-                // elevation={searchPrompt ? 1 : 3}
-                elevation={3}
-              >
-                <Paper
-                  component="form"
-                  variant="elevation"
-                  className={
-                    searchPrompt && historyItems?.length
-                      ? clsx(classes.paper, classes.bottomRound)
-                      : classes.paper
-                  }
-                  // elevation={searchPrompt ? 1 : 3}
-                  elevation={3}
-                  onFocus={handleSearchPrompt}
-                >
-
-
-                  <Autocomplete
-                    freeSolo
-                    // disablePortal
-                    className={classes.input}
-                    value={inputValueBairroSubprefeitura}
-                    onChange={handleBairroSubprefeituraChange}
-                    disableClearable
-                    options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
-                    PaperComponent={CustomPaperSearch}
-                    ListboxProps={{ style: { maxHeight: "80vh" } }}
-                    componentsProps={{
-                      paper: {
-                        sx: {
-                          marginTop: "15px",
-                          marginLeft: "-5px",
-                          width: "392px",
-                          height: "80vh",
-                          overflowY: "hidden",
-                          borderRadius: '0px',
-                          borderBottomLeftRadius: '5px',
-                          borderBottomRightRadius: '25px',
-
-                        }
-                      }
-                    }}
-                    open={showSearchBar}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        autoFocus={true}
-                        // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                        placeholder="Filtre por Bairro"
-                        sx={{
-                          "& fieldset": { border: 'none' }
-                        }}
-                      />
-                    )}
-                  />
-                  {inputValueBairroSubprefeitura ?
-                    <IconButton
-                      style={{ backgroundColor: 'transparent' }}
-                      // type="submit"
-                      color="secondary"
-                      classes={{ colorSecondary: classes.colorSecondary }}
-                      aria-label="search"
-                    // onClick={
-                    //   activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => { }
-                    // }
-                    >
-
-                      <BackspaceIcon sx={{ marginRight: "5px", fontSize: "20px" }} onClick={handleCleanBairroInput} />
-
-
-                    </IconButton>
-                    : null
-                  }
-                  <Divider className={classes.divider} orientation="vertical" />
-                  <IconButton
-                    // type="submit"
-                    style={{ backgroundColor: 'transparent' }}
-                    color="secondary"
-                    classes={{ colorSecondary: classes.colorSecondary }}
-                    aria-label="search"
-                  // onClick={
-                  //   activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => { }
-                  // }
-                  >
-                    {anyLoading ? (
-                      <CircularProgress classes={{ colorPrimary: classes.colorLoading }} size={20} />
-                    ) : activeBar == MAIN_UNDERSEARCH_BAR ? <SearchIcon /> : <CloseIcon onClick={() => setShowSearchBar(false)} />
+            {showTemas && !showProgramas && (
+              <Autocomplete
+                freeSolo
+                className={classes.input}
+                value={inputValueTema}
+                onChange={handleTemaChange}
+                disableClearable
+                options={temasNameFilter}
+                PaperComponent={CustomPaperMenu}
+                ListboxProps={{ style: { maxHeight: "60vh" } }}
+                componentsProps={{
+                  paper: {
+                    sx: {
+                      marginTop: "15px",
+                      marginLeft: "-5px",
+                      width: "100%",
+                      height: "60vh",
+                      overflowY: "hidden",
+                      borderRadius: '0px',
+                      borderBottomLeftRadius: '5px',
+                      borderBottomRightRadius: '25px',
 
                     }
+                  }
+                }}
+                open={true}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
 
-                  </IconButton>
+                    onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                    placeholder="Temas"
+                    sx={{
+                      "& fieldset": { border: 'none' },
+                      input: {
+                        visibility: 'hidden',
+                        color: 'black',
+                        caretColor: 'transparent',
+                        "&::placeholder": {
+                          opacity: 0,
+                        },
+                      },
+                    }}
+
+                  />
+                )}
+              />)}
+
+            {showProgramas && !showTemas &&
+              <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>{inputValueTema}</Typography>
+            }
+
+            {showProgramas && !showTemas && (
+              <Autocomplete
+                freeSolo
+                className={classes.input}
+                value={inputValuePrograma}
+                onChange={handleProgramaChange}
+                disableClearable
+                options={programasTema ? programasTema : []}
+                PaperComponent={CustomPaperMenu}
+                inputprops={{
+                  style: {
+                    color: 'black'
+                  }
+                }}
+                ListboxProps={{ style: { maxHeight: "60vh" } }}
+                componentsProps={{
+                  paper: {
+                    sx: {
+                      marginTop: "15px",
+                      marginLeft: "-5px",
+                      width: "100%",
+                      height: "60vh",
+                      overflowY: "hidden",
+                      borderRadius: '0px',
+                      borderBottomLeftRadius: '5px',
+                      borderBottomRightRadius: '25px',
+
+                    }
+                  }
+                }}
+                open={true}
+                renderOption={(props, option, { selected }) => (
+                  <Box
+                    component="li"
+                    style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: tema == "Mobilidade" ? "40px" : 0, paddingTop: tema == "Mobilidade" ? "8px" : "6px", paddingBottom: tema == "Mobilidade" ? "8px" : "6px" }}
+                    {...props}
+                  >
+                    <Typography>{option}</Typography>
+                    {(option in brtLineColors) && <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: brtLineColors[option] }} />}
+                  </Box>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+
+                    onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                    placeholder="Temas"
+                    sx={{
+                      "& fieldset": { border: 'none' },
+                      input: {
+                        visibility: 'hidden',
+                        color: 'black',
+                        caretColor: 'transparent',
+                        "&::placeholder": {
+                          opacity: 0,
+                        },
+                      },
+                    }}
+
+                  />
+                )}
+              />)}
+
+            {showRealizacoes &&
+              <Typography variant="h6" style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                width: "19vw",
+                maxWidth: "270px",
+                minWidth: "270px", position: 'absolute', marginLeft: '20px', color: 'black'
+              }}>{inputValuePrograma}</Typography>
+            }
+            {showRealizacoes && (
+              <Autocomplete
+                freeSolo
+                className={classes.input}
+                value={inputValueRealizacao}
+                onChange={handleRealizacaoChange}
+                disableClearable
+                options={realizacoesPrograma}
+                PaperComponent={CustomPaperMenu}
+                ListboxProps={{ style: { maxHeight: "60vh" } }}
+                componentsProps={{
+                  paper: {
+                    sx: {
+                      marginTop: "15px",
+                      marginLeft: "-5px",
+                      width: "100%",
+                      height: "60vh",
+                      overflowY: "hidden",
+                      borderRadius: '0px',
+                      borderBottomLeftRadius: '5px',
+                      borderBottomRightRadius: '25px',
+
+                    }
+                  }
+                }}
+                open={true}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+
+                    onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                    placeholder="Temas"
+                    sx={{
+                      "& fieldset": { border: 'none' },
+                      input: {
+                        visibility: 'hidden',
+                        color: 'black',
+                        caretColor: 'transparent',
+                        "&::placeholder": {
+                          opacity: 0,
+                        },
+                      },
+                    }}
+
+                  />
+                )}
+              />)}
+
+          </Paper>
+        </Paper>
+      </div>
+    );
+  }
+
+  function SheetContentBairros() {
+    return (
+      <div >
+
+        <Paper
+          component="form"
+          variant="elevation"
+          className={classes.paperBackground}
+          // elevation={searchPrompt ? 1 : 3}
+          elevation={3}
+        >
+          <Paper
+            component="form"
+            variant="elevation"
+            className={
+              searchPrompt && historyItems?.length
+                ? clsx(classes.paper, classes.bottomRound)
+                : classes.paper
+            }
+            // elevation={searchPrompt ? 1 : 3}
+            elevation={3}
+          >
+
+
+            <Autocomplete
+              freeSolo
+              // disablePortal
+              className={classes.input}
+              value={inputValueBairroSubprefeitura}
+              onChange={handleBairroSubprefeituraChange}
+              disableClearable
+              options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+              PaperComponent={CustomPaperSearch}
+              ListboxProps={{ style: { maxHeight: "60vh" } }}
+              componentsProps={{
+                paper: {
+                  sx: {
+                    marginTop: "15px",
+                    marginLeft: "-5px",
+                    width: "100%",
+                    height: "60vh",
+                    overflowY: "hidden",
+                    borderRadius: '0px',
+                    borderBottomLeftRadius: '5px',
+                    borderBottomRightRadius: '25px',
+
+                  }
+                }
+              }}
+              open={true}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  autoFocus={true}
+                  // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                  placeholder="Filtre por Bairro"
+                  sx={{
+                    "& fieldset": { border: 'none' }
+                  }}
+                />
+              )}
+            />
+
+          </Paper>
+        </Paper>
+      </div>
+    );
+  }
+
+  function SheetContentRealizacoes() {
+    return (
+      <div>
+        <h2>Realizações</h2>
+        <p>... realizações</p>
+      </div>
+    );
+  }
+
+  return (
+
+    <>
+      {isDesktop() &&
+        <ClickAwayListener onClickAway={handleClickOutside}>
+          <Stack direction="row" spacing={!showMenuBar && !showSearchBar ? 2 : (showMenuBar ? 52 : 8)}>
+            {!showMenuBar ?
+
+              (
+                <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Tooltip title={tema && !programa && !realizacao ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="right">
+                    <Badge badgeContent={tema && !programa && !realizacao ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
+                      <IconButton
+                        style={{ backgroundColor: 'transparent' }}
+                        color="grey"
+                        onClick={() => { setShowMenuBar(!showMenuBar); setShowSearchBar(showMenuBar) }}
+                      >
+                        <MenuIcon />
+                      </IconButton>
+                    </Badge>
+                  </Tooltip>
                 </Paper>
-              </Paper>
-            </div>
-            // </Slide>
-          )}
+              )
+
+              :
+
+              (
+                // <Slide direction="down" in={showMenuBar} mountOnEnter unmountOnExit>
+                <div className={classes.searchbar}>
+                  {/* bigger paper background */}
+                  <Paper
+                    component="form"
+                    variant="elevation"
+                    className={classes.paperBackground}
+                    // elevation={searchPrompt ? 1 : 3}
+                    elevation={3}
+                  >
+                    {/* header paper */}
+                    <Paper
+                      component="form"
+                      variant="elevation"
+                      className={
+                        searchPrompt && historyItems?.length
+                          ? clsx(classes.paper, classes.bottomRound)
+                          : classes.paper
+                      }
+                      elevation={3}
+                      onFocus={handleSearchPrompt}
+                    >
+                      {/* IDEIA PARA O BOTAO VOLTAR:showTemas, showProgramas, showRealizacoes */}
+                      {/* {(inputValueTema === undefined && inputValuePrograma === undefined) && */}
+                      {showTemas && !showProgramas &&
+                        <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>Temas</Typography>
+                      }
+
+                      {showTemas && !showProgramas && (
+                        <Autocomplete
+                          freeSolo
+                          className={classes.input}
+                          value={inputValueTema}
+                          onChange={handleTemaChange}
+                          disableClearable
+                          options={temasNameFilter}
+                          PaperComponent={CustomPaperMenu}
+                          ListboxProps={{ style: { maxHeight: "80vh" } }}
+                          componentsProps={{
+                            paper: {
+                              sx: {
+                                marginTop: "15px",
+                                marginLeft: "-5px",
+                                width: "392px",
+                                height: "80vh",
+                                overflowY: "hidden",
+                                borderRadius: '0px',
+                                borderBottomLeftRadius: '5px',
+                                borderBottomRightRadius: '25px',
+
+                              }
+                            }
+                          }}
+                          open={showMenuBar}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+
+                              onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                              placeholder="Temas"
+                              sx={{
+                                "& fieldset": { border: 'none' },
+                                input: {
+                                  visibility: 'hidden',
+                                  color: 'black',
+                                  caretColor: 'transparent',
+                                  "&::placeholder": {
+                                    opacity: 0,
+                                  },
+                                },
+                              }}
+
+                            />
+                          )}
+                        />)}
+
+                      {showProgramas && !showTemas &&
+                        <Typography variant="h6" style={{ position: 'absolute', marginLeft: '20px', color: 'black' }}>{inputValueTema}</Typography>
+                      }
+
+                      {showProgramas && !showTemas && (
+                        <Autocomplete
+                          freeSolo
+                          className={classes.input}
+                          value={inputValuePrograma}
+                          onChange={handleProgramaChange}
+                          disableClearable
+                          options={programasTema ? programasTema : []}
+                          PaperComponent={CustomPaperMenu}
+                          ListboxProps={{ style: { maxHeight: "80vh" } }}
+                          inputprops={{
+                            style: {
+                              color: 'black'
+                            }
+                          }}
+                          componentsProps={{
+                            paper: {
+                              sx: {
+                                marginLeft: "-5px",
+                                marginTop: "15px",
+                                width: "392px",
+                                height: "70vh",
+                                overflowY: "hidden",
+                                borderRadius: '0px',
+                                // borderBottomLeftRadius: '5px',
+                                // borderBottomRightRadius: '25px',
 
 
-      </Stack>
+                              }
+                            }
+                          }}
+                          open={showMenuBar}
+                          renderOption={(props, option, { selected }) => (
+                            <Box
+                              component="li"
+                              style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: tema == "Mobilidade" ? "40px" : 0, paddingTop: tema == "Mobilidade" ? "8px" : "6px", paddingBottom: tema == "Mobilidade" ? "8px" : "6px" }}
+                              {...props}
+                            >
+                              <Typography>{option}</Typography>
+                              {(option in brtLineColors) && <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: brtLineColors[option] }} />}
+                            </Box>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
 
-      {/* MenuBar */}
+                              onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                              placeholder="Temas"
+                              sx={{
+                                "& fieldset": { border: 'none' },
+                                input: {
+                                  visibility: 'hidden',
+                                  color: 'black',
+                                  caretColor: 'transparent',
+                                  "&::placeholder": {
+                                    opacity: 0,
+                                  },
+                                },
+                              }}
 
-      {/* SearchBar */}
+                            />
+                          )}
+                        />)}
 
-    </ClickAwayListener>
+                      {showRealizacoes &&
+                        <Typography variant="h6" style={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          width: "19vw",
+                          maxWidth: "270px",
+                          minWidth: "270px", position: 'absolute', marginLeft: '20px', color: 'black'
+                        }}>{inputValuePrograma}</Typography>
+                      }
+                      {showRealizacoes && (
+                        <Autocomplete
+                          freeSolo
+                          className={classes.input}
+                          value={inputValueRealizacao}
+                          onChange={handleRealizacaoChange}
+                          disableClearable
+                          options={realizacoesPrograma}
+                          PaperComponent={CustomPaperMenu}
+                          ListboxProps={{ style: { maxHeight: "80vh" } }}
+                          componentsProps={{
+                            paper: {
+                              sx: {
+                                marginTop: "15px",
+                                marginLeft: "-5px",
+                                width: "392px",
+                                height: "80vh",
+                                overflowY: "hidden",
+                                borderRadius: '0px',
+                                borderBottomLeftRadius: '5px',
+                                borderBottomRightRadius: '25px',
+
+                              }
+                            }
+                          }}
+                          open={showMenuBar}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+
+                              onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                              placeholder="Temas"
+                              sx={{
+                                "& fieldset": { border: 'none' },
+                                input: {
+                                  visibility: 'hidden',
+                                  color: 'black',
+                                  caretColor: 'transparent',
+                                  "&::placeholder": {
+                                    opacity: 0,
+                                  },
+                                },
+                              }}
+
+                            />
+                          )}
+                        />)}
+
+
+                      {showProgramas ?
+
+                        <IconButton
+                          style={{ backgroundColor: 'transparent' }}
+                          color="grey"
+                          onClick={() => { setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
+                        >
+                          <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
+                        </IconButton>
+
+                        :
+
+                        (showRealizacoes ? <IconButton
+                          style={{ backgroundColor: 'transparent' }}
+                          color="grey"
+                          onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                        >
+                          <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
+                        </IconButton> : "")
+
+                      }
+                      {inputValueTema &&
+                        <Divider className={classes.divider} orientation="vertical" />
+                      }
+                      <IconButton
+                        // type="submit"
+                        style={{ backgroundColor: 'transparent' }}
+                        color="secondary"
+                        classes={{ colorSecondary: classes.colorSecondary }}
+                        aria-label="search"
+
+                      >
+                        <CloseIcon onClick={() => setShowMenuBar(false)} />
+
+                      </IconButton>
+                    </Paper>
+                  </Paper>
+                </div>
+                // </Slide>
+              )}
+
+            {!showSearchBar ?
+
+              (
+                <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Tooltip title={inputValueBairroSubprefeitura ? `${inputValueBairroSubprefeitura} está atuando como filtro.` : ""} placement="right">
+                    <Badge badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
+
+                      <IconButton
+                        style={{ backgroundColor: 'transparent', padding: 7 }}
+                        color="grey"
+                        onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
+                      >
+                        <img width={33} src={lupa_mapa} />
+                      </IconButton>
+                    </Badge>
+                  </Tooltip>
+                </Paper>
+              )
+
+              :
+
+              (
+                // <Slide direction="down" in={showSearchBar} mountOnEnter unmountOnExit>
+                <div className={classes.searchbar}>
+
+                  <Paper
+                    component="form"
+                    variant="elevation"
+                    className={classes.paperBackground}
+                    // elevation={searchPrompt ? 1 : 3}
+                    elevation={3}
+                  >
+                    <Paper
+                      component="form"
+                      variant="elevation"
+                      className={
+                        searchPrompt && historyItems?.length
+                          ? clsx(classes.paper, classes.bottomRound)
+                          : classes.paper
+                      }
+                      // elevation={searchPrompt ? 1 : 3}
+                      elevation={3}
+                      onFocus={handleSearchPrompt}
+                    >
+
+
+                      <Autocomplete
+                        freeSolo
+                        // disablePortal
+                        className={classes.input}
+                        value={inputValueBairroSubprefeitura}
+                        onChange={handleBairroSubprefeituraChange}
+                        disableClearable
+                        options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        PaperComponent={CustomPaperSearch}
+                        ListboxProps={{ style: { maxHeight: "80vh" } }}
+                        componentsProps={{
+                          paper: {
+                            sx: {
+                              marginTop: "15px",
+                              marginLeft: "-5px",
+                              width: "392px",
+                              height: "80vh",
+                              overflowY: "hidden",
+                              borderRadius: '0px',
+                              borderBottomLeftRadius: '5px',
+                              borderBottomRightRadius: '25px',
+
+                            }
+                          }
+                        }}
+                        open={showSearchBar}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            autoFocus={true}
+                            // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                            placeholder="Filtre por Bairro"
+                            sx={{
+                              "& fieldset": { border: 'none' }
+                            }}
+                          />
+                        )}
+                      />
+                      {inputValueBairroSubprefeitura ?
+                        <IconButton
+                          style={{ backgroundColor: 'transparent' }}
+                          // type="submit"
+                          color="secondary"
+                          classes={{ colorSecondary: classes.colorSecondary }}
+                          aria-label="search"
+                        // onClick={
+                        //   activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => { }
+                        // }
+                        >
+
+                          <BackspaceIcon sx={{ marginRight: "5px", fontSize: "20px" }} onClick={handleCleanBairroInput} />
+
+
+                        </IconButton>
+                        : null
+                      }
+                      <Divider className={classes.divider} orientation="vertical" />
+                      <IconButton
+                        // type="submit"
+                        style={{ backgroundColor: 'transparent' }}
+                        color="secondary"
+                        classes={{ colorSecondary: classes.colorSecondary }}
+                        aria-label="search"
+                      // onClick={
+                      //   activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => { }
+                      // }
+                      >
+                        {anyLoading ? (
+                          <CircularProgress classes={{ colorPrimary: classes.colorLoading }} size={20} />
+                        ) : activeBar == MAIN_UNDERSEARCH_BAR ? <SearchIcon /> : <CloseIcon onClick={() => setShowSearchBar(false)} />
+
+                        }
+
+                      </IconButton>
+                    </Paper>
+                  </Paper>
+                </div>
+                // </Slide>
+              )}
+
+
+          </Stack>
+        </ClickAwayListener>
+
+      }
+
+      {!isDesktop() && (
+        <BottomNavigation
+          className={classes.root}
+          style={{ zIndex: 501, position: 'fixed' }}
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+            handleOpenPopup(newValue);
+            setOpenedPopup(newValue);
+          }}
+          showLabels
+        >
+          <BottomNavigationAction icon={
+            <Tooltip title={tema && !programa && !realizacao ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="top">
+              <Badge badgeContent={tema && !programa && !realizacao ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
+                <MenuIcon />
+              </Badge>
+            </Tooltip>
+          }
+
+          />
+          <BottomNavigationAction icon={
+            <Tooltip title={inputValueBairroSubprefeitura ? `${inputValueBairroSubprefeitura} está atuando como filtro.` : ""} placement="right">
+              <Badge badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
+                <img width={33} src={lupa_mapa} />
+              </Badge>
+            </Tooltip>
+          } />
+          <BottomNavigationAction icon={<SearchIcon />} />
+        </BottomNavigation>
+      )}
+
+      {openPopup !== null && (
+        <Dialog
+          open={openPopup !== null}
+          onClose={handleClosePopup}
+          aria-labelledby="popup-dialog-title"
+          aria-describedby="popup-dialog-description"
+          maxWidth="sm"
+          fullWidth={true}
+          PaperProps={{
+            style: {
+              zIndex: 508,
+              minHeight: '80vh',
+              maxHeight: '90vh',
+            },
+          }}
+        >
+          <DialogContent>
+            {openPopup === 0 && <SheetContentTemas />}
+            {openPopup === 1 && <SheetContentBairros />}
+            {openPopup === 2 && <SheetContentRealizacoes />}
+          </DialogContent>
+          <DialogActions>
+            {openPopup == 0 && showProgramas ?
+
+              <IconButton
+                style={{ backgroundColor: 'transparent' }}
+                color="grey"
+                onClick={() => { console.log("click"); setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
+              >
+                <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
+              </IconButton>
+
+              :
+
+              (showRealizacoes ? <IconButton
+                style={{ backgroundColor: 'transparent' }}
+                color="grey"
+                onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+              >
+                <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
+              </IconButton> : "")
+
+            }
+            {openPopup == 0 && inputValueTema &&
+              <Divider className={classes.divider} orientation="vertical" />
+            }
+            {openPopup == 1 &&
+              <Button onClick={() => { handleCleanBairroInput(); setZoomDefault((Math.random() * 999 + 1)) }} color="primary">
+                Limpar
+              </Button>
+            }
+            <Button onClick={handleClosePopup} color="primary">
+              Fechar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+
+
+
+      {/* {openSheet !== null && (
+          <BottomSheet
+          style={{ zIndex: 507, position: "absolute" }}
+          open={openSheet !== null}
+          onDismiss={handleCloseSheet}
+          ref={sheetRef}
+          defaultSnap={({ maxHeight }) => maxHeight / 2}
+          snapPoints={({ maxHeight }) => [
+            maxHeight - maxHeight / 10,
+            maxHeight / 4,
+            maxHeight * 0.6,
+            ]}
+            >
+            {openSheet === 0 && <SheetContentTemas />}
+            {openSheet === 1 && <SheetContentBairros />}
+            {openSheet === 2 && <SheetContentRealizacoes style={{ zIndex: 507, position: "absolute" }} />}
+            </BottomSheet>
+            )} */}
+    </>
+
   );
 };
 

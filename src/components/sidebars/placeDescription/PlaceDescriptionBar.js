@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect,useRef } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
@@ -31,6 +31,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ListInfo from "../../inlines/ListInfo";
 import no_imagem from "../../assets/no_image.jpg"
+import { isDesktop } from "../../../redux/active/reducers";
+import { BottomSheet } from "react-spring-bottom-sheet";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -117,6 +119,16 @@ const useStyles = makeStyles((theme) => ({
       width: "100vw",
       overflow: "auto",
       position: "relative",
+    },
+    underSearchMobile:{
+      padding:"18px 0"
+    },
+    statusButton: {
+      pointerEvents: "none",
+      borderRadius: "39px",
+      backgroundColor: "#007E7D",
+      color: "#FFFFFF",
+      marginTop: "5px"
     },
   },
   "@media screen and (min-width: 540px)": {
@@ -254,7 +266,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sumarioInfo: {
     // padding: "3px 20px",
-    maxWidth: "25vw"
+    maxWidth: "100%"
   },
   dadosAgregadosCidade: {
     // padding: "3px 20px",
@@ -388,7 +400,8 @@ const PlaceDescriptionBar = forwardRef(
     tema,
     programa,
     realizacao,
-    error
+    error,
+    openedPopup
 
 
 
@@ -443,15 +456,117 @@ const PlaceDescriptionBar = forwardRef(
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
 
+    function SheetContentPlaceDescriptionBar() {
+      return (
+        <Stack m={2} mt={2} spacing={2}>
+          {error ? (
+            <Paper elevation={6} ref={ref} className={classes.underSearchErrorMobile}>
+              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                <Typography className={classes.noInfoTituloMobile}>
+                  Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o InfoPref.
+                </Typography>
+               
+              </div>
+            </Paper>
+        ) : (
+          <>
+            <Paper elevation={6} ref={ref} className={classes.underSearchMobile}>
+              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                <Typography className={classes.titulo}>
+                  {content?.nome ?? <CircularProgress size={25} />}
+                </Typography>
+                <Typography className={classes.subtitulo}>
+                  {programa ? programa : content?.programa}
+                </Typography>
+                {content?.status && (
+                  <span >
+                    <Button variant="contained" className={classes.statusButton}>
+                      {content?.status}
+                    </Button>
+                  </span>
+                )}
+              </div>
+            </Paper>
+          
+              <Paper elevation={6} className={classes.underSearch2Mobile}>
+                <div className={classes.basicInfo}>
+                  {realizacao || content?.nome ? (
+                    <>
+                      <Stack direction="row">
+                        <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                        {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
+                          <IconButton>
+                            <InfoIcon sx={{ color: "black" }} />
+                          </IconButton>
+                        </Tooltip> */}
+                      </Stack>
+                      <Typography className={classes.subtituloMunicipio}>
+                        {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+  
+                        {fullText + " ..." === shortText ? null :
+                          <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                            {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                          </Button>
+                        }
+                      </Typography>
+                    </>
+                  ) : (
+                    <CircularProgress style={{ marginTop: "1rem" }} size={25} />
+                  )}
+                </div>
+              
+              </Paper>
+            
+              <Paper
+                elevation={6}
+                className={content?.image_url ? classes.underSearch3Mobile : classes.underSearch3NoImageMobile}
+              >
+                <div className={classes.sumarioInfo}>
+                  {content ? <ListInfo content={content ? content : []} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
+                </div>
+              </Paper>
+
+            {content?.image_url && (
+                <Paper elevation={6} className={classes.underSearch4}>
+                  <ImageCarousel images={[content?.image_url]} />
+                </Paper>
+            )}
+          </>
+        )}
+          </Stack>
+      )}
+
+      const [value, setValue] = useState(1);
+      const [openSheet, setOpenSheet] = useState(0);
+      const sheetRef = useRef();
+  
+      const handleOpenSheet = (sheet) => {
+        setOpenSheet(sheet);
+      };
+  
+  
+      const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+
+      const handleCloseSheet = () => {
+        setIsBottomSheetOpen(false);
+      };
+  
+      useEffect(() => {
+        if ( openedPopup == null && programa){
+          setIsBottomSheetOpen(true);
+        }
+      }, [openedPopup]);
 
     return (
       <>
+      {isDesktop() && (
+      <div>
         {error ? (
           <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
             <Paper elevation={6} ref={ref} className={classes.underSearchError}>
               <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
                 <Typography className={classes.noInfoTitulo}>
-                  Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o Escritório de Dados.
+                  Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o InfoPref.
                 </Typography>
                
               </div>
@@ -525,6 +640,27 @@ const PlaceDescriptionBar = forwardRef(
               </Slide>
             )}
           </>
+        )}
+        </div>)}
+
+        {!isDesktop() && openedPopup == null && realizacao && (
+          <div>
+
+            <BottomSheet
+              style={{ zIndex: 507, position: "absolute" }}
+              open={isBottomSheetOpen}
+              onDismiss={handleCloseSheet}
+              ref={sheetRef}
+              defaultSnap={({ maxHeight }) => maxHeight / 2}
+              snapPoints={({ maxHeight }) => [
+                maxHeight - maxHeight / 10,
+                maxHeight / 4,
+                maxHeight * 0.6,
+              ]}
+            >
+              <SheetContentPlaceDescriptionBar />
+            </BottomSheet>
+          </div>
         )}
       </>
     );

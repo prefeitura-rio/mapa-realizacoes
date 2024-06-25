@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "24px",
     // whiteSpace: "nowrap"
   },
+  sumarioInfo: {
+    // padding: "3px 20px",
+    maxWidth: "100%"
+  },
 }));
 
 const ListInfo = ({ content }) => {
@@ -108,7 +112,7 @@ const ListInfo = ({ content }) => {
 
   return (
     <>
-    <List style={{maxWidth:"25vw"}}>
+    <List className={classes.sumarioInfo}>
       {listInfo.map((item, i) => (
         <React.Fragment key={i}>
           {Array.isArray(item.text) ? (

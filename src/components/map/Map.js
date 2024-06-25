@@ -269,7 +269,7 @@ useEffect(() => {
     // console.log(">> realizacaoOk2: ", realizacaoOk2?.nome);
 
     if (realizacaoId && points.length != 0) {
-      setUnderSearchBar(true);
+      // setUnderSearchBar(true);
       setDescriptionData(realizacaoId);
       setActiveBar(DESCRIPTION_BAR);
       loadData(realizacaoId);
@@ -370,7 +370,7 @@ useEffect(() => {
   }
 
   const onMarkerClick = (point) => {
-    setUnderSearchBar(true);
+    // setUnderSearchBar(true);
     setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
     loadData(toSnakeCase(point.nome));

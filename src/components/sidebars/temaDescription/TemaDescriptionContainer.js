@@ -54,6 +54,7 @@ const TemaDescriptionContainer = (props) => {
         tema={props.tema}
         temaData={props.temaData}
         bairro={props.bairro}
+        openedPopup={props.openedPopup}
       />
   );
 };
@@ -77,6 +78,7 @@ const mapStateToProps = (state) => {
     tema: state.filtros.tema,
     temaData: state.filtros.temaData,
     bairro: state.filtros.bairro,
+    openedPopup: state.active.openedPopup,
   };
 };
 

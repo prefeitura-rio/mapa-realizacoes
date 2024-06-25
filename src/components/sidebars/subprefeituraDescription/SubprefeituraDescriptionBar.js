@@ -336,7 +336,7 @@ const BairroDescriptionBar = forwardRef(
 
     const handleTitleClick = (value) => {
       setDescriptionData(toSnakeCase(value));
-      setUnderSearchBar(true);
+      // setUnderSearchBar(true);
       setActiveBar(DESCRIPTION_BAR);
       loadData(toSnakeCase(value));
       // console.log("clickei")
