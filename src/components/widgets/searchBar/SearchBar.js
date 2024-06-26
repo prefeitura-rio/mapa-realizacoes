@@ -490,6 +490,14 @@ const SearchBar = ({
     setOpenedPopup(null);
   };
 
+  const filterOptions = (options, { inputValue }) => {
+    return options.filter(option => 
+      option.toLowerCase().split(' ').some(word => 
+        word.startsWith(inputValue.toLowerCase())
+      )
+    );
+  };
+
   function SheetContentTemas() {
     return (
       // <div className={classes.searchbar}>
@@ -730,6 +738,7 @@ const SearchBar = ({
               onChange={handleBairroSubprefeituraChange}
               disableClearable
               options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+              filterOptions={filterOptions}
               PaperComponent={CustomPaperSearch}
               ListboxProps={{ style: { maxHeight: "60vh" } }}
               componentsProps={{
@@ -800,6 +809,7 @@ const SearchBar = ({
             onChange={handleRealizacaoChangeFromSearch}
             disableClearable
             options={(realizacoes??[]).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+            filterOptions={filterOptions}
             PaperComponent={CustomPaperSearch}
             ListboxProps={{ style: { maxHeight: "60vh" } }}
               componentsProps={{
@@ -1163,6 +1173,7 @@ const SearchBar = ({
                         onChange={handleBairroSubprefeituraChange}
                         disableClearable
                         options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
                         ListboxProps={{ style: { maxHeight: "80vh" } }}
                         componentsProps={{
@@ -1290,6 +1301,7 @@ const SearchBar = ({
                         onChange={handleRealizacaoChangeFromSearch}
                         disableClearable
                         options={(realizacoes??[]).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
                         ListboxProps={{ style: { maxHeight: "80vh" } }}
                         componentsProps={{
