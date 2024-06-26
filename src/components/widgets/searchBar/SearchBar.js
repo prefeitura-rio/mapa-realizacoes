@@ -1213,7 +1213,7 @@ const SearchBar = ({
 
               :
 
-              (showRealizacoes ? <IconButton
+              (showRealizacoes && openPopup != 1 ? <IconButton
                 style={{ backgroundColor: 'transparent' }}
                 color="grey"
                 onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}

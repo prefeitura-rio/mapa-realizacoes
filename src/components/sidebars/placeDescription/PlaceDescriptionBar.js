@@ -401,7 +401,8 @@ const PlaceDescriptionBar = forwardRef(
     programa,
     realizacao,
     error,
-    openedPopup
+    openedPopup,
+    rota
 
 
 
@@ -552,10 +553,10 @@ const PlaceDescriptionBar = forwardRef(
       };
   
       useEffect(() => {
-        if ( openedPopup == null && programa){
+        if ( openedPopup == null && rota){
           setIsBottomSheetOpen(true);
         }
-      }, [openedPopup]);
+      }, [rota]);
 
     return (
       <>
@@ -643,7 +644,7 @@ const PlaceDescriptionBar = forwardRef(
         )}
         </div>)}
 
-        {!isDesktop() && openedPopup == null && realizacao && (
+        {!isDesktop() && openedPopup == null  && (
           <div>
 
             <BottomSheet

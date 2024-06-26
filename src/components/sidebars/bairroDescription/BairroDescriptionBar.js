@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
@@ -30,6 +30,8 @@ import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import { isDesktop } from "../../../redux/active/reducers";
+import { BottomSheet } from "react-spring-bottom-sheet";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -290,83 +292,161 @@ const BairroDescriptionBar = forwardRef(
     setDescriptionData,
     setUnderSearchBar,
     loadData,
-    setActiveBar
+    setActiveBar,
+    openedPopup
   }, ref) => {
 
     const classes = useStyles();
-    
-    const [dadosAgregadosAbaSumarioStatusEntregasBairroTotal,setDadosAgregadosAbaSumarioStatusEntregasBairroTotal] = useState(0)
+
+    const [dadosAgregadosAbaSumarioStatusEntregasBairroTotal, setDadosAgregadosAbaSumarioStatusEntregasBairroTotal] = useState(0)
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasBairro){
+      if (dadosAgregadosAbaSumarioStatusEntregasBairro) {
         const total = dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasBairro?.concluida + dadosAgregadosAbaSumarioStatusEntregasBairro?.interrompida + dadosAgregadosAbaSumarioStatusEntregasBairro?.em_licitacao;
         setDadosAgregadosAbaSumarioStatusEntregasBairroTotal(total);
       }
     }, [dadosAgregadosAbaSumarioStatusEntregasBairro]);
 
-  // o destaque conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
-  const [destaquesBairro, setDestaquesBairro] = useState([]);
-  useEffect(() => {
-    if (!bairro) return;
-    const loadDestaquesBairro = async (id_bairro) => {
-      try {
-        const destaquesBairroRef = await getListDestaquesBairro(id_bairro);
+    // o destaque conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
+    const [destaquesBairro, setDestaquesBairro] = useState([]);
+    useEffect(() => {
+      if (!bairro) return;
+      const loadDestaquesBairro = async (id_bairro) => {
+        try {
+          const destaquesBairroRef = await getListDestaquesBairro(id_bairro);
 
           setDestaquesBairro(destaquesBairroRef);
-       
-      } catch (error) {
-        console.error("Erro", error);
-      }
+
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+
+      loadDestaquesBairro(bairro.nome);
+    }, [bairro]);
+
+    const handleTitleClick = (value) => {
+      setDescriptionData(toSnakeCase(value));
+      // setUnderSearchBar(true);
+      setActiveBar(DESCRIPTION_BAR);
+      loadData(toSnakeCase(value));
+      // console.log("clickei")
     };
 
-    loadDestaquesBairro(bairro.nome);
-  }, [bairro]);
+    function SheetContentBairroDescriptionBar() {
+      return (
+        <Stack m={2} mt={2} spacing={2}>
+           <Paper
+                elevation={6}
+                ref={ref}
+                className={classes.underSearchMobile}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.titulo}>{bairro ? bairro.nome : <CircularProgress size={25} />}</Typography>
+                  <Typography className={classes.subtitulo}> Bairro</Typography>
+                </div>
+              </Paper>
+              <Paper
+                elevation={6}
+                className={classes.underSearch4Mobile}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                    {destaquesBairro.map((item, index) => (
 
-  const handleTitleClick = (value) => {
-    setDescriptionData(toSnakeCase(value));
-    // setUnderSearchBar(true);
-    setActiveBar(DESCRIPTION_BAR);
-    loadData(toSnakeCase(value));
-    // console.log("clickei")
-  };
-    
+                      <li key={index} style={{ paddingBottom: "15px" }}>
+                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Paper>
+        </Stack>)
+    }
+    const [value, setValue] = useState(1);
+    const [openSheet, setOpenSheet] = useState(0);
+    const sheetRef = useRef();
+
+    const handleOpenSheet = (sheet) => {
+      setOpenSheet(sheet);
+    };
+
+
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+
+    const handleCloseSheet = () => {
+      setIsBottomSheetOpen(false);
+    };
+
+    useEffect(() => {
+      if (openedPopup == null && bairro) {
+        setIsBottomSheetOpen(true);
+      }
+    }, [openedPopup]);
+
     return (
-<>
+      <>
+        {isDesktop() && (
+          <>
+            <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                ref={ref}
+                className={classes.underSearch}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.titulo}>{bairro ? bairro.nome : <CircularProgress size={25} />}</Typography>
+                  <Typography className={classes.subtitulo}> Bairro</Typography>
+                </div>
+              </Paper>
+            </Slide>
+            <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch4}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                    {destaquesBairro.map((item, index) => (
 
-        <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            ref={ref}
-            className={classes.underSearch}
-          >
-            <div className={classes.basicInfo}>
-              <Typography className={classes.titulo}>{bairro?bairro.nome:<CircularProgress size={25}/>}</Typography>
-              <Typography className={classes.subtitulo}> Bairro</Typography>
-            </div>
-          </Paper>
-        </Slide>
-        <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            className={classes.underSearch4}
-          >
-             <div className={classes.basicInfo}>
-              <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-              <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                {destaquesBairro.map((item, index) => (
-                  
-                  <li key={index} style={{ paddingBottom: "15px" }}>
-                  <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                  <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                </li>
-                ))}
-              </ul>
-            </div>
-          </Paper>
-        </Slide>
-        </>
+                      <li key={index} style={{ paddingBottom: "15px" }}>
+                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Paper>
+            </Slide>
+          </>
+        )}
+
+        
+{!isDesktop() && openedPopup == null && bairro && (
+          <div>
+
+            <BottomSheet
+              style={{ zIndex: 507, position: "absolute" }}
+              open={isBottomSheetOpen}
+              onDismiss={handleCloseSheet}
+              ref={sheetRef}
+              defaultSnap={({ maxHeight }) => maxHeight / 2}
+              snapPoints={({ maxHeight }) => [
+                maxHeight - maxHeight / 10,
+                maxHeight / 4,
+                maxHeight * 0.6,
+              ]}
+            >
+              <SheetContentBairroDescriptionBar />
+            </BottomSheet>
+          </div>
+        )}
+      </>
     );
   }
 );

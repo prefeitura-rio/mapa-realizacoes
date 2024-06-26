@@ -56,6 +56,7 @@ const Map = ({
   subprefeitura,
   zoomDefault,
   currentClickedPoint,
+  setOpenedPopup
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -387,7 +388,7 @@ useEffect(() => {
       }
     }
     setRota(toSnakeCase(point.nome))
-    dispatch(setCurrentClickedPoint(point))
+    dispatch(setCurrentClickedPoint(point));
   };
 
 
