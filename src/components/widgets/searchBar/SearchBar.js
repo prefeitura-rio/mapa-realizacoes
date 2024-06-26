@@ -154,6 +154,11 @@ const useStyles = makeStyles((theme) => {
         paddingBottom: "20px",
       },
     },
+    dialogContent: {
+      width: '100%',
+      padding: 0, // Adjust padding as needed
+      marginTop: "-19px !important" ,
+    },
   };
 });
 
@@ -218,6 +223,7 @@ const SearchBar = ({
   const handleBairroSubprefeituraChange = (event, name) => {
     showSearchBar && setShowSearchBar(false);
     setInputValueRealizacaoFromSearch(null);
+    setRealizacao(null);
     if (name) {
       // console.log('Bairro/prefeitura selecionado(a):', name);
       setBairroName(name);
@@ -251,6 +257,9 @@ const SearchBar = ({
       console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
     }
     navigate(`/`);
+    if(!isDesktop()){
+      handleClosePopup();
+    }
   };
 
   const [inputValueTema, setInputValueTema] = useState(undefined);
@@ -262,7 +271,10 @@ const SearchBar = ({
     setTema(newValue);
     setActiveBar(TEMA_DESCRIPTION_BAR);
     setInputValueRealizacaoFromSearch(null);
+    setRealizacao(null);
+    if (!bairro){
     setZoomDefault((Math.random() * 999 + 1));
+    }
     navigate(`/`);
   };
 
@@ -347,8 +359,18 @@ const SearchBar = ({
     setSubprefeitura(null);
     setContent(null);
     setPlacesData(null);
-    setProgramasTema([]); setInputValueTema(null); setTema(null); setPrograma(undefined); setShowProgramas(false); setInputValuePrograma(undefined);
-    setRealizacoesPrograma([]); setShowRealizacoes(false); setInputValueRealizacao(undefined);
+    setShowTemas(true);
+    setShowProgramas(false);
+    setShowRealizacoes(false);
+    setInputValueTema(null); 
+    setInputValuePrograma(null); 
+    setInputValueRealizacao(null);
+    setTema(null); 
+    // setProgramasTema([]); setInputValueTema(null); setTema(null); setPrograma(undefined); setShowProgramas(false); setInputValuePrograma(undefined);
+    // setRealizacoesPrograma([]); setShowRealizacoes(false); setInputValueRealizacao(undefined);
+    if(!isDesktop()){
+      handleClosePopup();
+    }
   };
 
   const [inputValueRealizacao, setInputValueRealizacao] = useState(undefined);
@@ -379,16 +401,26 @@ const SearchBar = ({
   };
 
   const handleCleanBairroInput = () => {
+    setShowSearchBar(false);
     setInputValueBairroSubprefeitura(null);
+    setBairro(null);
     setBairroName(null);
     setSubprefeitura(null);
     setContent(null);
     setPlacesData(null);
-    if (underSearchBar) {
+    if(tema && !programa && !realizacao){
+    setActiveBar(TEMA_DESCRIPTION_BAR);
+    }else if(tema && programa && !realizacao){
+      setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+    }else if(!tema && !programa && !realizacao){
       setActiveBar(MAIN_UNDERSEARCH_BAR);
     }
+    setZoomDefault((Math.random() * 9999 + 1));
     setRota(null);
     navigate(`/`);
+    if(!isDesktop()){
+      handleClosePopup();
+    }
   };
 
   const handleCleanRealizacaoInput = () => {
@@ -402,6 +434,7 @@ const SearchBar = ({
     }
     setRota(null);
     navigate(`/`);
+    setRealizacao(null);
   };
 
   const handleOnfocus = () => {
@@ -508,7 +541,7 @@ const SearchBar = ({
           variant="elevation"
           className={classes.paperBackground}
           // elevation={searchPrompt ? 1 : 3}
-          elevation={3}
+          elevation={0}
         >
           {/* header paper */}
           <Paper
@@ -545,9 +578,9 @@ const SearchBar = ({
                       width: "100%",
                       height: "60vh",
                       overflowY: "hidden",
-                      borderRadius: '0px',
-                      borderBottomLeftRadius: '5px',
-                      borderBottomRightRadius: '25px',
+                      // borderRadius: '0px',
+                      // borderBottomLeftRadius: '5px',
+                      // borderBottomRightRadius: '25px',
 
                     }
                   }
@@ -602,9 +635,9 @@ const SearchBar = ({
                       width: "100%",
                       height: "60vh",
                       overflowY: "hidden",
-                      borderRadius: '0px',
-                      borderBottomLeftRadius: '5px',
-                      borderBottomRightRadius: '25px',
+                      // borderRadius: '0px',
+                      // borderBottomLeftRadius: '5px',
+                      // borderBottomRightRadius: '25px',
 
                     }
                   }
@@ -670,9 +703,9 @@ const SearchBar = ({
                       width: "100%",
                       height: "60vh",
                       overflowY: "hidden",
-                      borderRadius: '0px',
-                      borderBottomLeftRadius: '5px',
-                      borderBottomRightRadius: '25px',
+                      // borderRadius: '0px',
+                      // borderBottomLeftRadius: '5px',
+                      // borderBottomRightRadius: '25px',
 
                     }
                   }
@@ -715,7 +748,7 @@ const SearchBar = ({
           variant="elevation"
           className={classes.paperBackground}
           // elevation={searchPrompt ? 1 : 3}
-          elevation={3}
+          elevation={0}
         >
           <Paper
             component="form"
@@ -749,9 +782,9 @@ const SearchBar = ({
                     width: "100%",
                     height: "60vh",
                     overflowY: "hidden",
-                    borderRadius: '0px',
-                    borderBottomLeftRadius: '5px',
-                    borderBottomRightRadius: '25px',
+                    // borderRadius: '0px',
+                    // borderBottomLeftRadius: '5px',
+                    // borderBottomRightRadius: '25px',
 
                   }
                 }
@@ -785,7 +818,7 @@ const SearchBar = ({
         variant="elevation"
         className={classes.paperBackground}
         // elevation={searchPrompt ? 1 : 3}
-        elevation={3}
+        elevation={0}
       >
         <Paper
           component="form"
@@ -820,9 +853,9 @@ const SearchBar = ({
                     width: "100%",
                     height: "60vh",
                     overflowY: "hidden",
-                    borderRadius: '0px',
-                    borderBottomLeftRadius: '5px',
-                    borderBottomRightRadius: '25px',
+                    // borderRadius: '0px',
+                    // borderBottomLeftRadius: '5px',
+                    // borderBottomRightRadius: '25px',
 
                   }
                 }
@@ -975,7 +1008,7 @@ const SearchBar = ({
                                 marginLeft: "-5px",
                                 marginTop: "15px",
                                 width: "392px",
-                                height: "70vh",
+                                height: "80vh",
                                 overflowY: "hidden",
                                 borderRadius: '0px',
                                 // borderBottomLeftRadius: '5px',
@@ -1420,25 +1453,25 @@ const SearchBar = ({
 
       {openPopup !== null && (
         <Dialog
-          open={openPopup !== null}
-          onClose={handleClosePopup}
-          aria-labelledby="popup-dialog-title"
-          aria-describedby="popup-dialog-description"
-          maxWidth="sm"
-          fullWidth={true}
-          PaperProps={{
-            style: {
-              zIndex: 508,
-              minHeight: '80vh',
-              maxHeight: '90vh',
-            },
-          }}
-        >
-          <DialogContent>
-            {openPopup === 0 && <SheetContentTemas />}
-            {openPopup === 1 && <SheetContentBairros />}
-            {openPopup === 2 && <SheetContentRealizacoes />}
-          </DialogContent>
+      open={openPopup !== null}
+      onClose={handleClosePopup}
+      aria-labelledby="popup-dialog-title"
+      aria-describedby="popup-dialog-description"
+      maxWidth="sm"
+      fullWidth={true}
+      PaperProps={{
+        style: {
+          zIndex: 508,
+          minHeight: '80vh',
+          maxHeight: '90vh',
+        },
+      }}
+    >
+      <DialogContent className={classes.dialogContent}>
+        {openPopup === 0 && <SheetContentTemas classes={classes} />}
+        {openPopup === 1 && <SheetContentBairros classes={classes} />}
+        {openPopup === 2 && <SheetContentRealizacoes classes={classes} />}
+      </DialogContent>
           <DialogActions>
             {openPopup == 0 && showProgramas ?
 
@@ -1462,21 +1495,38 @@ const SearchBar = ({
 
             }
             {openPopup == 0 && inputValueTema &&
-              <Divider className={classes.divider} orientation="vertical" />
+              <Divider className={classes.divider} style={{marginRight:"20px"}} orientation="vertical" />
+            }
+             {openPopup == 0 &&
+            <Button onClick={handleClosePopup} color="primary" variant="contained">
+              {!tema && !programa && !realizacao  && "Fechar"}
+              {!tema && !programa && realizacao  && "Fechar"}
+              {tema && !programa && !realizacao  && "Ver o tema no mapa"}
+              {tema &&  programa && !realizacao  && "Ver o programa no mapa"}
+              {tema &&  programa && realizacao  && "Ver a realização mapa"}
+            </Button>
             }
             {openPopup == 1 &&
               <Button onClick={() => { handleCleanBairroInput(); setZoomDefault((Math.random() * 999 + 1)) }} color="primary">
-                Limpar
+                {bairro ? "Remover filtro de bairro" : null}
               </Button>
             }
-            {openPopup == 2 &&
+            {openPopup == 1 &&
+              <Button onClick={handleClosePopup}  variant="contained" color="primary">
+                {bairro ? "Ver bairro" : "Fechar"}
+              </Button>
+            }
+            {openPopup == 2 && realizacao &&
               <Button onClick={() => { handleCleanRealizacaoInput(); setZoomDefault((Math.random() * 999 + 1)) }} color="primary">
                 Limpar
               </Button>
             }
-            <Button onClick={handleClosePopup} color="primary">
-              Fechar
-            </Button>
+            {openPopup == 2 &&
+              <Button onClick={handleClosePopup} variant="contained" color="primary">
+                 {realizacao ? "Ver a realização mapa" : "Fechar"}
+              </Button>
+            }
+           
           </DialogActions>
         </Dialog>
       )}

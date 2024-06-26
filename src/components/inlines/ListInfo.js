@@ -81,7 +81,7 @@ const ListInfo = ({ content }) => {
     listInfo.push({
       text: (
         <>
-           {"R$ " + parseFloat(content.investimento).toLocaleString('pt-BR') + " investidoss"}
+           {"R$ " + parseFloat(content.investimento).toLocaleString('pt-BR') + " investidos"}
         </>
       ),
       iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/>    });
