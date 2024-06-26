@@ -128,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: "39px",
       backgroundColor: "#007E7D",
       color: "#FFFFFF",
-      marginTop: "5px"
+      marginTop: "5px",
     },
   },
   "@media screen and (min-width: 540px)": {
@@ -332,7 +332,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#007E7D",
     color: "#FFFFFF",
     padding: "1px 8px 1px 8px",
-    fontSize: "12px"
+    fontSize: "12px",
   },
 
 }));
@@ -479,23 +479,25 @@ const PlaceDescriptionBar = forwardRef(
                 <Typography className={classes.subtitulo}>
                   {programa ? programa : content?.programa}
                 </Typography>
-                {content?.status && (
-                  <span >
-                    <Button variant="contained" className={classes.statusButton}>
-                      {content?.status}
-                    </Button>
-                  </span>
-                )}
               </div>
             </Paper>
           
               <Paper elevation={6} className={classes.underSearch2Mobile}>
                 <div className={classes.basicInfo}>
                   {realizacao || content?.nome ? (
-                    <>
-                      <Stack direction="row">
-                        <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                        {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
+                      <>
+                        <Stack direction="row">
+                          <div style={{ marginBottom:"10px",width:"100%",display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                            {content?.status && (
+                              <span >
+                                <Button variant="contained" className={classes.statusButton}>
+                                  {content?.status}
+                                </Button>
+                              </span>
+                            )}
+                          </div>
+                          {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
                           <IconButton>
                             <InfoIcon sx={{ color: "black" }} />
                           </IconButton>
