@@ -556,7 +556,7 @@ const PlaceDescriptionBar = forwardRef(
         if ( openedPopup == null && rota){
           setIsBottomSheetOpen(true);
         }
-      }, [rota]);
+      }, [openedPopup, rota]);
 
     return (
       <>

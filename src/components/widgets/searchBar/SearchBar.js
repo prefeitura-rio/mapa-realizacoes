@@ -201,10 +201,12 @@ const SearchBar = ({
   bairro,
   subprefeitura,
   realizacaoId,
-  setOpenedPopup
+  setOpenedPopup,
+  realizacoes
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const [showRealizacaoSearchBar, setShowRealizacaoSearchBar] = useState(false);
   const [showMenuBar, setShowMenuBar] = useState(false);
   const [bairroName, setBairroName] = useState(null);
   const [showTemas, setShowTemas] = useState(true);
@@ -213,14 +215,9 @@ const SearchBar = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // console.log("tema", tema)
-    // console.log("programa", programa)
-    // console.log("realizacao", realizacao)
-  }, [tema, programa, realizacao]);
-
   const handleBairroSubprefeituraChange = (event, name) => {
     showSearchBar && setShowSearchBar(false);
+    setInputValueRealizacaoFromSearch(null);
     if (name) {
       // console.log('Bairro/prefeitura selecionado(a):', name);
       setBairroName(name);
@@ -253,6 +250,7 @@ const SearchBar = ({
     else {
       console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
     }
+    navigate(`/`);
   };
 
   const [inputValueTema, setInputValueTema] = useState(undefined);
@@ -263,6 +261,9 @@ const SearchBar = ({
     setShowRealizacoes(false);
     setTema(newValue);
     setActiveBar(TEMA_DESCRIPTION_BAR);
+    setInputValueRealizacaoFromSearch(null);
+    setZoomDefault((Math.random() * 999 + 1));
+    navigate(`/`);
   };
 
   // programas do tema -> programasTema vai aparecer na listagem de programas
@@ -331,6 +332,25 @@ const SearchBar = ({
 
 
 
+  const [inputValueRealizacaoFromSearch, setInputValueRealizacaoFromSearch] = useState(undefined);
+  const handleRealizacaoChangeFromSearch = (event, newValue) => {
+    showRealizacaoSearchBar && setShowRealizacaoSearchBar(false);
+    setInputValueRealizacaoFromSearch(newValue);
+    setRealizacao(newValue);
+    setActiveBar(DESCRIPTION_BAR);
+    setDescriptionData(toSnakeCase(newValue));
+    loadData(toSnakeCase(newValue));
+    setRota(toSnakeCase(newValue));
+    navigate(`/${toSnakeCase(newValue)}`);
+    setInputValueBairroSubprefeitura(null);
+    setBairro(null);
+    setSubprefeitura(null);
+    setContent(null);
+    setPlacesData(null);
+    setProgramasTema([]); setInputValueTema(null); setTema(null); setPrograma(undefined); setShowProgramas(false); setInputValuePrograma(undefined);
+    setRealizacoesPrograma([]); setShowRealizacoes(false); setInputValueRealizacao(undefined);
+  };
+
   const [inputValueRealizacao, setInputValueRealizacao] = useState(undefined);
   const handleRealizacaoChange = (event, newValue) => {
     setInputValueRealizacao(newValue);
@@ -350,6 +370,7 @@ const SearchBar = ({
   const handleClickOutside = () => {
     setShowSearchBar(false);
     setShowMenuBar(false);
+    setShowRealizacaoSearchBar(false)
     if (searchPrompt) setSearchPrompt();
   };
 
@@ -358,11 +379,22 @@ const SearchBar = ({
   };
 
   const handleCleanBairroInput = () => {
-    // console.log("clickei")
-    setInputValueBairroSubprefeitura("");
-    // setBairroData(null);
-    setBairro(null);
+    setInputValueBairroSubprefeitura(null);
+    setBairroName(null);
     setSubprefeitura(null);
+    setContent(null);
+    setPlacesData(null);
+    if (underSearchBar) {
+      setActiveBar(MAIN_UNDERSEARCH_BAR);
+    }
+    setRota(null);
+    navigate(`/`);
+  };
+
+  const handleCleanRealizacaoInput = () => {
+    showRealizacaoSearchBar && setShowRealizacaoSearchBar(false);
+    setInputValueRealizacaoFromSearch(null);
+    setBairro(null);
     setContent(null);
     setPlacesData(null);
     if (underSearchBar) {
@@ -737,10 +769,70 @@ const SearchBar = ({
 
   function SheetContentRealizacoes() {
     return (
-      <div>
-        <h2>Realizações</h2>
-        <p>... realizações</p>
-      </div>
+      <div >
+
+      <Paper
+        component="form"
+        variant="elevation"
+        className={classes.paperBackground}
+        // elevation={searchPrompt ? 1 : 3}
+        elevation={3}
+      >
+        <Paper
+          component="form"
+          variant="elevation"
+          className={
+            searchPrompt && historyItems?.length
+              ? clsx(classes.paper, classes.bottomRound)
+              : classes.paper
+          }
+          // elevation={searchPrompt ? 1 : 3}
+          elevation={3}
+          // onFocus={handleSearchPrompt}
+        >
+
+
+          <Autocomplete
+            freeSolo
+            // disablePortal
+            className={classes.input}
+            value={inputValueRealizacaoFromSearch}
+            onChange={handleRealizacaoChangeFromSearch}
+            disableClearable
+            options={(realizacoes??[]).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+            PaperComponent={CustomPaperSearch}
+            ListboxProps={{ style: { maxHeight: "60vh" } }}
+              componentsProps={{
+                paper: {
+                  sx: {
+                    marginTop: "15px",
+                    marginLeft: "-5px",
+                    width: "100%",
+                    height: "60vh",
+                    overflowY: "hidden",
+                    borderRadius: '0px',
+                    borderBottomLeftRadius: '5px',
+                    borderBottomRightRadius: '25px',
+
+                  }
+                }
+              }}
+              open={true}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                autoFocus={true}
+                // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                placeholder="Encontre uma realização"
+                sx={{
+                  "& fieldset": { border: 'none' }
+                }}
+              />
+            )}
+          />
+        </Paper>
+      </Paper>
+    </div>
     );
   }
 
@@ -749,7 +841,8 @@ const SearchBar = ({
     <>
       {isDesktop() &&
         <ClickAwayListener onClickAway={handleClickOutside}>
-          <Stack direction="row" spacing={!showMenuBar && !showSearchBar ? 2 : (showMenuBar ? 52 : 8)}>
+          <Stack direction="row" spacing={!showMenuBar && !showSearchBar && !showRealizacaoSearchBar? 2 : 0}>
+            {/* FILTER BY TEMAS AND PROGRAMAS */}
             {!showMenuBar ?
 
               (
@@ -759,7 +852,7 @@ const SearchBar = ({
                       <IconButton
                         style={{ backgroundColor: 'transparent' }}
                         color="grey"
-                        onClick={() => { setShowMenuBar(!showMenuBar); setShowSearchBar(showMenuBar) }}
+                        onClick={() => { setShowRealizacaoSearchBar(showMenuBar); setShowMenuBar(!showMenuBar); setShowSearchBar(showMenuBar) }}
                       >
                         <MenuIcon />
                       </IconButton>
@@ -1015,6 +1108,7 @@ const SearchBar = ({
                 // </Slide>
               )}
 
+            {/* SEARCH FOR BAIRROS */}
             {!showSearchBar ?
 
               (
@@ -1025,7 +1119,7 @@ const SearchBar = ({
                       <IconButton
                         style={{ backgroundColor: 'transparent', padding: 7 }}
                         color="grey"
-                        onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar) }}
+                        onClick={() => { setShowSearchBar(!showSearchBar); setShowMenuBar(showSearchBar); setShowRealizacaoSearchBar(showSearchBar) }}
                       >
                         <img width={33} src={lupa_mapa} />
                       </IconButton>
@@ -1141,6 +1235,133 @@ const SearchBar = ({
                 // </Slide>
               )}
 
+            {/* SEARCH FOR REALIZACÕES */}
+            {!showRealizacaoSearchBar ?
+
+              (
+                <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Tooltip title={inputValueRealizacaoFromSearch ? `Descrição da realização: ${inputValueRealizacaoFromSearch}` : ""} placement="right">
+                    <Badge badgeContent={inputValueRealizacaoFromSearch ? 1 : 0} color="primary">
+
+                      <IconButton
+                        style={{ backgroundColor: 'transparent', padding: 7 }}
+                        color="grey"
+                        onClick={() => { setShowRealizacaoSearchBar(!showRealizacaoSearchBar); setShowMenuBar(showRealizacaoSearchBar); setShowSearchBar(showRealizacaoSearchBar) }}
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    </Badge>
+                  </Tooltip>
+                </Paper>
+              )
+
+              :
+
+              (
+                // <Slide direction="down" in={showSearchBar} mountOnEnter unmountOnExit>
+                <div className={classes.searchbar}>
+
+                  <Paper
+                    component="form"
+                    variant="elevation"
+                    className={classes.paperBackground}
+                    // elevation={searchPrompt ? 1 : 3}
+                    elevation={3}
+                  >
+                    <Paper
+                      component="form"
+                      variant="elevation"
+                      className={
+                        searchPrompt && historyItems?.length
+                          ? clsx(classes.paper, classes.bottomRound)
+                          : classes.paper
+                      }
+                      // elevation={searchPrompt ? 1 : 3}
+                      elevation={3}
+                      onFocus={handleSearchPrompt}
+                    >
+
+
+                      <Autocomplete
+                        freeSolo
+                        // disablePortal
+                        className={classes.input}
+                        value={inputValueRealizacaoFromSearch}
+                        onChange={handleRealizacaoChangeFromSearch}
+                        disableClearable
+                        options={(realizacoes??[]).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        PaperComponent={CustomPaperSearch}
+                        ListboxProps={{ style: { maxHeight: "80vh" } }}
+                        componentsProps={{
+                          paper: {
+                            sx: {
+                              marginTop: "15px",
+                              marginLeft: "-5px",
+                              width: "392px",
+                              height: "80vh",
+                              overflowY: "hidden",
+                              borderRadius: '0px',
+                              borderBottomLeftRadius: '5px',
+                              borderBottomRightRadius: '25px',
+
+                            }
+                          }
+                        }}
+                        open={showRealizacaoSearchBar}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            autoFocus={true}
+                            // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                            placeholder="Encontre uma realização"
+                            sx={{
+                              "& fieldset": { border: 'none' }
+                            }}
+                          />
+                        )}
+                      />
+                      {inputValueRealizacaoFromSearch ?
+                        <IconButton
+                          style={{ backgroundColor: 'transparent' }}
+                          // type="submit"
+                          color="secondary"
+                          classes={{ colorSecondary: classes.colorSecondary }}
+                          aria-label="search"
+                        // onClick={
+                        //   activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => { }
+                        // }
+                        >
+
+                          <BackspaceIcon sx={{ marginRight: "5px", fontSize: "20px" }} onClick={handleCleanRealizacaoInput} />
+
+
+                        </IconButton>
+                        : null
+                      }
+                      <Divider className={classes.divider} orientation="vertical" />
+                      <IconButton
+                        // type="submit"
+                        style={{ backgroundColor: 'transparent' }}
+                        color="secondary"
+                        classes={{ colorSecondary: classes.colorSecondary }}
+                        aria-label="search"
+                      // onClick={
+                      //   activeBar !== MAIN_UNDERSEARCH_BAR ? onDirectionsClick : () => { }
+                      // }
+                      >
+                        {anyLoading ? (
+                          <CircularProgress classes={{ colorPrimary: classes.colorLoading }} size={20} />
+                        ) : activeBar == MAIN_UNDERSEARCH_BAR ? <SearchIcon /> : <CloseIcon onClick={() => setShowRealizacaoSearchBar(false)} />
+
+                        }
+
+                      </IconButton>
+                    </Paper>
+                  </Paper>
+                </div>
+
+              )}
+
 
           </Stack>
         </ClickAwayListener>
@@ -1175,7 +1396,13 @@ const SearchBar = ({
               </Badge>
             </Tooltip>
           } />
-          <BottomNavigationAction icon={<SearchIcon />} />
+          <BottomNavigationAction icon={
+            <Tooltip title={inputValueRealizacaoFromSearch ? `Descrição da realização: ${inputValueRealizacaoFromSearch}` : ""} placement="right">
+              <Badge badgeContent={inputValueRealizacaoFromSearch ? 1 : 0} color="primary">
+                <SearchIcon />
+              </Badge>
+            </Tooltip>
+          } />
         </BottomNavigation>
       )}
 
@@ -1230,33 +1457,17 @@ const SearchBar = ({
                 Limpar
               </Button>
             }
+            {openPopup == 2 &&
+              <Button onClick={() => { handleCleanRealizacaoInput(); setZoomDefault((Math.random() * 999 + 1)) }} color="primary">
+                Limpar
+              </Button>
+            }
             <Button onClick={handleClosePopup} color="primary">
               Fechar
             </Button>
           </DialogActions>
         </Dialog>
       )}
-
-
-
-      {/* {openSheet !== null && (
-          <BottomSheet
-          style={{ zIndex: 507, position: "absolute" }}
-          open={openSheet !== null}
-          onDismiss={handleCloseSheet}
-          ref={sheetRef}
-          defaultSnap={({ maxHeight }) => maxHeight / 2}
-          snapPoints={({ maxHeight }) => [
-            maxHeight - maxHeight / 10,
-            maxHeight / 4,
-            maxHeight * 0.6,
-            ]}
-            >
-            {openSheet === 0 && <SheetContentTemas />}
-            {openSheet === 1 && <SheetContentBairros />}
-            {openSheet === 2 && <SheetContentRealizacoes style={{ zIndex: 507, position: "absolute" }} />}
-            </BottomSheet>
-            )} */}
     </>
 
   );

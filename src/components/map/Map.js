@@ -478,14 +478,12 @@ useEffect(() => {
 
             const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
 
-            // const isRealizacaoMatch = realizacao ?
-            //   point.id === toSnakeCase(realizacao)
-            //   : true;
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
             if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
               return renderMarker(point, index);
             }
+            
           })}
         </MarkerClusterGroup>
 
@@ -493,6 +491,12 @@ useEffect(() => {
           const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
           // Render the marker for points with the "Mobilidade" theme
           if (isProgramaMatch) {
+            return renderMarker(point, index);
+          }
+        })}
+
+        {realizacao && points.map((point, index) => {
+          if (realizacao === point.nome) {
             return renderMarker(point, index);
           }
         })}

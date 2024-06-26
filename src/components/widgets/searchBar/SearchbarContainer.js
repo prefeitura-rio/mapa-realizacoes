@@ -63,6 +63,7 @@ const SearchbarContainer = (props) => {
       bairro={props.bairro}
       subprefeitura={props.subprefeitura}
       setOpenedPopup={props.setOpenedPopup}
+      realizacoes={props.realizacoes}
     />
   );
 };
@@ -82,6 +83,7 @@ const mapStateToProps = (state) => {
     realizacao:state.filtros.realizacao,
     bairro: state.bairros.descriptionData,
     subprefeitura: state.subprefeituras.descriptionData,
+    realizacoes: state.places.allPlaces
   };
 };
 
