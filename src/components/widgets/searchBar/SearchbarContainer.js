@@ -1,5 +1,5 @@
 import SearchBar from "./SearchBar";
-import { setSearchPrompt } from "./../../../redux/active/actions";
+import { setOpenedPopup, setSearchPrompt } from "./../../../redux/active/actions";
 import { setMenuSidebar } from "./../../../redux/active/actions";
 import { setUnderSearchBar } from "./../../../redux/active/actions";
 import { setActiveBar } from "./../../../redux/active/actions";
@@ -62,6 +62,8 @@ const SearchbarContainer = (props) => {
       setZoomDefault={props.setZoomDefault}
       bairro={props.bairro}
       subprefeitura={props.subprefeitura}
+      setOpenedPopup={props.setOpenedPopup}
+      realizacoes={props.realizacoes}
     />
   );
 };
@@ -81,10 +83,12 @@ const mapStateToProps = (state) => {
     realizacao:state.filtros.realizacao,
     bairro: state.bairros.descriptionData,
     subprefeitura: state.subprefeituras.descriptionData,
+    realizacoes: state.places.allPlaces
   };
 };
 
 const mapDispatchToProps = {
+  setOpenedPopup,
   setUnderSearchBar,
   setMenuSidebar,
   setSearchPrompt,

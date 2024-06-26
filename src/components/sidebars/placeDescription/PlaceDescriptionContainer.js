@@ -51,6 +51,8 @@ const PlaceDescriptionContainer = (props) => {
         programa={props.programa}
         realizacao={props.realizacao}
         error={props.error}
+        openedPopup={props.openedPopup}
+        rota={props.rota}
       />
   );
 };
@@ -75,6 +77,8 @@ const mapStateToProps = (state) => {
     tema: state.filtros.tema,
     programa: state.filtros.programa,
     realizacao: state.filtros.realizacao,
+    openedPopup: state.active.openedPopup,
+    rota: state.rota.rota,
   };
 };
 

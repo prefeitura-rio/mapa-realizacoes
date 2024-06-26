@@ -52,6 +52,7 @@ const ProgramaDescriptionContainer = (props) => {
         programa={props.programa}
         programaData={props.programaData}
         bairro={props.bairro}
+        openedPopup={props.openedPopup}
       />
   );
 };
@@ -76,6 +77,7 @@ const mapStateToProps = (state) => {
     programa: state.filtros.programa,
     programaData: state.filtros.programaData,
     bairro: state.filtros.bairro,
+    openedPopup: state.active.openedPopup,
   };
 };
 

@@ -21,7 +21,8 @@ import {
   SET_PHOTO_GALLERY,
   SET_SHOWN_MORE,
   SET_INFO_MODAL,
-  SET_CURRENT_CLICKED_POINT
+  SET_CURRENT_CLICKED_POINT,
+  SET_OPENED_POPUP
 } from "./actions";
 
 export const isDesktop = () => {
@@ -49,6 +50,7 @@ const defaultState = {
   menuSidebar: false,
   photoGallery: false,
   shownMore: false,
+  openedPopup:null
 };
 
 export const activeReducer = (state = defaultState, action) => {
@@ -57,6 +59,11 @@ export const activeReducer = (state = defaultState, action) => {
       return {
         ...state,
         addPhoto: action.payload,
+      };
+    case SET_OPENED_POPUP:
+      return {
+        ...state,
+        openedPopup: action.payload,
       };
     case SET_CATEGORY_MODAL:
       return {
