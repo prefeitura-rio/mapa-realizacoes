@@ -33,6 +33,8 @@ import ListInfo from "../../inlines/ListInfo";
 import no_imagem from "../../assets/no_image.jpg"
 import { isDesktop } from "../../../redux/active/reducers";
 import { BottomSheet } from "react-spring-bottom-sheet";
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -456,6 +458,44 @@ const PlaceDescriptionBar = forwardRef(
     const numChars = Math.floor(windowHeight / (isScreen900 ? 7 : (isScreen600 ? 20 : 2.3)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
+    const [loading, setLoading] = useState(false);
+
+    const handleShareWhatsApp = async () => {
+      setLoading(true);
+      const prompt = `Reescreva o texto falando bem da realização: ${content?.descricao}`;
+      const imageUrl = content?.image_url ? content.image_url : "https://s1.static.brasilescola.uol.com.br/be/2021/10/araras.jpg";
+      
+      const requestBody = {
+        prompt
+      };
+  
+      try {
+        const csrftoken = Cookies.get('csrftoken');
+        const sessionid = Cookies.get('sessionid');
+        const response = await fetch('https://genapi.dados.rio/text', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': `csrftoken=${csrftoken}; sessionid=${sessionid}`
+          },
+          body: JSON.stringify(requestBody)
+        });
+  
+        if (!response.ok) {
+          throw new Error('Erro ao tentar melhorar o texto do gemini');
+        }
+  
+        const data = await response.json();
+        const message = `${data.text}\n\n${imageUrl}`;
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+      } catch (error) {
+        console.error('Erro no response...', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
 
     function SheetContentPlaceDescriptionBar() {
       return (
@@ -497,11 +537,6 @@ const PlaceDescriptionBar = forwardRef(
                               </span>
                             )}
                           </div>
-                          {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
-                          <IconButton>
-                            <InfoIcon sx={{ color: "black" }} />
-                          </IconButton>
-                        </Tooltip> */}
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
                         {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
@@ -534,6 +569,16 @@ const PlaceDescriptionBar = forwardRef(
                   <ImageCarousel images={[content?.image_url]} />
                 </Paper>
             )}
+
+                <Paper style={{padding:"20px"}} elevation={6}>
+                  <Button
+                    startIcon={<WhatsAppIcon sx={{color:"#25d366",fontSize: "30px !important"}}/>}
+                    onClick={handleShareWhatsApp}
+                    disabled={loading}
+                  >
+                    Compartilhe no WhatsApp
+                  </Button>
+                </Paper>
           </>
         )}
           </Stack>
