@@ -462,7 +462,9 @@ const PlaceDescriptionBar = forwardRef(
 
     const handleShareWhatsApp = async () => {
       setLoading(true);
-      const prompt = `Reescreva o texto falando bem da realização: ${content?.descricao}`;
+      const prompt = `O Mapa de Realizações da Prefeitura do Rio de Janeiro apresenta todas as realizações feitas nesta gestão. O Criador de Mensagens de Whatsapp irá pegar informações vindas do Mapa e transformar em uma mensagem amigável de Whatsapp, usando emoticons.
+As mensagens devem ser sucintas e carismáticas, comunicando ao cidadão as realizações da Prefeitura de forma positiva.
+As realizações geralmente trazem Título, Descrição (Sobre), Secretaria, Bairro, Endereço, Investimento, População beneficiada. Colocar título, investimento e população beneficiada logo no início. Informações=> Título:${content?.nome} , Descrição: ${content?.descricao}, Programa: ${content?.programa}, Bairro: ${content?.bairro}, Endereço:${content?.endereco}, Investimento: ${content?.investimento}, População beneficiada: ${content?.cariocas_atendidos}`;
       const imageUrl = content?.image_url ? content.image_url : "https://s1.static.brasilescola.uol.com.br/be/2021/10/araras.jpg";
       
       const requestBody = {
