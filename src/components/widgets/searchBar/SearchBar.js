@@ -532,10 +532,9 @@ const SearchBar = ({
   };
 
   const filterOptions = (options, { inputValue }) => {
+    const trimmedInputValue = inputValue.trim().toLowerCase();
     return options.filter(option =>
-      option.toLowerCase().split(' ').some(word =>
-        word.startsWith(inputValue.toLowerCase())
-      )
+      option.toLowerCase().includes(trimmedInputValue)
     );
   };
 
@@ -846,8 +845,6 @@ const SearchBar = ({
 
 
             <Autocomplete
-              // freeSolo
-              // disablePortal
               noOptionsText={'Nenhuma realização foi encontrada.'}
               className={classes.input}
               value={inputValueRealizacaoFromSearch}
