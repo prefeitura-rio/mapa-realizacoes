@@ -71,7 +71,7 @@ const Map = ({
   useEffect(() => {
     // console.log("ROTAROTA " + JSON.stringify(rota.rota))
     if (rota == null && map) {
-      const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200];
+      const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400];
       map.flyTo(coords, isDesktopDevice ? 11 : 10)
     }
   }, [rota]);
@@ -82,7 +82,7 @@ const Map = ({
       const coords = [-22.9200, -43.4250];
       map.flyTo(coords, 12)
     } else if (map && underSearchBar) {
-      const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200];
+      const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400];
       map.flyTo(coords, isDesktopDevice ? 11 : 10)
     }
   }, [underSearchBar])
@@ -91,7 +91,7 @@ const Map = ({
     // console.log("zoomDefault " + zoomDefault)
 
     if (map && zoomDefault != 0) {
-      const coords =isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200];
+      const coords =isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400];
       map.flyTo(coords, isDesktopDevice ? 11 : 10)
     }
   }, [zoomDefault])
@@ -447,7 +447,7 @@ useEffect(() => {
         </Alert>
       </Snackbar>
       <MapContainer
-        center={isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200]}  // Coordenadas para o Rio de Janeiro
+        center={isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400]}  // Coordenadas para o Rio de Janeiro
         zoom={isDesktopDevice ? 11 : 10} 
         scrollWheelZoom={true}
         zoomControl={false}

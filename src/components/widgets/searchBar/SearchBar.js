@@ -864,7 +864,7 @@ const SearchBar = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  autoFocus={true}
+                  autoFocus={!inputValueRealizacaoFromSearch}
                   // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
                   placeholder="Encontre uma realização"
                   sx={{
