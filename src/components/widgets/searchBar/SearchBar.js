@@ -1508,12 +1508,15 @@ const SearchBar = ({
             }
             {openPopup == 1 &&
               <Button onClick={() => { handleCleanBairroInput(); setZoomDefault((Math.random() * 999 + 1)) }} color="primary">
-                {bairro ? "Remover filtro de bairro" : null}
+                {bairroName ? "Remover filtro de bairro" : null}
               </Button>
             }
             {openPopup == 1 &&
               <Button onClick={handleClosePopup}  variant="contained" color="primary">
-                {bairro ? "Ver bairro" : "Fechar"}
+                {(!bairroName && !tema && !programa || !bairroName && tema && !programa || !bairroName && tema && programa) && "Fechar"}
+                {bairroName && !tema && !programa && "Ver bairro"}
+                {bairroName && tema && !programa && "Ver tema aplicado ao bairro"}
+                {bairroName && tema && programa && "Ver programa aplicado ao bairro"}
               </Button>
             }
             {openPopup == 2 && realizacao &&
