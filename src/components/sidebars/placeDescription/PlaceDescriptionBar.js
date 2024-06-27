@@ -475,10 +475,10 @@ const PlaceDescriptionBar = forwardRef(
         const response = await fetch('https://genapi.dados.rio/text', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'Cookie': `csrftoken=${csrftoken}; sessionid=${sessionid}`
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify(requestBody)
+          body: JSON.stringify(requestBody),
+          credentials: 'include'
         });
   
         if (!response.ok) {
