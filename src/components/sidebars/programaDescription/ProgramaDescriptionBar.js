@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "80px",
+      height: "90px",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -151,11 +151,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "calc(4vh + 80px )", // 3vh + 70px + 1vh
+      top: "calc(4vh + 90px )", // 3vh + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc(82.5vh - 330px)",
+      height: "calc(100vh - 17.5vh - 340px)",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -170,7 +170,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "calc(4vh + 80px + 82.5vh - 330px + 1vh)", //4vh + 70px + 91vh - 390px + 1vh
+      top: "calc(100vh - 17.5vh - 340px + 4vh + 90px + 1vh)", //4vh + 70px + 91vh - 390px + 1vh
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
@@ -190,7 +190,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "calc(4vh + 80px + 82.5vh - 330px + 1vh + 8.5vh + 1vh)", // 96vh - 320px + 70px + 1vh
+      top: "calc(100vh - 17.5vh - 340px + 4vh + 90px + 1vh + 8.5vh + 1vh)", // 96vh - 320px + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",

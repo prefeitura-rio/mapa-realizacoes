@@ -157,7 +157,7 @@ const useStyles = makeStyles((theme) => {
     dialogContent: {
       width: '100%',
       padding: 0, // Adjust padding as needed
-      marginTop: "-19px !important" ,
+      marginTop: "-19px !important",
     },
   };
 });
@@ -257,7 +257,7 @@ const SearchBar = ({
       console.error('Não foi possível identificar o bairro/prefeitura selecionado(a).');
     }
     navigate(`/`);
-    if(!isDesktop()){
+    if (!isDesktop()) {
       handleClosePopup();
     }
   };
@@ -272,8 +272,8 @@ const SearchBar = ({
     setActiveBar(TEMA_DESCRIPTION_BAR);
     setInputValueRealizacaoFromSearch(null);
     setRealizacao(null);
-    if (!bairro){
-    setZoomDefault((Math.random() * 999 + 1));
+    if (!bairro) {
+      setZoomDefault((Math.random() * 999 + 1));
     }
     navigate(`/`);
   };
@@ -362,13 +362,13 @@ const SearchBar = ({
     setShowTemas(true);
     setShowProgramas(false);
     setShowRealizacoes(false);
-    setInputValueTema(null); 
-    setInputValuePrograma(null); 
+    setInputValueTema(null);
+    setInputValuePrograma(null);
     setInputValueRealizacao(null);
-    setTema(null); 
+    setTema(null);
     // setProgramasTema([]); setInputValueTema(null); setTema(null); setPrograma(undefined); setShowProgramas(false); setInputValuePrograma(undefined);
     // setRealizacoesPrograma([]); setShowRealizacoes(false); setInputValueRealizacao(undefined);
-    if(!isDesktop()){
+    if (!isDesktop()) {
       handleClosePopup();
     }
   };
@@ -408,17 +408,17 @@ const SearchBar = ({
     setSubprefeitura(null);
     setContent(null);
     setPlacesData(null);
-    if(tema && !programa && !realizacao){
-    setActiveBar(TEMA_DESCRIPTION_BAR);
-    }else if(tema && programa && !realizacao){
+    if (tema && !programa && !realizacao) {
+      setActiveBar(TEMA_DESCRIPTION_BAR);
+    } else if (tema && programa && !realizacao) {
       setActiveBar(PROGRAMA_DESCRIPTION_BAR);
-    }else if(!tema && !programa && !realizacao){
+    } else if (!tema && !programa && !realizacao) {
       setActiveBar(MAIN_UNDERSEARCH_BAR);
     }
     setZoomDefault((Math.random() * 9999 + 1));
     setRota(null);
     navigate(`/`);
-    if(!isDesktop()){
+    if (!isDesktop()) {
       handleClosePopup();
     }
   };
@@ -524,8 +524,8 @@ const SearchBar = ({
   };
 
   const filterOptions = (options, { inputValue }) => {
-    return options.filter(option => 
-      option.toLowerCase().split(' ').some(word => 
+    return options.filter(option =>
+      option.toLowerCase().split(' ').some(word =>
         word.startsWith(inputValue.toLowerCase())
       )
     );
@@ -813,38 +813,38 @@ const SearchBar = ({
     return (
       <div >
 
-      <Paper
-        component="form"
-        variant="elevation"
-        className={classes.paperBackground}
-        // elevation={searchPrompt ? 1 : 3}
-        elevation={0}
-      >
         <Paper
           component="form"
           variant="elevation"
-          className={
-            searchPrompt && historyItems?.length
-              ? clsx(classes.paper, classes.bottomRound)
-              : classes.paper
-          }
+          className={classes.paperBackground}
           // elevation={searchPrompt ? 1 : 3}
-          elevation={3}
-          // onFocus={handleSearchPrompt}
+          elevation={0}
         >
+          <Paper
+            component="form"
+            variant="elevation"
+            className={
+              searchPrompt && historyItems?.length
+                ? clsx(classes.paper, classes.bottomRound)
+                : classes.paper
+            }
+            // elevation={searchPrompt ? 1 : 3}
+            elevation={3}
+          // onFocus={handleSearchPrompt}
+          >
 
 
-          <Autocomplete
-            freeSolo
-            // disablePortal
-            className={classes.input}
-            value={inputValueRealizacaoFromSearch}
-            onChange={handleRealizacaoChangeFromSearch}
-            disableClearable
-            options={(realizacoes??[]).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
-            filterOptions={filterOptions}
-            PaperComponent={CustomPaperSearch}
-            ListboxProps={{ style: { maxHeight: "60vh" } }}
+            <Autocomplete
+              freeSolo
+              // disablePortal
+              className={classes.input}
+              value={inputValueRealizacaoFromSearch}
+              onChange={handleRealizacaoChangeFromSearch}
+              disableClearable
+              options={(realizacoes ?? []).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+              filterOptions={filterOptions}
+              PaperComponent={CustomPaperSearch}
+              ListboxProps={{ style: { maxHeight: "60vh" } }}
               componentsProps={{
                 paper: {
                   sx: {
@@ -861,21 +861,21 @@ const SearchBar = ({
                 }
               }}
               open={true}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                autoFocus={true}
-                // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                placeholder="Encontre uma realização"
-                sx={{
-                  "& fieldset": { border: 'none' }
-                }}
-              />
-            )}
-          />
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  autoFocus={true}
+                  // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
+                  placeholder="Encontre uma realização"
+                  sx={{
+                    "& fieldset": { border: 'none' }
+                  }}
+                />
+              )}
+            />
+          </Paper>
         </Paper>
-      </Paper>
-    </div>
+      </div>
     );
   }
 
@@ -884,7 +884,7 @@ const SearchBar = ({
     <>
       {isDesktop() &&
         <ClickAwayListener onClickAway={handleClickOutside}>
-          <Stack direction="row" spacing={!showMenuBar && !showSearchBar && !showRealizacaoSearchBar? 2 : 0}>
+          <Stack direction="row" spacing={!showMenuBar && !showSearchBar && !showRealizacaoSearchBar ? 2 : 0}>
             {/* FILTER BY TEMAS AND PROGRAMAS */}
             {!showMenuBar ?
 
@@ -1333,7 +1333,7 @@ const SearchBar = ({
                         value={inputValueRealizacaoFromSearch}
                         onChange={handleRealizacaoChangeFromSearch}
                         disableClearable
-                        options={(realizacoes??[]).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        options={(realizacoes ?? []).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
                         ListboxProps={{ style: { maxHeight: "80vh" } }}
@@ -1453,25 +1453,25 @@ const SearchBar = ({
 
       {openPopup !== null && (
         <Dialog
-      open={openPopup !== null}
-      onClose={handleClosePopup}
-      aria-labelledby="popup-dialog-title"
-      aria-describedby="popup-dialog-description"
-      maxWidth="sm"
-      fullWidth={true}
-      PaperProps={{
-        style: {
-          zIndex: 508,
-          minHeight: '80vh',
-          maxHeight: '90vh',
-        },
-      }}
-    >
-      <DialogContent className={classes.dialogContent}>
-        {openPopup === 0 && <SheetContentTemas classes={classes} />}
-        {openPopup === 1 && <SheetContentBairros classes={classes} />}
-        {openPopup === 2 && <SheetContentRealizacoes classes={classes} />}
-      </DialogContent>
+          open={openPopup !== null}
+          onClose={handleClosePopup}
+          aria-labelledby="popup-dialog-title"
+          aria-describedby="popup-dialog-description"
+          maxWidth="sm"
+          fullWidth={true}
+          PaperProps={{
+            style: {
+              zIndex: 508,
+              minHeight: '80vh',
+              maxHeight: '90vh',
+            },
+          }}
+        >
+          <DialogContent className={classes.dialogContent}>
+            {openPopup === 0 && <SheetContentTemas classes={classes} />}
+            {openPopup === 1 && <SheetContentBairros classes={classes} />}
+            {openPopup === 2 && <SheetContentRealizacoes classes={classes} />}
+          </DialogContent>
           <DialogActions>
             {openPopup == 0 && showProgramas ?
 
@@ -1488,23 +1488,23 @@ const SearchBar = ({
               (showRealizacoes && openPopup != 1 && openPopup != 2 ? <IconButton
                 style={{ backgroundColor: 'transparent' }}
                 color="grey"
-                onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setInputValuePrograma(undefined);setPrograma(null); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
               >
                 <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
               </IconButton> : "")
 
             }
             {openPopup == 0 && inputValueTema &&
-              <Divider className={classes.divider} style={{marginRight:"20px"}} orientation="vertical" />
+              <Divider className={classes.divider} style={{ marginRight: "20px" }} orientation="vertical" />
             }
-             {openPopup == 0 &&
-            <Button onClick={handleClosePopup} color="primary" variant="contained">
-              {!tema && !programa && !realizacao  && "Fechar"}
-              {!tema && !programa && realizacao  && "Fechar"}
-              {tema && !programa && !realizacao  && "Ver o tema no mapa"}
-              {tema &&  programa && !realizacao  && "Ver o programa no mapa"}
-              {tema &&  programa && realizacao  && "Ver a realização mapa"}
-            </Button>
+            {openPopup == 0 &&
+              <Button onClick={handleClosePopup} color="primary" variant="contained">
+                {!tema && !programa && !realizacao && "Fechar"}
+                {!tema && !programa && realizacao && "Fechar"}
+                {tema && !programa && !realizacao && "Ver o tema no mapa"}
+                {tema && programa && !realizacao && "Ver o programa no mapa"}
+                {tema && programa && realizacao && "Ver a realização mapa"}
+              </Button>
             }
             {openPopup == 1 &&
               <Button onClick={() => { handleCleanBairroInput(); setZoomDefault((Math.random() * 999 + 1)) }} color="primary">
@@ -1512,7 +1512,7 @@ const SearchBar = ({
               </Button>
             }
             {openPopup == 1 &&
-              <Button onClick={handleClosePopup}  variant="contained" color="primary">
+              <Button onClick={handleClosePopup} variant="contained" color="primary">
                 {(!bairroName && !tema && !programa || !bairroName && tema && !programa || !bairroName && tema && programa) && "Fechar"}
                 {bairroName && !tema && !programa && "Ver bairro"}
                 {bairroName && tema && !programa && "Ver tema aplicado ao bairro"}
@@ -1526,10 +1526,10 @@ const SearchBar = ({
             }
             {openPopup == 2 &&
               <Button onClick={handleClosePopup} variant="contained" color="primary">
-                 {realizacao ? "Ver a realização mapa" : "Fechar"}
+                {realizacao ? "Ver a realização mapa" : "Fechar"}
               </Button>
             }
-           
+
           </DialogActions>
         </Dialog>
       )}

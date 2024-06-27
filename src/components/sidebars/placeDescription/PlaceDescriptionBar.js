@@ -141,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "80px",
+      height: "90px",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -155,7 +155,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     underSearchError: {
-      backgroundColor:"pink",
+      // backgroundColor:"pink",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
@@ -164,7 +164,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "160px",
+      height: "120px",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -179,11 +179,11 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch2: {
       position: "fixed",
-      top: "calc(4vh + 80px )", // 3vh + 70px + 1vh
+      top: "calc(4vh + 90px )", // 3vh + 70px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc(45.5vh - 160px)",
+      height: "calc(45.5vh - 180px)",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -198,12 +198,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "calc(50.5vh - 80px )", //4vh +1vh+ + 80px + 45.5vh -160px 
+      top: "calc(50.5vh - 90px )", //4vh +1vh+ + 80px + 45.5vh -160px 
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc(46.5vh + 80px)",
+      height: "calc(45.5vh - 140px )",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -219,12 +219,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3NoImage: {
       position: "fixed",
-      top: "calc(50.5vh - 80px )", //4vh +1vh+ + 80px + 45.5vh -160px 
+      top: "calc(50.5vh - 90px )", //4vh +1vh+ + 80px + 45.5vh -160px 
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc(46.5vh + 80px)",
+      height: "calc(46.5vh + 90px)",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -240,7 +240,7 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch4: {
       position: "fixed",
-      top: "calc(96vh - 320px + 80px + 1vh)", // 96vh - 320px + 80px + 1vh
+      top: "calc(96vh - 320px + 90px + 1vh)", // 96vh - 320px + 80px + 1vh
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
@@ -462,7 +462,7 @@ const PlaceDescriptionBar = forwardRef(
         <Stack m={2} mt={2} spacing={2}>
           {error ? (
             <Paper elevation={6} ref={ref} className={classes.underSearchErrorMobile}>
-              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+              <div style={{ padding: "25px"}}>
                 <Typography className={classes.noInfoTituloMobile}>
                   Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o InfoPref.
                 </Typography>

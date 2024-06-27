@@ -71,8 +71,8 @@ const Map = ({
   useEffect(() => {
     // console.log("ROTAROTA " + JSON.stringify(rota.rota))
     if (rota == null && map) {
-      const coords = [-22.9200, -43.3250];
-      map.flyTo(coords, 11)
+      const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200];
+      map.flyTo(coords, isDesktopDevice ? 11 : 10)
     }
   }, [rota]);
 
@@ -82,8 +82,8 @@ const Map = ({
       const coords = [-22.9200, -43.4250];
       map.flyTo(coords, 12)
     } else if (map && underSearchBar) {
-      const coords = [-22.9200, -43.3250];
-      map.flyTo(coords, 11)
+      const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200];
+      map.flyTo(coords, isDesktopDevice ? 11 : 10)
     }
   }, [underSearchBar])
 
@@ -91,8 +91,8 @@ const Map = ({
     // console.log("zoomDefault " + zoomDefault)
 
     if (map && zoomDefault != 0) {
-      const coords = [-22.9200, -43.3250];
-      map.flyTo(coords, 11)
+      const coords =isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200];
+      map.flyTo(coords, isDesktopDevice ? 11 : 10)
     }
   }, [zoomDefault])
 
@@ -448,7 +448,7 @@ useEffect(() => {
       </Snackbar>
       <MapContainer
         center={isDesktopDevice ? [-22.9200, -43.3250] : [-22.8800, -43.4200]}  // Coordenadas para o Rio de Janeiro
-        zoom={11}
+        zoom={isDesktopDevice ? 11 : 10} 
         scrollWheelZoom={true}
         zoomControl={false}
         whenCreated={setMap}
@@ -457,7 +457,7 @@ useEffect(() => {
         <TileLayer
           url="https://api.mapbox.com/styles/v1/escritoriodedados/clwjhapz4001r01phheax6qvi/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZXNjcml0b3Jpb2RlZGFkb3MiLCJhIjoiY2t3bWdmcHpjMmJ2cTJucWJ4MGQ1Mm1kbiJ9.4hHJX-1pSevYoBbja7Pq4w"
           maxZoom={19}
-          minZoom={11}
+          minZoom={isDesktopDevice ? 11 : 10}
           tileSize={512}
           zoomOffset={-1}
         />
