@@ -88,6 +88,14 @@ const useStyles = makeStyles((theme) => {
       zIndex: 1000,
       paddingBottom: "20px",
     },
+    shortPaperBackground: {
+      width: "400px",
+      display: "flex",
+      borderRadius: '10px',
+      height: "0vh",
+      zIndex: 1000,
+      paddingBottom: "20px",
+    },
 
     buttonStyle: {
       backgroundColor: 'white',
@@ -810,6 +818,9 @@ const SearchBar = ({
   }
 
   function SheetContentRealizacoes() {
+
+    const [localRealizacaoMenuMobileOpen, setLocalRealizacaoMenuMobileOpen] = useState(false);
+
     return (
       <div >
 
@@ -835,8 +846,9 @@ const SearchBar = ({
 
 
             <Autocomplete
-              freeSolo
+              // freeSolo
               // disablePortal
+              noOptionsText={'Nenhuma realização foi encontrada.'}
               className={classes.input}
               value={inputValueRealizacaoFromSearch}
               onChange={handleRealizacaoChangeFromSearch}
@@ -853,14 +865,18 @@ const SearchBar = ({
                     width: "100%",
                     height: "60vh",
                     overflowY: "hidden",
-                    // borderRadius: '0px',
-                    // borderBottomLeftRadius: '5px',
-                    // borderBottomRightRadius: '25px',
-
                   }
                 }
               }}
-              open={true}
+              open={localRealizacaoMenuMobileOpen}
+              onInputChange={(_, value) => {
+                if (value.length === 0) {
+                  if (localRealizacaoMenuMobileOpen) setLocalRealizacaoMenuMobileOpen(false);
+                } else {
+                  if (!localRealizacaoMenuMobileOpen) setLocalRealizacaoMenuMobileOpen(true);
+                }
+              }}
+              onClose={() => setLocalRealizacaoMenuMobileOpen(false)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -878,6 +894,8 @@ const SearchBar = ({
       </div>
     );
   }
+
+  const [localRealizacaoMenuDesktopOpen, setLocalRealizacaoMenuDesktopOpen] = useState(false);
 
   return (
 
@@ -1308,7 +1326,7 @@ const SearchBar = ({
                   <Paper
                     component="form"
                     variant="elevation"
-                    className={classes.paperBackground}
+                    className={!localRealizacaoMenuDesktopOpen? classes.shortPaperBackground : classes.paperBackground}
                     // elevation={searchPrompt ? 1 : 3}
                     elevation={3}
                   >
@@ -1327,8 +1345,10 @@ const SearchBar = ({
 
 
                       <Autocomplete
-                        freeSolo
+                        // freeSolo
                         // disablePortal
+                        forcePopupIcon={false}
+                        noOptionsText={'Nenhuma realização foi encontrada.'}
                         className={classes.input}
                         value={inputValueRealizacaoFromSearch}
                         onChange={handleRealizacaoChangeFromSearch}
@@ -1352,7 +1372,15 @@ const SearchBar = ({
                             }
                           }
                         }}
-                        open={showRealizacaoSearchBar}
+                        open={localRealizacaoMenuDesktopOpen}
+                        onInputChange={(_, value) => {
+                          if (value.length === 0) {
+                            if (localRealizacaoMenuDesktopOpen) setLocalRealizacaoMenuDesktopOpen(false);
+                          } else {
+                            if (!localRealizacaoMenuDesktopOpen) setLocalRealizacaoMenuDesktopOpen(true);
+                          }
+                        }}
+                        onClose={() => setLocalRealizacaoMenuDesktopOpen(false)}
                         renderInput={(params) => (
                           <TextField
                             {...params}
