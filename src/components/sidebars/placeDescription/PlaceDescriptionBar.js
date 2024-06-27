@@ -155,7 +155,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     underSearchError: {
-      backgroundColor:"pink",
+      // backgroundColor:"pink",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
@@ -164,7 +164,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "160px",
+      height: "120px",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -462,7 +462,7 @@ const PlaceDescriptionBar = forwardRef(
         <Stack m={2} mt={2} spacing={2}>
           {error ? (
             <Paper elevation={6} ref={ref} className={classes.underSearchErrorMobile}>
-              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+              <div style={{ padding: "25px"}}>
                 <Typography className={classes.noInfoTituloMobile}>
                   Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o InfoPref.
                 </Typography>
