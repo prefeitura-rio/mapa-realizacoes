@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
@@ -30,6 +30,8 @@ import { getListDestaquesSubprefeitura } from "../../../firebase";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import { isDesktop } from "../../../redux/active/reducers";
+import { BottomSheet } from "react-spring-bottom-sheet";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -288,7 +290,6 @@ const theme = createTheme({
 
 const BairroDescriptionBar = forwardRef(
   ({ underSearchBar,
-    subprefeituras,
     subprefeitura,
     images_subprefeitura,
     dadosAgregadosAbaTemaSubprefeitura,
@@ -300,7 +301,8 @@ const BairroDescriptionBar = forwardRef(
     loadData,
     setPhotoGallery,
     setImagesType,
-    setActiveBar
+    setActiveBar,
+    openedPopup
   }, ref) => {
 
     const classes = useStyles();
@@ -319,7 +321,7 @@ const BairroDescriptionBar = forwardRef(
     // o destaque conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
     const [destaquesSubprefeitura, setDestaquesSubprefeitura] = useState([]);
     useEffect(() => {
-      if (!subprefeituras) return;
+      if (!subprefeitura) return;
       const loadDestaquesSubprefeitura = async (id_subprefeitura) => {
         try {
           const destaquesSubprefeituraRef = await getListDestaquesSubprefeitura(id_subprefeitura);
@@ -331,8 +333,8 @@ const BairroDescriptionBar = forwardRef(
         }
       };
 
-      loadDestaquesSubprefeitura(subprefeituras.nome);
-    }, [subprefeituras]);
+      loadDestaquesSubprefeitura(subprefeitura);
+    }, [subprefeitura]);
 
     const handleTitleClick = (value) => {
       setDescriptionData(toSnakeCase(value));
@@ -342,40 +344,109 @@ const BairroDescriptionBar = forwardRef(
       // console.log("clickei")
     };
 
+    function SheetContentSubprefeituraDescriptionBar() {
+      return (
+        <Stack m={2} mt={2} spacing={2}>
+           <Paper
+                elevation={6}
+                ref={ref}
+                className={classes.underSearchMobile}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.titulo}>{subprefeitura ?? <CircularProgress size={25} />}</Typography>
+                  <Typography className={classes.subtitulo}> Subprefeitura</Typography>
+                </div>
+              </Paper>
+              <Paper
+                elevation={6}
+                className={classes.underSearch4Mobile}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                    {destaquesSubprefeitura.map((item, index) => (
+
+                      <li key={index} style={{ paddingBottom: "15px" }}>
+                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Paper>
+        </Stack>)
+    }
+
+    const sheetRef = useRef();
+
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+
+    const handleCloseSheet = () => {
+      setIsBottomSheetOpen(false);
+    };
+
+    useEffect(() => {
+      if (openedPopup == null && subprefeitura) {
+        setIsBottomSheetOpen(true);
+      }
+    }, [openedPopup]);
+
     return (
       <>
+        {isDesktop() && (
+          <>
+            <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                ref={ref}
+                className={classes.underSearch}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.titulo}>{subprefeitura ?? <CircularProgress size={25} />}</Typography>
+                  <Typography className={classes.subtitulo}> Subprefeitura</Typography>
+                </div>
+              </Paper>
+            </Slide>
 
-        <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            ref={ref}
-            className={classes.underSearch}
-          >
-            <div className={classes.basicInfo}>
-              <Typography className={classes.titulo}>{subprefeituras ? subprefeituras.nome : <CircularProgress size={25} />}</Typography>
-              <Typography className={classes.subtitulo}> Subprefeitura</Typography>
-            </div>
-          </Paper>
-        </Slide>
-       
-        <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            className={classes.underSearch4}
-          >
-            <div className={classes.basicInfo}>
-              <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-              <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                {destaquesSubprefeitura.map((item, index) => (
-                  <li key={index} style={{ paddingBottom: "15px" }}>
-                    <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                    <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Paper>
-        </Slide>
+            <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch4}
+              >
+                <div className={classes.basicInfo}>
+                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                    {destaquesSubprefeitura.map((item, index) => (
+                      <li key={index} style={{ paddingBottom: "15px" }}>
+                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Paper>
+            </Slide>
+          </>)}
+
+        {!isDesktop() && openedPopup == null && subprefeitura && (
+          <div>
+
+            <BottomSheet
+              style={{ zIndex: 507, position: "absolute" }}
+              open={isBottomSheetOpen}
+              onDismiss={handleCloseSheet}
+              ref={sheetRef}
+              defaultSnap={({ maxHeight }) => maxHeight / 2}
+              snapPoints={({ maxHeight }) => [
+                maxHeight - maxHeight / 10,
+                maxHeight / 4,
+                maxHeight * 0.6,
+              ]}
+            >
+              <SheetContentSubprefeituraDescriptionBar />
+            </BottomSheet>
+          </div>
+        )}
       </>
     );
   }

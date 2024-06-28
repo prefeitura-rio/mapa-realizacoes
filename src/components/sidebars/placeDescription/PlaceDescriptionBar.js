@@ -488,7 +488,8 @@ As realizações geralmente trazem Título, Descrição (Sobre), Secretaria, Bai
         }
   
         const data = await response.json();
-        const message = `${data.text}\n\n${imageUrl}`;
+        // const message = `${data.text}\n\n${imageUrl}`;
+        const message = `${data.text}\n`;
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
       } catch (error) {

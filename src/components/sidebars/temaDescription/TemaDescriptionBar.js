@@ -465,33 +465,32 @@ const TemaDescriptionBar = forwardRef(
                 </Box>
               ) : (
                 <>
-                  <Tooltip title="Realizações">
-                    <Box display="flex">
+                  {/* <Tooltip title="Realizações"> */}
+                    <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
                       <AccountBalanceIcon />
-                      <Box pl={0.5}>
+                      <Box>
                         {/* TODO: valor agregado da qntdd de obras. */}
-                        <Typography>{dadosAgregadosAbaSumarioStatusEntregasTema.count}</Typography>
+                        <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasTema.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasTema.count > 1 ? "ões" : "ão"}</Typography>
                       </Box>
                     </Box>
-                  </Tooltip>
-                  <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
-                  {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
-                    <Tooltip title="Investimento">
-                      <Box display="flex">
+                  {/* </Tooltip> */}
+                  <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>                  {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
+                    // <Tooltip title="Investimento">
+                    <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
                         <AttachMoneyIcon />
-                        <Box pl={0.5}>
-                          {/* TODO: valor agregado das obras. */}
-                          <Typography>
-                            {dadosAgregadosAbaSumarioStatusEntregasTema.investment.toLocaleString('pt-BR', {
+                        <Box>
+                        <Typography style={{fontSize:"14px"}}>
+                        {dadosAgregadosAbaSumarioStatusEntregasTema.investment.toLocaleString('pt-BR', {
                               style: 'currency',
                               currency: 'BRL',
                               minimumFractionDigits: 0,
                               maximumFractionDigits: 0,
-                            })}
+                            }) + " "}
+                                Investidos
                           </Typography>
                         </Box>
                       </Box>
-                    </Tooltip>
+                    // </Tooltip>
                   )}
                 </>
               )}
@@ -611,7 +610,7 @@ const TemaDescriptionBar = forwardRef(
                 className={classes.underSearch3}
               >
 
-                <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+                <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
                   {!dadosAgregadosAbaSumarioStatusEntregasTema ? (
                     <CircularProgress />
                   ) : dadosAgregadosAbaSumarioStatusEntregasTema.count === 0 ? (
@@ -620,33 +619,33 @@ const TemaDescriptionBar = forwardRef(
                     </Box>
                   ) : (
                     <>
-                      <Tooltip title="Realizações">
-                        <Box display="flex">
+                      {/* <Tooltip title="Realizações"> */}
+                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
                           <AccountBalanceIcon />
-                          <Box pl={0.5}>
+                          <Box >
                             {/* TODO: valor agregado da qntdd de obras. */}
-                            <Typography>{dadosAgregadosAbaSumarioStatusEntregasTema.count}</Typography>
+                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasTema.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasTema.count > 1 ? "ões" : "ão"}</Typography>
                           </Box>
                         </Box>
-                      </Tooltip>
-                      <span style={{ paddingLeft: "20px", paddingRight: "20px" }}></span>
+                      {/* </Tooltip> */}
+                      <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                       {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
-                        <Tooltip title="Investimento">
-                          <Box display="flex">
+                        // <Tooltip title="Investimento" >
+                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
                             <AttachMoneyIcon />
-                            <Box pl={0.5}>
-                              {/* TODO: valor agregado das obras. */}
-                              <Typography>
+                            <Box>
+                              <Typography style={{fontSize:"14px"}}>
                                 {dadosAgregadosAbaSumarioStatusEntregasTema.investment.toLocaleString('pt-BR', {
                                   style: 'currency',
                                   currency: 'BRL',
                                   minimumFractionDigits: 0,
                                   maximumFractionDigits: 0,
-                                })}
+                                }) + " "}
+                                Investidos
                               </Typography>
                             </Box>
                           </Box>
-                        </Tooltip>
+                        // </Tooltip>
                       )}
                     </>
                   )}

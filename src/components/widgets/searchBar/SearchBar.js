@@ -222,6 +222,7 @@ const SearchBar = ({
   const [showRealizacaoSearchBar, setShowRealizacaoSearchBar] = useState(false);
   const [showMenuBar, setShowMenuBar] = useState(false);
   const [bairroName, setBairroName] = useState(null);
+  const [subprefeituraName, setSubprefeituraName] = useState(null);
   const [showTemas, setShowTemas] = useState(true);
   const [showProgramas, setShowProgramas] = useState(false);
   const [showRealizacoes, setShowRealizacoes] = useState(false);
@@ -232,16 +233,17 @@ const SearchBar = ({
     showSearchBar && setShowSearchBar(false);
     setInputValueRealizacaoFromSearch(null);
     setRealizacao(null);
-    if (name) {
-      // console.log('Bairro/prefeitura selecionado(a):', name);
-      setBairroName(name);
-    }
     // Check if name is a prefeitura
     if (bairros.includes(name)) {
+      if (name) {
+        // console.log('Bairro/prefeitura selecionado(a):', name);
+        setBairroName(name);
+      }
       setBairroData(name);
       if (!tema) {
         setActiveBar(BAIRRO_DESCRIPTION_BAR);
       }
+      setSubprefeituraName(null);
       setEhBairro(true);
       // console.log('Bairro selecionado: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(name));
@@ -252,8 +254,15 @@ const SearchBar = ({
     }
     else if (prefeituras.includes(name)) {
       setSubprefeituraData(name);
-      setActiveBar(SUBPREFEITURA_DESCRIPTION_BAR);
+      if (name) {
+        // console.log('Bairro/prefeitura selecionado(a):', name);
+        setSubprefeituraName(name);
+      }
+      if (!tema) {
+        setActiveBar(SUBPREFEITURA_DESCRIPTION_BAR);
+      }
       setEhBairro(false);
+      setBairroName(null);
       // console.log('Subprefeitura selecionada: ', name);
       dispatch(loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(name));
       setInputValueBairroSubprefeitura(name);
@@ -413,6 +422,7 @@ const SearchBar = ({
     setInputValueBairroSubprefeitura(null);
     setBairro(null);
     setBairroName(null);
+    setSubprefeituraName(null);
     setSubprefeitura(null);
     setContent(null);
     setPlacesData(null);
@@ -478,15 +488,15 @@ const SearchBar = ({
           });
           setBairros(bairrosName);
 
-          // // Incluir os nomes das prefeituras na lista de bairros
-          // const prefeiturasNames = [];
-          // prefeituraRef.forEach((doc) => {
-          //   const prefeiturasData = doc.data();
-          //   const prefeituraName = prefeiturasData.nome;
-          //   bairrosSubSubprefeituras.push(prefeituraName);
-          //   prefeiturasNames.push(prefeituraName);
-          // });
-          // setSubprefeituras(prefeiturasNames);
+          // Incluir os nomes das prefeituras na lista de bairros
+          const prefeiturasNames = [];
+          prefeituraRef.forEach((doc) => {
+            const prefeiturasData = doc.data();
+            const prefeituraName = prefeiturasData.nome;
+            bairrosSubSubprefeituras.push(prefeituraName);
+            prefeiturasNames.push(prefeituraName);
+          });
+          setSubprefeituras(prefeiturasNames);
 
 
           setBairrosSubprefeituras(bairrosSubSubprefeituras);
@@ -747,7 +757,7 @@ const SearchBar = ({
     );
   }
 
-  function SheetContentBairros() {
+  function SheetContentBairrosSubprefeituras() {
     return (
       <div >
 
@@ -803,7 +813,7 @@ const SearchBar = ({
                   {...params}
                   autoFocus={true}
                   // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                  placeholder="Filtre por Bairro"
+                  placeholder="Filtre por Bairro ou Subprefeitura"
                   sx={{
                     "& fieldset": { border: 'none' }
                   }}
@@ -1246,7 +1256,7 @@ const SearchBar = ({
                             {...params}
                             autoFocus={true}
                             // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                            placeholder="Filtre por Bairro"
+                            placeholder="Filtre por Bairro ou Subprefeitura"
                             sx={{
                               "& fieldset": { border: 'none' }
                             }}
@@ -1495,7 +1505,7 @@ const SearchBar = ({
         >
           <DialogContent className={classes.dialogContent}>
             {openPopup === 0 && <SheetContentTemas classes={classes} />}
-            {openPopup === 1 && <SheetContentBairros classes={classes} />}
+            {openPopup === 1 && <SheetContentBairrosSubprefeituras classes={classes} />}
             {openPopup === 2 && <SheetContentRealizacoes classes={classes} />}
           </DialogContent>
           <DialogActions>
@@ -1534,15 +1544,19 @@ const SearchBar = ({
             }
             {openPopup == 1 &&
               <Button onClick={() => { handleCleanBairroInput(); setZoomDefault((Math.random() * 999 + 1)) }} color="primary">
-                {bairroName ? "Remover filtro de bairro" : null}
+                {bairroName && "Remover filtro de bairro"}
+                {subprefeituraName && "Remover filtro de subprefeitura"}
               </Button>
             }
             {openPopup == 1 &&
               <Button onClick={handleClosePopup} variant="contained" color="primary">
-                {(!bairroName && !tema && !programa || !bairroName && tema && !programa || !bairroName && tema && programa) && "Fechar"}
-                {bairroName && !tema && !programa && "Ver bairro"}
-                {bairroName && tema && !programa && "Ver tema aplicado ao bairro"}
-                {bairroName && tema && programa && "Ver programa aplicado ao bairro"}
+                {(!bairroName && !subprefeituraName && !tema && !programa || !bairroName && !subprefeituraName && tema && !programa || !bairroName && !subprefeituraName && tema && programa) && "Fechar"}
+                {bairroName && !subprefeituraName && !tema && !programa && "Ver bairro"}
+                {!bairroName && subprefeituraName && !tema && !programa && "Ver subprefeitura"}
+                {bairroName && !subprefeituraName && tema && !programa && "Ver tema aplicado ao bairro"}
+                {!bairroName && subprefeituraName && tema && !programa && "Ver tema aplicado a subprefeitura"}
+                {bairroName && !subprefeituraName && tema && programa && "Ver programa aplicado ao bairro"}
+                {!bairroName && subprefeituraName && tema && programa && "Ver programa aplicado a subprefeitura"}
               </Button>
             }
             {openPopup == 2 && realizacao &&

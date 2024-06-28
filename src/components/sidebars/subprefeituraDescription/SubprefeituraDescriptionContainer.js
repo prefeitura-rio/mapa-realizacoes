@@ -28,7 +28,7 @@ const SubprefeituraDescriptionContainer = (props) => {
       <SubprefeituraDescriptionBar
         underSearchBar={props.underSearchBar}
         images_subprefeitura={props.images_subprefeitura}
-        subprefeituras={props.subprefeituras}
+        subprefeitura={props.subprefeitura}
         dadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaTemaSubprefeitura}
         dadosAgregadosAbaProgramasSubprefeitura={props.dadosAgregadosAbaProgramasSubprefeitura}
         dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={props.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}
@@ -39,6 +39,8 @@ const SubprefeituraDescriptionContainer = (props) => {
         loadData={props.loadData}
         setPhotoGallery={props.setPhotoGallery}
         setImagesType={props.setImagesType}
+        openedPopup={props.openedPopup}
+        
 
         // remove if not useful
         profile={props.profile}
@@ -53,7 +55,7 @@ const mapStateToProps = (state) => {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
     descriptionData: state.subprefeituras.descriptionData,
-    subprefeituras: state.subprefeituras.content,
+    subprefeitura: state.subprefeituras.content?.nome,
     images_subprefeitura: state.images.allImagesSubprefeitura,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
@@ -63,6 +65,7 @@ const mapStateToProps = (state) => {
     dadosAgregadosAbaSumarioStatusEntregasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
     setImagesType: state.images.setImagesType,  
     subprefeitura: state.filtros.subprefeitura,
+    openedPopup: state.active.openedPopup,
     
   };
 };
