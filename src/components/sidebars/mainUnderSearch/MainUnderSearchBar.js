@@ -582,7 +582,8 @@ const MainUnderSearchBar = forwardRef(
                 elevation={6}
                 className={classes.underSearch4Mobile}
               >
-                <div className={classes.basicInfo}>
+                 <img src={rio_cover} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} />
+                {/* <div className={classes.basicInfo}>
                   <Typography className={classes.sobreMunicipio}>Destaques</Typography>
                   <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
                     {!dadosDestaquesCidade ? (
@@ -606,7 +607,7 @@ const MainUnderSearchBar = forwardRef(
                       ))
                     )}
                   </ul>
-                </div>
+                </div> */}
               </Paper>
 
         </Stack>
@@ -669,16 +670,16 @@ const MainUnderSearchBar = forwardRef(
                 <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
                   {(!dadosAgregadosCidade) ? < CircularProgress /> :
                     <>
-                      <Tooltip title="Realizações">
+                      {/* <Tooltip title="Realizações"> */}
 
                         <Box display="flex" >
 
                           <AccountBalanceIcon />
                           <Box pl={0.5}>
-                            <Typography  >{dadosAgregadosCidade?.count}</Typography>
+                            <Typography  >{dadosAgregadosCidade?.count} Realizações</Typography>
                           </Box>
                         </Box>
-                      </Tooltip>
+                      {/* </Tooltip> */}
 
                     </>}
                 </Box>
@@ -690,7 +691,14 @@ const MainUnderSearchBar = forwardRef(
                 elevation={6}
                 className={classes.underSearch4}
               >
-                <div className={classes.basicInfo}>
+                <Paper
+              elevation={6}
+              className={classes.underSearch4}
+            >
+              <img src={rio_cover} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} />
+            </Paper>
+                
+                {/* <div className={classes.basicInfo}>
                   <Typography className={classes.sobreMunicipio}>Destaques</Typography>
                   <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
                     {!dadosDestaquesCidade ? (
@@ -714,7 +722,7 @@ const MainUnderSearchBar = forwardRef(
                       ))
                     )}
                   </ul>
-                </div>
+                </div> */}
               </Paper>
             </Slide>
           </div>
