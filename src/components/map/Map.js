@@ -20,6 +20,7 @@ import bairros_centros from "./centroideBairros";
 import subprefeituras_centros from "./centroideSubprefeituras";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import shapeFileBairros from "./shapeFileBairros.json"
+import shapeFileSubprefeituras from "./shapeFileSubprefeituras.json"
 import { parse } from 'terraformer-wkt-parser';
 import { toTitleCase } from "../../utils/formatFile";
 import { useDispatch } from "react-redux";
@@ -44,7 +45,6 @@ const Map = ({
   profile,
   filtros,
   bairroNome,
-  subprefeituraNome,
   realizacaoId,
   rota,
   setRota,
@@ -239,23 +239,54 @@ useEffect(() => {
     }
   }, [bairro]);
 
+    // Use a ref to store the current layer
+    const currentLayerSubprefeitura = useRef(null);
 
   useEffect(() => {
-    if (map && subprefeituraNome) {
+    if (map && subprefeitura) {
       // Converte o nome do bairro para o formato correto (considerando acentuação)
-      const subprefeituraFormatada = subprefeituraNome;
+      const subprefeituraFormatada = subprefeitura;
 
       // Busca as informações da subprefeitura no novo formato
-      const subprefeitura = subprefeituras_centros[subprefeituraFormatada];
+      const subprefeitura_centro = subprefeituras_centros[subprefeituraFormatada];
       // console.log("subprefeitura ", subprefeitura);
 
-      if (subprefeitura) {
-        const coords = [subprefeitura.lat, subprefeitura.lng];
-        map.flyTo(coords, 12);
+      if (subprefeitura_centro) {
+        map.setView({
+          lat: subprefeitura_centro.lat,
+          lng: subprefeitura_centro.lng
+        }, 12);
+      }
+         // Find the correct bairro object
+         const subprefeituraData = shapeFileSubprefeituras.find(s => (s.subprefeitura).toLowerCase() === (subprefeitura).toLowerCase());
+         if (subprefeituraData) {
+           // Convert WKT to GeoJSON
+           const geoJsonData = parse(subprefeituraData.geometry_wkt);
+   
+           // If there's a current layer, remove it from the map
+           if (currentLayerSubprefeitura.current) {
+             map.removeLayer(currentLayerSubprefeitura.current);
+           }
+           // Create a new GeoJSON layer and add it to the map
+           currentLayerSubprefeitura.current = L.geoJSON(geoJsonData, {
+             style: {
+               color: '#007E7D',  // Boundary color
+               weight: 3, // Boundary thickness 
+               fillColor: '#007E7D',  //BG
+               fillOpacity: 0.2  // BGs opacity  (0 is fully transparent, 1 is fully opaque)
+             }
+           }).addTo(map);
+         }
+    }
+  }, [subprefeitura, map]);
+
+  useEffect(() => {
+    if (map) {
+      if (!subprefeitura) {
+        map.removeLayer(currentLayerSubprefeitura.current);
       }
     }
-  }, [subprefeituraNome, map]);
-
+  }, [subprefeitura]);
 
   const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
 
