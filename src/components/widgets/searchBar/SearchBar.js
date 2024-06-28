@@ -532,9 +532,10 @@ const SearchBar = ({
   };
 
   const filterOptions = (options, { inputValue }) => {
-    const trimmedInputValue = inputValue.trim().toLowerCase();
     return options.filter(option =>
-      option.toLowerCase().includes(trimmedInputValue)
+      option.toLowerCase().split(' ').some(word =>
+        word.startsWith(inputValue.toLowerCase())
+      )
     );
   };
 
