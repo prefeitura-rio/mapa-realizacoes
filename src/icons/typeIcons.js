@@ -9,7 +9,7 @@ import DefaultIcon from '@material-ui/icons/Place'; // Default icon
 import ReactDOMServer from 'react-dom/server';
 
 
-const createMuiIcon = (MuiIcon, iconSize = 35, iconColor = 'default') => {
+const createMuiIcon = (MuiIcon, iconSize = 15, iconColor = 'default') => {
   const iconHtml = ReactDOMServer.renderToString(
     <MuiIcon style={{ fontSize: iconSize, color: iconColor }} />
   );
@@ -21,27 +21,22 @@ const createMuiIcon = (MuiIcon, iconSize = 35, iconColor = 'default') => {
 };
 
 
+export const getIcon = (name, isClicked) => {
+  const color = isClicked ? "#0b4747" : null; 
+  const size = isClicked ? 40 : 25; 
 
-
-export const getIcon = (name) => {
   switch (name.toLowerCase()) {
-    case "shopping mall":
-    case "shopping supermarket":
-      return createMuiIcon(ShoppingIcon);
-    case "gas station":
-      return createMuiIcon(GasStationIcon);
-    case "university":
-    case "school":
-      return createMuiIcon(SchoolIcon);
-    case "hotel":
-    case "hostel":
-      return createMuiIcon(HotelIcon);
-    case "restaurant":
-    case "cafe":
-      return createMuiIcon(RestaurantIcon);
-    case "bar":
-      return createMuiIcon(BarIcon);
+    case "redicon":
+      return createMuiIcon(DefaultIcon, isClicked ? 45 : 35, color || "#0b4747");
+    case "brts_transbrasil_icon":
+      return createMuiIcon(DefaultIcon, size, "#ED3237");
+    case "brts_transoeste_icon":
+      return createMuiIcon(DefaultIcon, size, "#208DCD");
+    case "brts_transcarioca_icon":
+      return createMuiIcon(DefaultIcon, size, "#ED7422");
+    case "brts_transolimpicas_icon":
+      return createMuiIcon(DefaultIcon, size, "#1DA64D");
     default:
-      return createMuiIcon(DefaultIcon, 35, "#007E7D");
+      return createMuiIcon(DefaultIcon, isClicked ? 45 : 35, color || "#007E7D"); 
   }
 };

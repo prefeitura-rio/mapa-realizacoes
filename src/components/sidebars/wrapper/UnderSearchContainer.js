@@ -3,21 +3,29 @@ import { connect, useDispatch } from "react-redux";
 import { loadAllPlaces } from "../../../redux/places/actions";
 import { useEffect } from "react";
 import { Slide } from "@material-ui/core";
+import { loadAllCidades, loadDadosAgregadosCidade, loadDestaquesCidade } from "../../../redux/cidade/actions";
 
 const UnderSearchContainer = (props) => {
   const dispatch = useDispatch();
 
+  
+  // useEffect(() => {
+  //   if (props.placesData) dispatch(loadAllPlaces(props.placesData));
+  // }, [props.placesData]);
+
   useEffect(() => {
-    if (props.placesData) dispatch(loadAllPlaces(props.placesData));
-  }, [props.placesData]);
+    dispatch(loadAllCidades());
+    dispatch(loadDadosAgregadosCidade());
+    dispatch(loadDestaquesCidade());
+  }, []);
 
   return (
-    <Slide direction="right" timeout={1000} in={props.underSearchBar} mountOnEnter unmountOnExit >
+    // <Slide direction="left" timeout={1000} in={props.underSearchBar} mountOnEnter unmountOnExit >
       <UnderSearchBar
         underSearchBar={props.underSearchBar}
         activeBar={props.activeBar}
       />
-    </Slide>
+    // </Slide>
   );
 };
 

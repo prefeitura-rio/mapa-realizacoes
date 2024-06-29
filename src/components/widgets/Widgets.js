@@ -1,4 +1,4 @@
-import { ButtonBase, makeStyles } from "@material-ui/core";
+import { BottomNavigation, BottomNavigationAction, ButtonBase, makeStyles } from "@material-ui/core";
 import UnderSearchContainer from "../sidebars/wrapper/UnderSearchContainer";
 import HorizontalContainer from "./horizontalWidget/HorizontalContainer";
 // import MinimapWidget from "./minimapWidget/MinimapWidget";
@@ -9,8 +9,14 @@ import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
 import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
 import { getListBairroName, getListOrgaoName, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
+import { isDesktop } from "../../redux/active/reducers";
+import SearchIcon from "@material-ui/icons/Search";
+import MenuIcon from "@material-ui/icons/Menu";
+import lupa_mapa from '../../icons/lupa_mapa.png';
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import 'react-spring-bottom-sheet/dist/style.css';
 
 const useStyles = makeStyles({
   bottomRightWidgets: {
@@ -33,8 +39,8 @@ const useStyles = makeStyles({
   },
 
   topLeftWidgets: {
-    top: "0px",
-    left: "0px",
+    top: "3vh",
+    left: "3vh ",
     position: "absolute",
     zIndex: 502,
     maxWidth: "425px",
@@ -50,22 +56,21 @@ const useStyles = makeStyles({
 
   tools: {
     position: "absolute",
-    right: "20px",
+    left: "3vh ",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-end",
-    bottom: (props) => (props.bottomGallery ? "143px" : "25px"),
+    bottom: (props) => (props.bottomGallery ? "143px" : "115px"),
     transition: "bottom 200ms cubic-bezier(0, 0, 0.2, 1)",
   },
 
-  bottomWidgets: {
-    bottom: 0,
-    width: (props) => (props.underSearchBar ? "calc(100vw - 423px)" : "100vw"),
-    right: 0,
-    position: "absolute",
-    transition: "width 200ms cubic-bezier(0, 0, 0.2, 1)",
+  root: {
+    width: '100%',
+    overflow: 'hidden',
+    position: 'fixed',
+    left: 0,
+    bottom: 0
   },
-  widgets: {},
 
   "@media screen and (max-width: 540px)": {
     topRightWidgets: {
@@ -73,6 +78,15 @@ const useStyles = makeStyles({
     },
     bottomLeftWidgets: {
       display: (props) => (props.underSearchBar ? "none" : "block"),
+    },
+    tools: {
+      position: "absolute",
+      right: "3vh ",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-end",
+      bottom: (props) => (props.bottomGallery ? "143px" : "95px"),
+      transition: "bottom 200ms cubic-bezier(0, 0, 0.2, 1)",
     },
   },
   "@media screen and (min-width: 1279px)":{
@@ -137,8 +151,49 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
     loadFiltrosInfo();
     loadFiltrosInfoIds();
   }, []);
+
+  const [value, setValue] = useState(0);
+  const [openSheet, setOpenSheet] = useState(null);
+  const sheetRef = useRef();
+
+  const handleOpenSheet = (sheet) => {
+    setOpenSheet(sheet);
+  };
+
+  const handleCloseSheet = () => {
+    setOpenSheet(null);
+  };
+
+  function SheetContentTemas() {
+    return (
+      <div>
+        <h2>Temas</h2>
+        <p>Content for Temas</p>
+      </div>
+    );
+  }
+  
+  function SheetContentBairros() {
+    return (
+      <div>
+        <h2>Bairros</h2>
+        <p>Content for Bairros</p>
+      </div>
+    );
+  }
+  
+  function SheetContentRealizacoes() {
+    return (
+      <div>
+        <h2>Realizações</h2>
+        <p>Content for Realizações</p>
+      </div>
+    );
+  }
+
+  
   return (
-    <div className={classes.widgets}>
+    <div>
       <div className={classes.bottomWidgets}>
         <div className={classes.bottomRightWidgets}>
           <div className={classes.tools}>
@@ -153,23 +208,44 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       </div>
 
       <div className={classes.topLeftWidgets}>
-        <SearchbarContainer />
+        <SearchbarContainer temasNameFilter={temasNameFilter} programasNameFilter={programasNameFilter} />
         <UnderSearchContainer />
       </div>
-      <div className={classes.topRightWidgets}>
-        {/* <InfoWidget/> */}
-        <UserWidget profile={profile} />
-      </div>
-      <div className={classes.filters}>
+      {/* {!isDesktop() && (
+        <BottomNavigation
+        className={classes.root}
+          style={{ zIndex: 501, position: 'fixed' }}
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+            handleOpenSheet(newValue);
+          }}
+          showLabels
+        >
+          <BottomNavigationAction label="Temas" icon={<MenuIcon />} />
+          <BottomNavigationAction label="Bairros" icon={<img width={33} src={lupa_mapa} />} />
+          <BottomNavigationAction label="Realizações" icon={<SearchIcon />} />
+        </BottomNavigation>
+      )}
 
-        <FiltrosBotoes orgaosNameFilter={orgaosNameFilter}
-          temasNameFilter={temasNameFilter}
-          programasNameFilter={programasNameFilter}
-          orgaosNameFilterIds={orgaosNameFilterIds}
-          temasNameFilterIds={temasNameFilterIds} 
-          programasNameFilterIds={programasNameFilterIds}
-          setFiltros={setFiltros}></FiltrosBotoes>
-      </div>
+      {openSheet !== null && (
+        <BottomSheet
+        style={{zIndex: 507, position: "absolute"}}
+          open={openSheet !== null}
+          onDismiss={handleCloseSheet}
+          ref={sheetRef}
+          defaultSnap={({ maxHeight }) => maxHeight / 2}
+          snapPoints={({ maxHeight }) => [
+            maxHeight - maxHeight / 10,
+            maxHeight / 4,
+            maxHeight * 0.6,
+          ]}
+        >
+          {openSheet === 0 && <SheetContentTemas />}
+          {openSheet === 1 && <SheetContentBairros />}
+          {openSheet === 2 && <SheetContentRealizacoes  style={{zIndex: 507, position: "absolute"}}/>}
+        </BottomSheet>
+      )} */}
     </div>
   );
 };

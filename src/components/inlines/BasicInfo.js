@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   datavizButton: {
     // pointerEvents: "none",
     borderRadius:"39px",
-    backgroundColor:"#0B60B0",
+    backgroundColor:"#4A6C94",
     color: "#FFFFFF",
     // paddingRight:"25px",
     fontSize:"12px"
@@ -61,8 +61,8 @@ const capitalizeFirstLetter = (str) => {
 
 const BasicInfo = ({ content }) => {
   const classes = useStyles();
-  const capitalizedNome = capitalizeFirstLetter(content.nome);
-  const capitalizedDescription = capitalizeFirstLetter(content.descricao);
+  const capitalizedNome = content.nome;
+  const capitalizedDescription = content.descricao;
 
   return (
     <div className={classes.basicInfo}>

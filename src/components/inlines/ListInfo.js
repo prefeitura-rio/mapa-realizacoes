@@ -17,7 +17,7 @@ import programaIcon from '../../icons/programa.png';
 import subprefeituraIcon from '../../icons/subprefeitura.png';
 import temaIcon from '../../icons/tema.png';
 import cariocasAtendidosIcon from '../../icons/cariocas_atendidos.png';
-
+import BusinessIcon from '@mui/icons-material/Business';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
   listItemGutters: {
     paddingRight: "24px",
     paddingLeft: "24px",
+    // whiteSpace: "nowrap"
+  },
+  sumarioInfo: {
+    // padding: "3px 20px",
+    maxWidth: "100%"
   },
 }));
 
@@ -53,15 +58,34 @@ const ListInfo = ({ content }) => {
     { text: content.tema, iconComponent: () => <img src={temaIcon} alt="Tema" style={{width: '20px', height: '20px'}}/> },
     // { text: content.bairro, iconComponent: PublicIcon },
     { text: content.bairro, iconComponent: () => <img src={bairroIcon} alt="Bairro" style={{width: '20px', height: '20px'}}/> },
+    { text: content.endereco, iconComponent: () => <BusinessIcon sx={{color:"#007E7D" ,width: '20px', height: '20px'}} /> },
     // { text: content.subprefeitura, iconComponent: PublicIcon },
     { text: content.subprefeitura, iconComponent: () => <img src={subprefeituraIcon} alt="Subprefeitura" style={{width: '20px', height: '20px'}}/> },
     // { text: "R$ " +  content.investimento + " investidos", iconComponent: PublicIcon },
-    { text: "R$ " + parseFloat(content.investimento).toLocaleString('pt-BR') + ",00 " + "investidos", iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/> },
+    // { text: "R$ " + parseFloat(content.investimento).toLocaleString('pt-BR') + " investidos", iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/> },
     // { text: content.cariocas_atendidos + " cariocas atendidos", iconComponent: PublicIcon },
-    { text: parseInt(content.cariocas_atendidos).toLocaleString('pt-BR') + " população do bairro", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
+    // { text: parseInt(content.cariocas_atendidos).toLocaleString('pt-BR') + " população beneficiada", iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> },
     
   ];
 
+  if (content.cariocas_atendidos) {
+    listInfo.push({
+      text: (
+        <>
+           {parseInt(content.cariocas_atendidos).toLocaleString('pt-BR') + " população beneficiada"}
+        </>
+      ),
+      iconComponent: () => <img src={cariocasAtendidosIcon} alt="Cariocas Atendidos" style={{width: '20px', height: '20px'}}/> });
+  }
+  if (content.investimento) {
+    listInfo.push({
+      text: (
+        <>
+           {"R$ " + parseFloat(content.investimento).toLocaleString('pt-BR') + " investidos"}
+        </>
+      ),
+      iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/>    });
+  }
   if (content.data_inicio) {
     listInfo.push({
       text: (
@@ -86,14 +110,9 @@ const ListInfo = ({ content }) => {
     });
   }
 
-  console.log("contenttt: ", (content))
-
   return (
     <>
-     <Typography className={classes.title}>
-        Informações Básicas
-      </Typography>
-    <List>
+    <List className={classes.sumarioInfo}>
       {listInfo.map((item, i) => (
         <React.Fragment key={i}>
           {Array.isArray(item.text) ? (

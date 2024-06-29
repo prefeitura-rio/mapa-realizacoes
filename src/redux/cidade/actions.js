@@ -30,37 +30,70 @@ export const requestAllCidades = () => {
   };
 };
 
-// Dados agregados aba tema cidade
-export const LOAD_DADOS_AGREGADOS_ABA_TEMA_CIDADE = "LOAD_DADOS_AGREGADOS_ABA_TEMA_CIDADE";
+// Dados agregados cidade
+export const LOAD_DADOS_AGREGADOS_CIDADE = "LOAD_DADOS_AGREGADOS_CIDADE";
 
-export const loadDadosAgregadosAbaTemaCidade = () => {
+export const loadDadosAgregadosCidade = () => {
   return {
-    type: LOAD_DADOS_AGREGADOS_ABA_TEMA_CIDADE,
+    type: LOAD_DADOS_AGREGADOS_CIDADE,
   };
 };
 
-export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_SUCCESS = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_SUCCESS";
+export const REQUEST_DADOS_AGREGADOS_CIDADE_SUCCESS = "REQUEST_DADOS_AGREGADOS_CIDADE_SUCCESS";
 
-export const requestDadosAgregadosAbaTemaCidadeSuccess = (dataFromServer) => {
+export const requestDadosAgregadosCidadeSuccess = (dataFromServer) => {
   return {
-    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_SUCCESS,
+    type: REQUEST_DADOS_AGREGADOS_CIDADE_SUCCESS,
     payload: dataFromServer,
   };
 };
 
-export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED";
+export const REQUEST_DADOS_AGREGADOS_CIDADE_FAILED = "REQUEST_DADOS_AGREGADOS_CIDADE_FAILED";
 
-export const requestDadosAgregadosAbaTemaCidadeFailed = () => {
+export const requestDadosAgregadosCidadeFailed = () => {
   return {
-    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED,
+    type: REQUEST_DADOS_AGREGADOS_CIDADE_FAILED,
   };
 };
 
-export const REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE = "REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE";
+export const REQUEST_DADOS_AGREGADOS_CIDADE = "REQUEST_DADOS_AGREGADOS_CIDADE";
 
-export const requestDadosAgregadosAbaTemaCidade = () => {
+export const requestDadosAgregadosCidade = () => {
   return {
-    type: REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE,
+    type: REQUEST_DADOS_AGREGADOS_CIDADE,
+  };
+};
+// DESTAQUES CIDADE
+export const LOAD_DESTAQUES_CIDADE = "LOAD_DESTAQUES_CIDADE";
+
+export const loadDestaquesCidade = () => {
+  return {
+    type: LOAD_DESTAQUES_CIDADE,
+  };
+};
+
+export const REQUEST_DESTAQUES_CIDADE_SUCCESS = "REQUEST_DESTAQUES_CIDADE_SUCCESS";
+
+export const requestDestaquesCidadeSuccess = (dataFromServer) => {
+  return {
+    type: REQUEST_DESTAQUES_CIDADE_SUCCESS,
+    payload: dataFromServer,
+  };
+};
+
+export const REQUEST_DESTAQUES_CIDADE_FAILED = "REQUEST_DESTAQUES_CIDADE_FAILED";
+
+export const requestDestaquesCidadeFailed = () => {
+  return {
+    type: REQUEST_DESTAQUES_CIDADE_FAILED,
+  };
+};
+
+export const REQUEST_DESTAQUES_CIDADE = "REQUEST_DESTAQUES_CIDADE";
+
+export const requestDestaquesCidade = () => {
+  return {
+    type: REQUEST_DESTAQUES_CIDADE,
   };
 };
 

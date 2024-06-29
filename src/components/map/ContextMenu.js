@@ -67,13 +67,20 @@ const ContextMenu = ({
     <ClickAwayListener onClickAway={handleClickAway}>
       <Paper className={classes.paper}>
         <List disablePadding>
-          <ListItem button className={classes.listItem}>
+          {/* <ListItem button className={classes.listItem}>
             <ListItemText
               primary={getCoords(geoCoords).join(" ")}
             ></ListItemText>
+          </ListItem> */}
+
+          <ListItem button className={classes.listItem}>
+            <ListItemText
+              primary={"Filtre por Tema, Programa e Bairro."}
+              secondary={"Clique em uma obra para ver detalhes."}
+            ></ListItemText>
           </ListItem>
 
-          <ListItem
+          {/* <ListItem
             button
             className={classes.listItem}
             onClick={profile ? onAddClick : () => {dispatch(login());}}
@@ -85,7 +92,7 @@ const ContextMenu = ({
                   : "Por favor, faça login para adiconar realização."
               }
             ></ListItemText>
-          </ListItem>
+          </ListItem> */}
         </List>
       </Paper>
     </ClickAwayListener>

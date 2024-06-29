@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import PhotoPreviews from "./../PhotoPreviews";
 import { compress } from "../../../utils/compress";
 import { getPreviews } from "../../../utils/previews";
-import { createUpdateRealizacaoFromForm } from "../../../firebase";
+// import { createUpdateRealizacaoFromForm } from "../../../firebase";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -141,7 +141,8 @@ const MyDropzone = ({
       profile,
       contentSnapshot,
     };
-    await createUpdateRealizacaoFromForm(data);
+    // await createUpdateRealizacaoFromForm(data);
+    console.error("FORMS IS NOW DISABLED. PLEASE REPORT.")
 
     setDropzoneState(dropStates.UPLOAD);
     onComplete();

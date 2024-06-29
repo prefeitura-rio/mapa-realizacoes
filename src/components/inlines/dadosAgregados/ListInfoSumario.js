@@ -7,7 +7,7 @@ import {
   makeStyles,
   Typography
 } from "@material-ui/core";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import domiciliosIcon from '../../../icons/domicilios.png';
 import subprefeituraIcon from '../../../icons/subprefeitura.png';
 import habitantesIcon from '../../../icons/cariocas_atendidos.png';
@@ -19,7 +19,8 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Loading from "../../../utils/loading";
 import { connect } from "react-redux";
 import { BAIRRO_DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, SUBPREFEITURA_DESCRIPTION_BAR } from "../../../redux/active/actions";
-
+import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -52,23 +53,27 @@ const ListInfoSumario = ({
   dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
   activeBar
 }) => {
-
+  
   const classes = useStyles();
+  const dadosAgregadosAbaSumarioStatusEntregasCidadeTotal = dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasCidade?.concluida + dadosAgregadosAbaSumarioStatusEntregasCidade?.interrompida + dadosAgregadosAbaSumarioStatusEntregasCidade?.em_licitacao
+  const dadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal = dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.concluida + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.interrompida + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_licitacao
+  const dadosAgregadosAbaSumarioStatusEntregasBairroTotal = dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasBairro?.concluida + dadosAgregadosAbaSumarioStatusEntregasBairro?.interrompida + dadosAgregadosAbaSumarioStatusEntregasBairro?.em_licitacao
 
   const listInfoSumario = [
+    
 
     // municipio
     {
-      text: dadosAgregadosAbaSumarioStatusEntregasCidade?.em_andamento
+      text: dadosAgregadosAbaSumarioStatusEntregasCidadeTotal
         ? (
           <span>
-            {dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento?.toLocaleString('pt-BR')}
+            {(dadosAgregadosAbaSumarioStatusEntregasCidadeTotal).toLocaleString('pt-BR')}            
             {' '}
-            <span>obras em andamento</span>
+            <span>obras no total</span>
           </span>
         )
-        : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidade.em_andamento == 0 ? <span>
-          <span > 0 obras em andamento</span>
+        : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidadeTotal != 0) ? <Loading /> : (activeBar === MAIN_UNDERSEARCH_BAR && dadosAgregadosAbaSumarioStatusEntregasCidadeTotal == 0 ? <span>
+          <span > 0 obras no total</span>
         </span> : undefined),
       iconComponent: () => (
         <img src={subprefeituraIcon} alt="Orgao" style={{ width: '20px', height: '20px' }} />
@@ -109,15 +114,16 @@ const ListInfoSumario = ({
 
     // subprefeitura
     {
-      text: dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_andamento
+      text: dadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal
         ? (
           <span>
-            {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento?.toLocaleString('pt-BR')}{' '}
-            <span>obras em andamento</span>
+            {(dadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal).toLocaleString('pt-BR')}            
+            {' '}
+            <span>obras no total</span>
           </span>
         )
-        : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.em_andamento == 0 ? <span>
-          <span > 0 obras em andamento</span>
+        : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal != 0) ? <Loading /> : (activeBar === SUBPREFEITURA_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal == 0 ? <span>
+          <span > 0 obras no total</span>
         </span> : undefined),
       iconComponent: () => (
         <img src={subprefeituraIcon} alt="Orgao" style={{ width: '20px', height: '20px' }} />
@@ -158,15 +164,16 @@ const ListInfoSumario = ({
 
     // bairro
     {
-      text: dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento
+      text: dadosAgregadosAbaSumarioStatusEntregasBairroTotal 
         ? (
           <span>
-            Em andamento {dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento?.toLocaleString('pt-BR')}{' '}
-            <span>obras</span>
+            {(dadosAgregadosAbaSumarioStatusEntregasBairroTotal).toLocaleString('pt-BR')}            
+            {' '}
+            <span>obras no total</span>
           </span>
         )
-        : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairro.em_andamento == 0 ? <span>
-          <span > 0 obras em andamento</span>
+        : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairroTotal != 0) ? <Loading /> : (activeBar === BAIRRO_DESCRIPTION_BAR && dadosAgregadosAbaSumarioStatusEntregasBairroTotal == 0 ? <span>
+          <span > 0 obras no total</span>
         </span> : undefined),
       iconComponent: () => (
         <img src={subprefeituraIcon} alt="Orgao" style={{ width: '20px', height: '20px' }} />
@@ -210,7 +217,9 @@ const ListInfoSumario = ({
           <span>
             {bairroInfo.ips}
             {' '}
-            <span>IPS</span>
+            <Tooltip title={"O Índice de Progresso Social avalia o desenvolvimento humano com base em indicadores sociais e ambientais."} placement="right" >
+          <span> IPS  <InfoOutlinedIcon sx={{ fontSize: 14, color: 'grey'}} style={{verticalAlign: "middle"}} ></InfoOutlinedIcon></span>
+          </Tooltip>
             {' '}
             <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>
@@ -225,7 +234,9 @@ const ListInfoSumario = ({
         ? (
           <span>
             {bairroInfo.ranking_ips?.toLocaleString('pt-BR')}
-            <span>° no rank IPS</span>
+            <Tooltip title={"O Índice de Progresso Social avalia o desenvolvimento humano com base em indicadores sociais e ambientais."} placement="right" >
+          <span>° no rank IPS <InfoOutlinedIcon sx={{ fontSize: 14, color: 'grey'}} style={{verticalAlign: "middle"}} ></InfoOutlinedIcon></span>
+          </Tooltip>
             {' '}
             <span style={{color: 'grey', fontSize: '12px', marginLeft:'8px' }}>em 2010</span>
           </span>

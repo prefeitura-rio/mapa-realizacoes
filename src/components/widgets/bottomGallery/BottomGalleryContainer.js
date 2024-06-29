@@ -9,7 +9,7 @@ import { Slide } from "@material-ui/core";
 const BottomGalleryContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadAllImages());
+    // dispatch(loadAllImages());
   }, []);
 
   return (

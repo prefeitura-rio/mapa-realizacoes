@@ -75,58 +75,49 @@ const MenuSidebar = ({ menuSidebar, setMenuSidebar }) => {
     { iconComponent: PermIdentityOutlinedIcon, text: "My data on Maps" },
   ];
 
+  const closeMenu = () => {
+    setMenuSidebar(!menuSidebar);
+ };
+
   return (
     <Paper
-      elevation={10}
-      className={
-        menuSidebar
-          ? clsx(classes.menuSidebar, classes.open)
-          : clsx(classes.menuSidebar, classes.close)
-      }
-      square
-    >
-      <div className={classes.header}>
+    elevation={10}
+    className={
+      menuSidebar
+        ? clsx(classes.menuSidebar, classes.open)
+        : clsx(classes.menuSidebar, classes.close)
+    }
+    square
+    onClick={closeMenu} // Adiciona o manipulador de eventos onClick ao Paper
+  >
+    <div className={classes.header}>
       <img
         className={classes.headerImage}
         src={logo}  
         alt="logo"
       />
-        <IconButton onClick={() => setMenuSidebar(!menuSidebar)}>
-          <CloseIcon />
-        </IconButton>
-      </div>
-    
-      <Divider />
-      <ListItem>
-        {/* <ListItemIcon>
-          <InfoIcon />
-        </ListItemIcon> */}
-        <ListItemText
-          classes={{ primary: classes.listItemTextPrimary , secondary: classes.listItemTextSecondary}}
-          primary={"Sobre o projeto"}
-          
-          secondary={`O Mapa de Realizações da Cidade do Rio de Janeiro é
-           uma iniciativa inovadora que visa aumentar a transparência,
-            eficiência e responsabilidade no uso de recursos públicos destinados 
-            a obras e projetos de desenvolvimento urbano. Desenvolvido com a cooperação 
-            dos desenvolvedores do Escritório de Dados, este mapa digital
-             interativo serve como um ponto focal para o acompanhamento em tempo real do status, 
-             progresso e impacto de diversas obras em toda a cidade.`}
-        />
-      </ListItem>
-      {/* <ListItem>
-        <ListItemIcon>
-          <BookmarkIcon />
-        </ListItemIcon>
-        <ListItemText
-          classes={{ primary: classes.listItemText }}
-          primary={"Ver mais"}
-          secondary={"Ver outros projetos da prefeitura aqui..."}
-          // secondary={"You can see other projects here: alexbaikalov.com"}
-        />
-      </ListItem> */}
-    </Paper>
-  );
+      <IconButton onClick={closeMenu}> {/* Use a mesma função aqui também */}
+        <CloseIcon />
+      </IconButton>
+    </div>
+  
+    <Divider />
+    <ListItem>
+      <ListItemText
+        classes={{ primary: classes.listItemTextPrimary , secondary: classes.listItemTextSecondary}}
+        primary={"Sobre o projeto"}
+        secondary={`O Mapa de Realizações da Cidade do Rio de Janeiro é
+         uma iniciativa inovadora que visa aumentar a transparência,
+          eficiência e responsabilidade no uso de recursos públicos destinados 
+          a obras e projetos de desenvolvimento urbano. Desenvolvido com a cooperação 
+          dos desenvolvedores do Escritório de Dados, este mapa digital
+           interativo serve como um ponto focal para o acompanhamento em tempo real do status, 
+           progresso e impacto de diversas obras em toda a cidade.`}
+      />
+    </ListItem>
+  
+  </Paper>
+);
 };
 
 export default MenuSidebar;

@@ -1,7 +1,7 @@
 import Map from "./Map";
 import { setZoomDelta } from "../../redux/actions";
 import { connect, useDispatch } from "react-redux";
-import { setOpenEditInfo } from "./../../redux/active/actions";
+import { setCurrentClickedPoint, setOpenEditInfo, setOpenedPopup } from "./../../redux/active/actions";
 import { setContent, setContentSnapshot } from "./../../redux/place/actions";
 import { useEffect } from "react";
 // import { loadAllPoints } from "../../redux/points/actions";
@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom"
 const MapContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadAllPlaces());
+    props.loadAllPlaces();
   }, []);
 
   const { id } = useParams();
@@ -42,6 +42,15 @@ const MapContainer = (props) => {
       realizacaoId = {id}
       rota = {props.rota}
       setRota = {props.setRota}
+      underSearchBar = {props.underSearchBar}
+      tema = {props.tema}
+      programa = {props.programa}
+      realizacao = {props.realizacao}
+      bairro = {props.bairro}
+      subprefeitura = {props.subprefeitura}
+      zoomDefault={props.zoomDefault}
+      currentClickedPoint={props.currentClickedPoint}
+      setOpenedPopup={props.setOpenedPopup}
     />
   );
 };
@@ -55,7 +64,15 @@ const mapStateToProps = (state) => {
     filtros: state.filtros.filtros,
     bairroNome: state.bairros.descriptionData,
     subprefeituraNome: state.subprefeituras.content,
-    rota: state.rota
+    rota: state.rota.rota,
+    underSearchBar: state.active.underSearchBar,
+    tema: state.filtros.tema,
+    programa: state.filtros.programa,
+    realizacao: state.filtros.realizacao,
+    bairro: state.filtros.bairro,
+    subprefeitura: state.filtros.subprefeitura,
+    zoomDefault: state.app.zoomDefault,
+    currentClickedPoint: state.active.currentClickedPoint,
   };
 };
 
@@ -69,7 +86,8 @@ const mapDispatchToProps = {
   loadData,
   setUnderSearchBar,
   loadAllPlaces,
-  setRota
+  setRota,
+  setOpenedPopup,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);

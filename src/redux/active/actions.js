@@ -111,9 +111,25 @@ export const SET_EH_BAIRRO = "SET_EH_BAIRRO";
 export const PLACES_BAR = "PLACES_BAR";
 export const DESCRIPTION_BAR = "DESCRIPTION_BAR";
 export const MAIN_UNDERSEARCH_BAR = "MAIN_UNDERSEARCH_BAR";
+export const TEMA_DESCRIPTION_BAR = "TEMA_DESCRIPTION_BAR";
+export const PROGRAMA_DESCRIPTION_BAR = "PROGRAMA_DESCRIPTION_BAR";
 export const BAIRRO_DESCRIPTION_BAR = "BAIRRO_DESCRIPTION_BAR";
 export const SUBPREFEITURA_DESCRIPTION_BAR = "SUBPREFEITURA_DESCRIPTION_BAR";
+export const SET_CURRENT_CLICKED_POINT = "SET_CURRENT_CLICKED_POINT";
+export const SET_OPENED_POPUP = "SET_OPENED_POPUP";
 
+export const setCurrentClickedPoint = (point) => {
+  return {
+    type: SET_CURRENT_CLICKED_POINT,
+    payload: point,
+  };
+};
+export const setOpenedPopup = (payload) => {
+  return {
+    type: SET_OPENED_POPUP,
+    payload: payload,
+  };
+};
 export const setActiveBar = (activeBar) => {
   return {
     type: SET_ACTIVE_BAR,

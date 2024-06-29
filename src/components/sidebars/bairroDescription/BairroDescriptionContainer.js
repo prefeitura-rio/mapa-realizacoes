@@ -12,7 +12,7 @@ import { loadAllImagesBairro,setImagesType } from "../../../redux/images/actions
 
 const BairroDescriptionContainer = (props) => {
 
-  console.log("BairroDescriptionContainer.js props: ", props)
+  // console.log("BairroDescriptionContainer.js props: ", props)
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -42,6 +42,8 @@ const BairroDescriptionContainer = (props) => {
         profile={props.profile}
         login={props.login}
         anyLoading={props.anyLoading}
+        openedPopup={props.openedPopup}
+
       />
   );
 };
@@ -59,6 +61,7 @@ const mapStateToProps = (state) => {
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
     setImagesType: state.images.setImagesType,  
+    openedPopup: state.active.openedPopup,
   };
 };
 

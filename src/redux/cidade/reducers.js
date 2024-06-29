@@ -11,9 +11,12 @@ import {
   REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE,
   REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE_FAILED,
   REQUEST_DADOS_AGREGADOS_ABA_SUMARIO_STATUS_ENTREGAS_CIDADE_SUCCESS,
-  REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE,
-  REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED,
-  REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_SUCCESS,
+  REQUEST_DADOS_AGREGADOS_CIDADE,
+  REQUEST_DADOS_AGREGADOS_CIDADE_FAILED,
+  REQUEST_DADOS_AGREGADOS_CIDADE_SUCCESS,
+  REQUEST_DESTAQUES_CIDADE,
+  REQUEST_DESTAQUES_CIDADE_FAILED,
+  REQUEST_DESTAQUES_CIDADE_SUCCESS,
 } from "./actions";
 
 const defaultState = {
@@ -46,24 +49,46 @@ const cidadesReducer = (state = defaultState, action) => {
         error: true,
       };
 
-    case REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE:
+    case REQUEST_DADOS_AGREGADOS_CIDADE:
       return {
         ...state,
-        dadosAgregadosAbaTemaCidade: null,
+        dadosAgregadosCidade: null,
         loading: true,
         error: false,
       };
-    case REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_SUCCESS:
+    case REQUEST_DADOS_AGREGADOS_CIDADE_SUCCESS:
       return {
         ...state,
-        dadosAgregadosAbaTemaCidade: action.payload,
+        dadosAgregadosCidade: action.payload,
         loading: false,
         error: false,
       };
-    case REQUEST_DADOS_AGREGADOS_ABA_TEMA_CIDADE_FAILED:
+    case REQUEST_DADOS_AGREGADOS_CIDADE_FAILED:
       return {
         ...state,
-        dadosAgregadosAbaTemaCidade: null,
+        dadosAgregadosCidade: null,
+        loading: false,
+        error: true,
+      };
+
+    case REQUEST_DESTAQUES_CIDADE:
+      return {
+        ...state,
+        dadosDestaquesCidade: null,
+        loading: true,
+        error: false,
+      };
+    case REQUEST_DESTAQUES_CIDADE_SUCCESS:
+      return {
+        ...state,
+        dadosDestaquesCidade: action.payload,
+        loading: false,
+        error: false,
+      };
+    case REQUEST_DESTAQUES_CIDADE_FAILED:
+      return {
+        ...state,
+        dadosDestaquesCidade: null,
         loading: false,
         error: true,
       };
