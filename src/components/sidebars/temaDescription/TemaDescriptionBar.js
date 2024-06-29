@@ -628,6 +628,8 @@ const TemaDescriptionBar = forwardRef(
                           </Box>
                         </Box>
                       {/* </Tooltip> */}
+                      {tema != "Mobilidade" && (
+                            <>
                       <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                       {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
                         // <Tooltip title="Investimento" >
@@ -641,12 +643,14 @@ const TemaDescriptionBar = forwardRef(
                                   minimumFractionDigits: 0,
                                   maximumFractionDigits: 0,
                                 }) + " "}
-                                Investidos
-                              </Typography>
+                                  Investidos
+                                </Typography>
+                              </Box>
                             </Box>
-                          </Box>
-                        // </Tooltip>
+                          )}
+                        </>
                       )}
+
                     </>
                   )}
                 </Box>

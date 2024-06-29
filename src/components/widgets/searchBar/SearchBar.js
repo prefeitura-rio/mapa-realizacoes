@@ -47,6 +47,7 @@ import { BottomNavigation, BottomNavigationAction, ButtonBase } from "@material-
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { isDesktop } from "../../../redux/active/reducers";
+import logo_prefeitura from '../../assets/logo_prefeitura.png';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -142,7 +143,26 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.grey[500],
     },
 
+    fixedButton:{
+      position: 'fixed',
+      left: '10px',
+      bottom: '10px',
+      zIndex: 0,
+    },
+    fixedButtonImage:{
+      width: "50px",
+    },
+
     "@media screen and (max-width: 540px)": {
+      fixedButton:{
+        position: 'fixed',
+        left: '7px',
+        bottom: '85px',
+        zIndex: 0,
+      },
+      fixedButtonImage:{
+        width: "40px",
+      },
       paper: {
         width: "calc(100vw - 23px)",
         display: "flex",
@@ -389,6 +409,33 @@ const SearchBar = ({
       handleClosePopup();
     }
   };
+
+  const handleEraseMap = () => {
+    setInputValueBairroSubprefeitura(null);
+    setBairro(null);
+    setSubprefeitura(null);
+    setContent(null);
+    setPlacesData(null);
+    setShowTemas(true);
+    setShowProgramas(false);
+    setShowRealizacoes(false);
+    setInputValueTema(null);
+    setInputValuePrograma(null);
+    setInputValueRealizacao(null);
+    setTema(null);
+    setPrograma(undefined);
+    setRealizacao(null);
+    setProgramasTema([]);
+    setRealizacoesPrograma([]);
+    setInputValueRealizacaoFromSearch(null);
+    setRota(null);
+    navigate(`/`);
+    if (!isDesktop()) {
+      handleClosePopup();
+    }
+    setActiveBar(MAIN_UNDERSEARCH_BAR);
+    setZoomDefault((Math.random() * 9999 + 1));
+  }
 
   const [inputValueRealizacao, setInputValueRealizacao] = useState(undefined);
   const handleRealizacaoChange = (event, newValue) => {
@@ -1573,6 +1620,13 @@ const SearchBar = ({
           </DialogActions>
         </Dialog>
       )}
+          <Button
+          className={classes.fixedButton}
+            onClick={handleEraseMap}
+          >
+            <img src={logo_prefeitura} alt="Fixed Button" className={classes.fixedButtonImage}  style={{filter: "brightness(0) contrast(100%)" }} />
+          </Button>
+        
     </>
 
   );

@@ -35,6 +35,8 @@ import { isDesktop } from "../../../redux/active/reducers";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Cookies from 'js-cookie';
+import whatsapp from '../../assets/whatsapp.png'; 
+import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -404,7 +406,8 @@ const PlaceDescriptionBar = forwardRef(
     realizacao,
     error,
     openedPopup,
-    rota
+    rota,
+    activeBar
 
 
 
@@ -463,17 +466,15 @@ const PlaceDescriptionBar = forwardRef(
     const handleShareWhatsApp = async () => {
       setLoading(true);
       const prompt = `O Mapa de Realizações da Prefeitura do Rio de Janeiro apresenta todas as realizações feitas nesta gestão. O Criador de Mensagens de Whatsapp irá pegar informações vindas do Mapa e transformar em uma mensagem amigável de Whatsapp, usando emoticons.
-As mensagens devem ser sucintas e carismáticas, comunicando ao cidadão as realizações da Prefeitura de forma positiva.
-As realizações geralmente trazem Título, Descrição (Sobre), Secretaria, Bairro, Endereço, Investimento, População beneficiada. Colocar título, investimento e população beneficiada logo no início. Informações=> Título:${content?.nome} , Descrição: ${content?.descricao}, Programa: ${content?.programa}, Bairro: ${content?.bairro}, Endereço:${content?.endereco}, Investimento: ${content?.investimento}, População beneficiada: ${content?.cariocas_atendidos}`;
-      const imageUrl = content?.image_url ? content.image_url : "https://s1.static.brasilescola.uol.com.br/be/2021/10/araras.jpg";
+    As mensagens devem ser sucintas e carismáticas, comunicando ao cidadão as realizações da Prefeitura de forma positiva.
+    As realizações geralmente trazem Título, Descrição (Sobre), Secretaria, Bairro, Endereço, Investimento, População beneficiada. Colocar título, investimento e população beneficiada logo no início. Informações=> Título:${content?.nome} , Descrição: ${content?.descricao}, Programa: ${content?.programa}, Bairro: ${content?.bairro}, Endereço:${content?.endereco}, Investimento: ${content?.investimento}, População beneficiada: ${content?.cariocas_atendidos}`;
+      const imageUrl = content?.image_url ?? "";
       
       const requestBody = {
         prompt
       };
-  
+    
       try {
-        const csrftoken = Cookies.get('csrftoken');
-        const sessionid = Cookies.get('sessionid');
         const response = await fetch('https://genapi.dados.rio/text', {
           method: 'POST',
           headers: {
@@ -482,22 +483,32 @@ As realizações geralmente trazem Título, Descrição (Sobre), Secretaria, Bai
           body: JSON.stringify(requestBody),
           credentials: 'include'
         });
-  
+    
         if (!response.ok) {
           throw new Error('Erro ao tentar melhorar o texto do gemini');
         }
-  
+    
         const data = await response.json();
-        // const message = `${data.text}\n\n${imageUrl}`;
-        const message = `${data.text}\n`;
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
+       const message = imageUrl ? `${data.text}\n\n${imageUrl}` : data.text;
+    
+        if (navigator.share) {
+          await navigator.share({
+            title: 'Veja que incrível essa realização!',
+            text: message,
+            url: imageUrl
+          });
+        } else {
+          // fallbakc to browsers that dont support share API
+          const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+          window.open(whatsappUrl, '_blank');
+        }
       } catch (error) {
         console.error('Erro no response...', error);
       } finally {
         setLoading(false);
       }
     };
+    
   
 
     function SheetContentPlaceDescriptionBar() {
@@ -712,6 +723,21 @@ As realizações geralmente trazem Título, Descrição (Sobre), Secretaria, Bai
               <SheetContentPlaceDescriptionBar />
             </BottomSheet>
           </div>
+        )}
+        {isDesktop() && (
+          <Slide direction="up" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
+            <Button
+              style={{
+                position: 'fixed',
+                right: 'calc(25vw + 30px )',
+                bottom: '15px',
+                zIndex: 0,
+              }}
+              onClick={handleShareWhatsApp}
+            >
+              <img src={whatsapp} alt="Fixed Button" style={{ width: "50px" }} />
+            </Button>
+          </Slide>
         )}
       </>
     );

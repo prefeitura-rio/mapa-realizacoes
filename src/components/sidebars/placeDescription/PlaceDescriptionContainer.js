@@ -53,6 +53,7 @@ const PlaceDescriptionContainer = (props) => {
         error={props.error}
         openedPopup={props.openedPopup}
         rota={props.rota}
+        activeBar={props.activeBar}
       />
   );
 };
@@ -72,6 +73,7 @@ const mapStateToProps = (state) => {
     anyLoading: state.places.loading || state.place.loading,
     openCompletePhoto: state.active.openCompletePhoto,
     setImagesType: state.images.setImagesType,  
+    activeBar: state.active.activeBar,
 
 
     tema: state.filtros.tema,
