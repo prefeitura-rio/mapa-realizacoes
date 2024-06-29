@@ -60,7 +60,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-end",
-    bottom: (props) => (props.bottomGallery ? "143px" : "25px"),
+    bottom: (props) => (props.bottomGallery ? "143px" : "115px"),
     transition: "bottom 200ms cubic-bezier(0, 0, 0.2, 1)",
   },
 

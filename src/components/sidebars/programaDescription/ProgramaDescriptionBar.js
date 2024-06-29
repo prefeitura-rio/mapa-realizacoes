@@ -453,6 +453,8 @@ const ProgramaDescriptionBar = forwardRef(
                       </Box>
                     </Box>
                   {/* </Tooltip> */}
+                  {programa != "BRTs Transbrasil" && (
+                            <>
                   <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                   {dadosAgregadosAbaSumarioStatusEntregasPrograma?.investment !== 0 && (
                     // <Tooltip title="Investimento">
@@ -471,6 +473,8 @@ const ProgramaDescriptionBar = forwardRef(
                         </Box>
                       </Box>
                     // </Tooltip>
+                  )}
+                  </>
                   )}
                 </>
               )}
@@ -577,24 +581,28 @@ const ProgramaDescriptionBar = forwardRef(
                       </Box>
                     </Box>
                   {/* </Tooltip> */}
-                  <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>                  {dadosAgregadosAbaSumarioStatusEntregasPrograma.investment !== 0 && (
-                    // <Tooltip title="Investimento">
-                      <Box display="flex">
-                        <AttachMoneyIcon />
-                        <Box>
-                          <Typography style={{fontSize:"14px"}}>
-                            {dadosAgregadosAbaSumarioStatusEntregasPrograma.investment.toLocaleString('pt-BR', {
-                              style: 'currency',
-                              currency: 'BRL',
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 0,
-                            })+ " "}
-                                Investidos
-                          </Typography>
-                        </Box>
-                      </Box>
-                    // </Tooltip>
-                  )}
+                          {programa != "BRTs Transbrasil" && (
+                            <>
+                              <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                              {dadosAgregadosAbaSumarioStatusEntregasPrograma.investment !== 0 && (
+                                <Box display="flex">
+                                  <AttachMoneyIcon />
+                                  <Box>
+                                    <Typography style={{ fontSize: "14px" }}>
+                                      {dadosAgregadosAbaSumarioStatusEntregasPrograma.investment.toLocaleString('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL',
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0,
+                                      }) + " "}
+                                      Investidos
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              )}
+                            </>
+                          )}
+
                 </>
               )}
             </Box>
