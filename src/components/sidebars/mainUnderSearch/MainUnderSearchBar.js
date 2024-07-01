@@ -484,9 +484,7 @@ const MainUnderSearchBar = forwardRef(
       }
     }, []);
 
-    const fullText = `O Rio de Janeiro é de todos os brasileiros. É uma das cidades mais conhecidas do mundo. Sua relevância abrange diversos aspectos culturais, históricos, econômicos e belezas naturais. Tem uma forte presença no cenário internacional, com capacidade para sediar eventos de importância global. É a capital da inovação na América Latina e da oportunidade!
-
-    No Mapa de Realizações, veremos, de forma interativa e iniciativa inovadora, em tempo real, as principais obras e projetos espalhadas nos quatro cantos do Rio, com transparência, eficiência e responsabilidade com o dinheiro público para melhorar a vida dos cariocas.`;
+    const fullText = `No Mapa de Realizações veremos, de forma interativa e inovadora, em tempo real, as principais obras e projetos nos quatro cantos do Rio. Neste mapa, estão contempladas mais de 5 mil realizações nas mais diversas áreas como Saúde, Educação, Mobilidade, Obras e Infraestrutura entre outras que poderão ser encontradas de acordo com os temas, projetos e por área da cidade. Tudo com transparência, agilidade e responsabilidade.`;
 
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
