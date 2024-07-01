@@ -495,7 +495,7 @@ const PlaceDescriptionBar = forwardRef(
           await navigator.share({
             title: 'Veja que incrível essa realização!',
             text: message,
-            url: imageUrl
+            // url: imageUrl
           });
         } else {
           // fallbakc to browsers that dont support share API
