@@ -145,7 +145,7 @@ const useStyles = makeStyles((theme) => {
 
     fixedButton:{
       position: 'fixed',
-      left: '10px',
+      left: '1.8vh',
       bottom: '10px',
       zIndex: 0,
     },

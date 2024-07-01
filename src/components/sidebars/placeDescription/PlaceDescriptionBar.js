@@ -729,7 +729,7 @@ const PlaceDescriptionBar = forwardRef(
             <Button
               style={{
                 position: 'fixed',
-                right: 'calc(25vw + 30px )',
+                right: 'calc(max((25vw + 30px), (385px + 30px))',
                 bottom: '15px',
                 zIndex: 0,
               }}
