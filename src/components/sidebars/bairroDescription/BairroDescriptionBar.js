@@ -24,7 +24,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
 import BairroDescriptionContainer from "./BairroDescriptionContainer";
-import { getListDestaquesBairro } from "../../../firebase";
+import { getAggregatedData, getListDestaquesBairro } from "../../../firebase";
 import { toSnakeCase } from "../../../utils/formatFile";
 import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -148,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc( 41.5vh - 40px )",
+      height: "8.5vh",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -163,12 +163,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "calc( 80px + 4vh + 41.5vh - 40px + 1vh )", //
+      top: "calc( 80px + 4vh + 1vh + 8.5vh  )", //
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh", // 
+      height: "calc( 97vh - (80px + 4vh + 1vh + 8.5vh))", // 
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -288,7 +288,9 @@ const theme = createTheme({
 const BairroDescriptionBar = forwardRef(
   ({ underSearchBar,
     bairro,
-    dadosAgregadosAbaSumarioStatusEntregasBairro,
+    tema,
+    programa,
+    // dadosAgregadosAbaSumarioStatusEntregasBairro,
     setDescriptionData,
     setUnderSearchBar,
     loadData,
@@ -298,16 +300,16 @@ const BairroDescriptionBar = forwardRef(
 
     const classes = useStyles();
 
-    const [dadosAgregadosAbaSumarioStatusEntregasBairroTotal, setDadosAgregadosAbaSumarioStatusEntregasBairroTotal] = useState(0)
+    // const [dadosAgregadosAbaSumarioStatusEntregasBairroTotal, setDadosAgregadosAbaSumarioStatusEntregasBairroTotal] = useState(0)
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasBairro) {
-        const total = dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasBairro?.concluida + dadosAgregadosAbaSumarioStatusEntregasBairro?.interrompida + dadosAgregadosAbaSumarioStatusEntregasBairro?.em_licitacao;
-        setDadosAgregadosAbaSumarioStatusEntregasBairroTotal(total);
-      }
-    }, [dadosAgregadosAbaSumarioStatusEntregasBairro]);
+    // useEffect(() => {
+    //   if (dadosAgregadosAbaSumarioStatusEntregasBairro) {
+    //     const total = dadosAgregadosAbaSumarioStatusEntregasBairro?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasBairro?.concluida + dadosAgregadosAbaSumarioStatusEntregasBairro?.interrompida + dadosAgregadosAbaSumarioStatusEntregasBairro?.em_licitacao;
+    //     setDadosAgregadosAbaSumarioStatusEntregasBairroTotal(total);
+    //   }
+    // }, [dadosAgregadosAbaSumarioStatusEntregasBairro]);
 
     // o destaque conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
     const [destaquesBairro, setDestaquesBairro] = useState([]);
@@ -350,6 +352,52 @@ const BairroDescriptionBar = forwardRef(
               </Paper>
               <Paper
                 elevation={6}
+                className={classes.underSearch2Mobile}
+              >
+
+                <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+                  {!dadosAgregadosAbaSumarioStatusEntregasBairro ? (
+                    <CircularProgress />
+                  ) : dadosAgregadosAbaSumarioStatusEntregasBairro.count === 0 ? (
+                    <Box pl={3} pr={3} style={{opacity:0.8}} >
+                    <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
+                    </Box>
+                  ) : (
+                    <>
+                      {/* <Tooltip title="Realizações"> */}
+                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
+                          <AccountBalanceIcon />
+                          <Box >
+                            {/* TODO: valor agregado da qntdd de obras. */}
+                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasBairro.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasBairro.count > 1 ? "ões" : "ão"}</Typography>
+                          </Box>
+                        </Box>
+                      {/* </Tooltip> */}
+                      <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                      {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && (
+                        // <Tooltip title="Investimento" >
+                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
+                            <AttachMoneyIcon />
+                            <Box>
+                              <Typography style={{fontSize:"14px"}}>
+                                {dadosAgregadosAbaSumarioStatusEntregasBairro.investment.toLocaleString('pt-BR', {
+                                  style: 'currency',
+                                  currency: 'BRL',
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
+                                }) + " "}
+                                  Investidos
+                                </Typography>
+                              </Box>
+                            </Box>
+                          )}
+                        </>
+                      )}
+                </Box>
+
+              </Paper>
+              <Paper
+                elevation={6}
                 className={classes.underSearch4Mobile}
               >
                 <div className={classes.basicInfo}>
@@ -388,6 +436,32 @@ const BairroDescriptionBar = forwardRef(
       }
     }, [openedPopup]);
 
+    const [dadosAgregadosAbaSumarioStatusEntregasBairro, setDadosAgregadosAbaSumarioStatusEntregasBairro] = useState(0)
+
+    useEffect(() => {
+      const loadDadosAgregadosBairro = async () => {
+        // for place loading everytime the bairro/bairro changes
+        setDadosAgregadosAbaSumarioStatusEntregasBairro(null);
+        try {
+          let dadosAgregadosBairro;
+          if (!tema && !programa) {
+            dadosAgregadosBairro = await getAggregatedData(null, null, toSnakeCase(bairro.nome), null);;
+          } else if (tema && !programa) {
+            dadosAgregadosBairro = await getAggregatedData(toSnakeCase(tema), null, toSnakeCase(bairro.nome), null);
+          }
+          else if (tema && programa) {
+            dadosAgregadosBairro = await getAggregatedData(null, toSnakeCase(programa), toSnakeCase(bairro.nome), null);
+          }
+          // console.log("dadosAgregadosBairro", dadosAgregadosBairro)
+          setDadosAgregadosAbaSumarioStatusEntregasBairro(dadosAgregadosBairro)
+
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+      loadDadosAgregadosBairro();
+    }, [bairro, tema, programa]);
+
     return (
       <>
         {isDesktop() && (
@@ -404,10 +478,58 @@ const BairroDescriptionBar = forwardRef(
                 </div>
               </Paper>
             </Slide>
+            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch2}
+              >
+
+                <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+                  {!dadosAgregadosAbaSumarioStatusEntregasBairro ? (
+                    <CircularProgress />
+                  ) : dadosAgregadosAbaSumarioStatusEntregasBairro.count === 0 ? (
+                    <Box pl={3} pr={3} style={{opacity:0.8}} >
+                    <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
+                    </Box>
+                  ) : (
+                    <>
+                      {/* <Tooltip title="Realizações"> */}
+                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
+                          <AccountBalanceIcon />
+                          <Box >
+                            {/* TODO: valor agregado da qntdd de obras. */}
+                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasBairro.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasBairro.count > 1 ? "ões" : "ão"}</Typography>
+                          </Box>
+                        </Box>
+                      {/* </Tooltip> */}
+                      <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                      {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && (
+                        // <Tooltip title="Investimento" >
+                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
+                            <AttachMoneyIcon />
+                            <Box>
+                              <Typography style={{fontSize:"14px"}}>
+                                {dadosAgregadosAbaSumarioStatusEntregasBairro.investment.toLocaleString('pt-BR', {
+                                  style: 'currency',
+                                  currency: 'BRL',
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
+                                }) + " "}
+                                  Investidos
+                                </Typography>
+                              </Box>
+                            </Box>
+                          )}
+                        </>
+                      )}
+                </Box>
+
+              </Paper>
+            </Slide>
             <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
               <Paper
                 elevation={6}
-                className={classes.underSearch4}
+                className={classes.underSearch3}
               >
                 <div className={classes.basicInfo}>
                   <Typography className={classes.sobreMunicipio}>Destaques</Typography>

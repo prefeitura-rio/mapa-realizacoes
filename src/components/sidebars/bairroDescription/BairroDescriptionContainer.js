@@ -17,10 +17,10 @@ const BairroDescriptionContainer = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadBairroData(props.descriptionData));
-    dispatch(loadAllImagesBairro(props.descriptionData));
-    dispatch(loadDadosAgregadosAbaTemaBairro(props.descriptionData));
-    dispatch(loadDadosAgregadosAbaProgramaBairro(props.descriptionData));
-    dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(props.descriptionData));
+    // dispatch(loadAllImagesBairro(props.descriptionData));
+    // dispatch(loadDadosAgregadosAbaTemaBairro(props.descriptionData));
+    // dispatch(loadDadosAgregadosAbaProgramaBairro(props.descriptionData));
+    // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasBairro(props.descriptionData));
   }, [props.descriptionData]);
 
   return (
@@ -37,6 +37,8 @@ const BairroDescriptionContainer = (props) => {
         loadData={props.loadData}
         setPhotoGallery={props.setPhotoGallery}
         setImagesType={props.setImagesType}
+        tema={props.tema}
+        programa={props.programa}
         
         // remove if not useful
         profile={props.profile}
@@ -62,6 +64,8 @@ const mapStateToProps = (state) => {
     anyLoading: state.places.loading || state.place.loading,
     setImagesType: state.images.setImagesType,  
     openedPopup: state.active.openedPopup,
+    tema: state.filtros.tema,
+    programa: state.filtros.programa,
   };
 };
 
