@@ -26,7 +26,7 @@ import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux
 import SubprefeituraDescriptionContainer from "./SubprefeituraDescriptionContainer";
 import { toSnakeCase } from "../../../utils/formatFile";
 import { DESCRIPTION_BAR } from "../../../redux/active/actions";
-import { getListDestaquesSubprefeitura } from "../../../firebase";
+import { getAggregatedData, getListDestaquesSubprefeitura } from "../../../firebase";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
@@ -130,7 +130,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "90px",
+      height: "80px",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc( 41.5vh - 40px )",
+      height: "8.5vh",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -165,12 +165,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3: {
       position: "fixed",
-      top: "calc( 80px + 4vh + 41.5vh - 40px + 1vh )",
+      top: "calc( 80px + 4vh + 1vh + 8.5vh  )",
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "8.5vh", // 
+      height: "calc( 97vh - (80px + 4vh + 1vh + 8.5vh))", // 
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -295,28 +295,30 @@ const BairroDescriptionBar = forwardRef(
     dadosAgregadosAbaTemaSubprefeitura,
     dadosAgregadosAbaProgramasSubprefeitura,
     dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
-    dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
+    // dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
     setDescriptionData,
     setUnderSearchBar,
     loadData,
     setPhotoGallery,
     setImagesType,
     setActiveBar,
-    openedPopup
+    openedPopup,
+    tema,
+    programa,
   }, ref) => {
 
     const classes = useStyles();
 
-    const [dadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal, setDadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal] = useState(0)
+    // const [dadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal, setDadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal] = useState(0)
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    useEffect(() => {
-      if (dadosAgregadosAbaSumarioStatusEntregasSubprefeitura) {
-        const total = dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.concluida + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.interrompida + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_licitacao;
-        setDadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal(total);
-      }
-    }, [dadosAgregadosAbaSumarioStatusEntregasSubprefeitura]);
+    // useEffect(() => {
+    //   if (dadosAgregadosAbaSumarioStatusEntregasSubprefeitura) {
+    //     const total = dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_andamento + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.concluida + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.interrompida + dadosAgregadosAbaSumarioStatusEntregasSubprefeitura?.em_licitacao;
+    //     setDadosAgregadosAbaSumarioStatusEntregasSubprefeituraTotal(total);
+    //   }
+    // }, [dadosAgregadosAbaSumarioStatusEntregasSubprefeitura]);
 
     // o destaque conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
     const [destaquesSubprefeitura, setDestaquesSubprefeitura] = useState([]);
@@ -359,6 +361,52 @@ const BairroDescriptionBar = forwardRef(
               </Paper>
               <Paper
                 elevation={6}
+                className={classes.underSearch2Mobile}
+              >
+
+                <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+                  {!dadosAgregadosAbaSumarioStatusEntregasSubprefeitura ? (
+                    <CircularProgress />
+                  ) : dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count === 0 ? (
+                    <Box pl={3} pr={3} style={{opacity:0.8}} >
+                    <Typography>Não há realização deste tema ou programa na subprefeitura selecionada.</Typography>
+                    </Box>
+                  ) : (
+                    <>
+                      {/* <Tooltip title="Realizações"> */}
+                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
+                          <AccountBalanceIcon />
+                          <Box >
+                            {/* TODO: valor agregado da qntdd de obras. */}
+                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count > 1 ? "ões" : "ão"}</Typography>
+                          </Box>
+                        </Box>
+                      {/* </Tooltip> */}
+                      <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                      {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && (
+                        // <Tooltip title="Investimento" >
+                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
+                            <AttachMoneyIcon />
+                            <Box>
+                              <Typography style={{fontSize:"14px"}}>
+                                {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment.toLocaleString('pt-BR', {
+                                  style: 'currency',
+                                  currency: 'BRL',
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
+                                }) + " "}
+                                  Investidos
+                                </Typography>
+                              </Box>
+                            </Box>
+                          )}
+                        </>
+                      )}
+                </Box>
+
+              </Paper>
+              <Paper
+                elevation={6}
                 className={classes.underSearch4Mobile}
               >
                 <div className={classes.basicInfo}>
@@ -391,6 +439,32 @@ const BairroDescriptionBar = forwardRef(
       }
     }, [openedPopup]);
 
+    const [dadosAgregadosAbaSumarioStatusEntregasSubprefeitura, setDadosAgregadosAbaSumarioStatusEntregasSubprefeitura] = useState(0)
+
+    useEffect(() => {
+      const loadDadosAgregadosBairro = async () => {
+        // for place loading everytime the bairro/bairro changes
+        setDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(null);
+        try {
+          let dadosAgregadosSubprefeitura;
+          if (!tema && !programa) {
+            dadosAgregadosSubprefeitura = await getAggregatedData(null, null, null, toSnakeCase(subprefeitura));;
+          } else if (tema && !programa) {
+            dadosAgregadosSubprefeitura = await getAggregatedData(toSnakeCase(tema), null, null, toSnakeCase(subprefeitura));
+          }
+          else if (tema && programa) {
+            dadosAgregadosSubprefeitura = await getAggregatedData(null, toSnakeCase(programa), null, toSnakeCase(subprefeitura));
+          }
+          // console.log("dadosAgregadosSubprefeitura", dadosAgregadosSubprefeitura)
+          setDadosAgregadosAbaSumarioStatusEntregasSubprefeitura(dadosAgregadosSubprefeitura)
+
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      };
+      loadDadosAgregadosBairro();
+    }, [tema, programa]);
+
     return (
       <>
         {isDesktop() && (
@@ -407,11 +481,59 @@ const BairroDescriptionBar = forwardRef(
                 </div>
               </Paper>
             </Slide>
+             <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch2}
+              >
+
+                <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+                  {!dadosAgregadosAbaSumarioStatusEntregasSubprefeitura ? (
+                    <CircularProgress />
+                  ) : dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count === 0 ? (
+                    <Box pl={3} pr={3} style={{opacity:0.8}} >
+                    <Typography>Não há realização deste tema ou programa na subprefeitura selecionada.</Typography>
+                    </Box>
+                  ) : (
+                    <>
+                      {/* <Tooltip title="Realizações"> */}
+                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
+                          <AccountBalanceIcon />
+                          <Box >
+                            {/* TODO: valor agregado da qntdd de obras. */}
+                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count > 1 ? "ões" : "ão"}</Typography>
+                          </Box>
+                        </Box>
+                      {/* </Tooltip> */}
+                      <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                      {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && (
+                        // <Tooltip title="Investimento" >
+                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
+                            <AttachMoneyIcon />
+                            <Box>
+                              <Typography style={{fontSize:"14px"}}>
+                                {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment.toLocaleString('pt-BR', {
+                                  style: 'currency',
+                                  currency: 'BRL',
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
+                                }) + " "}
+                                  Investidos
+                                </Typography>
+                              </Box>
+                            </Box>
+                          )}
+                        </>
+                      )}
+                </Box>
+
+              </Paper>
+            </Slide>
 
             <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
               <Paper
                 elevation={6}
-                className={classes.underSearch4}
+                className={classes.underSearch3}
               >
                 <div className={classes.basicInfo}>
                   <Typography className={classes.sobreMunicipio}>Destaques</Typography>

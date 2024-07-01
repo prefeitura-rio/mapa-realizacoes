@@ -40,7 +40,8 @@ const SubprefeituraDescriptionContainer = (props) => {
         setPhotoGallery={props.setPhotoGallery}
         setImagesType={props.setImagesType}
         openedPopup={props.openedPopup}
-        
+        tema={props.tema}
+        programa={props.programa}
 
         // remove if not useful
         profile={props.profile}
@@ -66,6 +67,8 @@ const mapStateToProps = (state) => {
     setImagesType: state.images.setImagesType,  
     subprefeitura: state.filtros.subprefeitura,
     openedPopup: state.active.openedPopup,
+    tema: state.filtros.tema,
+    programa: state.filtros.programa,
     
   };
 };
