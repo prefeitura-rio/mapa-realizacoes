@@ -590,12 +590,19 @@ const SearchBar = ({
   };
 
   const filterOptions = (options, { inputValue }) => {
-    return options.filter(option =>
-      option.toLowerCase().split(' ').some(word =>
-        word.startsWith(inputValue.toLowerCase())
-      )
-    );
+    const inputWords = inputValue.toLowerCase().split(' ').filter(Boolean);
+  
+    return options.filter(option => {
+      const optionWords = option.toLowerCase().split(' ');
+  
+      return inputWords.every(inputWord => {
+        // check if the inputWord matches the start of any word in the optionWords
+        return optionWords.some(optionWord => optionWord.startsWith(inputWord));
+      });
+    });
   };
+  
+  
 
   function SheetContentTemas() {
     return (
