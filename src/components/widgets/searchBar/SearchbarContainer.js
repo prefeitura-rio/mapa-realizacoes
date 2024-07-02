@@ -1,5 +1,5 @@
 import SearchBar from "./SearchBar";
-import { setOpenedPopup, setSearchPrompt } from "./../../../redux/active/actions";
+import { setCurrentClickedPoint, setOpenedPopup, setSearchPrompt } from "./../../../redux/active/actions";
 import { setMenuSidebar } from "./../../../redux/active/actions";
 import { setUnderSearchBar } from "./../../../redux/active/actions";
 import { setActiveBar } from "./../../../redux/active/actions";
@@ -64,6 +64,7 @@ const SearchbarContainer = (props) => {
       subprefeitura={props.subprefeitura}
       setOpenedPopup={props.setOpenedPopup}
       realizacoes={props.realizacoes}
+      setCurrentClickedPoint={props.setCurrentClickedPoint}
     />
   );
 };
@@ -110,7 +111,8 @@ const mapDispatchToProps = {
   setSubprefeitura,
   setDescriptionData,
   loadData,
-  setZoomDefault
+  setZoomDefault,
+  setCurrentClickedPoint
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchbarContainer);
