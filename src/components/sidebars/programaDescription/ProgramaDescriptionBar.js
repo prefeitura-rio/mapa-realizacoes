@@ -295,9 +295,10 @@ const ImageCarousel = ({ images }) => {
             </div>
             :
             <img
+      
               src={image}
               alt={`carousel-${index}`}
-              style={{ borderRadius: "10px", width: '100%', height: 'auto' }}
+              style={{ borderRadius: "10px", width: "100%", height: "250px", objectFit: "cover"}}
               loading="lazy"
               onError={handleImageError}
             />
@@ -617,7 +618,7 @@ const ProgramaDescriptionBar = forwardRef(
               elevation={6}
               className={classes.underSearch4}
             >
-              <ImageCarousel images={[programaData?.image_url]} />
+              <ImageCarousel  images={[programaData?.image_url]} />
             </Paper>
           </Slide>
         }

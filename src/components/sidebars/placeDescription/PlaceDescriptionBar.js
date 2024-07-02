@@ -374,7 +374,7 @@ const ImageCarousel = ({ images }) => {
               <img
                 src={image}
                 alt={`carousel-${index}`}
-                style={{ borderRadius: "10px", width: '100%', height: 'auto' }}
+                style={{ borderRadius: "10px", width: "100%", height: "250px", objectFit: "cover"}}
                 loading="lazy"
                 onError={handleImageError}
               />
