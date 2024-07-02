@@ -666,7 +666,7 @@ const PlaceDescriptionBar = forwardRef(
   
                         {fullText + " ..." === shortText ? null :
                           <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                            {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                          {content?.descricao &&  (isTextExpanded ? 'Leia menos' : 'Leia mais')}
                           </Button>
                         }
                       </Typography>
