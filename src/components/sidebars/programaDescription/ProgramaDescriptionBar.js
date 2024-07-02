@@ -454,11 +454,10 @@ const ProgramaDescriptionBar = forwardRef(
                       </Box>
                     </Box>
                   {/* </Tooltip> */}
-                  {programa != "BRTs Transbrasil" && (
+                  {/* {programa != "BRTs Transbrasil" && (
                             <>
                   <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                   {dadosAgregadosAbaSumarioStatusEntregasPrograma?.investment !== 0 && (
-                    // <Tooltip title="Investimento">
                       <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
                         <AttachMoneyIcon />
                         <Box >
@@ -473,10 +472,9 @@ const ProgramaDescriptionBar = forwardRef(
                           </Typography>
                         </Box>
                       </Box>
-                    // </Tooltip>
                   )}
                   </>
-                  )}
+                  )} */}
                 </>
               )}
             </Box>
@@ -584,7 +582,7 @@ const ProgramaDescriptionBar = forwardRef(
                   {/* </Tooltip> */}
                           {programa != "BRTs Transbrasil" && (
                             <>
-                              <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                              {/* <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                               {dadosAgregadosAbaSumarioStatusEntregasPrograma.investment !== 0 && (
                                 <Box display="flex">
                                   <AttachMoneyIcon />
@@ -600,7 +598,7 @@ const ProgramaDescriptionBar = forwardRef(
                                     </Typography>
                                   </Box>
                                 </Box>
-                              )}
+                              )} */}
                             </>
                           )}
 
