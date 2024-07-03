@@ -406,7 +406,7 @@ useEffect(() => {
     setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
     loadData(toSnakeCase(point.nome));
-    // navigate(`/${toSnakeCase(point.nome)}`);
+    navigate(`/${toSnakeCase(point.nome)}`);
     if (map) {
       if (point) {
         let currentZoom = map.getZoom();
@@ -533,18 +533,6 @@ useEffect(() => {
         })}
 
       </MapContainer>
-{/* 
-      {contextCoords && opened ? (
-        <ContextMenu
-          screenCoords={contextCoords.point}
-          geoCoords={contextCoords.latlng}
-          setOpened={setOpened}
-          setOpenEditInfo={setOpenEditInfo}
-          setContent={setContent}
-          setContentSnapshot={setContentSnapshot}
-          profile={profile}
-        />
-      ) : null} */}
     </>
   );
 };
