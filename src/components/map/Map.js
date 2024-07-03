@@ -76,16 +76,16 @@ const Map = ({
     }
   }, [rota]);
 
-  useEffect(() => {
-    // console.log("underSearchBar " + underSearchBar)
-    if (map && !underSearchBar) {
-      const coords = [-22.9200, -43.4250];
-      map.flyTo(coords, 12)
-    } else if (map && underSearchBar) {
-      const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400];
-      map.flyTo(coords, isDesktopDevice ? 11 : 10)
-    }
-  }, [underSearchBar])
+  // useEffect(() => {
+  //   // console.log("underSearchBar " + underSearchBar)
+  //   if (map && !underSearchBar) {
+  //     const coords = [-22.9200, -43.4250];
+  //     map.flyTo(coords, 12)
+  //   } else if (map && underSearchBar) {
+  //     const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400];
+  //     map.flyTo(coords, isDesktopDevice ? 11 : 10)
+  //   }
+  // }, [underSearchBar])
 
   useEffect(() => {
     // console.log("zoomDefault " + zoomDefault)
@@ -406,7 +406,7 @@ useEffect(() => {
     setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
     loadData(toSnakeCase(point.nome));
-    navigate(`/${toSnakeCase(point.nome)}`);
+    // navigate(`/${toSnakeCase(point.nome)}`);
     if (map) {
       if (point) {
         let currentZoom = map.getZoom();
@@ -511,7 +511,7 @@ useEffect(() => {
 
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
-            if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+            if ( isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
               return renderMarker(point, index);
             }
             
@@ -533,7 +533,7 @@ useEffect(() => {
         })}
 
       </MapContainer>
-
+{/* 
       {contextCoords && opened ? (
         <ContextMenu
           screenCoords={contextCoords.point}
@@ -544,7 +544,7 @@ useEffect(() => {
           setContentSnapshot={setContentSnapshot}
           profile={profile}
         />
-      ) : null}
+      ) : null} */}
     </>
   );
 };
