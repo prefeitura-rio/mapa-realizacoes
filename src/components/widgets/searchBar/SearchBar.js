@@ -436,6 +436,7 @@ const SearchBar = ({
     }
     setActiveBar(MAIN_UNDERSEARCH_BAR);
     setZoomDefault((Math.random() * 9999 + 1));
+    setCurrentClickedPoint(null)
   }
 
   const [inputValueRealizacao, setInputValueRealizacao] = useState(undefined);
