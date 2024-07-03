@@ -55,7 +55,7 @@ const mapStateToProps = (state) => {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
     descriptionData: state.bairros.descriptionData,
-    bairro: state.bairros.content,
+    // bairro: state.bairros.content,
     dadosAgregadosAbaSumarioStatusEntregasBairro: state.bairros.dadosAgregadosAbaSumarioStatusEntregasBairro,
     images_bairro: state.images.allImagesBairro,
     dadosAgregadosAbaTemaBairro: state.bairros.dadosAgregadosAbaTemaBairro,
@@ -66,6 +66,7 @@ const mapStateToProps = (state) => {
     openedPopup: state.active.openedPopup,
     tema: state.filtros.tema,
     programa: state.filtros.programa,
+    bairro: state.filtros.bairro,
   };
 };
 

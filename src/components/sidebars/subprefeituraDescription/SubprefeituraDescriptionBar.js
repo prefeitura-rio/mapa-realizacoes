@@ -16,7 +16,7 @@ import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
 import clsx from "clsx";
-import { Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -322,9 +322,11 @@ const BairroDescriptionBar = forwardRef(
 
     // o destaque conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
     const [destaquesSubprefeitura, setDestaquesSubprefeitura] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
       if (!subprefeitura) return;
       const loadDestaquesSubprefeitura = async (id_subprefeitura) => {
+        setIsLoading(true);
         try {
           const destaquesSubprefeituraRef = await getListDestaquesSubprefeitura(id_subprefeitura);
 
@@ -332,6 +334,8 @@ const BairroDescriptionBar = forwardRef(
 
         } catch (error) {
           console.error("Erro", error);
+        }finally {
+          setIsLoading(false);
         }
       };
 
@@ -412,13 +416,40 @@ const BairroDescriptionBar = forwardRef(
                 <div className={classes.basicInfo}>
                   <Typography className={classes.sobreMunicipio}>Destaques</Typography>
                   <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                    {destaquesSubprefeitura.map((item, index) => (
-
-                      <li key={index} style={{ paddingBottom: "15px" }}>
-                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                      </li>
-                    ))}
+                    {isLoading ? (
+                      <>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                      </>
+                    ) : destaquesSubprefeitura.length === 0 ? (
+                      <Typography className={classes.subtitulo}>Nenhum destaque encontrado para esta subprefeitura.</Typography>
+                    ) : (
+                      destaquesSubprefeitura.map((item, index) => (
+                        <li key={index} style={{ paddingBottom: "15px" }}>
+                          <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
+                            {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
+                          </Typography>
+                          <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </div>
               </Paper>
@@ -538,12 +569,40 @@ const BairroDescriptionBar = forwardRef(
                 <div className={classes.basicInfo}>
                   <Typography className={classes.sobreMunicipio}>Destaques</Typography>
                   <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                    {destaquesSubprefeitura.map((item, index) => (
-                      <li key={index} style={{ paddingBottom: "15px" }}>
-                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                      </li>
-                    ))}
+                    {isLoading ? (
+                      <>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                      </>
+                    ) : destaquesSubprefeitura.length === 0 ? (
+                      <Typography className={classes.subtitulo}>Nenhum destaque encontrado para esta subprefeitura.</Typography>
+                    ) : (
+                      destaquesSubprefeitura.map((item, index) => (
+                        <li key={index} style={{ paddingBottom: "15px" }}>
+                          <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
+                            {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
+                          </Typography>
+                          <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </div>
               </Paper>
