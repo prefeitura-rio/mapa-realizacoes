@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, IconButton, Paper, makeStyles } from "@material-ui/core";
+import React, { useState } from "react";
+import { Button, IconButton, Paper, Snackbar, makeStyles } from "@material-ui/core";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
@@ -8,6 +8,11 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Stack } from "@mui/material";
 import NavigationOutlinedIcon from '@mui/icons-material/NavigationOutlined';
 import { MAIN_UNDERSEARCH_BAR } from "../../../redux/active/actions";
+import RestoreIcon from '@mui/icons-material/Restore';
+import { useStaticState } from "@material-ui/pickers";
+import CloseIcon from "@material-ui/icons/Close";
+import { isDesktop } from "../../../redux/active/reducers";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     pointerEvents: "auto",
@@ -48,6 +53,23 @@ const useStyles = makeStyles((theme) => ({
   zoomOutButton: {
     width: "100%",
   },
+
+  fixedButtonClockImage:{
+    width: "50px",
+  },
+  selectedPaper: {
+    backgroundColor: '#722F37', // Nova cor de fundo quando selecionado
+  },
+  selectedIcon: {
+    color: '#722F37', // Nova cor do ícone quando selecionado
+  },   
+  
+  "@media screen and (min-width: 540px)": {
+    snackbar:{
+     
+    },
+  }
+
 }));
 
 
@@ -69,7 +91,48 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
     setMenuSidebar(!menuSidebar);
   };
 
+  const [isSelected, setIsSelected] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const handleClick = () => {
+    setIsSelected(!isSelected);
+    setSnackbarMessage(isSelected ? 'Gestões antigas desativada.' : 'Gestões antigas ativada.');
+    setSnackbarOpen(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const action = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleCloseSnackbar}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
+
   return (
+    <>
+    <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        action={action}
+        anchorOrigin={{
+          vertical: !isDesktop() ? 'top' : 'bottom',
+          horizontal: isDesktop() ? 'center' : 'left',
+        }}
+        className={classes.snackbar}
+      />
     <div className={classes.root}>
       <div className={classes.zoom}>
         <div className={classes.buttons}>
@@ -105,6 +168,22 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
                   <RemoveIcon fontSize="small" className={classes.textSecondary} />
                 </IconButton>
               </Paper>
+
+              <Paper
+                className={`${classes.fixedButtonClock} ${isSelected ? classes.selectedPaper : ''}`}
+                elevation={4}
+                style={{ borderRadius: "10px" }}
+              >
+                <IconButton
+                  style={{ backgroundColor: 'transparent' }}
+                  onClick={handleClick}
+                >
+                  <RestoreIcon
+                    fontSize="small"
+                    sx={{ color: isSelected ? 'white' : 'grey' }}
+                  />
+                </IconButton>
+              </Paper>
           </Stack>
           {/* <Button
             variant="contained"
@@ -133,6 +212,7 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
         </div>
       </div>
     </div>
+    </>
   );
 };
 
