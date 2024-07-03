@@ -560,16 +560,16 @@ const MainUnderSearchBar = forwardRef(
                 <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
                   {(!dadosAgregadosCidade) ? < CircularProgress /> :
                     <>
-                      <Tooltip title="Realizações">
+                      {/* <Tooltip title="Realizações"> */}
 
                         <Box display="flex" >
 
                           <AccountBalanceIcon />
                           <Box pl={0.5}>
-                            <Typography  >{dadosAgregadosCidade?.count}</Typography>
+                          <Typography  >{dadosAgregadosCidade?.count} Realizações</Typography>
                           </Box>
                         </Box>
-                      </Tooltip>
+                      {/* </Tooltip> */}
 
                     </>}
                 </Box>
