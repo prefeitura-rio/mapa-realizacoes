@@ -374,7 +374,7 @@ const ImageCarousel = ({ images }) => {
               <img
                 src={image}
                 alt={`carousel-${index}`}
-                style={{ borderRadius: "10px", width: '100%', height: 'auto' }}
+                style={{ borderRadius: "10px", width: "100%", height: "250px", objectFit: "cover"}}
                 loading="lazy"
                 onError={handleImageError}
               />
@@ -666,7 +666,7 @@ const PlaceDescriptionBar = forwardRef(
   
                         {fullText + " ..." === shortText ? null :
                           <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                            {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                          {content?.descricao &&  (isTextExpanded ? 'Leia menos' : 'Leia mais')}
                           </Button>
                         }
                       </Typography>

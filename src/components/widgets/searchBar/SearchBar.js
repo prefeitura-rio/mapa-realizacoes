@@ -235,7 +235,8 @@ const SearchBar = ({
   subprefeitura,
   realizacaoId,
   setOpenedPopup,
-  realizacoes
+  realizacoes,
+  setCurrentClickedPoint
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -589,12 +590,19 @@ const SearchBar = ({
   };
 
   const filterOptions = (options, { inputValue }) => {
-    return options.filter(option =>
-      option.toLowerCase().split(' ').some(word =>
-        word.startsWith(inputValue.toLowerCase())
-      )
-    );
+    const inputWords = inputValue.toLowerCase().split(' ').filter(Boolean);
+  
+    return options.filter(option => {
+      const optionWords = option.toLowerCase().split(' ');
+  
+      return inputWords.every(inputWord => {
+        // check if the inputWord matches the start of any word in the optionWords
+        return optionWords.some(optionWord => optionWord.startsWith(inputWord));
+      });
+    });
   };
+  
+  
 
   function SheetContentTemas() {
     return (
@@ -1188,7 +1196,7 @@ const SearchBar = ({
                         <IconButton
                           style={{ backgroundColor: 'transparent' }}
                           color="grey"
-                          onClick={() => { setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
+                          onClick={() => { setCurrentClickedPoint(null);setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
                         >
                           <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                         </IconButton>
@@ -1198,7 +1206,7 @@ const SearchBar = ({
                         (showRealizacoes ? <IconButton
                           style={{ backgroundColor: 'transparent' }}
                           color="grey"
-                          onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                          onClick={() => { setCurrentClickedPoint(null);setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
                         >
                           <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                         </IconButton> : "")
@@ -1561,7 +1569,7 @@ const SearchBar = ({
               <IconButton
                 style={{ backgroundColor: 'transparent' }}
                 color="grey"
-                onClick={() => { console.log("click"); setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
+                onClick={() => { setCurrentClickedPoint(null); setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
               >
                 <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
               </IconButton>
@@ -1571,7 +1579,7 @@ const SearchBar = ({
               (showRealizacoes && openPopup != 1 && openPopup != 2 ? <IconButton
                 style={{ backgroundColor: 'transparent' }}
                 color="grey"
-                onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setInputValuePrograma(undefined);setPrograma(null); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                onClick={() => { setCurrentClickedPoint(null);setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setInputValuePrograma(undefined);setPrograma(null); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
               >
                 <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
               </IconButton> : "")

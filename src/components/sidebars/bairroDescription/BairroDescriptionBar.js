@@ -16,7 +16,7 @@ import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
 import clsx from "clsx";
-import { Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -313,20 +313,23 @@ const BairroDescriptionBar = forwardRef(
 
     // o destaque conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
     const [destaquesBairro, setDestaquesBairro] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
       if (!bairro) return;
       const loadDestaquesBairro = async (id_bairro) => {
+        setIsLoading(true);
         try {
           const destaquesBairroRef = await getListDestaquesBairro(id_bairro);
-
           setDestaquesBairro(destaquesBairroRef);
-
         } catch (error) {
           console.error("Erro", error);
+        } finally {
+          setIsLoading(false);
         }
       };
 
-      loadDestaquesBairro(bairro.nome);
+      loadDestaquesBairro(bairro);
     }, [bairro]);
 
     const handleTitleClick = (value) => {
@@ -340,79 +343,106 @@ const BairroDescriptionBar = forwardRef(
     function SheetContentBairroDescriptionBar() {
       return (
         <Stack m={2} mt={2} spacing={2}>
-           <Paper
-                elevation={6}
-                ref={ref}
-                className={classes.underSearchMobile}
-              >
-                <div className={classes.basicInfo}>
-                  <Typography className={classes.titulo}>{bairro ? bairro.nome : <CircularProgress size={25} />}</Typography>
-                  <Typography className={classes.subtitulo}> Bairro</Typography>
-                </div>
-              </Paper>
-              <Paper
-                elevation={6}
-                className={classes.underSearch2Mobile}
-              >
+          <Paper
+            elevation={6}
+            ref={ref}
+            className={classes.underSearchMobile}
+          >
+            <div className={classes.basicInfo}>
+              <Typography className={classes.titulo}>{bairro ? bairro : <CircularProgress size={25} />}</Typography>
+              <Typography className={classes.subtitulo}> Bairro</Typography>
+            </div>
+          </Paper>
+          <Paper
+            elevation={6}
+            className={classes.underSearch2Mobile}
+          >
 
-                <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-                  {!dadosAgregadosAbaSumarioStatusEntregasBairro ? (
-                    <CircularProgress />
-                  ) : dadosAgregadosAbaSumarioStatusEntregasBairro.count === 0 ? (
-                    <Box pl={3} pr={3} style={{opacity:0.8}} >
-                    <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
-                    </Box>
-                  ) : (
-                    <>
-                      {/* <Tooltip title="Realizações"> */}
-                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                          <AccountBalanceIcon />
-                          <Box >
-                            {/* TODO: valor agregado da qntdd de obras. */}
-                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasBairro.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasBairro.count > 1 ? "ões" : "ão"}</Typography>
-                          </Box>
-                        </Box>
-                      {/* </Tooltip> */}
-                      <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
-                      {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && (
-                        // <Tooltip title="Investimento" >
-                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                            <AttachMoneyIcon />
-                            <Box>
-                              <Typography style={{fontSize:"14px"}}>
-                                {dadosAgregadosAbaSumarioStatusEntregasBairro.investment.toLocaleString('pt-BR', {
-                                  style: 'currency',
-                                  currency: 'BRL',
-                                  minimumFractionDigits: 0,
-                                  maximumFractionDigits: 0,
-                                }) + " "}
-                                  Investidos
-                                </Typography>
-                              </Box>
-                            </Box>
-                          )}
-                        </>
-                      )}
+            <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+              {!dadosAgregadosAbaSumarioStatusEntregasBairro ? (
+                <CircularProgress />
+              ) : dadosAgregadosAbaSumarioStatusEntregasBairro.count === 0 ? (
+                <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
+                  <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
                 </Box>
+              ) : (
+                <>
+                  {/* <Tooltip title="Realizações"> */}
+                  <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                    <AccountBalanceIcon />
+                    <Box >
+                      {/* TODO: valor agregado da qntdd de obras. */}
+                      <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasBairro.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasBairro.count > 1 ? "ões" : "ão"}</Typography>
+                    </Box>
+                  </Box>
+                  {/* </Tooltip> */}
+                  <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                  {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && (
+                    // <Tooltip title="Investimento" >
+                    <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                      <AttachMoneyIcon />
+                      <Box>
+                        <Typography style={{ fontSize: "14px" }}>
+                          {dadosAgregadosAbaSumarioStatusEntregasBairro.investment.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }) + " "}
+                          Investidos
+                        </Typography>
+                      </Box>
+                    </Box>
+                  )}
+                </>
+              )}
+            </Box>
 
-              </Paper>
-              <Paper
-                elevation={6}
-                className={classes.underSearch4Mobile}
-              >
-                <div className={classes.basicInfo}>
-                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                    {destaquesBairro.map((item, index) => (
-
-                      <li key={index} style={{ paddingBottom: "15px" }}>
-                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                      </li>
-                    ))}
+          </Paper>
+          <Paper
+            elevation={6}
+            className={classes.underSearch4Mobile}
+          >
+            <div className={classes.basicInfo}>
+              <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+              <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                    {isLoading ? (
+                      <>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                      </>
+                    ) : destaquesBairro.length === 0 ? (
+                      <Typography className={classes.subtitulo}>Nenhum destaque encontrado para este bairro.</Typography>
+                    ) : (
+                      destaquesBairro.map((item, index) => (
+                        <li key={index} style={{ paddingBottom: "15px" }}>
+                          <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
+                            {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
+                          </Typography>
+                          <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                        </li>
+                      ))
+                    )}
                   </ul>
-                </div>
-              </Paper>
+            </div>
+          </Paper>
         </Stack>)
     }
     const [value, setValue] = useState(1);
@@ -445,12 +475,12 @@ const BairroDescriptionBar = forwardRef(
         try {
           let dadosAgregadosBairro;
           if (!tema && !programa) {
-            dadosAgregadosBairro = await getAggregatedData(null, null, toSnakeCase(bairro.nome), null);;
+            dadosAgregadosBairro = await getAggregatedData(null, null, toSnakeCase(bairro), null);;
           } else if (tema && !programa) {
-            dadosAgregadosBairro = await getAggregatedData(toSnakeCase(tema), null, toSnakeCase(bairro.nome), null);
+            dadosAgregadosBairro = await getAggregatedData(toSnakeCase(tema), null, toSnakeCase(bairro), null);
           }
           else if (tema && programa) {
-            dadosAgregadosBairro = await getAggregatedData(null, toSnakeCase(programa), toSnakeCase(bairro.nome), null);
+            dadosAgregadosBairro = await getAggregatedData(null, toSnakeCase(programa), toSnakeCase(bairro), null);
           }
           // console.log("dadosAgregadosBairro", dadosAgregadosBairro)
           setDadosAgregadosAbaSumarioStatusEntregasBairro(dadosAgregadosBairro)
@@ -473,7 +503,7 @@ const BairroDescriptionBar = forwardRef(
                 className={classes.underSearch}
               >
                 <div className={classes.basicInfo}>
-                  <Typography className={classes.titulo}>{bairro ? bairro.nome : <CircularProgress size={25} />}</Typography>
+                  <Typography className={classes.titulo}>{bairro ? bairro : <CircularProgress size={25} />}</Typography>
                   <Typography className={classes.subtitulo}> Bairro</Typography>
                 </div>
               </Paper>
@@ -488,40 +518,40 @@ const BairroDescriptionBar = forwardRef(
                   {!dadosAgregadosAbaSumarioStatusEntregasBairro ? (
                     <CircularProgress />
                   ) : dadosAgregadosAbaSumarioStatusEntregasBairro.count === 0 ? (
-                    <Box pl={3} pr={3} style={{opacity:0.8}} >
-                    <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
+                    <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
+                      <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
                     </Box>
                   ) : (
                     <>
                       {/* <Tooltip title="Realizações"> */}
-                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                          <AccountBalanceIcon />
-                          <Box >
-                            {/* TODO: valor agregado da qntdd de obras. */}
-                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasBairro.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasBairro.count > 1 ? "ões" : "ão"}</Typography>
-                          </Box>
+                      <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                        <AccountBalanceIcon />
+                        <Box >
+                          {/* TODO: valor agregado da qntdd de obras. */}
+                          <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasBairro.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasBairro.count > 1 ? "ões" : "ão"}</Typography>
                         </Box>
+                      </Box>
                       {/* </Tooltip> */}
                       <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                       {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && (
                         // <Tooltip title="Investimento" >
-                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                            <AttachMoneyIcon />
-                            <Box>
-                              <Typography style={{fontSize:"14px"}}>
-                                {dadosAgregadosAbaSumarioStatusEntregasBairro.investment.toLocaleString('pt-BR', {
-                                  style: 'currency',
-                                  currency: 'BRL',
-                                  minimumFractionDigits: 0,
-                                  maximumFractionDigits: 0,
-                                }) + " "}
-                                  Investidos
-                                </Typography>
-                              </Box>
-                            </Box>
-                          )}
-                        </>
+                        <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                          <AttachMoneyIcon />
+                          <Box>
+                            <Typography style={{ fontSize: "14px" }}>
+                              {dadosAgregadosAbaSumarioStatusEntregasBairro.investment.toLocaleString('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              }) + " "}
+                              Investidos
+                            </Typography>
+                          </Box>
+                        </Box>
                       )}
+                    </>
+                  )}
                 </Box>
 
               </Paper>
@@ -534,13 +564,40 @@ const BairroDescriptionBar = forwardRef(
                 <div className={classes.basicInfo}>
                   <Typography className={classes.sobreMunicipio}>Destaques</Typography>
                   <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                    {destaquesBairro.map((item, index) => (
-
-                      <li key={index} style={{ paddingBottom: "15px" }}>
-                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                      </li>
-                    ))}
+                    {isLoading ? (
+                      <>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="80%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                        <br></br>
+                        <Skeleton variant="text" />
+                        <Skeleton height="15px" width="40%" />
+                        <Skeleton height="15px" width="60%" />
+                        <Skeleton height="15px" width="73%" />
+                      </>
+                    ) : destaquesBairro.length === 0 ? (
+                      <Typography className={classes.subtitulo}>Nenhum destaque encontrado para este bairro.</Typography>
+                    ) : (
+                      destaquesBairro.map((item, index) => (
+                        <li key={index} style={{ paddingBottom: "15px" }}>
+                          <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
+                            {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
+                          </Typography>
+                          <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </div>
               </Paper>
@@ -548,8 +605,8 @@ const BairroDescriptionBar = forwardRef(
           </>
         )}
 
-        
-{!isDesktop() && openedPopup == null && bairro && (
+
+        {!isDesktop() && openedPopup == null && bairro && (
           <div>
 
             <BottomSheet
