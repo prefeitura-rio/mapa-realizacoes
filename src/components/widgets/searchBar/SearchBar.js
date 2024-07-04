@@ -917,7 +917,7 @@ const SearchBar = ({
               value={inputValueRealizacaoFromSearch}
               onChange={handleRealizacaoChangeFromSearch}
               disableClearable
-              options={(realizacoes ?? []).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+              options={(realizacoes ?? []).filter(realizacao => realizacao.gestao == "3").map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
               PaperComponent={CustomPaperSearch}
               ListboxProps={{ style: { maxHeight: "60vh" } }}
@@ -1417,7 +1417,7 @@ const SearchBar = ({
                         value={inputValueRealizacaoFromSearch}
                         onChange={handleRealizacaoChangeFromSearch}
                         disableClearable
-                        options={(realizacoes ?? []).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        options={(realizacoes ?? []).filter(realizacao => realizacao.gestao == "3").map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
                         ListboxProps={{ style: { maxHeight: "80vh" } }}
