@@ -447,8 +447,7 @@ useEffect(() => {
       <Marker
         key={point.id + index}
         position={Object.values(point.coords)}
-        // icon={getIcon("anyIcon")}
-        icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? "redicon" : "anyIcon"), point === currentClickedPoint)}
+        icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? "redicon" : "anyIcon"), point === currentClickedPoint, point.gestao !== "3")}
         eventHandlers={{
           click: (e) => onMarkerClick(point),
         }}
