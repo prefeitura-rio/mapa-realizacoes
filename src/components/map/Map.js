@@ -551,7 +551,7 @@ useEffect(() => {
           }
         })}
         
-        {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
+        {tema == "Mobilidade" && !programa && mobilidadePoints.map((point, index) => {
           if( gestao!="3" && point.gestao != "3"){
             return renderMarker(point, index);
           }
