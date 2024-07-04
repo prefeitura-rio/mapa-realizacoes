@@ -560,7 +560,7 @@ const PlaceDescriptionBar = forwardRef(
                           </div>
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
-                      {content?.gestao!="3" && "Essa é uma realização de gestões anteriores. Para mais informações, entre em contato com a Prefeitura do Rio de Janeiro."}
+                      {content?.gestao!="3" && "Essa é uma realização de gestões anteriores."}
                         {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
   
                         {fullText + " ..." === shortText ? null :
@@ -670,7 +670,7 @@ const PlaceDescriptionBar = forwardRef(
                         </Tooltip> */}
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
-                        {content?.gestao!="3" && "Essa é uma realização de gestões anteriores. Para mais informações, entre em contato com a Prefeitura do Rio de Janeiro."}
+                        {content?.gestao!="3" && "Essa é uma realização de gestões anteriores."}
                         {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
   
                         {fullText + " ..." === shortText ? null :

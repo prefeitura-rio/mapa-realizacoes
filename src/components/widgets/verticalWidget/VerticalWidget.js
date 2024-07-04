@@ -97,7 +97,7 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
 
   const handleClick = () => {
     setIsSelected(!isSelected);
-    setSnackbarMessage(isSelected ? 'Gestões antigas desativadas.' : 'Gestões antigas ativadas.');
+    setSnackbarMessage(isSelected ? 'Gestões anteriores desativadas.' : 'Gestões anteriores ativadas.');
     setSnackbarOpen(true);
     if(!isSelected){
       setGestao("1_2");
