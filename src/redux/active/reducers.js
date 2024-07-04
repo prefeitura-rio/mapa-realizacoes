@@ -22,7 +22,8 @@ import {
   SET_SHOWN_MORE,
   SET_INFO_MODAL,
   SET_CURRENT_CLICKED_POINT,
-  SET_OPENED_POPUP
+  SET_OPENED_POPUP,
+  SET_GESTAO
 } from "./actions";
 
 export const isDesktop = () => {
@@ -50,11 +51,17 @@ const defaultState = {
   menuSidebar: false,
   photoGallery: false,
   shownMore: false,
-  openedPopup:null
+  openedPopup:null,
+  gestao: "3"
 };
 
 export const activeReducer = (state = defaultState, action) => {
   switch (action.type) {
+    case SET_GESTAO:
+      return {
+        ...state,
+        gestao: action.payload,
+      };
     case SET_ADD_PHOTO:
       return {
         ...state,
