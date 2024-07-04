@@ -455,12 +455,14 @@ useEffect(() => {
         <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
           {point.id_programa == "rio_em_forma" ? <span>Rio em Forma - {point.nome}</span> :
             <>
+            <div style={{display:"flex", flexDirection:"column"}}>
               <span><b>Título:</b> {point.nome}</span>
-              <br></br>
               {
                 point.id_bairro &&
                 <span><b>Bairro:</b> {toTitleCase(point.id_bairro ?? "")}</span>
               }
+                  {point.image_url && <img src={point.image_url} alt={point.nome} style={{ width: '100%', marginTop: '5px' }} />}
+             </div>
             </>}
         </Tooltip>
       </Marker>
@@ -468,7 +470,8 @@ useEffect(() => {
   }
 
   const mobilidadePoints = points.filter(point => toSnakeCase('Mobilidade') === point.id_tema);
-  const otherPoints = points.filter(point => toSnakeCase('Mobilidade') !== point.id_tema);
+  const otherPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (point.gestao == "3"));
+  const oldPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (point.gestao != "3"));
 
   return (
     <>
@@ -511,19 +514,34 @@ useEffect(() => {
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
             // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-            if( gestao == "3"){
-             if ( isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && point.gestao == "3") {
+             if ( isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
                 return renderMarker(point, index);
               }
-            }
-            else{
-              if ( isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-                return renderMarker(point, index);
-              }
-            } 
             
           })}
         </MarkerClusterGroup>
+
+        {oldPoints.map((point, index) => {
+
+          // Verifica se o ponto corresponde ao bairro selecionado
+          const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
+
+          // Verifica se o ponto corresponde ao subprefeitura selecionado
+          const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
+
+          // Verifica se o ponto corresponde ao tema selecionado
+          const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
+
+          const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
+
+
+          // Renderiza o marcador se corresponder ao bairro e aos demais
+          // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+          if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && gestao != "3") {
+            return renderMarker(point, index);
+          }
+
+        })}
 
         {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
           const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
