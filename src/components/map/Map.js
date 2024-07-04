@@ -25,6 +25,8 @@ import { parse } from 'terraformer-wkt-parser';
 import { toTitleCase } from "../../utils/formatFile";
 import { useDispatch } from "react-redux";
 import brtsLines from "./brtsLines.json";
+import { styled } from '@mui/material/styles';
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@material-ui/core";
 
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
@@ -92,7 +94,7 @@ const Map = ({
     // console.log("zoomDefault " + zoomDefault)
 
     if (map && zoomDefault != 0) {
-      const coords =isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400];
+      const coords = isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400];
       map.flyTo(coords, isDesktopDevice ? 11 : 10)
     }
   }, [zoomDefault])
@@ -131,7 +133,7 @@ const Map = ({
         map.removeLayer(currentLayerTransOlímpica.current);
       }
     };
-  
+
     if (map) {
       if (tema == "Mobilidade") {
         const addLayer = (nome, layerRef, color) => {
@@ -142,7 +144,7 @@ const Map = ({
             style: { color: color, weight: 4 }
           }).addTo(map);
         };
-  
+
         addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
         addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
         addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
@@ -153,48 +155,48 @@ const Map = ({
     }
   }, [map, tema]);
 
-useEffect(() => {
-  if (map && programa) {
-    const removeLayers = () => {
-      if (currentLayerTransBrasil.current) {
-        map.removeLayer(currentLayerTransBrasil.current);
-      }
-      if (currentLayerTransOeste.current) {
-        map.removeLayer(currentLayerTransOeste.current);
-      }
-      if (currentLayerTransCarioca.current) {
-        map.removeLayer(currentLayerTransCarioca.current);
-      }
-      if (currentLayerTransOlímpica.current) {
-        map.removeLayer(currentLayerTransOlímpica.current);
-      }
-    };
+  useEffect(() => {
+    if (map && programa) {
+      const removeLayers = () => {
+        if (currentLayerTransBrasil.current) {
+          map.removeLayer(currentLayerTransBrasil.current);
+        }
+        if (currentLayerTransOeste.current) {
+          map.removeLayer(currentLayerTransOeste.current);
+        }
+        if (currentLayerTransCarioca.current) {
+          map.removeLayer(currentLayerTransCarioca.current);
+        }
+        if (currentLayerTransOlímpica.current) {
+          map.removeLayer(currentLayerTransOlímpica.current);
+        }
+      };
 
-    const addLayer = (nome, layerRef, color) => {
-      layerRef.current = L.geoJSON(filterLines(nome), {
-        style: { color: color, weight: 4 }
-      }).addTo(map);
-    };
+      const addLayer = (nome, layerRef, color) => {
+        layerRef.current = L.geoJSON(filterLines(nome), {
+          style: { color: color, weight: 4 }
+        }).addTo(map);
+      };
 
-    removeLayers();
+      removeLayers();
 
-    if (programa == "BRTs Transbrasil") {
-      addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
-    } else if (programa == "BRTs Transoeste") {
-      addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
-    } else if (programa == "BRTs Transcarioca") {
-      addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
-    } else if (programa == "BRTs Transolímpica") {
-      addLayer('TransOlímpica', currentLayerTransOlímpica, '#1DA64D');
+      if (programa == "BRTs Transbrasil") {
+        addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
+      } else if (programa == "BRTs Transoeste") {
+        addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
+      } else if (programa == "BRTs Transcarioca") {
+        addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
+      } else if (programa == "BRTs Transolímpica") {
+        addLayer('TransOlímpica', currentLayerTransOlímpica, '#1DA64D');
+      }
     }
-  }
-}, [map, programa]);
+  }, [map, programa]);
 
 
-  
+
   // Use a ref to store the current layer
   const currentLayer = useRef(null);
- 
+
   useEffect(() => {
     if (map && bairro) {
       // Converte o nome do bairro para o formato correto (considerando acentuação)
@@ -240,8 +242,8 @@ useEffect(() => {
     }
   }, [bairro]);
 
-    // Use a ref to store the current layer
-    const currentLayerSubprefeitura = useRef(null);
+  // Use a ref to store the current layer
+  const currentLayerSubprefeitura = useRef(null);
 
   useEffect(() => {
     if (map && subprefeitura) {
@@ -258,26 +260,26 @@ useEffect(() => {
           lng: subprefeitura_centro.lng
         }, 12);
       }
-         // Find the correct bairro object
-         const subprefeituraData = shapeFileSubprefeituras.find(s => (s.subprefeitura).toLowerCase() === (subprefeitura).toLowerCase());
-         if (subprefeituraData) {
-           // Convert WKT to GeoJSON
-           const geoJsonData = parse(subprefeituraData.geometry_wkt);
-   
-           // If there's a current layer, remove it from the map
-           if (currentLayerSubprefeitura.current) {
-             map.removeLayer(currentLayerSubprefeitura.current);
-           }
-           // Create a new GeoJSON layer and add it to the map
-           currentLayerSubprefeitura.current = L.geoJSON(geoJsonData, {
-             style: {
-               color: '#007E7D',  // Boundary color
-               weight: 3, // Boundary thickness 
-               fillColor: '#007E7D',  //BG
-               fillOpacity: 0.2  // BGs opacity  (0 is fully transparent, 1 is fully opaque)
-             }
-           }).addTo(map);
-         }
+      // Find the correct bairro object
+      const subprefeituraData = shapeFileSubprefeituras.find(s => (s.subprefeitura).toLowerCase() === (subprefeitura).toLowerCase());
+      if (subprefeituraData) {
+        // Convert WKT to GeoJSON
+        const geoJsonData = parse(subprefeituraData.geometry_wkt);
+
+        // If there's a current layer, remove it from the map
+        if (currentLayerSubprefeitura.current) {
+          map.removeLayer(currentLayerSubprefeitura.current);
+        }
+        // Create a new GeoJSON layer and add it to the map
+        currentLayerSubprefeitura.current = L.geoJSON(geoJsonData, {
+          style: {
+            color: '#007E7D',  // Boundary color
+            weight: 3, // Boundary thickness 
+            fillColor: '#007E7D',  //BG
+            fillOpacity: 0.2  // BGs opacity  (0 is fully transparent, 1 is fully opaque)
+          }
+        }).addTo(map);
+      }
     }
   }, [subprefeitura, map]);
 
@@ -440,32 +442,89 @@ useEffect(() => {
     "brts_transoeste": "brts_transoeste_icon",
     "brts_transcarioca": "brts_transcarioca_icon"
   };
-  
+
+
+  const CustomTooltip = styled(Tooltip)(({ theme }) => ({
+    '&.leaflet-tooltip': {
+      backgroundColor: 'transparent !important', // Important to override any defaults
+      border: 'none !important',
+      boxShadow: 'none !important',
+      maxWidth: 'none',
+      padding: 0, // Remove any padding if necessary
+    },
+    '&.leaflet-tooltip-right::before': {
+      borderRightColor: 'transparent !important', // Ensure the tooltip arrow is transparent
+    },
+    '&.leaflet-tooltip-left::before': {
+      borderLeftColor: 'transparent !important', // Ensure the tooltip arrow is transparent
+    },
+    '&.leaflet-tooltip-top::before': {
+      borderTopColor: 'transparent !important', // Ensure the tooltip arrow is transparent
+    },
+    '&.leaflet-tooltip-bottom::before': {
+      borderBottomColor: 'transparent !important', // Ensure the tooltip arrow is transparent
+    },
+  }));
+  const CustomCard = styled(Card)(({ theme }) => ({
+    width: 300,
+  }));
+
+
   // Função auxiliar para renderizar o marcador
   function renderMarker(point, index) {
     return (
       <Marker
-        key={point.id + index}
-        position={Object.values(point.coords)}
-        icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? "redicon" : "anyIcon"), point === currentClickedPoint, point.gestao !== "3")}
-        eventHandlers={{
-          click: (e) => onMarkerClick(point),
-        }}
-      >
-        <Tooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-          {point.id_programa == "rio_em_forma" ? <span>Rio em Forma - {point.nome}</span> :
-            <>
-            <div style={{display:"flex", flexDirection:"column"}}>
-              <span><b>Título:</b> {point.nome}</span>
-              {
-                point.id_bairro &&
-                <span><b>Bairro:</b> {toTitleCase(point.id_bairro ?? "")}</span>
-              }
-                  {point.image_url && <img src={point.image_url} alt={point.nome} style={{ width: '100%', marginTop: '5px' }} />}
-             </div>
-            </>}
-        </Tooltip>
-      </Marker>
+      key={point.id + index}
+      position={Object.values(point.coords)}
+      icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? 'redicon' : 'anyIcon'), point === currentClickedPoint, point.gestao !== '3')}
+      eventHandlers={{
+        click: () => onMarkerClick(point),
+      }}
+    >
+      <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+        {point.id_programa === 'rio_em_forma' ? (
+          <span style={{ backgroundColor: 'transparent' }}>Rio em Forma - {point.nome}</span>
+        ) : (
+          <CustomCard>
+            <CardActionArea>
+              {point.image_url && (
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={point.image_url}
+                  alt={point.nome}
+                />
+              )}
+              <CardContent>
+                <Typography
+                  gutterBottom
+                  variant="h6"
+                  component="div"
+                  style={{
+                    display: '-webkit-box',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 2,
+                    whiteSpace: 'normal',
+                    wordWrap: 'break-word',
+                    lineHeight: '1.2',
+                    backgroundColor: 'transparent', // Ensure no background here
+                  }}
+                >
+                  {point.nome}
+                </Typography>
+                {point.id_bairro && (
+                  <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
+                    Bairro: {toTitleCase(point.id_bairro ?? '')}
+                  </Typography>
+                )}
+              </CardContent>
+            </CardActionArea>
+          </CustomCard>
+        )}
+      </CustomTooltip>
+    </Marker>
     );
   }
 
@@ -482,7 +541,7 @@ useEffect(() => {
       </Snackbar>
       <MapContainer
         center={isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400]}  // Coordenadas para o Rio de Janeiro
-        zoom={isDesktopDevice ? 11 : 10} 
+        zoom={isDesktopDevice ? 11 : 10}
         scrollWheelZoom={true}
         zoomControl={false}
         whenCreated={setMap}
@@ -514,10 +573,10 @@ useEffect(() => {
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
             // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-             if ( isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-                return renderMarker(point, index);
-              }
-            
+            if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+              return renderMarker(point, index);
+            }
+
           })}
         </MarkerClusterGroup>
 
@@ -550,9 +609,9 @@ useEffect(() => {
             return renderMarker(point, index);
           }
         })}
-        
+
         {tema == "Mobilidade" && !programa && mobilidadePoints.map((point, index) => {
-          if( gestao!="3" && point.gestao != "3"){
+          if (gestao != "3" && point.gestao != "3") {
             return renderMarker(point, index);
           }
         })}
