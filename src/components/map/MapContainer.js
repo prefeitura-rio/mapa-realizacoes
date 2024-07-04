@@ -51,6 +51,7 @@ const MapContainer = (props) => {
       zoomDefault={props.zoomDefault}
       currentClickedPoint={props.currentClickedPoint}
       setOpenedPopup={props.setOpenedPopup}
+      gestao = {props.gestao}
     />
   );
 };
@@ -73,6 +74,7 @@ const mapStateToProps = (state) => {
     subprefeitura: state.filtros.subprefeitura,
     zoomDefault: state.app.zoomDefault,
     currentClickedPoint: state.active.currentClickedPoint,
+    gestao: state.active.gestao
   };
 };
 

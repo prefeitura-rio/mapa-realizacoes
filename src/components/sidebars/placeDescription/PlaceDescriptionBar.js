@@ -550,9 +550,17 @@ const PlaceDescriptionBar = forwardRef(
                                 </Button>
                               </span>
                             )}
+                            {content?.gestao!="3" && (
+                              <span >
+                                <Button variant="contained" className={classes.statusButton}>
+                                  Concluído
+                                </Button>
+                              </span>
+                            )}
                           </div>
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
+                      {content?.gestao!="3" && "Essa é uma realização de gestões anteriores. Para mais informações, entre em contato com a Prefeitura do Rio de Janeiro."}
                         {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
   
                         {fullText + " ..." === shortText ? null :
@@ -662,6 +670,7 @@ const PlaceDescriptionBar = forwardRef(
                         </Tooltip> */}
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
+                        {content?.gestao!="3" && "Essa é uma realização de gestões anteriores. Para mais informações, entre em contato com a Prefeitura do Rio de Janeiro."}
                         {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
   
                         {fullText + " ..." === shortText ? null :
@@ -679,6 +688,13 @@ const PlaceDescriptionBar = forwardRef(
                   <span className={classes.buttonStatus}>
                     <Button variant="contained" className={classes.statusButton}>
                       {content?.status}
+                    </Button>
+                  </span>
+                )}
+                {content?.gestao!="3"&& (
+                  <span className={classes.buttonStatus}>
+                    <Button variant="contained" className={classes.statusButton}>
+                      Concluído
                     </Button>
                   </span>
                 )}

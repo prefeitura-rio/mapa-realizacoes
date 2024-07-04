@@ -56,7 +56,8 @@ const Map = ({
   subprefeitura,
   zoomDefault,
   currentClickedPoint,
-  setOpenedPopup
+  setOpenedPopup,
+  gestao
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -494,7 +495,6 @@ useEffect(() => {
         />
         <MarkerClusterGroup showCoverageOnHover={false}
           spiderfyDistanceMultiplier={2}
-          disableClusteringAtZoom={13}
           iconCreateFunction={createClusterCustomIcon}>
           {otherPoints.map((point, index) => {
 
@@ -511,9 +511,17 @@ useEffect(() => {
 
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
-            if ( isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-              return renderMarker(point, index);
+            // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+            if( gestao == "3"){
+             if ( isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && point.gestao == "3") {
+                return renderMarker(point, index);
+              }
             }
+            else{
+              if ( isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+                return renderMarker(point, index);
+              }
+            } 
             
           })}
         </MarkerClusterGroup>
@@ -521,7 +529,13 @@ useEffect(() => {
         {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
           const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
           // Render the marker for points with the "Mobilidade" theme
-          if (isProgramaMatch) {
+          if (isProgramaMatch && point.gestao == "3") {
+            return renderMarker(point, index);
+          }
+        })}
+        
+        {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
+          if( gestao!="3" && point.gestao != "3"){
             return renderMarker(point, index);
           }
         })}

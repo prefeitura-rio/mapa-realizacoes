@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault }) => {
+const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault, setGestao }) => {
   const classes = useStyles();
 
   const zoomIn = () => {
@@ -97,8 +97,13 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
 
   const handleClick = () => {
     setIsSelected(!isSelected);
-    setSnackbarMessage(isSelected ? 'Gestões antigas desativada.' : 'Gestões antigas ativada.');
+    setSnackbarMessage(isSelected ? 'Gestões antigas desativadas.' : 'Gestões antigas ativadas.');
     setSnackbarOpen(true);
+    if(!isSelected){
+      setGestao("1_2");
+    }else{
+      setGestao("3");
+    }
   };
 
   const handleCloseSnackbar = (event, reason) => {
@@ -121,7 +126,11 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
 
   return (
     <>
-    <Snackbar
+
+    <div className={classes.root}>
+      <div className={classes.zoom}>
+        <div className={classes.buttons}>
+        <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
@@ -132,11 +141,8 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
           horizontal: isDesktop() ? 'center' : 'left',
         }}
         className={classes.snackbar}
+        style={{zIndex: "9999 !important"}}
       />
-    <div className={classes.root}>
-      <div className={classes.zoom}>
-        <div className={classes.buttons}>
-
           <Stack spacing={1}>
         
               <Paper elevation={4} style={{ borderRadius: "10px",position: "relative", backgroundColor: 'white' }}>
@@ -185,30 +191,6 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
                 </IconButton>
               </Paper>
           </Stack>
-          {/* <Button
-            variant="contained"
-            className={clsx(classes.controlButton, classes.zoomInButton)}
-            onClick={zoomIn}
-          >
-            <AddIcon fontSize="small" className={classes.textSecondary} />
-          </Button> */}
-          {/* <Button
-            variant="contained"
-            className={clsx(classes.controlButton, classes.zoomOutButton)}
-            onClick={zoomOut}
-          >
-            <RemoveIcon fontSize="small" className={classes.textSecondary} />
-          </Button> */}
-          {/* <Button
-            // variant="contained"
-            aria-label="menu"
-            className={clsx(classes.controlButtonInfo, classes.zoomInButton)}
-            onClick={handleMenuSidebar}
-          >
-            <InfoIcon sx={{ fontSize: 37, color: 'white'}} className={classes.textSecondary} />
-          </Button> */}
-
-         
         </div>
       </div>
     </div>
