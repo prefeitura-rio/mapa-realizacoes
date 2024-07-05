@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import brtsLines from "./brtsLines.json";
 import { styled } from '@mui/material/styles';
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@material-ui/core";
+import '@luomus/leaflet-smooth-wheel-zoom';
 
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
@@ -446,23 +447,23 @@ const Map = ({
 
   const CustomTooltip = styled(Tooltip)(({ theme }) => ({
     '&.leaflet-tooltip': {
-      backgroundColor: 'transparent !important', // Important to override any defaults
+      backgroundColor: 'transparent !important', 
       border: 'none !important',
       boxShadow: 'none !important',
       maxWidth: 'none',
-      padding: 0, // Remove any padding if necessary
+      padding: 0, 
     },
     '&.leaflet-tooltip-right::before': {
-      borderRightColor: 'transparent !important', // Ensure the tooltip arrow is transparent
+      borderRightColor: 'transparent !important', 
     },
     '&.leaflet-tooltip-left::before': {
-      borderLeftColor: 'transparent !important', // Ensure the tooltip arrow is transparent
+      borderLeftColor: 'transparent !important', 
     },
     '&.leaflet-tooltip-top::before': {
-      borderTopColor: 'transparent !important', // Ensure the tooltip arrow is transparent
+      borderTopColor: 'transparent !important', 
     },
     '&.leaflet-tooltip-bottom::before': {
-      borderBottomColor: 'transparent !important', // Ensure the tooltip arrow is transparent
+      borderBottomColor: 'transparent !important', 
     },
   }));
   const CustomCard = styled(Card)(({ theme }) => ({
@@ -542,7 +543,9 @@ const Map = ({
       <MapContainer
         center={isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400]}  // Coordenadas para o Rio de Janeiro
         zoom={isDesktopDevice ? 11 : 10}
-        scrollWheelZoom={true}
+        scrollWheelZoom={false}
+        smoothWheelZoom= {true}
+        smoothSensitivity= {1}
         zoomControl={false}
         whenCreated={setMap}
         className="markercluster-map"
