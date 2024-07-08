@@ -21,6 +21,7 @@ import subprefeituras_centros from "./centroideSubprefeituras";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import shapeFileBairros from "./shapeFileBairros.json"
 import shapeFileSubprefeituras from "./shapeFileSubprefeituras.json"
+import lineStringAsfaltoLiso from "./lineStringAsfaltoLiso.json"
 import { parse } from 'terraformer-wkt-parser';
 import { toTitleCase } from "../../utils/formatFile";
 import { useDispatch } from "react-redux";
@@ -60,7 +61,8 @@ const Map = ({
   zoomDefault,
   currentClickedPoint,
   setOpenedPopup,
-  gestao
+  gestao,
+  setRealizacao,
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -292,6 +294,51 @@ const Map = ({
     }
   }, [subprefeitura]);
 
+  // LINHAS ASFALTO LISO
+
+  // Add the linestring to the map if name inside features is equal to "realizacao"
+  useEffect(() => {
+    let lineLayer = null; // Reference to the added line layer
+    let dashedLayer = null; // Reference to the added line layer
+  
+    if (map && realizacao) {
+      const lineString = lineStringAsfaltoLiso.features.find(feature => feature.properties.name === realizacao);
+      if (lineString) {
+        // Directly use lineString.geometry without parsing
+        const line = L.geoJSON(lineString.geometry, {
+          style: {
+            color: '#4d4b4d',  // Boundary color
+            weight: 10, // Boundary thickness
+          }
+        }).addTo(map);
+        map.fitBounds(line.getBounds());
+    
+        // Create and add the dashed line
+        const dashedLine = L.geoJSON(lineString.geometry, {
+          style: {
+            color: '#ffffff', // Dashed line color
+            weight: 2, // Dashed line thickness, adjust as needed
+            dashArray: '10, 20', // Pattern of dashes and gaps
+          }
+        }).addTo(map);
+    
+        lineLayer = line; // Store the reference to the added line layer
+        dashedLayer = dashedLine; // Store the reference to the added line layer
+      }
+    }
+  
+    // Cleanup function to remove the previous line layer
+    return () => {
+      if (lineLayer) {
+        map.removeLayer(lineLayer);
+      }
+      if (dashedLayer) {
+        map.removeLayer(dashedLayer);
+      }
+    };
+  }, [map, realizacao]);
+
+
   const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
 
   useEffect(() => {
@@ -424,6 +471,7 @@ const Map = ({
     }
     setRota(toSnakeCase(point.nome))
     dispatch(setCurrentClickedPoint(point));
+    setRealizacao(point.nome)
   };
 
 
@@ -483,47 +531,44 @@ const Map = ({
       }}
     >
       <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-        {point.id_programa === 'rio_em_forma' ? (
-          <span style={{ backgroundColor: 'transparent' }}>Rio em Forma - {point.nome}</span>
-        ) : (
-          <CustomCard>
-            <CardActionArea>
-              {point.image_url && (
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={point.image_url}
-                  alt={point.nome}
-                />
-              )}
-              <CardContent>
-                <Typography
-                  gutterBottom
-                  variant="h6"
-                  component="div"
-                  style={{
-                    display: '-webkit-box',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    WebkitBoxOrient: 'vertical',
-                    WebkitLineClamp: 2,
-                    whiteSpace: 'normal',
-                    wordWrap: 'break-word',
-                    lineHeight: '1.2',
-                    backgroundColor: 'transparent', // Ensure no background here
-                  }}
-                >
-                  {point.nome}
+        <CustomCard>
+          <CardActionArea>
+            {point.image_url && (
+              <CardMedia
+                component="img"
+                height="140"
+                image={point.image_url}
+                alt={point.nome}
+              />
+            )}
+            <CardContent>
+              <Typography
+                gutterBottom
+                component="div"
+                style={{
+                  fontSize: point.image_url ? '1.2rem' : '1.08rem',
+                  display: '-webkit-box',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  WebkitBoxOrient: 'vertical',
+                  WebkitLineClamp: 2,
+                  whiteSpace: 'normal',
+                  wordWrap: 'break-word',
+                  lineHeight: point.image_url ? '1.2' : '1',
+                  backgroundColor: 'transparent',
+                  marginBottom: point.image_url ? "" : "0px",
+                }}
+              >
+                {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.nome}
+              </Typography>
+              {point.id_bairro && (
+                <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
+                  Bairro: {toTitleCase(point.id_bairro ?? '')}
                 </Typography>
-                {point.id_bairro && (
-                  <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
-                    Bairro: {toTitleCase(point.id_bairro ?? '')}
-                  </Typography>
-                )}
-              </CardContent>
-            </CardActionArea>
-          </CustomCard>
-        )}
+              )}
+            </CardContent>
+          </CardActionArea>
+        </CustomCard>
       </CustomTooltip>
     </Marker>
     );
