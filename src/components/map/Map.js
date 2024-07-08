@@ -21,6 +21,7 @@ import subprefeituras_centros from "./centroideSubprefeituras";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import shapeFileBairros from "./shapeFileBairros.json"
 import shapeFileSubprefeituras from "./shapeFileSubprefeituras.json"
+import lineStringAsfaltoLiso from "./lineStringAsfaltoLiso.json"
 import { parse } from 'terraformer-wkt-parser';
 import { toTitleCase } from "../../utils/formatFile";
 import { useDispatch } from "react-redux";
@@ -60,7 +61,8 @@ const Map = ({
   zoomDefault,
   currentClickedPoint,
   setOpenedPopup,
-  gestao
+  gestao,
+  setRealizacao,
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -292,6 +294,51 @@ const Map = ({
     }
   }, [subprefeitura]);
 
+  // LINHAS ASFALTO LISO
+
+  // Add the linestring to the map if name inside features is equal to "realizacao"
+  useEffect(() => {
+    let lineLayer = null; // Reference to the added line layer
+    let dashedLayer = null; // Reference to the added line layer
+  
+    if (map && realizacao) {
+      const lineString = lineStringAsfaltoLiso.features.find(feature => feature.properties.name === realizacao);
+      if (lineString) {
+        // Directly use lineString.geometry without parsing
+        const line = L.geoJSON(lineString.geometry, {
+          style: {
+            color: '#4d4b4d',  // Boundary color
+            weight: 10, // Boundary thickness
+          }
+        }).addTo(map);
+        map.fitBounds(line.getBounds());
+    
+        // Create and add the dashed line
+        const dashedLine = L.geoJSON(lineString.geometry, {
+          style: {
+            color: '#ffffff', // Dashed line color
+            weight: 2, // Dashed line thickness, adjust as needed
+            dashArray: '10, 20', // Pattern of dashes and gaps
+          }
+        }).addTo(map);
+    
+        lineLayer = line; // Store the reference to the added line layer
+        dashedLayer = dashedLine; // Store the reference to the added line layer
+      }
+    }
+  
+    // Cleanup function to remove the previous line layer
+    return () => {
+      if (lineLayer) {
+        map.removeLayer(lineLayer);
+      }
+      if (dashedLayer) {
+        map.removeLayer(dashedLayer);
+      }
+    };
+  }, [map, realizacao]);
+
+
   const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
 
   useEffect(() => {
@@ -424,6 +471,7 @@ const Map = ({
     }
     setRota(toSnakeCase(point.nome))
     dispatch(setCurrentClickedPoint(point));
+    setRealizacao(point.nome)
   };
 
 

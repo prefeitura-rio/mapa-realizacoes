@@ -12,6 +12,7 @@ import { loadData } from "../../redux/place/actions";
 import { loadAllCidades } from "../../redux/cidade/actions";
 import { loadAllPlaces } from "../../redux/places/actions";
 import { useParams } from "react-router-dom"
+import { setRealizacao } from "../../redux/filtros/actions";
 
 const MapContainer = (props) => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const MapContainer = (props) => {
       currentClickedPoint={props.currentClickedPoint}
       setOpenedPopup={props.setOpenedPopup}
       gestao = {props.gestao}
+      setRealizacao={props.setRealizacao}
     />
   );
 };
@@ -90,6 +92,7 @@ const mapDispatchToProps = {
   loadAllPlaces,
   setRota,
   setOpenedPopup,
+  setRealizacao,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
