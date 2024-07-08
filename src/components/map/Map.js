@@ -63,6 +63,7 @@ const Map = ({
   setOpenedPopup,
   gestao,
   setRealizacao,
+  userLocation
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -579,6 +580,66 @@ const Map = ({
   const otherPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (point.gestao == "3"));
   const oldPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (point.gestao != "3"));
 
+  const [userLocationCoords, setUserLocationCoords] = useState(null);
+  
+  useEffect(() => {
+    if (!map) return;
+  
+    let watchId;
+  
+    if (userLocation) {
+      watchId = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const newCoords = { lat: latitude, lng: longitude };
+          setUserLocationCoords(newCoords);
+          map.setView(newCoords, 15);
+        },
+        (error) => {
+          console.error("Error watching position:", error);
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: 1000,
+        }
+      );
+    }
+  
+    return () => {
+      if (watchId) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, [map, userLocation]);
+
+  const svg = `
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21">
+  <style>
+    @-webkit-keyframes anim-pulse {
+      0% { opacity: 0; -webkit-transform: scale(.5); }
+      10% { opacity: 1; }
+      90% { opacity: 0; }
+      100% { -webkit-transform: scale(1.25); }
+    }
+    .core { fill: #00B7EB; stroke: white; stroke-width: 1; } /* Adicionado borda branca */
+    .ring {
+      opacity: 0;
+      stroke: #00B7EB;
+      -webkit-transform-origin: center;
+      -webkit-animation: anim-pulse 2s 1s infinite;
+    }
+  </style>
+  <g id="marker">
+    <circle class="core" cx="11.3" cy="10.5" r="3"/>
+    <circle class="ring" fill="none" stroke="%23000" stroke-miterlimit="10" cx="11.3" cy="10.5" r="6"/>
+  </g>
+</svg>
+`;
+
+// Encode the SVG to be used as a data URL
+const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+
   return (
     <>
       <Snackbar open={alertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={() => setAlertOpen(false)}>
@@ -591,7 +652,7 @@ const Map = ({
         zoom={isDesktopDevice ? 11 : 10}
         scrollWheelZoom={false}
         smoothWheelZoom= {true}
-        smoothSensitivity= {1}
+        smoothSensitivity= {2}
         zoomControl={false}
         whenCreated={setMap}
         className="markercluster-map"
@@ -670,6 +731,19 @@ const Map = ({
             return renderMarker(point, index);
           }
         })}
+
+        {userLocation && userLocationCoords && (
+          <Marker
+            position={userLocationCoords}
+            icon={L.icon({ iconUrl: svgUrl, iconSize: [45, 45], iconAnchor: [12, 41] })}
+          >
+            <CustomTooltip direction="right" offset={[20, -40]} opacity={1}>
+            <Card style={{padding:"10px"}}>
+              <Typography style={{fontSize:"1.1rem"}} >Você está aqui.</Typography>
+            </Card>
+            </CustomTooltip>
+          </Marker>
+        )}
 
       </MapContainer>
     </>

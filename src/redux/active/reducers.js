@@ -23,7 +23,8 @@ import {
   SET_INFO_MODAL,
   SET_CURRENT_CLICKED_POINT,
   SET_OPENED_POPUP,
-  SET_GESTAO
+  SET_GESTAO,
+  SET_USER_LOCATION
 } from "./actions";
 
 export const isDesktop = () => {
@@ -52,7 +53,8 @@ const defaultState = {
   photoGallery: false,
   shownMore: false,
   openedPopup:null,
-  gestao: "3"
+  gestao: "3",
+  userLocation: null,
 };
 
 export const activeReducer = (state = defaultState, action) => {
@@ -61,6 +63,11 @@ export const activeReducer = (state = defaultState, action) => {
       return {
         ...state,
         gestao: action.payload,
+      };
+    case SET_USER_LOCATION:
+      return {
+        ...state,
+        userLocation: action.payload,
       };
     case SET_ADD_PHOTO:
       return {

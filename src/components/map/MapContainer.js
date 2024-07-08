@@ -1,7 +1,7 @@
 import Map from "./Map";
 import { setZoomDelta } from "../../redux/actions";
 import { connect, useDispatch } from "react-redux";
-import { setCurrentClickedPoint, setOpenEditInfo, setOpenedPopup } from "./../../redux/active/actions";
+import { setCurrentClickedPoint, setOpenEditInfo, setOpenedPopup, setUserLocation } from "./../../redux/active/actions";
 import { setContent, setContentSnapshot } from "./../../redux/place/actions";
 import { useEffect } from "react";
 // import { loadAllPoints } from "../../redux/points/actions";
@@ -54,6 +54,8 @@ const MapContainer = (props) => {
       setOpenedPopup={props.setOpenedPopup}
       gestao = {props.gestao}
       setRealizacao={props.setRealizacao}
+      setUserLocation={props.setUserLocation}
+      userLocation={props.userLocation}
     />
   );
 };
@@ -76,7 +78,8 @@ const mapStateToProps = (state) => {
     subprefeitura: state.filtros.subprefeitura,
     zoomDefault: state.app.zoomDefault,
     currentClickedPoint: state.active.currentClickedPoint,
-    gestao: state.active.gestao
+    gestao: state.active.gestao,
+    userLocation: state.active.userLocation
   };
 };
 
@@ -93,6 +96,7 @@ const mapDispatchToProps = {
   setRota,
   setOpenedPopup,
   setRealizacao,
+  setUserLocation
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
