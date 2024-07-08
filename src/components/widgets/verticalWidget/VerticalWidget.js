@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, IconButton, Paper, Snackbar, makeStyles } from "@material-ui/core";
-import MyLocationIcon from "@material-ui/icons/MyLocation";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
 import clsx from "clsx";
@@ -12,6 +11,7 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import { useStaticState } from "@material-ui/pickers";
 import CloseIcon from "@material-ui/icons/Close";
 import { isDesktop } from "../../../redux/active/reducers";
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault, setGestao }) => {
+const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault, setGestao, setUserLocation, userLocation }) => {
   const classes = useStyles();
 
   const zoomIn = () => {
@@ -175,6 +175,21 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
                 </IconButton>
               </Paper>
 
+              <Paper
+                className={classes.fixedButtonClock}
+                elevation={4}
+                style={{ borderRadius: "10px" }}
+              >
+                <IconButton
+                  style={{ backgroundColor: 'transparent' }}
+                  onClick={()=>{!userLocation?setUserLocation(true):setUserLocation(false);}}
+                >
+                  <MyLocationIcon
+                    fontSize="small"
+                    sx={{ color: userLocation ? 'black' : 'grey' }}
+                  />
+                </IconButton>
+              </Paper>
               <Paper
                 className={`${classes.fixedButtonClock} ${isSelected ? classes.selectedPaper : ''}`}
                 elevation={4}
