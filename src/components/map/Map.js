@@ -301,7 +301,7 @@ const Map = ({
   useEffect(() => {
     let lineLayer = null; // Reference to the added line layer
     let dashedLayer = null; // Reference to the added line layer
-  
+
     if (map && realizacao) {
       const lineString = lineStringAsfaltoLiso.features.find(feature => feature.properties.name === realizacao);
       if (lineString) {
@@ -314,7 +314,7 @@ const Map = ({
           }
         }).addTo(map);
         map.fitBounds(line.getBounds());
-    
+
         // Create and add the dashed line
         const dashedLine = L.geoJSON(lineString.geometry, {
           style: {
@@ -323,12 +323,12 @@ const Map = ({
             dashArray: '10, 20', // Pattern of dashes and gaps
           }
         }).addTo(map);
-    
+
         lineLayer = line; // Store the reference to the added line layer
         dashedLayer = dashedLine; // Store the reference to the added line layer
       }
     }
-  
+
     // Cleanup function to remove the previous line layer
     return () => {
       if (lineLayer) {
@@ -497,23 +497,23 @@ const Map = ({
 
   const CustomTooltip = styled(Tooltip)(({ theme }) => ({
     '&.leaflet-tooltip': {
-      backgroundColor: 'transparent !important', 
+      backgroundColor: 'transparent !important',
       border: 'none !important',
       boxShadow: 'none !important',
       maxWidth: 'none',
-      padding: 0, 
+      padding: 0,
     },
     '&.leaflet-tooltip-right::before': {
-      borderRightColor: 'transparent !important', 
+      borderRightColor: 'transparent !important',
     },
     '&.leaflet-tooltip-left::before': {
-      borderLeftColor: 'transparent !important', 
+      borderLeftColor: 'transparent !important',
     },
     '&.leaflet-tooltip-top::before': {
-      borderTopColor: 'transparent !important', 
+      borderTopColor: 'transparent !important',
     },
     '&.leaflet-tooltip-bottom::before': {
-      borderBottomColor: 'transparent !important', 
+      borderBottomColor: 'transparent !important',
     },
   }));
   const CustomCard = styled(Card)(({ theme }) => ({
@@ -525,54 +525,54 @@ const Map = ({
   function renderMarker(point, index) {
     return (
       <Marker
-      key={point.id + index}
-      position={Object.values(point.coords)}
-      icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? 'redicon' : 'anyIcon'), point === currentClickedPoint, point.gestao !== '3')}
-      eventHandlers={{
-        click: () => onMarkerClick(point),
-      }}
-    >
-      <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-        <CustomCard>
-          <CardActionArea>
-            {point.image_url && (
-              <CardMedia
-                component="img"
-                height="140"
-                image={point.image_url}
-                alt={point.nome}
-              />
-            )}
-            <CardContent>
-              <Typography
-                gutterBottom
-                component="div"
-                style={{
-                  fontSize: point.image_url ? '1.2rem' : '1.08rem',
-                  display: '-webkit-box',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  WebkitBoxOrient: 'vertical',
-                  WebkitLineClamp: 2,
-                  whiteSpace: 'normal',
-                  wordWrap: 'break-word',
-                  lineHeight: point.image_url ? '1.2' : '1',
-                  backgroundColor: 'transparent',
-                  marginBottom: point.image_url ? "" : "0px",
-                }}
-              >
-                {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.nome}
-              </Typography>
-              {point.id_bairro && (
-                <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
-                  Bairro: {toTitleCase(point.id_bairro ?? '')}
-                </Typography>
+        key={point.id + index}
+        position={Object.values(point.coords)}
+        icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? 'redicon' : 'anyIcon'), point === currentClickedPoint, point.gestao !== '3')}
+        eventHandlers={{
+          click: () => onMarkerClick(point),
+        }}
+      >
+        <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+          <CustomCard>
+            <CardActionArea>
+              {point.image_url && (
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={point.image_url}
+                  alt={point.nome}
+                />
               )}
-            </CardContent>
-          </CardActionArea>
-        </CustomCard>
-      </CustomTooltip>
-    </Marker>
+              <CardContent>
+                <Typography
+                  gutterBottom
+                  component="div"
+                  style={{
+                    fontSize: point.image_url ? '1.2rem' : '1.08rem',
+                    display: '-webkit-box',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 2,
+                    whiteSpace: 'normal',
+                    wordWrap: 'break-word',
+                    lineHeight: point.image_url ? '1.2' : '1',
+                    backgroundColor: 'transparent',
+                    marginBottom: point.image_url ? "" : "0px",
+                  }}
+                >
+                  {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.nome}
+                </Typography>
+                {point.id_bairro && (
+                  <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
+                    Bairro: {toTitleCase(point.id_bairro ?? '')}
+                  </Typography>
+                )}
+              </CardContent>
+            </CardActionArea>
+          </CustomCard>
+        </CustomTooltip>
+      </Marker>
     );
   }
 
@@ -581,19 +581,23 @@ const Map = ({
   const oldPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (point.gestao != "3"));
 
   const [userLocationCoords, setUserLocationCoords] = useState(null);
-  
+  const [isZoomed, setIsZoomed] = useState(false);
+
   useEffect(() => {
     if (!map) return;
-  
+
     let watchId;
-  
+
     if (userLocation) {
       watchId = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           const newCoords = { lat: latitude, lng: longitude };
           setUserLocationCoords(newCoords);
-          map.setView(newCoords, 15);
+          if (!isZoomed) {
+            map.setView(newCoords, 15);
+            setIsZoomed(true);
+          }
         },
         (error) => {
           console.error("Error watching position:", error);
@@ -605,13 +609,13 @@ const Map = ({
         }
       );
     }
-  
+
     return () => {
       if (watchId) {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, [map, userLocation]);
+  }, [map, userLocation, isZoomed]); // Include isZoomed in the dependency array
 
   const svg = `
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21">
@@ -637,8 +641,8 @@ const Map = ({
 </svg>
 `;
 
-// Encode the SVG to be used as a data URL
-const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  // Encode the SVG to be used as a data URL
+  const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`;
 
   return (
     <>
@@ -651,8 +655,8 @@ const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`;
         center={isDesktopDevice ? [-22.9200, -43.3250] : [-22.9800, -43.4400]}  // Coordenadas para o Rio de Janeiro
         zoom={isDesktopDevice ? 11 : 10}
         scrollWheelZoom={false}
-        smoothWheelZoom= {true}
-        smoothSensitivity= {2}
+        smoothWheelZoom={true}
+        smoothSensitivity={2}
         zoomControl={false}
         whenCreated={setMap}
         className="markercluster-map"
@@ -738,9 +742,9 @@ const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`;
             icon={L.icon({ iconUrl: svgUrl, iconSize: [45, 45], iconAnchor: [12, 41] })}
           >
             <CustomTooltip direction="right" offset={[20, -40]} opacity={1}>
-            <Card style={{padding:"10px"}}>
-              <Typography style={{fontSize:"1.1rem"}} >Você está aqui.</Typography>
-            </Card>
+              <Card style={{ padding: "10px" }}>
+                <Typography style={{ fontSize: "1.1rem" }} >Você está aqui.</Typography>
+              </Card>
             </CustomTooltip>
           </Marker>
         )}
