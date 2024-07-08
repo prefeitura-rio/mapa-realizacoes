@@ -307,8 +307,9 @@ const Map = ({
         // Directly use lineString.geometry without parsing
         const line = L.geoJSON(lineString.geometry, {
           style: {
-            color: '#4d4b4d',  // Boundary color
+            color: '#00B7EB',  // Boundary color
             weight: 10, // Boundary thickness
+            opacity: 0.5,
           }
         }).addTo(map);
         map.fitBounds(line.getBounds());
