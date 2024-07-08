@@ -483,47 +483,44 @@ const Map = ({
       }}
     >
       <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-        {point.id_programa === 'rio_em_forma' ? (
-          <span style={{ backgroundColor: 'transparent' }}>Rio em Forma - {point.nome}</span>
-        ) : (
-          <CustomCard>
-            <CardActionArea>
-              {point.image_url && (
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={point.image_url}
-                  alt={point.nome}
-                />
-              )}
-              <CardContent>
-                <Typography
-                  gutterBottom
-                  variant="h6"
-                  component="div"
-                  style={{
-                    display: '-webkit-box',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    WebkitBoxOrient: 'vertical',
-                    WebkitLineClamp: 2,
-                    whiteSpace: 'normal',
-                    wordWrap: 'break-word',
-                    lineHeight: '1.2',
-                    backgroundColor: 'transparent', // Ensure no background here
-                  }}
-                >
-                  {point.nome}
+        <CustomCard>
+          <CardActionArea>
+            {point.image_url && (
+              <CardMedia
+                component="img"
+                height="140"
+                image={point.image_url}
+                alt={point.nome}
+              />
+            )}
+            <CardContent>
+              <Typography
+                gutterBottom
+                component="div"
+                style={{
+                  fontSize: point.image_url ? '1.2rem' : '1.08rem',
+                  display: '-webkit-box',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  WebkitBoxOrient: 'vertical',
+                  WebkitLineClamp: 2,
+                  whiteSpace: 'normal',
+                  wordWrap: 'break-word',
+                  lineHeight: point.image_url ? '1.2' : '1',
+                  backgroundColor: 'transparent',
+                  marginBottom: point.image_url ? "" : "0px",
+                }}
+              >
+                {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.nome}
+              </Typography>
+              {point.id_bairro && (
+                <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
+                  Bairro: {toTitleCase(point.id_bairro ?? '')}
                 </Typography>
-                {point.id_bairro && (
-                  <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
-                    Bairro: {toTitleCase(point.id_bairro ?? '')}
-                  </Typography>
-                )}
-              </CardContent>
-            </CardActionArea>
-          </CustomCard>
-        )}
+              )}
+            </CardContent>
+          </CardActionArea>
+        </CustomCard>
       </CustomTooltip>
     </Marker>
     );
