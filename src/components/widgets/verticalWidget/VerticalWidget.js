@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault, setGestao, setUserLocation, userLocation }) => {
+const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault, setGestao, setUserLocation, userLocation, setRealizacao }) => {
   const classes = useStyles();
 
   const zoomIn = () => {
@@ -104,6 +104,7 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
     }else{
       setGestao("3");
     }
+    setRealizacao(null);
   };
 
   const handleCloseSnackbar = (event, reason) => {

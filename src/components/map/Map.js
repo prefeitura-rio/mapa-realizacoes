@@ -686,10 +686,16 @@ const Map = ({
 
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
-            // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+           if(!isDesktop()){
+            if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+                return renderMarker(point, index);
+              }
+           }else{
             if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
               return renderMarker(point, index);
             }
+           }
+           
 
           })}
         </MarkerClusterGroup>
@@ -743,7 +749,7 @@ const Map = ({
           >
             <CustomTooltip direction="right" offset={[20, -40]} opacity={1}>
               <Card style={{ padding: "10px" }}>
-                <Typography style={{ fontSize: "1.1rem" }} >Você está aqui.</Typography>
+                <Typography style={{ fontSize: "0.9rem" }} >Você está aqui.</Typography>
               </Card>
             </CustomTooltip>
           </Marker>
