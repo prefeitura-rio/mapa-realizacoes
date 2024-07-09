@@ -63,7 +63,8 @@ const Map = ({
   setOpenedPopup,
   gestao,
   setRealizacao,
-  userLocation
+  userLocation,
+  realizacoesPrograma
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -340,6 +341,60 @@ const Map = ({
     };
   }, [map, realizacao]);
 
+    // Add the linestring to the map if name inside features is equal to "realizacao"
+    useEffect(() => {
+      let lineLayers = []; // Array to store references to all added line layers
+      let dashedLayers = []; // Array to store references to all added dashed line layers
+    
+      if (map && programa == "Asfalto liso" && realizacao) {
+        // If realizacao is true, remove all line and dashed line layers
+        lineLayers.forEach(layer => map.removeLayer(layer));
+        dashedLayers.forEach(layer => map.removeLayer(layer));
+        // Clear the arrays after removing the layers
+        lineLayers = [];
+        dashedLayers = [];
+      } else {
+        if (map && programa == "Asfalto liso" && realizacoesPrograma.length > 0) {
+          // Add lineString for all realizacoes inside realizacoesPrograma array 
+          realizacoesPrograma.forEach(realizacao => {
+            const lineString = lineStringAsfaltoLiso.features.find(feature => feature.properties.name === realizacao);
+              
+            if (lineString) {
+              // Directly use lineString.geometry without parsing
+              const line = L.geoJSON(lineString.geometry, {
+                style: {
+                  color: '#00B7EB',  // Boundary color
+                  weight: 10, // Boundary thickness
+                  opacity: 0.5,
+                }
+              }).addTo(map);
+              // map.fitBounds(line.getBounds());
+          
+              // Create and add the dashed line
+              const dashedLine = L.geoJSON(lineString.geometry, {
+                style: {
+                  color: '#ffffff', // Dashed line color
+                  weight: 2, // Dashed line thickness, adjust as needed
+                  dashArray: '10, 20', // Pattern of dashes and gaps
+                }
+              }).addTo(map);
+          
+              lineLayers.push(line); // Store the reference to the added line layer
+              dashedLayers.push(dashedLine); // Store the reference to the added dashed line layer
+            }
+          });
+        }
+      }
+    
+      // Cleanup function to remove all added line and dashed line layers
+      return () => {
+        lineLayers.forEach(layer => map.removeLayer(layer));
+        dashedLayers.forEach(layer => map.removeLayer(layer));
+      };
+    }, [map, programa, realizacao,realizacoesPrograma]);
+
+  // ------------------------------------------------------------
+
 
   const realizacaoOk = points.find(point => realizacaoId === toSnakeCase(point.nome));
 
@@ -576,9 +631,10 @@ const Map = ({
     );
   }
 
-  const mobilidadePoints = points.filter(point => toSnakeCase('Mobilidade') === point.id_tema);
-  const otherPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (point.gestao == "3"));
-  const oldPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (point.gestao != "3"));
+  const asfaltoLisoPoints = points.filter(point => toSnakeCase('Asfalto liso') === point.id_programa);
+  const mobilidadePoints = points.filter(point => (toSnakeCase('Mobilidade') === point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa));
+  const otherPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao == "3"));
+  const oldPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao != "3"));
 
   const [userLocationCoords, setUserLocationCoords] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -740,6 +796,12 @@ const Map = ({
           if (realizacao === point.nome) {
             return renderMarker(point, index);
           }
+        })}
+
+        {programa == "Asfalto liso" && asfaltoLisoPoints.map((point, index) => {
+
+          return renderMarker(point, index);
+
         })}
 
         {userLocation && userLocationCoords && (

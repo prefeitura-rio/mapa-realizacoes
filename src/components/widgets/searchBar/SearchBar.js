@@ -236,7 +236,8 @@ const SearchBar = ({
   realizacaoId,
   setOpenedPopup,
   realizacoes,
-  setCurrentClickedPoint
+  setCurrentClickedPoint,
+  setRealizacoesProgramaRedux
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -357,6 +358,7 @@ const SearchBar = ({
           const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
 
           setRealizacoesPrograma(realizacoesProgramaRef);
+          setRealizacoesProgramaRedux(realizacoesProgramaRef);
 
         } catch (error) {
           console.error("Erro", error);
@@ -404,6 +406,7 @@ const SearchBar = ({
     setInputValuePrograma(null);
     setInputValueRealizacao(null);
     setTema(null);
+    setPrograma(null);
     // setProgramasTema([]); setInputValueTema(null); setTema(null); setPrograma(undefined); setShowProgramas(false); setInputValuePrograma(undefined);
     // setRealizacoesPrograma([]); setShowRealizacoes(false); setInputValueRealizacao(undefined);
     if (!isDesktop()) {

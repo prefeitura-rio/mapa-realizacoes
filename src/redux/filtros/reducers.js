@@ -1,4 +1,4 @@
-import { REQUEST_PROGRAMA_DATA, REQUEST_PROGRAMA_DATA_FAILED, REQUEST_PROGRAMA_DATA_SUCCESS, SET_FILTROS_OPTIONS, SET_PROGRAMA_DATA, SET_TEMA_DATA } from "./actions";
+import { REQUEST_PROGRAMA_DATA, REQUEST_PROGRAMA_DATA_FAILED, REQUEST_PROGRAMA_DATA_SUCCESS, SET_FILTROS_OPTIONS, SET_PROGRAMA_DATA, SET_REALIZACOES_PROGRAMA, SET_TEMA_DATA } from "./actions";
 import { SET_TEMA } from "./actions";
 import { SET_PROGRAMA } from "./actions";
 import { SET_REALIZACAO } from "./actions";
@@ -11,7 +11,8 @@ const defaultState = {
   programa: null,
   realizacao: null,
   bairro: null,
-  subprefeitura: null
+  subprefeitura: null,
+  realizacoesPrograma:[]
 };
 
 export const filtrosReducer = (state = defaultState, action) => {
@@ -78,6 +79,11 @@ export const filtrosReducer = (state = defaultState, action) => {
       return {
         ...state,
         subprefeitura: action.payload,
+      };
+    case SET_REALIZACOES_PROGRAMA:
+      return {
+        ...state,
+        realizacoesPrograma: action.payload,
       };
   }
   return state;
