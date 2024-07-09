@@ -13,7 +13,7 @@ import { setBairroData } from "./../../../redux/bairros/actions";
 import { setSubprefeituraData } from "./../../../redux/subprefeituras/actions";
 import { useEffect } from "react";
 import { setRota } from "../../../redux/rota/actions";
-import { setBairro, setPrograma,setProgramaData, setRealizacao, setSubprefeitura, setTema, setTemaData } from "../../../redux/filtros/actions";
+import { setBairro, setPrograma,setProgramaData, setRealizacao, setRealizacoesProgramaRedux, setSubprefeitura, setTema, setTemaData } from "../../../redux/filtros/actions";
 import { setZoomDefault } from "../../../redux/actions";
 import { useParams } from "react-router-dom"
 
@@ -65,6 +65,7 @@ const SearchbarContainer = (props) => {
       setOpenedPopup={props.setOpenedPopup}
       realizacoes={props.realizacoes}
       setCurrentClickedPoint={props.setCurrentClickedPoint}
+      setRealizacoesProgramaRedux={props.setRealizacoesProgramaRedux}
     />
   );
 };
@@ -112,7 +113,8 @@ const mapDispatchToProps = {
   setDescriptionData,
   loadData,
   setZoomDefault,
-  setCurrentClickedPoint
+  setCurrentClickedPoint,
+  setRealizacoesProgramaRedux
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchbarContainer);

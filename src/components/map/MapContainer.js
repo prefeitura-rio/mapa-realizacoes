@@ -56,6 +56,7 @@ const MapContainer = (props) => {
       setRealizacao={props.setRealizacao}
       setUserLocation={props.setUserLocation}
       userLocation={props.userLocation}
+      realizacoesPrograma={props.realizacoesPrograma}
     />
   );
 };
@@ -79,7 +80,8 @@ const mapStateToProps = (state) => {
     zoomDefault: state.app.zoomDefault,
     currentClickedPoint: state.active.currentClickedPoint,
     gestao: state.active.gestao,
-    userLocation: state.active.userLocation
+    userLocation: state.active.userLocation,
+    realizacoesPrograma: state.filtros.realizacoesPrograma
   };
 };
 
