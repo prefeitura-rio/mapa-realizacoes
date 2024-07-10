@@ -483,14 +483,14 @@ const PlaceDescriptionBar = forwardRef(
           body: JSON.stringify(requestBody),
           credentials: 'include'
         });
-    
+
         if (!response.ok) {
           throw new Error('Erro ao tentar melhorar o texto do gemini');
         }
-    
+
         const data = await response.json();
-       const message = imageUrl ? `${data.text}\n\n${imageUrl}` : data.text;
-    
+        const message = imageUrl ? `${data.text}\n\n${imageUrl}` : data.text;
+
         if (navigator.share) {
           await navigator.share({
             title: 'Veja que incrível essa realização!',
@@ -508,7 +508,7 @@ const PlaceDescriptionBar = forwardRef(
         setLoading(false);
       }
     };
-    
+
   
 
     function SheetContentPlaceDescriptionBar() {
