@@ -986,18 +986,35 @@ const SearchBar = ({
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [oldGestaoIsSelected, setOldGestaoIsSelected] = useState(false);
+  const [currentGestaoIsSelected, setCurrentGestaoIsSelected] = useState(false);
 
   const handleClickGestoesAntigas = (gestaoSelecionada) => {
-
-    // Define a mensagem baseada na gestão selecionada
-    const mensagem = gestaoSelecionada == "1_2" ? "Gestões anteriores ativas." : gestaoSelecionada == "3" ? "Gestão 3 ativa." : gestaoSelecionada == "1_2_3" ? "Gestões 1, 2 e 3 selecionadas." : null
-
+    if (gestaoSelecionada === "1_2") {
+      setOldGestaoIsSelected(!oldGestaoIsSelected);
+    } else if (gestaoSelecionada === "3") {
+      setCurrentGestaoIsSelected(!currentGestaoIsSelected);
+    }
+  
+    const oldSelected = gestaoSelecionada === "1_2" ? !oldGestaoIsSelected : oldGestaoIsSelected;
+    const currentSelected = gestaoSelecionada === "3" ? !currentGestaoIsSelected : currentGestaoIsSelected;
+  
+    const mensagem = oldSelected && !currentSelected ? "Gestões 1 e 2 selecionadas." : 
+                     !oldSelected && currentSelected ? "Gestão 3 selecionada." : 
+                     oldSelected && currentSelected ? "Gestões 1, 2 e 3 selecionadas" : "Nenhuma gestão selecionada.";
+  
     setSnackbarMessage(mensagem);
     setSnackbarOpen(true);
-    setGestao(gestaoSelecionada); // Define a gestão baseada no parâmetro
+  
+    const novaGestao = oldSelected && currentSelected ? "1_2_3" : 
+                       oldSelected ? "1_2" : 
+                       currentSelected ? "3" : null;
+    
+    setGestao(novaGestao);
     setRealizacao(null);
-    handleCloseSpeedDial(false)
+    handleCloseSpeedDial(false);
   };
+  
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
@@ -1568,46 +1585,41 @@ const SearchBar = ({
 
               )}
 
-            <Paper elevation={4}
-              style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
-              className={`${classes.fixedButtonClock} ${gestao == "1_2" ? classes.selectedPaper : ''}`}
-            >
+<Paper elevation={4}
+  style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
+  className={`${classes.fixedButtonClock} ${gestao === "1_2" || gestao === "1_2_3" ? classes.selectedPaper : ''}`}
+>
+  <IconButton
+    style={{ backgroundColor: 'transparent' }}
+    onClick={() => handleClickGestoesAntigas("1_2")}
+  >
+    <Typography
+      style={{ fontSize: "13px", color: oldGestaoIsSelected ? 'white' : 'black' }}
+    >
+      G1+G2
+    </Typography>
+  </IconButton>
+</Paper>
+
+<Paper elevation={4}
+  style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
+  className={`${classes.fixedButtonClock} ${gestao === "3" || gestao === "1_2_3" ? classes.selectedPaper : ''}`}
+>
+  <IconButton
+    style={{ backgroundColor: 'transparent' }}
+    onClick={() => handleClickGestoesAntigas("3")}
+  >
+    <Typography
+      fontSize="small"
+      style={{ color: currentGestaoIsSelected ? 'white' : 'black' }}
+    >
+      G3
+    </Typography>
+  </IconButton>
+</Paper>
 
 
-              <IconButton
-                style={{ backgroundColor: 'transparent' }}
-                onClick={() => handleClickGestoesAntigas("1_2")}
-              >
-                <Typography
-
-                  style={{ fontSize: "13px", color: gestao == "1_2" ? 'white' : 'black' }}
-                >
-                  G1+G2
-                </Typography>
-
-              </IconButton>
-            </Paper>
-
-            <Paper elevation={4}
-              style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
-              className={`${classes.fixedButtonClock} ${gestao == "3" ? classes.selectedPaper : ''}`}
-            >
-
-
-              <IconButton
-                style={{ backgroundColor: 'transparent' }}
-                onClick={() => handleClickGestoesAntigas("3")}
-              >
-                <Typography
-                  fontSize="small"
-                  style={{ color: gestao == "3" ? 'white' : 'black' }}
-                >
-                  G3
-                </Typography>
-              </IconButton>
-            </Paper>
-
-            <Paper elevation={4}
+            {/* <Paper elevation={4}
               style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
               className={`${classes.fixedButtonClock} ${gestao == "1_2_3" ? classes.selectedPaper : ''}`}
             >
@@ -1623,7 +1635,7 @@ const SearchBar = ({
                   GERAL
                 </Typography>
               </IconButton>
-            </Paper>
+            </Paper> */}
 
             <Snackbar
               open={snackbarOpen}
@@ -1740,12 +1752,12 @@ const SearchBar = ({
           tooltipOpen
           onClick={() => handleClickGestoesAntigas("1_2")}
         />
-        <SpeedDialAction
+        {/* <SpeedDialAction
           icon={<RestoreIcon />}
           tooltipTitle="GERAL"
           tooltipOpen
           onClick={() => handleClickGestoesAntigas("1_2_3")}
-        />
+        /> */}
       </SpeedDial>
 </>
 )}
