@@ -162,7 +162,7 @@ const Map = ({
       }
     }
 
-  }, [map, tema, gestao]);
+  }, [map, tema, gestao,programa]);
 
   useEffect(() => {
     if (map && programa) {
@@ -796,7 +796,7 @@ const Map = ({
         {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
           const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
           // Render the marker for points with the "Mobilidade" theme
-          if (isProgramaMatch && point.gestao == "3" && (gestao == "3" || gestao=="1_2_3")) {
+          if (isProgramaMatch && point.gestao == "3" && (gestao == "3" || gestao=="1_2_3" || gestao == null)) {
             return renderMarker(point, index);
           }
         })}
