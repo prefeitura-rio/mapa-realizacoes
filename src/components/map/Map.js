@@ -545,6 +545,13 @@ const Map = ({
       iconSize: L.point(40, 40, true),
     });
   };
+  const createOldPointsClusterCustomIcon = function (cluster) {
+    return L.divIcon({
+      html: `<span>${cluster.getChildCount()}</span>`,
+      className: 'marker-old-points-cluster-custom',
+      iconSize: L.point(40, 40, true),
+    });
+  };
 
   const iconMapping = {
     "brts_transolímpica": "brts_transolimpicas_icon",
@@ -760,6 +767,9 @@ const Map = ({
           })}
         </MarkerClusterGroup>
 
+        <MarkerClusterGroup showCoverageOnHover={false}
+          spiderfyDistanceMultiplier={2}
+          iconCreateFunction={createOldPointsClusterCustomIcon}>
         {oldPoints.map((point, index) => {
 
           // Verifica se o ponto corresponde ao bairro selecionado
@@ -781,6 +791,7 @@ const Map = ({
           }
 
         })}
+        </MarkerClusterGroup>
 
         {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
           const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
