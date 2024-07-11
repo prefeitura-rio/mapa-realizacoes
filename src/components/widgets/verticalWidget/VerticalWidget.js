@@ -91,39 +91,39 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
     setMenuSidebar(!menuSidebar);
   };
 
-  const [isSelected, setIsSelected] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  // const [isSelected, setIsSelected] = useState(false);
+  // const [snackbarOpen, setSnackbarOpen] = useState(false);
+  // const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  const handleClick = () => {
-    setIsSelected(!isSelected);
-    setSnackbarMessage(isSelected ? 'Gestões anteriores desativadas.' : 'Gestões anteriores ativadas.');
-    setSnackbarOpen(true);
-    if(!isSelected){
-      setGestao("1_2");
-    }else{
-      setGestao("3");
-    }
-    setRealizacao(null);
-  };
+  // const handleClick = () => {
+  //   setIsSelected(!isSelected);
+  //   setSnackbarMessage(isSelected ? 'Gestões anteriores desativadas.' : 'Gestões anteriores ativadas.');
+  //   setSnackbarOpen(true);
+  //   if(!isSelected){
+  //     setGestao("1_2");
+  //   }else{
+  //     setGestao("3");
+  //   }
+  //   setRealizacao(null);
+  // };
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
+  // const handleCloseSnackbar = (event, reason) => {
+  //   if (reason === 'clickaway') {
+  //     return;
+  //   }
+  //   setSnackbarOpen(false);
+  // };
 
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleCloseSnackbar}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
+  // const action = (
+  //   <IconButton
+  //     size="small"
+  //     aria-label="close"
+  //     color="inherit"
+  //     onClick={handleCloseSnackbar}
+  //   >
+  //     <CloseIcon fontSize="small" />
+  //   </IconButton>
+  // );
 
   return (
     <>
@@ -131,19 +131,6 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
     <div className={classes.root}>
       <div className={classes.zoom}>
         <div className={classes.buttons}>
-        <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        message={snackbarMessage}
-        action={action}
-        anchorOrigin={{
-          vertical: !isDesktop() ? 'top' : 'bottom',
-          horizontal: isDesktop() ? 'center' : 'left',
-        }}
-        className={classes.snackbar}
-        style={{zIndex: "9999 !important"}}
-      />
           <Stack spacing={1}>
         
               <Paper elevation={4} style={{ borderRadius: "10px",position: "relative", backgroundColor: 'white' }}>
@@ -191,7 +178,7 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
                   />
                 </IconButton>
               </Paper>
-              <Paper
+              {/* <Paper
                 className={`${classes.fixedButtonClock} ${isSelected ? classes.selectedPaper : ''}`}
                 elevation={4}
                 style={{ borderRadius: "10px" }}
@@ -205,7 +192,7 @@ const VerticalWidget = ({ setZoomDelta,setMenuSidebar,menuSidebar,setZoomDefault
                     sx={{ color: isSelected ? 'white' : 'grey' }}
                   />
                 </IconButton>
-              </Paper>
+              </Paper> */}
           </Stack>
         </div>
       </div>

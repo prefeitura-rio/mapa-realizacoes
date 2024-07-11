@@ -134,6 +134,13 @@ const useStyles = makeStyles((theme) => ({
       color: "#FFFFFF",
       marginTop: "5px",
     },
+    statusButtonHardCoded: {
+      pointerEvents: "none",
+      borderRadius: "39px",
+      backgroundColor: "#005D5D",
+      color: "#FFFFFF",
+      marginTop: "5px",
+    },
   },
   "@media screen and (min-width: 540px)": {
     underSearch: {
@@ -279,13 +286,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "flex-end",
   },
-  statusButton: {
-    pointerEvents: "none",
-    borderRadius: "39px",
-    backgroundColor: "#007E7D",
-    color: "#FFFFFF",
-    padding: "1px 8px 1px 8px"
-  },
+
   titulo: {
     // position:"relative",
     lineHeight: "26px",
@@ -338,6 +339,15 @@ const useStyles = makeStyles((theme) => ({
     padding: "1px 8px 1px 8px",
     fontSize: "12px",
   },
+
+  statusButtonHardCoded: {
+    pointerEvents: "none",
+    borderRadius: "39px",
+    backgroundColor: "#005D5D",
+    color: "#FFFFFF",
+    padding: "1px 8px 1px 8px",
+    fontSize: "12px",
+  }
 
 }));
 
@@ -483,14 +493,14 @@ const PlaceDescriptionBar = forwardRef(
           body: JSON.stringify(requestBody),
           credentials: 'include'
         });
-    
+
         if (!response.ok) {
           throw new Error('Erro ao tentar melhorar o texto do gemini');
         }
-    
+
         const data = await response.json();
-       const message = imageUrl ? `${data.text}\n\n${imageUrl}` : data.text;
-    
+        const message = imageUrl ? `${data.text}\n\n${imageUrl}` : data.text;
+
         if (navigator.share) {
           await navigator.share({
             title: 'Veja que incrível essa realização!',
@@ -508,7 +518,7 @@ const PlaceDescriptionBar = forwardRef(
         setLoading(false);
       }
     };
-    
+
   
 
     function SheetContentPlaceDescriptionBar() {
@@ -552,7 +562,7 @@ const PlaceDescriptionBar = forwardRef(
                             )}
                             {content?.gestao!="3" && (
                               <span >
-                                <Button variant="contained" className={classes.statusButton}>
+                                <Button variant="contained" className={classes.statusButtonHardCoded}>
                                   Concluído
                                 </Button>
                               </span>

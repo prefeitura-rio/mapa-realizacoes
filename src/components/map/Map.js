@@ -157,8 +157,12 @@ const Map = ({
       } else {
         removeLayers();
       }
+      if (gestao == "1_2"){
+        removeLayers();
+      }
     }
-  }, [map, tema]);
+
+  }, [map, tema, gestao]);
 
   useEffect(() => {
     if (map && programa) {
@@ -743,11 +747,11 @@ const Map = ({
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
            if(!isDesktop()){
-            if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+            if ((tema || bairro || subprefeitura || (gestao == "3" || gestao == "1_2_3")) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch ) {
                 return renderMarker(point, index);
               }
            }else{
-            if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+            if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == null || gestao == "3" || gestao == "1_2_3")) {
               return renderMarker(point, index);
             }
            }
@@ -772,7 +776,7 @@ const Map = ({
 
           // Renderiza o marcador se corresponder ao bairro e aos demais
           // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-          if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && gestao != "3") {
+          if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == "1_2" || gestao == "1_2_3")) {
             return renderMarker(point, index);
           }
 
@@ -781,16 +785,23 @@ const Map = ({
         {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
           const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
           // Render the marker for points with the "Mobilidade" theme
-          if (isProgramaMatch && point.gestao == "3") {
+          if (isProgramaMatch && point.gestao == "3" && (gestao == "3" || gestao=="1_2_3")) {
             return renderMarker(point, index);
           }
         })}
 
         {tema == "Mobilidade" && !programa && mobilidadePoints.map((point, index) => {
-          if (gestao != "3" && point.gestao != "3") {
+          if ((gestao == null || gestao == "3" || gestao=="1_2_3") && point.gestao == "3") {
             return renderMarker(point, index);
           }
         })}
+       
+        {tema == "Mobilidade" && !programa && mobilidadePoints.map((point, index) => {
+          if (( gestao == "1_2" || gestao=="1_2_3") && point.gestao != "3") {
+            return renderMarker(point, index);
+          }
+        })}
+       
 
         {realizacao && points.map((point, index) => {
           if (realizacao === point.nome) {

@@ -53,7 +53,7 @@ const defaultState = {
   photoGallery: false,
   shownMore: false,
   openedPopup:null,
-  gestao: "3",
+  gestao: null,
   userLocation: null,
 };
 
