@@ -207,6 +207,27 @@ const useStyles = makeStyles((theme) => ({
         display: "none",
       },
     },
+    underSearch2NoImage: {
+      position: "fixed",
+      top: "calc(4vh + 90px)", //4vh +1vh+ + 80px + 45.5vh -160px 
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "calc(46vh - 45px)",
+      borderRadius: "10px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.2em",
+        // display: "none",
+      },
+      // "&::-webkit-scrollbar-thumb": {
+      //   display: "none",
+      // },
+      overflow: "auto"
+    },
     underSearch3: {
       position: "fixed",
       top: "calc(50.5vh - 90px )", //4vh +1vh+ + 80px + 45.5vh -160px 
@@ -230,12 +251,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3NoImage: {
       position: "fixed",
-      top: "calc(50.5vh - 90px )", //4vh +1vh+ + 80px + 45.5vh -160px 
+      top: "calc(46vh - 45px + 4vh + 90px + 1vh)", //4vh +1vh+ + 80px + 45.5vh -160px 
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc(46.5vh + 90px)",
+      height: "calc(46vh - 45px)",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -468,7 +489,7 @@ const PlaceDescriptionBar = forwardRef(
     const fullText = content?.descricao;
 
     // Calcule o número de caracteres com base na altura da janela
-    const numChars = Math.floor(windowHeight / (isScreen900 ? 7 : (isScreen600 ? 20 : 2.3)));
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 2.5 : (isScreen600 ? 3 : 1.4)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
     const [loading, setLoading] = useState(false);
@@ -667,17 +688,12 @@ const PlaceDescriptionBar = forwardRef(
             </Paper>
           </Slide>
             <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-              <Paper elevation={6} className={classes.underSearch2}>
+              <Paper elevation={6} className={content?.image_url ? classes.underSearch2 : classes.underSearch2NoImage}>
                 <div className={classes.basicInfo}>
                   {realizacao || content?.nome ? (
                     <>
                       <Stack direction="row">
                         <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                        {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
-                          <IconButton>
-                            <InfoIcon sx={{ color: "black" }} />
-                          </IconButton>
-                        </Tooltip> */}
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
                         {content?.gestao!="3" && "Essa é uma realização de gestões anteriores."}
