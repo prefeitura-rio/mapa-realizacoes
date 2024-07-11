@@ -1290,7 +1290,7 @@ const SearchBar = ({
                         (showRealizacoes ? <IconButton
                           style={{ backgroundColor: 'transparent' }}
                           color="grey"
-                          onClick={() => { setCurrentClickedPoint(null); setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                          onClick={() => { setCurrentClickedPoint(null); setPrograma(null);setInputValuePrograma(null);setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(TEMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
                         >
                           <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                         </IconButton> : "")
@@ -1799,8 +1799,8 @@ const SearchBar = ({
               (showRealizacoes && openPopup != 1 && openPopup != 2 ? <IconButton
                 style={{ backgroundColor: 'transparent' }}
                 color="grey"
-                onClick={() => { setCurrentClickedPoint(null); setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setInputValuePrograma(undefined); setPrograma(null); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
-              >
+                onClick={() => { setCurrentClickedPoint(null); setPrograma(null);setInputValuePrograma(null);setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(TEMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                >
                 <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
               </IconButton> : "")
 
