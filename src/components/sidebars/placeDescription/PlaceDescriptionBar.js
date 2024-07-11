@@ -137,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
     statusButtonHardCoded: {
       pointerEvents: "none",
       borderRadius: "39px",
-      backgroundColor: "#005D5D",
+      backgroundColor: "#004D4D",
       color: "#FFFFFF",
       marginTop: "5px",
     },
@@ -364,7 +364,7 @@ const useStyles = makeStyles((theme) => ({
   statusButtonHardCoded: {
     pointerEvents: "none",
     borderRadius: "39px",
-    backgroundColor: "#005D5D",
+    backgroundColor: "#004D4D",
     color: "#FFFFFF",
     padding: "1px 8px 1px 8px",
     fontSize: "12px",
@@ -719,7 +719,7 @@ const PlaceDescriptionBar = forwardRef(
                 )}
                 {content?.gestao!="3"&& (
                   <span className={classes.buttonStatus}>
-                    <Button variant="contained" className={classes.statusButton}>
+                    <Button variant="contained" className={classes.statusButtonHardCoded}>
                       Concluído
                     </Button>
                   </span>
