@@ -123,21 +123,22 @@ const Map = ({
     };
   };
 
+  const removeLayers = () => {
+    if (currentLayerTransBrasil.current) {
+      map.removeLayer(currentLayerTransBrasil.current);
+    }
+    if (currentLayerTransOeste.current) {
+      map.removeLayer(currentLayerTransOeste.current);
+    }
+    if (currentLayerTransCarioca.current) {
+      map.removeLayer(currentLayerTransCarioca.current);
+    }
+    if (currentLayerTransOlímpica.current) {
+      map.removeLayer(currentLayerTransOlímpica.current);
+    }
+  };
+
   useEffect(() => {
-    const removeLayers = () => {
-      if (currentLayerTransBrasil.current) {
-        map.removeLayer(currentLayerTransBrasil.current);
-      }
-      if (currentLayerTransOeste.current) {
-        map.removeLayer(currentLayerTransOeste.current);
-      }
-      if (currentLayerTransCarioca.current) {
-        map.removeLayer(currentLayerTransCarioca.current);
-      }
-      if (currentLayerTransOlímpica.current) {
-        map.removeLayer(currentLayerTransOlímpica.current);
-      }
-    };
 
     if (map) {
       if (tema == "Mobilidade") {
@@ -149,20 +150,28 @@ const Map = ({
             style: { color: color, weight: 4 }
           }).addTo(map);
         };
-
-        addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
-        addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
-        addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
-        addLayer('TransOlímpica', currentLayerTransOlímpica, '#1DA64D');
+        if(gestao == null || gestao == "3" || gestao == "1_2_3"){
+       (programa == null || programa=="BRTs Transbrasil") && addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
+       (programa == null || programa=="BRTs Transoeste") && addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
+       (programa == null || programa=="BRTs Transcarioca") && addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
+       (programa == null || programa=="BRTs Transolímpica") && addLayer('TransOlímpica', currentLayerTransOlímpica, '#1DA64D');
+        }
       } else {
-        removeLayers();
-      }
-      if (gestao == "1_2"){
         removeLayers();
       }
     }
 
-  }, [map, tema, gestao,programa]);
+  }, [map, tema, programa, gestao]);
+
+  useEffect(() => {
+    if (map) {
+      if (tema == "Mobilidade") {
+        if (gestao == "1_2") {
+          removeLayers();
+        }
+      }
+    }
+  }, [gestao]);
 
   useEffect(() => {
     if (map && programa) {
@@ -345,57 +354,57 @@ const Map = ({
     };
   }, [map, realizacao]);
 
-    // Add the linestring to the map if name inside features is equal to "realizacao"
-    useEffect(() => {
-      let lineLayers = []; // Array to store references to all added line layers
-      let dashedLayers = []; // Array to store references to all added dashed line layers
-    
-      if (map && programa == "Asfalto liso" && realizacao) {
-        // If realizacao is true, remove all line and dashed line layers
-        lineLayers.forEach(layer => map.removeLayer(layer));
-        dashedLayers.forEach(layer => map.removeLayer(layer));
-        // Clear the arrays after removing the layers
-        lineLayers = [];
-        dashedLayers = [];
-      } else {
-        if (map && programa == "Asfalto liso" && realizacoesPrograma.length > 0) {
-          // Add lineString for all realizacoes inside realizacoesPrograma array 
-          realizacoesPrograma.forEach(realizacao => {
-            const lineString = lineStringAsfaltoLiso.features.find(feature => feature.properties.name === realizacao);
-              
-            if (lineString) {
-              // Directly use lineString.geometry without parsing
-              const line = L.geoJSON(lineString.geometry, {
-                style: {
-                  color: '#00B7EB',  // Boundary color
-                  weight: 10, // Boundary thickness
-                  opacity: 0.5,
-                }
-              }).addTo(map);
-              // map.fitBounds(line.getBounds());
-          
-              // Create and add the dashed line
-              const dashedLine = L.geoJSON(lineString.geometry, {
-                style: {
-                  color: '#ffffff', // Dashed line color
-                  weight: 2, // Dashed line thickness, adjust as needed
-                  dashArray: '10, 20', // Pattern of dashes and gaps
-                }
-              }).addTo(map);
-          
-              lineLayers.push(line); // Store the reference to the added line layer
-              dashedLayers.push(dashedLine); // Store the reference to the added dashed line layer
-            }
-          });
-        }
+  // Add the linestring to the map if name inside features is equal to "realizacao"
+  useEffect(() => {
+    let lineLayers = []; // Array to store references to all added line layers
+    let dashedLayers = []; // Array to store references to all added dashed line layers
+
+    if (map && programa == "Asfalto liso" && realizacao) {
+      // If realizacao is true, remove all line and dashed line layers
+      lineLayers.forEach(layer => map.removeLayer(layer));
+      dashedLayers.forEach(layer => map.removeLayer(layer));
+      // Clear the arrays after removing the layers
+      lineLayers = [];
+      dashedLayers = [];
+    } else {
+      if (map && programa == "Asfalto liso" && realizacoesPrograma.length > 0) {
+        // Add lineString for all realizacoes inside realizacoesPrograma array 
+        realizacoesPrograma.forEach(realizacao => {
+          const lineString = lineStringAsfaltoLiso.features.find(feature => feature.properties.name === realizacao);
+
+          if (lineString) {
+            // Directly use lineString.geometry without parsing
+            const line = L.geoJSON(lineString.geometry, {
+              style: {
+                color: '#00B7EB',  // Boundary color
+                weight: 10, // Boundary thickness
+                opacity: 0.5,
+              }
+            }).addTo(map);
+            // map.fitBounds(line.getBounds());
+
+            // Create and add the dashed line
+            const dashedLine = L.geoJSON(lineString.geometry, {
+              style: {
+                color: '#ffffff', // Dashed line color
+                weight: 2, // Dashed line thickness, adjust as needed
+                dashArray: '10, 20', // Pattern of dashes and gaps
+              }
+            }).addTo(map);
+
+            lineLayers.push(line); // Store the reference to the added line layer
+            dashedLayers.push(dashedLine); // Store the reference to the added dashed line layer
+          }
+        });
       }
-    
-      // Cleanup function to remove all added line and dashed line layers
-      return () => {
-        lineLayers.forEach(layer => map.removeLayer(layer));
-        dashedLayers.forEach(layer => map.removeLayer(layer));
-      };
-    }, [map, programa, realizacao,realizacoesPrograma]);
+    }
+
+    // Cleanup function to remove all added line and dashed line layers
+    return () => {
+      lineLayers.forEach(layer => map.removeLayer(layer));
+      dashedLayers.forEach(layer => map.removeLayer(layer));
+    };
+  }, [map, programa, realizacao, realizacoesPrograma]);
 
   // ------------------------------------------------------------
 
@@ -753,16 +762,16 @@ const Map = ({
 
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
-           if(!isDesktop()){
-            if ((tema || bairro || subprefeitura || (gestao == "3" || gestao == "1_2_3")) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch ) {
+            if (!isDesktop()) {
+              if ((tema || bairro || subprefeitura || (gestao == "3" || gestao == "1_2_3")) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
                 return renderMarker(point, index);
               }
-           }else{
-            if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == null || gestao == "3" || gestao == "1_2_3")) {
-              return renderMarker(point, index);
+            } else {
+              if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == null || gestao == "3" || gestao == "1_2_3")) {
+                return renderMarker(point, index);
+              }
             }
-           }
-           
+
 
           })}
         </MarkerClusterGroup>
@@ -770,49 +779,49 @@ const Map = ({
         <MarkerClusterGroup showCoverageOnHover={false}
           spiderfyDistanceMultiplier={2}
           iconCreateFunction={createOldPointsClusterCustomIcon}>
-        {oldPoints.map((point, index) => {
+          {oldPoints.map((point, index) => {
 
-          // Verifica se o ponto corresponde ao bairro selecionado
-          const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
+            // Verifica se o ponto corresponde ao bairro selecionado
+            const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
 
-          // Verifica se o ponto corresponde ao subprefeitura selecionado
-          const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
+            // Verifica se o ponto corresponde ao subprefeitura selecionado
+            const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
 
-          // Verifica se o ponto corresponde ao tema selecionado
-          const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
+            // Verifica se o ponto corresponde ao tema selecionado
+            const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
 
-          const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
+            const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
 
 
-          // Renderiza o marcador se corresponder ao bairro e aos demais
-          // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-          if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == "1_2" || gestao == "1_2_3")) {
-            return renderMarker(point, index);
-          }
+            // Renderiza o marcador se corresponder ao bairro e aos demais
+            // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+            if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == "1_2" || gestao == "1_2_3")) {
+              return renderMarker(point, index);
+            }
 
-        })}
+          })}
         </MarkerClusterGroup>
 
         {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
           const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
           // Render the marker for points with the "Mobilidade" theme
-          if (isProgramaMatch && point.gestao == "3" && (gestao == "3" || gestao=="1_2_3" || gestao == null)) {
+          if (isProgramaMatch && point.gestao == "3" && (gestao == "3" || gestao == "1_2_3" || gestao == null)) {
             return renderMarker(point, index);
           }
         })}
 
         {tema == "Mobilidade" && !programa && mobilidadePoints.map((point, index) => {
-          if ((gestao == null || gestao == "3" || gestao=="1_2_3") && point.gestao == "3") {
+          if ((gestao == null || gestao == "3" || gestao == "1_2_3") && point.gestao == "3") {
             return renderMarker(point, index);
           }
         })}
-       
+
         {tema == "Mobilidade" && !programa && mobilidadePoints.map((point, index) => {
-          if (( gestao == "1_2" || gestao=="1_2_3") && point.gestao != "3") {
+          if ((gestao == "1_2" || gestao == "1_2_3") && point.gestao != "3") {
             return renderMarker(point, index);
           }
         })}
-       
+
 
         {realizacao && points.map((point, index) => {
           if (realizacao === point.nome) {
