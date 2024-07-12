@@ -776,9 +776,9 @@ const Map = ({
           })}
         </MarkerClusterGroup>
 
-        <MarkerClusterGroup showCoverageOnHover={false}
+        {/* <MarkerClusterGroup showCoverageOnHover={false}
           spiderfyDistanceMultiplier={2}
-          iconCreateFunction={createOldPointsClusterCustomIcon}>
+          iconCreateFunction={createOldPointsClusterCustomIcon}> */}
           {oldPoints.map((point, index) => {
 
             // Verifica se o ponto corresponde ao bairro selecionado
@@ -800,7 +800,7 @@ const Map = ({
             }
 
           })}
-        </MarkerClusterGroup>
+        {/* </MarkerClusterGroup> */}
 
         {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
           const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
