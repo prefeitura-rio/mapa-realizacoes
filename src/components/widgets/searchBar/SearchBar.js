@@ -20,6 +20,9 @@ import {
   DialogActions,
   DialogContentText,
   Button,
+  Snackbar,
+  Backdrop,
+  Collapse,
 } from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -48,6 +51,13 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { isDesktop } from "../../../redux/active/reducers";
 import logo_prefeitura from '../../assets/logo_prefeitura.png';
+import RestoreIcon from '@mui/icons-material/Restore';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -143,24 +153,42 @@ const useStyles = makeStyles((theme) => {
       color: theme.palette.grey[500],
     },
 
-    fixedButton:{
+    fixedButton: {
       position: 'fixed',
       left: '1.8vh',
       bottom: '10px',
       zIndex: 0,
     },
-    fixedButtonImage:{
+    fixedButtonImage: {
       width: "50px",
+    },
+    fixedButtonClockImage: {
+      width: "50px",
+    },
+    selectedPaper: {
+      backgroundColor: 'black', // Nova cor de fundo quando selecionado
+    },
+    selectedPaperOldPoints: {
+      backgroundColor: '#FCEEEF', // Nova cor de fundo quando selecionado
+      boxShadow: 'inset 0 0 0 2px #722F37'
+    },
+    selectedPaperG3: {
+      backgroundColor: '#EAF9F9', // Nova cor de fundo quando selecionado
+      boxShadow: 'inset 0 0 0 2px #007E7D'
+
+    },
+    selectedIcon: {
+      color: '#722F37', // Nova cor do ícone quando selecionado
     },
 
     "@media screen and (max-width: 540px)": {
-      fixedButton:{
+      fixedButton: {
         position: 'fixed',
         left: '7px',
         bottom: '85px',
         zIndex: 0,
       },
-      fixedButtonImage:{
+      fixedButtonImage: {
         width: "40px",
       },
       paper: {
@@ -235,7 +263,11 @@ const SearchBar = ({
   subprefeitura,
   realizacaoId,
   setOpenedPopup,
-  realizacoes
+  realizacoes,
+  setCurrentClickedPoint,
+  setRealizacoesProgramaRedux,
+  setGestao,
+  gestao
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -356,6 +388,7 @@ const SearchBar = ({
           const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
 
           setRealizacoesPrograma(realizacoesProgramaRef);
+          setRealizacoesProgramaRedux(realizacoesProgramaRef);
 
         } catch (error) {
           console.error("Erro", error);
@@ -403,6 +436,7 @@ const SearchBar = ({
     setInputValuePrograma(null);
     setInputValueRealizacao(null);
     setTema(null);
+    setPrograma(null);
     // setProgramasTema([]); setInputValueTema(null); setTema(null); setPrograma(undefined); setShowProgramas(false); setInputValuePrograma(undefined);
     // setRealizacoesPrograma([]); setShowRealizacoes(false); setInputValueRealizacao(undefined);
     if (!isDesktop()) {
@@ -435,6 +469,7 @@ const SearchBar = ({
     }
     setActiveBar(MAIN_UNDERSEARCH_BAR);
     setZoomDefault((Math.random() * 9999 + 1));
+    setCurrentClickedPoint(null)
   }
 
   const [inputValueRealizacao, setInputValueRealizacao] = useState(undefined);
@@ -589,12 +624,19 @@ const SearchBar = ({
   };
 
   const filterOptions = (options, { inputValue }) => {
-    return options.filter(option =>
-      option.toLowerCase().split(' ').some(word =>
-        word.startsWith(inputValue.toLowerCase())
-      )
-    );
+    const inputWords = inputValue.toLowerCase().split(' ').filter(Boolean);
+
+    return options.filter(option => {
+      const optionWords = option.toLowerCase().split(' ');
+
+      return inputWords.every(inputWord => {
+        // check if the inputWord matches the start of any word in the optionWords
+        return optionWords.some(optionWord => optionWord.startsWith(inputWord));
+      });
+    });
   };
+
+
 
   function SheetContentTemas() {
     return (
@@ -908,7 +950,7 @@ const SearchBar = ({
               value={inputValueRealizacaoFromSearch}
               onChange={handleRealizacaoChangeFromSearch}
               disableClearable
-              options={(realizacoes ?? []).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+              options={(realizacoes ?? []).filter(realizacao => realizacao.gestao == "3").map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
               PaperComponent={CustomPaperSearch}
               ListboxProps={{ style: { maxHeight: "60vh" } }}
@@ -951,6 +993,66 @@ const SearchBar = ({
   }
 
   const [localRealizacaoMenuDesktopOpen, setLocalRealizacaoMenuDesktopOpen] = useState(false);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [oldGestaoIsSelected, setOldGestaoIsSelected] = useState(false);
+  const [currentGestaoIsSelected, setCurrentGestaoIsSelected] = useState(false);
+
+  const handleClickGestoesAntigas = (gestaoSelecionada) => {
+    if (gestaoSelecionada === "1_2") {
+      setOldGestaoIsSelected(!oldGestaoIsSelected);
+    } else if (gestaoSelecionada === "3") {
+      setCurrentGestaoIsSelected(!currentGestaoIsSelected);
+    }
+
+    const oldSelected = gestaoSelecionada === "1_2" ? !oldGestaoIsSelected : oldGestaoIsSelected;
+    const currentSelected = gestaoSelecionada === "3" ? !currentGestaoIsSelected : currentGestaoIsSelected;
+
+    const mensagem = oldSelected && !currentSelected ? "Gestões 1 e 2 selecionadas." :
+      !oldSelected && currentSelected ? "Gestão 3 selecionada." :
+        oldSelected && currentSelected ? "Gestões 1, 2 e 3 selecionadas" : "Filtros de gestão removidos.";
+
+    setSnackbarMessage(mensagem);
+    setSnackbarOpen(true);
+
+    const novaGestao = oldSelected && currentSelected ? "1_2_3" :
+      oldSelected ? "1_2" :
+        currentSelected ? "3" : null;
+
+    setGestao(novaGestao);
+    setRealizacao(null);
+    handleCloseSpeedDial(false);
+  };
+
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const action = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleCloseSnackbar}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
+
+  const [openSpeedDial, setOpenSpeedDial] = useState(false);
+
+  const handleOpenSpeedDial = () => {
+    setOpenSpeedDial(true);
+  };
+
+  const handleCloseSpeedDial = () => {
+    setOpenSpeedDial(false);
+  };
 
   return (
 
@@ -1188,7 +1290,7 @@ const SearchBar = ({
                         <IconButton
                           style={{ backgroundColor: 'transparent' }}
                           color="grey"
-                          onClick={() => { setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
+                          onClick={() => { setCurrentClickedPoint(null); setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); setActiveBar(MAIN_UNDERSEARCH_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
                         >
                           <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                         </IconButton>
@@ -1198,7 +1300,7 @@ const SearchBar = ({
                         (showRealizacoes ? <IconButton
                           style={{ backgroundColor: 'transparent' }}
                           color="grey"
-                          onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                          onClick={() => { setCurrentClickedPoint(null); setPrograma(null); setInputValuePrograma(null); setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(TEMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
                         >
                           <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
                         </IconButton> : "")
@@ -1381,7 +1483,7 @@ const SearchBar = ({
                   <Paper
                     component="form"
                     variant="elevation"
-                    className={!localRealizacaoMenuDesktopOpen? classes.shortPaperBackground : classes.paperBackground}
+                    className={!localRealizacaoMenuDesktopOpen ? classes.shortPaperBackground : classes.paperBackground}
                     // elevation={searchPrompt ? 1 : 3}
                     elevation={3}
                   >
@@ -1408,7 +1510,7 @@ const SearchBar = ({
                         value={inputValueRealizacaoFromSearch}
                         onChange={handleRealizacaoChangeFromSearch}
                         disableClearable
-                        options={(realizacoes ?? []).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        options={(realizacoes ?? []).filter(realizacao => realizacao.gestao == "3").map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
                         ListboxProps={{ style: { maxHeight: "80vh" } }}
@@ -1485,58 +1587,197 @@ const SearchBar = ({
 
                       </IconButton>
                     </Paper>
+
                   </Paper>
                 </div>
 
+
+
               )}
 
+            <Paper elevation={4}
+              style={{ borderRadius: "10px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
+              className={`${classes.fixedButtonClock} ${gestao === "1_2" || gestao === "1_2_3" ? classes.selectedPaperOldPoints : ''}`}
+            >
+              <IconButton
+                style={{ backgroundColor: 'transparent' }}
+                onClick={() => handleClickGestoesAntigas("1_2")}
+              >
+                <Typography
+                  style={{color: "black", fontSize: "13px", fontWeight: "bold"}}
+                >
+                  2009 - 2016
+                </Typography>
+              </IconButton>
+            </Paper>
 
+            <Paper elevation={4}
+              style={{ borderRadius: "10px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
+              className={`${classes.fixedButtonClock} ${gestao === "3" || gestao === "1_2_3" || gestao == null ? classes.selectedPaperG3 : ''}`}
+            >
+              <IconButton
+                disabled={gestao !== "1_2" && gestao !== "1_2_3" || gestao == null}
+                style={{ backgroundColor: 'transparent' }}
+                onClick={() => handleClickGestoesAntigas("3")}
+              >
+                <Typography
+                  fontSize="small"
+                  style={{color: "black", fontSize: "13px", fontWeight: "bold"}}
+                >
+                  2021 - 2024
+                </Typography>
+              </IconButton>
+            </Paper>
+
+
+
+            {/* <Paper elevation={4}
+              style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
+              className={`${classes.fixedButtonClock} ${gestao == "1_2_3" ? classes.selectedPaper : ''}`}
+            >
+
+
+              <IconButton
+                style={{ backgroundColor: 'transparent' }}
+                onClick={() => handleClickGestoesAntigas("1_2_3")}
+              >
+                <Typography
+                  style={{ fontSize: "13px", color: gestao == "1_2_3" ? 'white' : 'black' }}
+                >
+                  GERAL
+                </Typography>
+              </IconButton>
+            </Paper> */}
+
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={6000}
+              onClose={handleCloseSnackbar}
+              message={snackbarMessage}
+              action={action}
+              anchorOrigin={{
+                vertical: !isDesktop() ? 'top' : 'bottom',
+                horizontal: isDesktop() ? 'center' : 'left',
+              }}
+              className={classes.snackbar}
+              style={{ zIndex: "9999 !important" }}
+            />
           </Stack>
         </ClickAwayListener>
+
 
       }
 
       {!isDesktop() && (
-        <BottomNavigation
-          className={classes.root}
-          style={{ zIndex: 501, position: 'fixed' }}
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-            handleOpenPopup(newValue);
-            setOpenedPopup(newValue);
-          }}
-          showLabels
-        >
-          <BottomNavigationAction icon={
-            <Tooltip title={tema && !programa && !realizacao ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="top">
-              <Badge badgeContent={tema && !programa && !realizacao ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
-                <MenuIcon />
-              </Badge>
-            </Tooltip>
-          }
+        <>
+          <BottomNavigation
+            className={classes.root}
+            style={{ zIndex: 501, position: 'fixed' }}
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+              handleOpenPopup(newValue);
+              setOpenedPopup(newValue);
+            }}
+            showLabels
+          >
+            <BottomNavigationAction
+              label={"Menu"}
+              icon={
+                <Tooltip title={tema && !programa && !realizacao ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="top">
+                  <Badge badgeContent={tema && !programa && !realizacao ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
+                    <MenuIcon />
+                  </Badge>
+                </Tooltip>
 
-          />
-          <BottomNavigationAction icon={
-            <Tooltip title={inputValueBairroSubprefeitura ? `${inputValueBairroSubprefeitura} está atuando como filtro.` : ""} placement="right">
-              <Badge badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
-                <img width={33} src={lupa_mapa} />
-              </Badge>
-            </Tooltip>
-          } />
-          <BottomNavigationAction icon={
-            <Tooltip title={inputValueRealizacaoFromSearch ? `Descrição da realização: ${inputValueRealizacaoFromSearch}` : ""} placement="right">
-              <Badge badgeContent={inputValueRealizacaoFromSearch ? 1 : 0} color="primary">
-                <SearchIcon />
-              </Badge>
-            </Tooltip>
-          } />
-        </BottomNavigation>
+              } />
+            <BottomNavigationAction
+              label={"Busca"}
+              icon={
+                <Tooltip title={inputValueBairroSubprefeitura ? `${inputValueBairroSubprefeitura} está atuando como filtro.` : ""} placement="right">
+                  <Badge badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
+                    <img width={27} src={lupa_mapa} />
+                  </Badge>
+                </Tooltip>
+              } />
+            <BottomNavigationAction
+              label={"Realizações"}
+              icon={
+                <Tooltip title={inputValueRealizacaoFromSearch ? `Descrição da realização: ${inputValueRealizacaoFromSearch}` : ""} placement="right">
+                  <Badge badgeContent={inputValueRealizacaoFromSearch ? 1 : 0} color="primary">
+                    <SearchIcon />
+                  </Badge>
+                </Tooltip>
+              } />
+            <BottomNavigationAction
+              // add bottom navigation action label
+              label={"Gestões"}
+              icon={
+                <RestoreIcon
+                  // fontSize="small"
+                  // sx={{ color: gestao ? 'white' : 'grey' }}
+                  onClick={handleOpenSpeedDial}
+                />
+              } />
+          </BottomNavigation>
+
+          <Backdrop open={openSpeedDial} sx={{ zIndex: (theme) => theme.zIndex.speedDial - 1, bgcolor: 'rgba(0, 0, 0, 0.5)' }} />
+          <SpeedDial
+      ariaLabel="SpeedDial example"
+      sx={{ position: 'fixed', bottom: 9, right: 16 }}
+      FabProps={{
+        sx: {
+          bgcolor: 'transparent',
+          boxShadow: 'none',
+          '&:hover': {
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+          },
+          '&.Mui-focused': {
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+          },
+          '&.Mui-active': {
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+          },
+          '&:active': {
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+          },
+        },
+      }}
+      onClose={handleCloseSpeedDial}
+      onOpen={handleOpenSpeedDial}
+      open={openSpeedDial}
+    >
+      <SpeedDialAction
+        icon={<RestoreIcon />}
+        tooltipTitle={
+          <Tooltip title="2021-2024" style={{ maxWidth: 'none', whiteSpace: 'nowrap' }}>
+            <span>2021-2024</span>
+          </Tooltip>
+        }
+        tooltipOpen
+        onClick={() => handleClickGestoesAntigas("3")}
+      />
+      <SpeedDialAction
+        icon={<RestoreIcon />}
+        tooltipTitle={
+          <Tooltip title="2009-2016" style={{ maxWidth: 'none', whiteSpace: 'nowrap' }}>
+            <span>2009-2016</span>
+          </Tooltip>
+        }
+        tooltipOpen
+        onClick={() => handleClickGestoesAntigas("1_2")}
+      />
+    </SpeedDial>
+        </>
       )}
 
       {openPopup !== null && (
         <Dialog
-          open={openPopup !== null}
+          open={openPopup !== null && openPopup !== 3}
           onClose={handleClosePopup}
           aria-labelledby="popup-dialog-title"
           aria-describedby="popup-dialog-description"
@@ -1561,7 +1802,7 @@ const SearchBar = ({
               <IconButton
                 style={{ backgroundColor: 'transparent' }}
                 color="grey"
-                onClick={() => { console.log("click"); setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
+                onClick={() => { setCurrentClickedPoint(null); setProgramasTema([]); setInputValueTema(null); setTema(null); setShowProgramas(false); setShowTemas(true); setPrograma(undefined); setInputValuePrograma(undefined); if (!bairro) setZoomDefault((Math.random() * 999 + 1)); }}
               >
                 <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
               </IconButton>
@@ -1571,7 +1812,7 @@ const SearchBar = ({
               (showRealizacoes && openPopup != 1 && openPopup != 2 ? <IconButton
                 style={{ backgroundColor: 'transparent' }}
                 color="grey"
-                onClick={() => { setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setInputValuePrograma(undefined);setPrograma(null); setActiveBar(PROGRAMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
+                onClick={() => { setCurrentClickedPoint(null); setPrograma(null); setInputValuePrograma(null); setRealizacoesPrograma([]); setShowProgramas(true); setShowRealizacoes(false); setRealizacao(undefined); setInputValueRealizacao(undefined); setActiveBar(TEMA_DESCRIPTION_BAR); if (!bairro) setZoomDefault((Math.random() * 999 + 1)) }}
               >
                 <ArrowBackIosIcon sx={{ fontSize: "20px", marginRight: "-4px" }} />
               </IconButton> : "")
@@ -1620,13 +1861,13 @@ const SearchBar = ({
           </DialogActions>
         </Dialog>
       )}
-          <Button
-          className={classes.fixedButton}
-            onClick={handleEraseMap}
-          >
-            <img src={logo_prefeitura} alt="Fixed Button" className={classes.fixedButtonImage}  style={{filter: "brightness(0) contrast(100%)" }} />
-          </Button>
-        
+      <Button
+        className={classes.fixedButton}
+        onClick={handleEraseMap}
+      >
+        <img src={logo_prefeitura} alt="Fixed Button" className={classes.fixedButtonImage} style={{ filter: "brightness(0) contrast(100%)" }} />
+      </Button>
+
     </>
 
   );

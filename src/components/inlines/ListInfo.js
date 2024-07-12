@@ -13,6 +13,7 @@ import dataFimIcon from '../../icons/data_fim.png';
 import dataInicioIcon from '../../icons/data_inicio.png';
 import investimentoIcon from '../../icons/investimento.png';
 import domiciliosIcon from '../../icons/domicilios.png';
+import trofeuIcon from '../../icons/trofeu.png';
 import programaIcon from '../../icons/programa.png';
 import subprefeituraIcon from '../../icons/subprefeitura.png';
 import temaIcon from '../../icons/tema.png';
@@ -86,6 +87,24 @@ const ListInfo = ({ content }) => {
       ),
       iconComponent: () => <img src={investimentoIcon} alt="Total Investido" style={{width: '20px', height: '20px'}}/>    });
   }
+
+  if (content.gestao) {
+    listInfo.push({
+      text: (
+        <>
+          Gestão
+          {content.gestao == "3" &&
+            <span style={{ color: 'gray', fontSize: '12px', paddingLeft: "8px" }}> 2021 - 2024</span>
+          }
+          {content.gestao == "1-2" &&
+            <span style={{ color: 'gray', fontSize: '12px', paddingLeft: "8px" }}> 2009 - 2016</span>
+          }
+        </>
+      ),
+      iconComponent: () => <img src={trofeuIcon} alt="Data Fim" style={{width: '20px', height: '20px'}}/>
+    });
+  }
+
   if (content.data_inicio) {
     listInfo.push({
       text: (

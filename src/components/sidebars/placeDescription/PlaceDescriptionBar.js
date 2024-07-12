@@ -134,6 +134,13 @@ const useStyles = makeStyles((theme) => ({
       color: "#FFFFFF",
       marginTop: "5px",
     },
+    statusButtonHardCoded: {
+      pointerEvents: "none",
+      borderRadius: "39px",
+      backgroundColor: "#004D4D",
+      color: "#FFFFFF",
+      marginTop: "5px",
+    },
   },
   "@media screen and (min-width: 540px)": {
     underSearch: {
@@ -200,6 +207,27 @@ const useStyles = makeStyles((theme) => ({
         display: "none",
       },
     },
+    underSearch2NoImage: {
+      position: "fixed",
+      top: "calc(4vh + 90px)", //4vh +1vh+ + 80px + 45.5vh -160px 
+      // bottom: "30px",
+      right: "3vh",
+      width: "25vw",
+      minWidth: "385px",
+      height: "calc(46vh - 45px)",
+      borderRadius: "10px",
+      overflowY: "scroll",
+      "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
+      scrollbarWidth: "none", /* Ocultar a barra de rolagem no Firefox */
+      "&::-webkit-scrollbar": {
+        width: "0.2em",
+        // display: "none",
+      },
+      // "&::-webkit-scrollbar-thumb": {
+      //   display: "none",
+      // },
+      overflow: "auto"
+    },
     underSearch3: {
       position: "fixed",
       top: "calc(50.5vh - 90px )", //4vh +1vh+ + 80px + 45.5vh -160px 
@@ -223,12 +251,12 @@ const useStyles = makeStyles((theme) => ({
     },
     underSearch3NoImage: {
       position: "fixed",
-      top: "calc(50.5vh - 90px )", //4vh +1vh+ + 80px + 45.5vh -160px 
+      top: "calc(46vh - 45px + 4vh + 90px + 1vh)", //4vh +1vh+ + 80px + 45.5vh -160px 
       // bottom: "30px",
       right: "3vh",
       width: "25vw",
       minWidth: "385px",
-      height: "calc(46.5vh + 90px)",
+      height: "calc(46vh - 45px)",
       borderRadius: "10px",
       overflowY: "scroll",
       "-ms-overflow-style": "none", /* Ocultar a barra de rolagem no Internet Explorer */
@@ -279,13 +307,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "flex-end",
   },
-  statusButton: {
-    pointerEvents: "none",
-    borderRadius: "39px",
-    backgroundColor: "#007E7D",
-    color: "#FFFFFF",
-    padding: "1px 8px 1px 8px"
-  },
+
   titulo: {
     // position:"relative",
     lineHeight: "26px",
@@ -339,6 +361,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
   },
 
+  statusButtonHardCoded: {
+    pointerEvents: "none",
+    borderRadius: "39px",
+    backgroundColor: "#004D4D",
+    color: "#FFFFFF",
+    padding: "1px 8px 1px 8px",
+    fontSize: "12px",
+  }
+
 }));
 
 const theme = createTheme({
@@ -374,7 +405,7 @@ const ImageCarousel = ({ images }) => {
               <img
                 src={image}
                 alt={`carousel-${index}`}
-                style={{ borderRadius: "10px", width: '100%', height: 'auto' }}
+                style={{ borderRadius: "10px", width: "100%", height: "250px", objectFit: "cover"}}
                 loading="lazy"
                 onError={handleImageError}
               />
@@ -458,7 +489,7 @@ const PlaceDescriptionBar = forwardRef(
     const fullText = content?.descricao;
 
     // Calcule o número de caracteres com base na altura da janela
-    const numChars = Math.floor(windowHeight / (isScreen900 ? 7 : (isScreen600 ? 20 : 2.3)));
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 2.5 : (isScreen600 ? 3 : 1.4)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
     const [loading, setLoading] = useState(false);
@@ -483,14 +514,14 @@ const PlaceDescriptionBar = forwardRef(
           body: JSON.stringify(requestBody),
           credentials: 'include'
         });
-    
+
         if (!response.ok) {
           throw new Error('Erro ao tentar melhorar o texto do gemini');
         }
-    
+
         const data = await response.json();
-       const message = imageUrl ? `${data.text}\n\n${imageUrl}` : data.text;
-    
+        const message = imageUrl ? `${data.text}\n\n${imageUrl}` : data.text;
+
         if (navigator.share) {
           await navigator.share({
             title: 'Veja que incrível essa realização!',
@@ -508,7 +539,7 @@ const PlaceDescriptionBar = forwardRef(
         setLoading(false);
       }
     };
-    
+
   
 
     function SheetContentPlaceDescriptionBar() {
@@ -550,9 +581,17 @@ const PlaceDescriptionBar = forwardRef(
                                 </Button>
                               </span>
                             )}
+                            {content?.gestao!="3" && (
+                              <span >
+                                <Button variant="contained" className={classes.statusButtonHardCoded}>
+                                  Concluído
+                                </Button>
+                              </span>
+                            )}
                           </div>
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
+                      {content?.gestao!="3" && "Essa é uma realização de gestões anteriores."}
                         {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
   
                         {fullText + " ..." === shortText ? null :
@@ -649,24 +688,20 @@ const PlaceDescriptionBar = forwardRef(
             </Paper>
           </Slide>
             <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-              <Paper elevation={6} className={classes.underSearch2}>
+              <Paper elevation={6} className={content?.image_url ? classes.underSearch2 : classes.underSearch2NoImage}>
                 <div className={classes.basicInfo}>
                   {realizacao || content?.nome ? (
                     <>
                       <Stack direction="row">
                         <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                        {/* <Tooltip placement="right" title={`Detalhe sobre a realizacao ${realizacao ? realizacao : content?.nome}`}>
-                          <IconButton>
-                            <InfoIcon sx={{ color: "black" }} />
-                          </IconButton>
-                        </Tooltip> */}
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
+                        {content?.gestao!="3" && "Essa é uma realização de gestões anteriores."}
                         {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
   
                         {fullText + " ..." === shortText ? null :
                           <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                            {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                          {content?.descricao &&  (isTextExpanded ? 'Leia menos' : 'Leia mais')}
                           </Button>
                         }
                       </Typography>
@@ -679,6 +714,13 @@ const PlaceDescriptionBar = forwardRef(
                   <span className={classes.buttonStatus}>
                     <Button variant="contained" className={classes.statusButton}>
                       {content?.status}
+                    </Button>
+                  </span>
+                )}
+                {content?.gestao!="3"&& (
+                  <span className={classes.buttonStatus}>
+                    <Button variant="contained" className={classes.statusButtonHardCoded}>
+                      Concluído
                     </Button>
                   </span>
                 )}

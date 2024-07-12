@@ -21,22 +21,25 @@ const createMuiIcon = (MuiIcon, iconSize = 15, iconColor = 'default') => {
 };
 
 
-export const getIcon = (name, isClicked) => {
-  const color = isClicked ? "#0b4747" : null; 
-  const size = isClicked ? 40 : 25; 
+export const getIcon = (name, isClicked, isGestaoDifferent) => {
+  let color = isClicked ? "#0b4747" : null;
+  if (isGestaoDifferent) {
+    color = "#722F37"; // Set color to black if gestao is different
+  }
+  const size = isClicked ? 40 : 25;
 
   switch (name.toLowerCase()) {
     case "redicon":
       return createMuiIcon(DefaultIcon, isClicked ? 45 : 35, color || "#0b4747");
     case "brts_transbrasil_icon":
-      return createMuiIcon(DefaultIcon, size, "#ED3237");
+      return createMuiIcon(DefaultIcon, size, isGestaoDifferent ? "#722F37" : "#ED3237");
     case "brts_transoeste_icon":
-      return createMuiIcon(DefaultIcon, size, "#208DCD");
+      return createMuiIcon(DefaultIcon, size, isGestaoDifferent ? "#722F37" : "#208DCD");
     case "brts_transcarioca_icon":
-      return createMuiIcon(DefaultIcon, size, "#ED7422");
+      return createMuiIcon(DefaultIcon, size, isGestaoDifferent ? "#722F37" : "#ED7422");
     case "brts_transolimpicas_icon":
-      return createMuiIcon(DefaultIcon, size, "#1DA64D");
+      return createMuiIcon(DefaultIcon, size, isGestaoDifferent ? "#722F37" : "#1DA64D");
     default:
-      return createMuiIcon(DefaultIcon, isClicked ? 45 : 35, color || "#007E7D"); 
+      return createMuiIcon(DefaultIcon, isClicked ? 45 : 35, color || "#007E7D");
   }
 };

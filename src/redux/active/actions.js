@@ -117,6 +117,8 @@ export const BAIRRO_DESCRIPTION_BAR = "BAIRRO_DESCRIPTION_BAR";
 export const SUBPREFEITURA_DESCRIPTION_BAR = "SUBPREFEITURA_DESCRIPTION_BAR";
 export const SET_CURRENT_CLICKED_POINT = "SET_CURRENT_CLICKED_POINT";
 export const SET_OPENED_POPUP = "SET_OPENED_POPUP";
+export const SET_GESTAO = "SET_GESTAO";
+export const SET_USER_LOCATION = "SET_USER_LOCATION";
 
 export const setCurrentClickedPoint = (point) => {
   return {
@@ -140,6 +142,19 @@ export const setEhBairro= (ehBairro) => {
   return {
     type: SET_EH_BAIRRO,
     payload: ehBairro,
+  };
+};
+
+export const setGestao= (gestao) => {
+  return {
+    type: SET_GESTAO,
+    payload: gestao,
+  };
+};
+export const setUserLocation= (userLocation) => {
+  return {
+    type: SET_USER_LOCATION,
+    payload: userLocation,
   };
 };
 

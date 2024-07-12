@@ -474,8 +474,8 @@ const TemaDescriptionBar = forwardRef(
                       </Box>
                     </Box>
                   {/* </Tooltip> */}
-                  <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>                  {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
-                    // <Tooltip title="Investimento">
+                  {/* <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>               
+                     {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
                     <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
                         <AttachMoneyIcon />
                         <Box>
@@ -490,8 +490,7 @@ const TemaDescriptionBar = forwardRef(
                           </Typography>
                         </Box>
                       </Box>
-                    // </Tooltip>
-                  )}
+                  )} */}
                 </>
               )}
             </Box>
@@ -630,9 +629,8 @@ const TemaDescriptionBar = forwardRef(
                       {/* </Tooltip> */}
                       {tema != "Mobilidade" && (
                             <>
-                      <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                      {/* <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                       {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
-                        // <Tooltip title="Investimento" >
                           <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
                             <AttachMoneyIcon />
                             <Box>
@@ -647,7 +645,7 @@ const TemaDescriptionBar = forwardRef(
                                 </Typography>
                               </Box>
                             </Box>
-                          )}
+                          )} */}
                         </>
                       )}
 

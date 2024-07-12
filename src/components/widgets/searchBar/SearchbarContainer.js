@@ -1,5 +1,5 @@
 import SearchBar from "./SearchBar";
-import { setOpenedPopup, setSearchPrompt } from "./../../../redux/active/actions";
+import { setCurrentClickedPoint, setGestao, setOpenedPopup, setSearchPrompt } from "./../../../redux/active/actions";
 import { setMenuSidebar } from "./../../../redux/active/actions";
 import { setUnderSearchBar } from "./../../../redux/active/actions";
 import { setActiveBar } from "./../../../redux/active/actions";
@@ -13,7 +13,7 @@ import { setBairroData } from "./../../../redux/bairros/actions";
 import { setSubprefeituraData } from "./../../../redux/subprefeituras/actions";
 import { useEffect } from "react";
 import { setRota } from "../../../redux/rota/actions";
-import { setBairro, setPrograma,setProgramaData, setRealizacao, setSubprefeitura, setTema, setTemaData } from "../../../redux/filtros/actions";
+import { setBairro, setPrograma,setProgramaData, setRealizacao, setRealizacoesProgramaRedux, setSubprefeitura, setTema, setTemaData } from "../../../redux/filtros/actions";
 import { setZoomDefault } from "../../../redux/actions";
 import { useParams } from "react-router-dom"
 
@@ -64,6 +64,10 @@ const SearchbarContainer = (props) => {
       subprefeitura={props.subprefeitura}
       setOpenedPopup={props.setOpenedPopup}
       realizacoes={props.realizacoes}
+      setCurrentClickedPoint={props.setCurrentClickedPoint}
+      setRealizacoesProgramaRedux={props.setRealizacoesProgramaRedux}
+      setGestao={props.setGestao}
+      gestao={props.gestao}
     />
   );
 };
@@ -83,7 +87,8 @@ const mapStateToProps = (state) => {
     realizacao:state.filtros.realizacao,
     bairro: state.bairros.descriptionData,
     subprefeitura: state.subprefeituras.descriptionData,
-    realizacoes: state.places.allPlaces
+    realizacoes: state.places.allPlaces,
+    gestao: state.active.gestao,
   };
 };
 
@@ -110,7 +115,10 @@ const mapDispatchToProps = {
   setSubprefeitura,
   setDescriptionData,
   loadData,
-  setZoomDefault
+  setZoomDefault,
+  setCurrentClickedPoint,
+  setRealizacoesProgramaRedux,
+  setGestao
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchbarContainer);

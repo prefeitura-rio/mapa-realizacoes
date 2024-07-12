@@ -7,6 +7,7 @@ export const SET_TEMA_DATA = "SET_TEMA_DATA";
 export const SET_REALIZACAO = "SET_REALIZACAO";
 export const SET_BAIRRO = "SET_BAIRRO";
 export const SET_SUBPREFEITURA = "SET_SUBPREFEITURA";
+export const SET_REALIZACOES_PROGRAMA = "SET_REALIZACOES_PROGRAMA";
 
 
 export const setFiltros = (filtros) => {
@@ -86,5 +87,12 @@ export const setSubprefeitura = (subprefeitura) => {
   return {
     type: SET_SUBPREFEITURA,
     payload: subprefeitura,
+  };
+};
+
+export const setRealizacoesProgramaRedux = (realizacoesPrograma) => {
+  return {
+    type: SET_REALIZACOES_PROGRAMA,
+    payload: realizacoesPrograma,
   };
 };
