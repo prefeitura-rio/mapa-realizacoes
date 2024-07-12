@@ -520,7 +520,7 @@ const MainUnderSearchBar = forwardRef(
     const numChars = Math.floor(windowHeight / (isScreen900 ? 3 : (isScreen500 ? 4 : 1.8)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
-
+  
     function SheetContentMainUnderSearchBar() {
       return (
         <Stack m={2} mt={2} spacing={2}>
@@ -647,14 +647,22 @@ const MainUnderSearchBar = forwardRef(
               >
                 <div className={classes.basicInfo}>
                   <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                  <Typography className={classes.subtituloMunicipio}>
+                  {/* <Typography className={classes.subtituloMunicipio}>
                     {isTextExpanded ? fullText : shortText}
                     {window.innerHeight < 850 && (
                       <Button onClick={() => setTextExpanded(!isTextExpanded)}>
                         {isTextExpanded ? 'Leia menos' : 'Leia mais'}
                       </Button>
                     )}
-                  </Typography>
+                  </Typography> */}
+                  <Typography className={classes.subtituloMunicipio}>
+                  {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, algo deu errado. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+                        {fullText + " ..." === shortText ? null :
+                          <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                            {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                          </Button>
+                        }
+                      </Typography>
 
                 </div>
               </Paper>
