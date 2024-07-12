@@ -950,7 +950,7 @@ const SearchBar = ({
               value={inputValueRealizacaoFromSearch}
               onChange={handleRealizacaoChangeFromSearch}
               disableClearable
-              options={(realizacoes ?? []).filter(realizacao => realizacao.gestao == "3").map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+              options={(realizacoes ?? []).filter(realizacao => ((gestao=="3" || gestao==null)?(realizacao.gestao=="3"):(gestao=="1_2")?(realizacao.gestao=="1-2"):(realizacao.gestao=="1-2"||realizacao.gestao=="3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
               PaperComponent={CustomPaperSearch}
               ListboxProps={{ style: { maxHeight: "60vh" } }}
@@ -1009,9 +1009,9 @@ const SearchBar = ({
     const oldSelected = gestaoSelecionada === "1_2" ? !oldGestaoIsSelected : oldGestaoIsSelected;
     const currentSelected = gestaoSelecionada === "3" ? !currentGestaoIsSelected : currentGestaoIsSelected;
 
-    const mensagem = oldSelected && !currentSelected ? "Gestões 1 e 2 selecionadas." :
-      !oldSelected && currentSelected ? "Gestão 3 selecionada." :
-        oldSelected && currentSelected ? "Gestões 1, 2 e 3 selecionadas" : "Filtros de gestão removidos.";
+    const mensagem = oldSelected && !currentSelected ? "Gestão 2009 - 2016 selecionada" :
+      !oldSelected && currentSelected ? "Gestão 2021 - 2024 selecionada" :
+        oldSelected && currentSelected ? "Todas gestões selecionadas" : "Gestão 2021 - 2024 selecionada";
 
     setSnackbarMessage(mensagem);
     setSnackbarOpen(true);
@@ -1510,7 +1510,7 @@ const SearchBar = ({
                         value={inputValueRealizacaoFromSearch}
                         onChange={handleRealizacaoChangeFromSearch}
                         disableClearable
-                        options={(realizacoes ?? []).filter(realizacao => realizacao.gestao == "3").map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        options={(realizacoes ?? []).filter(realizacao => ((gestao=="3" || gestao==null)?(realizacao.gestao=="3"):(gestao=="1_2")?(realizacao.gestao=="1-2"):(realizacao.gestao=="1-2"||realizacao.gestao=="3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
                         ListboxProps={{ style: { maxHeight: "80vh" } }}
