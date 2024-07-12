@@ -1696,7 +1696,7 @@ const SearchBar = ({
               icon={
                 <Tooltip title={inputValueBairroSubprefeitura ? `${inputValueBairroSubprefeitura} está atuando como filtro.` : ""} placement="right">
                   <Badge badgeContent={inputValueBairroSubprefeitura ? 1 : 0} color="primary">
-                    <img width={33} src={lupa_mapa} />
+                    <img width={27} src={lupa_mapa} />
                   </Badge>
                 </Tooltip>
               } />
@@ -1714,7 +1714,7 @@ const SearchBar = ({
               label={"Gestões"}
               icon={
                 <RestoreIcon
-                  fontSize="small"
+                  // fontSize="small"
                   // sx={{ color: gestao ? 'white' : 'grey' }}
                   onClick={handleOpenSpeedDial}
                 />
@@ -1723,54 +1723,55 @@ const SearchBar = ({
 
           <Backdrop open={openSpeedDial} sx={{ zIndex: (theme) => theme.zIndex.speedDial - 1, bgcolor: 'rgba(0, 0, 0, 0.5)' }} />
           <SpeedDial
-            ariaLabel="SpeedDial example"
-            sx={{ position: 'fixed', bottom: 9, right: 16 }}
-            FabProps={{
-              sx: {
-                bgcolor: 'transparent',
-                boxShadow: 'none',
-                '&:hover': {
-                  bgcolor: 'transparent',
-                  boxShadow: 'none',
-                },
-                '&.Mui-focused': {
-                  bgcolor: 'transparent',
-                  boxShadow: 'none',
-                },
-                '&.Mui-active': {
-                  bgcolor: 'transparent',
-                  boxShadow: 'none',
-                },
-                '&:active': {
-                  bgcolor: 'transparent',
-                  boxShadow: 'none',
-                }
-              }
-            }}
-            // icon={<RestoreIcon sx={{ color: "grey" }} />}
-            onClose={handleCloseSpeedDial}
-            onOpen={handleOpenSpeedDial}
-            open={openSpeedDial}
-          >
-            <SpeedDialAction
-              icon={<RestoreIcon />}
-              tooltipTitle="G3"
-              tooltipOpen
-              onClick={() => handleClickGestoesAntigas("3")}
-            />
-            <SpeedDialAction
-              icon={<RestoreIcon />}
-              tooltipTitle="G1+G2"
-              tooltipOpen
-              onClick={() => handleClickGestoesAntigas("1_2")}
-            />
-            {/* <SpeedDialAction
-          icon={<RestoreIcon />}
-          tooltipTitle="GERAL"
-          tooltipOpen
-          onClick={() => handleClickGestoesAntigas("1_2_3")}
-        /> */}
-          </SpeedDial>
+      ariaLabel="SpeedDial example"
+      sx={{ position: 'fixed', bottom: 9, right: 16 }}
+      FabProps={{
+        sx: {
+          bgcolor: 'transparent',
+          boxShadow: 'none',
+          '&:hover': {
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+          },
+          '&.Mui-focused': {
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+          },
+          '&.Mui-active': {
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+          },
+          '&:active': {
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+          },
+        },
+      }}
+      onClose={handleCloseSpeedDial}
+      onOpen={handleOpenSpeedDial}
+      open={openSpeedDial}
+    >
+      <SpeedDialAction
+        icon={<RestoreIcon />}
+        tooltipTitle={
+          <Tooltip title="2021-2024" style={{ maxWidth: 'none', whiteSpace: 'nowrap' }}>
+            <span>2021-2024</span>
+          </Tooltip>
+        }
+        tooltipOpen
+        onClick={() => handleClickGestoesAntigas("3")}
+      />
+      <SpeedDialAction
+        icon={<RestoreIcon />}
+        tooltipTitle={
+          <Tooltip title="2009-2016" style={{ maxWidth: 'none', whiteSpace: 'nowrap' }}>
+            <span>2009-2016</span>
+          </Tooltip>
+        }
+        tooltipOpen
+        onClick={() => handleClickGestoesAntigas("1_2")}
+      />
+    </SpeedDial>
         </>
       )}
 
