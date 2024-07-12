@@ -762,15 +762,15 @@ const Map = ({
 
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
-            if (!isDesktop()) {
-              if ((tema || bairro || subprefeitura || (gestao == "3" || gestao == "1_2_3")) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-                return renderMarker(point, index);
-              }
-            } else {
+            // if (!isDesktop()) {
+            //   if ((tema || bairro || subprefeitura || (gestao == "3" || gestao == "1_2_3")) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+            //     return renderMarker(point, index);
+            //   }
+            // } else {
               if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == null || gestao == "3" || gestao == "1_2_3")) {
                 return renderMarker(point, index);
               }
-            }
+            // }
 
 
           })}
