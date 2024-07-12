@@ -22,6 +22,7 @@ import {
   Button,
   Snackbar,
   Backdrop,
+  Collapse,
 } from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -166,6 +167,12 @@ const useStyles = makeStyles((theme) => {
     },
     selectedPaper: {
       backgroundColor: 'black', // Nova cor de fundo quando selecionado
+    },
+    selectedPaperOldPoints: {
+      backgroundColor: '#722F37', // Nova cor de fundo quando selecionado
+    },
+    selectedPaperG3: {
+      backgroundColor: '#007E7D', // Nova cor de fundo quando selecionado
     },
     selectedIcon: {
       color: '#722F37', // Nova cor do ícone quando selecionado
@@ -1001,7 +1008,7 @@ const SearchBar = ({
   
     const mensagem = oldSelected && !currentSelected ? "Gestões 1 e 2 selecionadas." : 
                      !oldSelected && currentSelected ? "Gestão 3 selecionada." : 
-                     oldSelected && currentSelected ? "Gestões 1, 2 e 3 selecionadas" : "Nenhuma gestão selecionada.";
+                     oldSelected && currentSelected ? "Gestões 1, 2 e 3 selecionadas" : "Filtros de gestão removidos.";
   
     setSnackbarMessage(mensagem);
     setSnackbarOpen(true);
@@ -1585,38 +1592,39 @@ const SearchBar = ({
 
               )}
 
-<Paper elevation={4}
-  style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
-  className={`${classes.fixedButtonClock} ${gestao === "1_2" || gestao === "1_2_3" ? classes.selectedPaper : ''}`}
->
-  <IconButton
-    style={{ backgroundColor: 'transparent' }}
-    onClick={() => handleClickGestoesAntigas("1_2")}
+            <Paper elevation={4}
+              style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
+              className={`${classes.fixedButtonClock} ${gestao === "1_2" || gestao === "1_2_3" ? classes.selectedPaperOldPoints : ''}`}
+            >
+              <IconButton
+                style={{ backgroundColor: 'transparent' }}
+                onClick={() => handleClickGestoesAntigas("1_2")}
+              >
+                <Typography
+                  style={{ fontSize: "13px", color: oldGestaoIsSelected ? 'white' : 'black' }}
+                >
+                  G1+G2
+                </Typography>
+              </IconButton>
+            </Paper>
+            <Fade in={gestao !== null} timeout={500}> 
+  <Paper elevation={4}
+    style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
+    className={`${classes.fixedButtonClock} ${gestao === "3" || gestao === "1_2_3" ? classes.selectedPaperG3 : ''}`}
   >
-    <Typography
-      style={{ fontSize: "13px", color: oldGestaoIsSelected ? 'white' : 'black' }}
+    <IconButton
+      style={{ backgroundColor: 'transparent' }}
+      onClick={() => handleClickGestoesAntigas("3")}
     >
-      G1+G2
-    </Typography>
-  </IconButton>
-</Paper>
-
-<Paper elevation={4}
-  style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
-  className={`${classes.fixedButtonClock} ${gestao === "3" || gestao === "1_2_3" ? classes.selectedPaper : ''}`}
->
-  <IconButton
-    style={{ backgroundColor: 'transparent' }}
-    onClick={() => handleClickGestoesAntigas("3")}
-  >
-    <Typography
-      fontSize="small"
-      style={{ color: currentGestaoIsSelected ? 'white' : 'black' }}
-    >
-      G3
-    </Typography>
-  </IconButton>
-</Paper>
+      <Typography
+        fontSize="small"
+        style={{ color: currentGestaoIsSelected ? 'white' : 'black' }}
+      >
+        G3
+      </Typography>
+    </IconButton>
+  </Paper>
+</Fade>
 
 
             {/* <Paper elevation={4}
