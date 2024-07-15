@@ -10,13 +10,13 @@ import { loadSubprefeituraData } from "../../../redux/subprefeituras/actions";
 const MenuSidebarContainer = (props) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    if (props.ehBairro) {
-      dispatch(loadBairroData(props.descriptionData));
-    }
-    else dispatch(loadSubprefeituraData(props.descriptionDataSubprefeitura));
-  }, [props.setEhBairro, props.descriptionData, props.descriptionDataSubprefeitura]);
+  //   if (props.ehBairro) {
+  //     dispatch(loadBairroData(props.descriptionData));
+  //   }
+  //   else dispatch(loadSubprefeituraData(props.descriptionDataSubprefeitura));
+  // }, [props.setEhBairro, props.descriptionData, props.descriptionDataSubprefeitura]);
 
   useEffect(() => {
     if (

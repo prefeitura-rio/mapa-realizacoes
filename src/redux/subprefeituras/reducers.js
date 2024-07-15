@@ -41,7 +41,7 @@ const subprefeiturasReducer = (state = defaultState, action) => {
       return {
         ...state,
         content: action.payload,
-        contentSnapshot: JSON.parse(JSON.stringify(action.payload)),
+        // contentSnapshot: JSON.parse(JSON.stringify(action.payload)),
         loading: false,
         error: false,
       };
