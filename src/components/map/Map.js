@@ -18,7 +18,7 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import bairros_centros from "./centroideBairros";
 import subprefeituras_centros from "./centroideSubprefeituras";
-import MarkerClusterGroup from "react-leaflet-markercluster";
+import MarkerClusterGroup from 'react-leaflet-cluster'
 import shapeFileBairros from "./shapeFileBairros.json"
 import shapeFileSubprefeituras from "./shapeFileSubprefeituras.json"
 import lineStringAsfaltoLiso from "./lineStringAsfaltoLiso.json"
@@ -607,6 +607,7 @@ const Map = ({
         click: () => onMarkerClick(point),
       } : {}}
     >
+      {isDesktop() &&
       <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
         <CustomCard>
           <CardActionArea>
@@ -647,6 +648,7 @@ const Map = ({
           </CardActionArea>
         </CustomCard>
       </CustomTooltip>
+  }
     </Marker>
     );
   }
@@ -746,6 +748,7 @@ const Map = ({
         />
         <MarkerClusterGroup showCoverageOnHover={false}
           spiderfyDistanceMultiplier={2}
+          chunkedLoading
           iconCreateFunction={createClusterCustomIcon}>
           {otherPoints.map((point, index) => {
 
