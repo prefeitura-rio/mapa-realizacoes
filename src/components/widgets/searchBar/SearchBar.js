@@ -997,30 +997,35 @@ const SearchBar = ({
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [oldGestaoIsSelected, setOldGestaoIsSelected] = useState(false);
-  const [currentGestaoIsSelected, setCurrentGestaoIsSelected] = useState(false);
+  const [currentGestaoIsSelected, setCurrentGestaoIsSelected] = useState(true);
 
-  const handleClickGestoesAntigas = (gestaoSelecionada) => {
-    if (gestaoSelecionada === "1_2") {
-      setOldGestaoIsSelected(!oldGestaoIsSelected);
-    } else if (gestaoSelecionada === "3") {
-      setCurrentGestaoIsSelected(!currentGestaoIsSelected);
+  const handleClickGestoesAntigas = (selectedGestao) => {
+    let novaGestao;
+    let novaMensagem;
+
+    if (selectedGestao === "1_2") {
+      setOldGestaoIsSelected((prev) => !prev);
+      if (oldGestaoIsSelected) {
+        novaGestao = currentGestaoIsSelected ? "3" : null;
+        novaMensagem = currentGestaoIsSelected ? "Gestão 2021 - 2024 selecionada" : "Gestão 2021 - 2024 selecionada";
+      } else {
+        novaGestao = currentGestaoIsSelected ? "1_2_3" : "1_2";
+        novaMensagem = currentGestaoIsSelected ? "Todas as gestões foram ativadas" : "Gestão 2009 - 2016 selecionada";
+      }
+    } else if (selectedGestao === "3") {
+      setCurrentGestaoIsSelected((prev) => !prev);
+      if (currentGestaoIsSelected) {
+        novaGestao = oldGestaoIsSelected ? "1_2" : null;
+        novaMensagem = oldGestaoIsSelected ? "Gestão 2009 - 2016 selecionada" : "Gestão 2021 - 2024 selecionada";
+      } else {
+        novaGestao = oldGestaoIsSelected ? "1_2_3" : "3";
+        novaMensagem = oldGestaoIsSelected ? "Todas as gestões foram ativadas" : "Gestão 2021 - 2024 selecionada";
+      }
     }
 
-    const oldSelected = gestaoSelecionada === "1_2" ? !oldGestaoIsSelected : oldGestaoIsSelected;
-    const currentSelected = gestaoSelecionada === "3" ? !currentGestaoIsSelected : currentGestaoIsSelected;
-
-    const mensagem = oldSelected && !currentSelected ? "Gestão 2009 - 2016 selecionada" :
-      !oldSelected && currentSelected ? "Gestão 2021 - 2024 selecionada" :
-        oldSelected && currentSelected ? "Todas gestões selecionadas" : "Gestão 2021 - 2024 selecionada";
-
-    setSnackbarMessage(mensagem);
-    setSnackbarOpen(true);
-
-    const novaGestao = oldSelected && currentSelected ? "1_2_3" :
-      oldSelected ? "1_2" :
-        currentSelected ? "3" : null;
-
     setGestao(novaGestao);
+    setSnackbarMessage(novaMensagem);
+    setSnackbarOpen(true);
     setRealizacao(null);
     handleCloseSpeedDial(false);
   };
@@ -1670,6 +1675,19 @@ const SearchBar = ({
 
       {!isDesktop() && (
         <>
+         <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={6000}
+              onClose={handleCloseSnackbar}
+              message={snackbarMessage}
+              action={action}
+              anchorOrigin={{
+                vertical: !isDesktop() ? 'top' : 'bottom',
+                horizontal: isDesktop() ? 'center' : 'left',
+              }}
+              className={classes.snackbar}
+              style={{ zIndex: "9999 !important" }}
+            />
           <BottomNavigation
             className={classes.root}
             style={{ zIndex: 501, position: 'fixed' }}
@@ -1723,55 +1741,70 @@ const SearchBar = ({
 
           <Backdrop open={openSpeedDial} sx={{ zIndex: (theme) => theme.zIndex.speedDial - 1, bgcolor: 'rgba(0, 0, 0, 0.5)' }} />
           <SpeedDial
-      ariaLabel="SpeedDial example"
-      sx={{ position: 'fixed', bottom: 9, right: 16 }}
-      FabProps={{
-        sx: {
-          bgcolor: 'transparent',
-          boxShadow: 'none',
-          '&:hover': {
-            bgcolor: 'transparent',
-            boxShadow: 'none',
-          },
-          '&.Mui-focused': {
-            bgcolor: 'transparent',
-            boxShadow: 'none',
-          },
-          '&.Mui-active': {
-            bgcolor: 'transparent',
-            boxShadow: 'none',
-          },
-          '&:active': {
-            bgcolor: 'transparent',
-            boxShadow: 'none',
-          },
-        },
-      }}
-      onClose={handleCloseSpeedDial}
-      onOpen={handleOpenSpeedDial}
-      open={openSpeedDial}
-    >
-      <SpeedDialAction
-        icon={<RestoreIcon />}
-        tooltipTitle={
-          <Tooltip title="2021-2024" style={{ maxWidth: 'none', whiteSpace: 'nowrap' }}>
-            <span>2021-2024</span>
-          </Tooltip>
-        }
-        tooltipOpen
-        onClick={() => handleClickGestoesAntigas("3")}
-      />
-      <SpeedDialAction
-        icon={<RestoreIcon />}
-        tooltipTitle={
-          <Tooltip title="2009-2016" style={{ maxWidth: 'none', whiteSpace: 'nowrap' }}>
-            <span>2009-2016</span>
-          </Tooltip>
-        }
-        tooltipOpen
-        onClick={() => handleClickGestoesAntigas("1_2")}
-      />
-    </SpeedDial>
+            ariaLabel="SpeedDial for desktop and mobile"
+            sx={{ position: 'fixed', bottom: 9, right: 16 }}
+            FabProps={{
+              sx: {
+                bgcolor: 'transparent',
+                boxShadow: 'none',
+                '&:hover': {
+                  bgcolor: 'transparent',
+                  boxShadow: 'none',
+                },
+                '&.Mui-focused': {
+                  bgcolor: 'transparent',
+                  boxShadow: 'none',
+                },
+                '&.Mui-active': {
+                  bgcolor: 'transparent',
+                  boxShadow: 'none',
+                },
+                '&:active': {
+                  bgcolor: 'transparent',
+                  boxShadow: 'none',
+                },
+              },
+            }}
+            onClose={handleCloseSpeedDial}
+            onOpen={handleOpenSpeedDial}
+            open={openSpeedDial}
+          >
+            <SpeedDialAction
+              icon={<RestoreIcon />}
+              tooltipTitle={
+                <Paper elevation={4}
+                  style={{ borderRadius: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "center", width: '80px' }}
+                  className={`${classes.fixedButtonClock} ${gestao === "1_2" || gestao === "1_2_3" ? classes.selectedPaperOldPoints : ''}`}                >
+                  <Typography
+                    style={{ color: "black", fontSize: "13px", fontWeight: "bold" }}
+                  >
+                    2009 - 2016
+                  </Typography>
+                </Paper>
+              }
+              tooltipOpen
+              onClick={() => handleClickGestoesAntigas("1_2")}
+            />
+            <SpeedDialAction
+              icon={<RestoreIcon />}
+              tooltipTitle={
+                <Paper elevation={4}
+                  style={{ maxWidth: "none", width: "10px", borderRadius: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "center", width: '80px' }}
+                  className={`${classes.fixedButtonClock} ${gestao === "3" || gestao === "1_2_3" || gestao == null ? classes.selectedPaperG3 : ''}`}
+                  >
+                  <Typography
+                    style={{ color: "black", fontSize: "13px", fontWeight: "bold" }}
+                  >
+                    2021 - 2024
+                  </Typography>
+                </Paper>
+              }
+              tooltipOpen
+              onClick={() => !(gestao !== "1_2" && gestao !== "1_2_3" || gestao == null) &&handleClickGestoesAntigas("3")}
+
+            />
+          </SpeedDial>
+          
         </>
       )}
 

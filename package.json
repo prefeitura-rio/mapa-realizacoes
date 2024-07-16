@@ -44,6 +44,7 @@
     "react-lazy-load-image-component": "^1.5.1",
     "react-lazyload": "^3.2.1",
     "react-leaflet": ">=3.1.0 <3.2.0 || ^3.2.1",
+    "react-leaflet-cluster": "^2.0.0",
     "react-leaflet-markercluster": "^3.0.0-rc1",
     "react-material-ui-carousel": "^3.4.2",
     "react-onclickoutside": "^6.11.2",
