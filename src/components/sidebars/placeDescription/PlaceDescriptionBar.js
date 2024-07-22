@@ -602,8 +602,21 @@ const PlaceDescriptionBar = forwardRef(
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
                         {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
-                        {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
-                        <Typography style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff' }} onClick={() => { setTema(content?.tema); setPrograma(content?.programa); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}> Saiba mais</Typography>                        {fullText + " ..." === shortText ? null :
+                        {
+                          isTextExpanded ? (
+                            content?.gestao == 3 ? (
+                              <>
+                                {fullText}
+                                <Typography style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff' }} onClick={() => { setTema(content?.tema); setPrograma(content?.programa); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}>
+                                  Saiba mais
+                                </Typography>
+                              </>
+                            ) : fullText
+                          ) : shortText === "undefined ..." ? (
+                            "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."
+                          ) : (fullText + " ..." === shortText) ? fullText : shortText
+                        }
+                        {fullText + " ..." === shortText ? null :
                           <Button onClick={() => setTextExpanded(!isTextExpanded)}>
                             {isTextExpanded ? 'Leia menos' : 'Leia mais'}
                           </Button>
@@ -707,9 +720,20 @@ const PlaceDescriptionBar = forwardRef(
                           </Stack>
                           <Typography className={classes.subtituloMunicipio}>
                             {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
-                            {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
-                            <Typography style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff' }} onClick={() => { setTema(content?.tema); setPrograma(content?.programa); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}> Saiba mais</Typography>
-
+                            {
+                              isTextExpanded ? (
+                                content?.gestao == 3 ? (
+                                  <>
+                                    {fullText}
+                                    <Typography style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff' }} onClick={() => { setTema(content?.tema); setPrograma(content?.programa); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}>
+                                      Saiba mais
+                                    </Typography>
+                                  </>
+                                ) : fullText
+                              ) : shortText === "undefined ..." ? (
+                                "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."
+                              ) : (fullText + " ..." === shortText) ? fullText : shortText
+                            }
                             {fullText + " ..." === shortText ? null :
                               <Button onClick={() => setTextExpanded(!isTextExpanded)}>
                                 {content?.descricao && (isTextExpanded ? 'Leia menos' : 'Leia mais')}
