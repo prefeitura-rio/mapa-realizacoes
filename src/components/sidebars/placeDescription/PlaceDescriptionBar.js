@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef, useEffect,useRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
@@ -35,8 +35,9 @@ import { isDesktop } from "../../../redux/active/reducers";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Cookies from 'js-cookie';
-import whatsapp from '../../assets/whatsapp.png'; 
-import { DESCRIPTION_BAR } from "../../../redux/active/actions";
+import whatsapp from '../../assets/whatsapp.png';
+import { DESCRIPTION_BAR, PROGRAMA_DESCRIPTION_BAR } from "../../../redux/active/actions";
+import { setPrograma } from "../../../redux/filtros/actions";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -124,8 +125,8 @@ const useStyles = makeStyles((theme) => ({
       overflow: "auto",
       position: "relative",
     },
-    underSearchMobile:{
-      padding:"18px 0"
+    underSearchMobile: {
+      padding: "18px 0"
     },
     statusButton: {
       pointerEvents: "none",
@@ -368,7 +369,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#FFFFFF",
     padding: "1px 8px 1px 8px",
     fontSize: "12px",
-  }
+  },
 
 }));
 
@@ -401,14 +402,14 @@ const ImageCarousel = ({ images }) => {
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "250px" }}>
               < CircularProgress size={80} />
             </div>
-           :
-              <img
-                src={image}
-                alt={`carousel-${index}`}
-                style={{ borderRadius: "10px", width: "100%", height: "250px", objectFit: "cover"}}
-                loading="lazy"
-                onError={handleImageError}
-              />
+            :
+            <img
+              src={image}
+              alt={`carousel-${index}`}
+              style={{ borderRadius: "10px", width: "100%", height: "250px", objectFit: "cover" }}
+              loading="lazy"
+              onError={handleImageError}
+            />
           }
         </div>
       ))}
@@ -438,7 +439,9 @@ const PlaceDescriptionBar = forwardRef(
     error,
     openedPopup,
     rota,
-    activeBar
+    activeBar,
+    setPrograma,
+    setTema
 
 
 
@@ -507,11 +510,11 @@ const PlaceDescriptionBar = forwardRef(
                       Destaque o impacto positivo da realização para o cidadão.
                       Utilize linguagem clara e fácil de entender.`;
       const imageUrl = content?.image_url ?? "";
-      
+
       const requestBody = {
         prompt
       };
-    
+
       try {
         const response = await fetch('https://genapi.dados.rio/text', {
           method: 'POST',
@@ -547,61 +550,60 @@ const PlaceDescriptionBar = forwardRef(
       }
     };
 
-  
+
 
     function SheetContentPlaceDescriptionBar() {
       return (
         <Stack m={2} mt={2} spacing={2}>
           {error ? (
             <Paper elevation={6} ref={ref} className={classes.underSearchErrorMobile}>
-              <div style={{ padding: "25px"}}>
+              <div style={{ padding: "25px" }}>
                 <Typography className={classes.noInfoTituloMobile}>
                   Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o InfoPref.
                 </Typography>
-               
+
               </div>
             </Paper>
-        ) : (
-          <>
-            <Paper elevation={6} ref={ref} className={classes.underSearchMobile}>
-              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                <Typography className={classes.titulo}>
-                  {content?.nome ?? <CircularProgress size={25} />}
-                </Typography>
-                <Typography className={classes.subtitulo}>
-                  {programa ? programa : content?.programa}
-                </Typography>
-              </div>
-            </Paper>
-          
+          ) : (
+            <>
+              <Paper elevation={6} ref={ref} className={classes.underSearchMobile}>
+                <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                  <Typography className={classes.titulo}>
+                    {content?.nome ?? <CircularProgress size={25} />}
+                  </Typography>
+                  <Typography className={classes.subtitulo}>
+                    {programa ? programa : content?.programa}
+                  </Typography>
+                </div>
+              </Paper>
+
               <Paper elevation={6} className={classes.underSearch2Mobile}>
                 <div className={classes.basicInfo}>
                   {realizacao || content?.nome ? (
-                      <>
-                        <Stack direction="row">
-                          <div style={{ marginBottom:"10px",width:"100%",display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                            {content?.status && (
-                              <span >
-                                <Button variant="contained" className={classes.statusButton}>
-                                  {content?.status}
-                                </Button>
-                              </span>
-                            )}
-                            {content?.gestao!="3" && (
-                              <span >
-                                <Button variant="contained" className={classes.statusButtonHardCoded}>
-                                  Concluído
-                                </Button>
-                              </span>
-                            )}
-                          </div>
+                    <>
+                      <Stack direction="row">
+                        <div style={{ marginBottom: "10px", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                          {content?.status && (
+                            <span >
+                              <Button variant="contained" className={classes.statusButton}>
+                                {content?.status}
+                              </Button>
+                            </span>
+                          )}
+                          {content?.gestao != "3" && (
+                            <span >
+                              <Button variant="contained" className={classes.statusButtonHardCoded}>
+                                Concluído
+                              </Button>
+                            </span>
+                          )}
+                        </div>
                       </Stack>
                       <Typography className={classes.subtituloMunicipio}>
-                      {content?.gestao!="3" && "Essa é uma realização de gestões anteriores."}
+                        {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
                         {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
-  
-                        {fullText + " ..." === shortText ? null :
+                        <Typography style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff' }} onClick={() => { setTema(content?.tema); setPrograma(content?.programa); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}> Saiba mais</Typography>                        {fullText + " ..." === shortText ? null :
                           <Button onClick={() => setTextExpanded(!isTextExpanded)}>
                             {isTextExpanded ? 'Leia menos' : 'Leia mais'}
                           </Button>
@@ -612,9 +614,9 @@ const PlaceDescriptionBar = forwardRef(
                     <CircularProgress style={{ marginTop: "1rem" }} size={25} />
                   )}
                 </div>
-              
+
               </Paper>
-            
+
               <Paper
                 elevation={6}
                 className={content?.image_url ? classes.underSearch3Mobile : classes.underSearch3NoImageMobile}
@@ -624,137 +626,139 @@ const PlaceDescriptionBar = forwardRef(
                 </div>
               </Paper>
 
-            {content?.image_url && (
+              {content?.image_url && (
                 <Paper elevation={6} className={classes.underSearch4}>
                   <ImageCarousel images={[content?.image_url]} />
                 </Paper>
-            )}
+              )}
 
-                <Paper style={{padding:"20px"}} elevation={6}>
-                  <Button
-                    startIcon={<WhatsAppIcon sx={{color:"#25d366",fontSize: "30px !important"}}/>}
-                    onClick={handleShareWhatsApp}
-                    disabled={loading}
-                  >
-                    Compartilhe no WhatsApp
-                  </Button>
-                </Paper>
-          </>
-        )}
-          </Stack>
-      )}
+              <Paper style={{ padding: "20px" }} elevation={6}>
+                <Button
+                  startIcon={<WhatsAppIcon sx={{ color: "#25d366", fontSize: "30px !important" }} />}
+                  onClick={handleShareWhatsApp}
+                  disabled={loading}
+                >
+                  Compartilhe no WhatsApp
+                </Button>
+              </Paper>
+            </>
+          )}
+        </Stack>
+      )
+    }
 
-      const [value, setValue] = useState(1);
-      const [openSheet, setOpenSheet] = useState(0);
-      const sheetRef = useRef();
-  
-      const handleOpenSheet = (sheet) => {
-        setOpenSheet(sheet);
-      };
-  
-  
-      const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+    const [value, setValue] = useState(1);
+    const [openSheet, setOpenSheet] = useState(0);
+    const sheetRef = useRef();
 
-      const handleCloseSheet = () => {
-        setIsBottomSheetOpen(false);
-      };
-  
-      useEffect(() => {
-        if ( openedPopup == null && rota){
-          setIsBottomSheetOpen(true);
-        }
-      }, [openedPopup, rota]);
+    const handleOpenSheet = (sheet) => {
+      setOpenSheet(sheet);
+    };
+
+
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+
+    const handleCloseSheet = () => {
+      setIsBottomSheetOpen(false);
+    };
+
+    useEffect(() => {
+      if (openedPopup == null && rota) {
+        setIsBottomSheetOpen(true);
+      }
+    }, [openedPopup, rota]);
 
     return (
       <>
-      {isDesktop() && (
-      <div>
-        {error ? (
-          <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-            <Paper elevation={6} ref={ref} className={classes.underSearchError}>
-              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                <Typography className={classes.noInfoTitulo}>
-                  Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o InfoPref.
-                </Typography>
-               
-              </div>
-            </Paper>
-          </Slide>
-        ) : (
-          <>
-          <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-            <Paper elevation={6} ref={ref} className={classes.underSearch}>
-              <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                <Typography className={classes.titulo}>
-                  {content?.nome ?? <CircularProgress size={25} />}
-                </Typography>
-                <Typography className={classes.subtitulo}>
-                  {programa ? programa : content?.programa}
-                </Typography>
-              </div>
-            </Paper>
-          </Slide>
-            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-              <Paper elevation={6} className={content?.image_url ? classes.underSearch2 : classes.underSearch2NoImage}>
-                <div className={classes.basicInfo}>
-                  {realizacao || content?.nome ? (
-                    <>
-                      <Stack direction="row">
-                        <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                      </Stack>
-                      <Typography className={classes.subtituloMunicipio}>
-                        {content?.gestao!="3" && "Essa é uma realização de gestões anteriores."}
-                        {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
-  
-                        {fullText + " ..." === shortText ? null :
-                          <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                          {content?.descricao &&  (isTextExpanded ? 'Leia menos' : 'Leia mais')}
-                          </Button>
-                        }
-                      </Typography>
-                    </>
-                  ) : (
-                    <CircularProgress style={{ marginTop: "1rem" }} size={25} />
-                  )}
-                </div>
-                {content?.status && (
-                  <span className={classes.buttonStatus}>
-                    <Button variant="contained" className={classes.statusButton}>
-                      {content?.status}
-                    </Button>
-                  </span>
-                )}
-                {content?.gestao!="3"&& (
-                  <span className={classes.buttonStatus}>
-                    <Button variant="contained" className={classes.statusButtonHardCoded}>
-                      Concluído
-                    </Button>
-                  </span>
-                )}
-              </Paper>
-            </Slide>
-            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-              <Paper
-                elevation={6}
-                className={content?.image_url ? classes.underSearch3 : classes.underSearch3NoImage}
-              >
-                <div className={classes.sumarioInfo}>
-                  {content ? <ListInfo content={content ? content : []} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
-                </div>
-              </Paper>
-            </Slide>
-            {content?.image_url && (
-              <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-                <Paper elevation={6} className={classes.underSearch4}>
-                  <ImageCarousel images={[content?.image_url]} />
+        {isDesktop() && (
+          <div>
+            {error ? (
+              <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                <Paper elevation={6} ref={ref} className={classes.underSearchError}>
+                  <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                    <Typography className={classes.noInfoTitulo}>
+                      Desculpe, não foi possível carregar os dados desta realização. Por favor, entre em contato com o InfoPref.
+                    </Typography>
+
+                  </div>
                 </Paper>
               </Slide>
-            )}
-          </>
-        )}
-        </div>)}
+            ) : (
+              <>
+                <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                  <Paper elevation={6} ref={ref} className={classes.underSearch}>
+                    <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                      <Typography className={classes.titulo}>
+                        {content?.nome ?? <CircularProgress size={25} />}
+                      </Typography>
+                      <Typography className={classes.subtitulo}>
+                        {programa ? programa : content?.programa}
+                      </Typography>
+                    </div>
+                  </Paper>
+                </Slide>
+                <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                  <Paper elevation={6} className={content?.image_url ? classes.underSearch2 : classes.underSearch2NoImage}>
+                    <div className={classes.basicInfo}>
+                      {realizacao || content?.nome ? (
+                        <>
+                          <Stack direction="row">
+                            <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                          </Stack>
+                          <Typography className={classes.subtituloMunicipio}>
+                            {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
+                            {isTextExpanded ? fullText : shortText === "undefined ..." ? "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+                            <Typography style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff' }} onClick={() => { setTema(content?.tema); setPrograma(content?.programa); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}> Saiba mais</Typography>
 
-        {!isDesktop() && openedPopup == null  && (
+                            {fullText + " ..." === shortText ? null :
+                              <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                                {content?.descricao && (isTextExpanded ? 'Leia menos' : 'Leia mais')}
+                              </Button>
+                            }
+                          </Typography>
+                        </>
+                      ) : (
+                        <CircularProgress style={{ marginTop: "1rem" }} size={25} />
+                      )}
+                    </div>
+                    {content?.status && (
+                      <span className={classes.buttonStatus}>
+                        <Button variant="contained" className={classes.statusButton}>
+                          {content?.status}
+                        </Button>
+                      </span>
+                    )}
+                    {content?.gestao != "3" && (
+                      <span className={classes.buttonStatus}>
+                        <Button variant="contained" className={classes.statusButtonHardCoded}>
+                          Concluído
+                        </Button>
+                      </span>
+                    )}
+                  </Paper>
+                </Slide>
+                <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                  <Paper
+                    elevation={6}
+                    className={content?.image_url ? classes.underSearch3 : classes.underSearch3NoImage}
+                  >
+                    <div className={classes.sumarioInfo}>
+                      {content ? <ListInfo content={content ? content : []} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
+                    </div>
+                  </Paper>
+                </Slide>
+                {content?.image_url && (
+                  <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                    <Paper elevation={6} className={classes.underSearch4}>
+                      <ImageCarousel images={[content?.image_url]} />
+                    </Paper>
+                  </Slide>
+                )}
+              </>
+            )}
+          </div>)}
+
+        {!isDesktop() && openedPopup == null && (
           <div>
 
             <BottomSheet
@@ -791,5 +795,5 @@ const PlaceDescriptionBar = forwardRef(
       </>
     );
   });
-  
-  export default PlaceDescriptionBar;
+
+export default PlaceDescriptionBar;

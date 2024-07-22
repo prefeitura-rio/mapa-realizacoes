@@ -12,7 +12,7 @@ const defaultState = {
   realizacao: null,
   bairro: null,
   subprefeitura: null,
-  realizacoesPrograma:[]
+  realizacoesPrograma: []
 };
 
 export const filtrosReducer = (state = defaultState, action) => {
@@ -32,18 +32,18 @@ export const filtrosReducer = (state = defaultState, action) => {
         ...state,
         temaData: action.payload,
       };
-      // PROGRAMA
+    // PROGRAMA
     case SET_PROGRAMA:
       return {
         ...state,
         programa: action.payload,
       };
-    // case SET_PROGRAMA_DATA:
-    //   return {
-    //     ...state,
-    //     programaData: action.payload,
-    //   };
-      case REQUEST_PROGRAMA_DATA:
+    case SET_PROGRAMA_DATA:
+      return {
+        ...state,
+        programaData: action.payload,
+      };
+    case REQUEST_PROGRAMA_DATA:
       return {
         ...state,
         programaData: null,
@@ -64,7 +64,7 @@ export const filtrosReducer = (state = defaultState, action) => {
         loading: false,
         error: true,
       };
-      //
+    //
     case SET_REALIZACAO:
       return {
         ...state,

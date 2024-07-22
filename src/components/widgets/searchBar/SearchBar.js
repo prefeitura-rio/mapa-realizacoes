@@ -267,7 +267,8 @@ const SearchBar = ({
   setCurrentClickedPoint,
   setRealizacoesProgramaRedux,
   setGestao,
-  gestao
+  gestao,
+  place
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -367,8 +368,6 @@ const SearchBar = ({
 
           setTemaData(temaRef);
 
-          // console.log("temaRef", temaRef)
-
         } catch (error) {
           console.error("Erro", error);
         }
@@ -393,7 +392,21 @@ const SearchBar = ({
         } catch (error) {
           console.error("Erro", error);
         }
+
       };
+      const loadProgramaInfo = async (p) => {
+
+        try {
+          const programaRef = await readPrograma(toSnakeCase(p));
+
+          setProgramaData(programaRef);
+
+        } catch (error) {
+          console.error("Erro", error);
+        }
+      }
+
+      loadProgramaInfo(programa)
       loadRealizacoesPrograma(programa);
     }
   }, [programa]);
@@ -950,7 +963,7 @@ const SearchBar = ({
               value={inputValueRealizacaoFromSearch}
               onChange={handleRealizacaoChangeFromSearch}
               disableClearable
-              options={(realizacoes ?? []).filter(realizacao => ((gestao=="3" || gestao==null)?(realizacao.gestao=="3"):(gestao=="1_2")?(realizacao.gestao=="1-2"):(realizacao.gestao=="1-2"||realizacao.gestao=="3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+              options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
               PaperComponent={CustomPaperSearch}
               ListboxProps={{ style: { maxHeight: "60vh" } }}
@@ -1058,6 +1071,22 @@ const SearchBar = ({
   const handleCloseSpeedDial = () => {
     setOpenSpeedDial(false);
   };
+
+  useEffect(() => {
+    if (realizacao && !inputValueTema && !inputValuePrograma) {
+      setInputValueTema(place?.tema);
+      setInputValuePrograma(place?.programa);
+      setInputValueRealizacao(place?.nome);
+      setShowProgramas(false);
+      setShowTemas(false);
+      setShowRealizacoes(true);
+      console.log("place?.tema", place?.tema)
+      console.log("place?.programa", place?.programa)
+      console.log("place?.nome", place?.nome)
+      console.log("place", place)
+    }
+  }, [inputValueTema, inputValuePrograma, realizacao, place]);
+
 
   return (
 
@@ -1515,7 +1544,7 @@ const SearchBar = ({
                         value={inputValueRealizacaoFromSearch}
                         onChange={handleRealizacaoChangeFromSearch}
                         disableClearable
-                        options={(realizacoes ?? []).filter(realizacao => ((gestao=="3" || gestao==null)?(realizacao.gestao=="3"):(gestao=="1_2")?(realizacao.gestao=="1-2"):(realizacao.gestao=="1-2"||realizacao.gestao=="3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
+                        options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
                         ListboxProps={{ style: { maxHeight: "80vh" } }}
@@ -1609,7 +1638,7 @@ const SearchBar = ({
                 onClick={() => handleClickGestoesAntigas("1_2")}
               >
                 <Typography
-                  style={{color: "black", fontSize: "13px", fontWeight: "bold"}}
+                  style={{ color: "black", fontSize: "13px", fontWeight: "bold" }}
                 >
                   2009 - 2016
                 </Typography>
@@ -1627,7 +1656,7 @@ const SearchBar = ({
               >
                 <Typography
                   fontSize="small"
-                  style={{color: "black", fontSize: "13px", fontWeight: "bold"}}
+                  style={{ color: "black", fontSize: "13px", fontWeight: "bold" }}
                 >
                   2021 - 2024
                 </Typography>
@@ -1675,19 +1704,19 @@ const SearchBar = ({
 
       {!isDesktop() && (
         <>
-         <Snackbar
-              open={snackbarOpen}
-              autoHideDuration={6000}
-              onClose={handleCloseSnackbar}
-              message={snackbarMessage}
-              action={action}
-              anchorOrigin={{
-                vertical: !isDesktop() ? 'top' : 'bottom',
-                horizontal: isDesktop() ? 'center' : 'left',
-              }}
-              className={classes.snackbar}
-              style={{ zIndex: "9999 !important" }}
-            />
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+            message={snackbarMessage}
+            action={action}
+            anchorOrigin={{
+              vertical: !isDesktop() ? 'top' : 'bottom',
+              horizontal: isDesktop() ? 'center' : 'left',
+            }}
+            className={classes.snackbar}
+            style={{ zIndex: "9999 !important" }}
+          />
           <BottomNavigation
             className={classes.root}
             style={{ zIndex: 501, position: 'fixed' }}
@@ -1791,7 +1820,7 @@ const SearchBar = ({
                 <Paper elevation={4}
                   style={{ maxWidth: "none", width: "10px", borderRadius: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "center", width: '80px' }}
                   className={`${classes.fixedButtonClock} ${gestao === "3" || gestao === "1_2_3" || gestao == null ? classes.selectedPaperG3 : ''}`}
-                  >
+                >
                   <Typography
                     style={{ color: "black", fontSize: "13px", fontWeight: "bold" }}
                   >
@@ -1800,11 +1829,11 @@ const SearchBar = ({
                 </Paper>
               }
               tooltipOpen
-              onClick={() => !(gestao !== "1_2" && gestao !== "1_2_3" || gestao == null) &&handleClickGestoesAntigas("3")}
+              onClick={() => !(gestao !== "1_2" && gestao !== "1_2_3" || gestao == null) && handleClickGestoesAntigas("3")}
 
             />
           </SpeedDial>
-          
+
         </>
       )}
 

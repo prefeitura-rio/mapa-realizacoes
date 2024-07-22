@@ -11,6 +11,7 @@ import {
 import { setImagesType } from "../../../redux/images/actions";
 import { useEffect } from "react";
 import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaSumarioInfoBasicasCidade, loadDadosAgregadosAbaSumarioStatusEntregasCidade, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
+import { setPrograma, setTema } from "../../../redux/filtros/actions";
 
 const PlaceDescriptionContainer = (props) => {
 
@@ -24,37 +25,40 @@ const PlaceDescriptionContainer = (props) => {
   }, []);
 
   return (
-      <PlaceDescriptionBar
-        underSearchBar={props.underSearchBar}
-        content={props.content}
-        images_cidade={props.images_cidade}
-        cidades={props.cidades}
-        dadosAgregadosAbaTemaCidade={props.dadosAgregadosAbaTemaCidade}
-        dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
-        dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
-        dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
-        setUnderSearchBar={props.setUnderSearchBar}
-        setActiveBar={props.setActiveBar}
-        setDescriptionData={props.setDescriptionData}
-        loadData={props.loadData}
-        
-
-        // remove if not useful
-        profile={props.profile}
-        login={props.login}
-        anyLoading={props.anyLoading}
-        setPhotoGallery={props.setPhotoGallery}
-        setImagesType={props.setImagesType}
+    <PlaceDescriptionBar
+      underSearchBar={props.underSearchBar}
+      content={props.content}
+      images_cidade={props.images_cidade}
+      cidades={props.cidades}
+      dadosAgregadosAbaTemaCidade={props.dadosAgregadosAbaTemaCidade}
+      dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
+      dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
+      dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
+      setUnderSearchBar={props.setUnderSearchBar}
+      setActiveBar={props.setActiveBar}
+      setDescriptionData={props.setDescriptionData}
+      loadData={props.loadData}
 
 
-        tema={props.tema}
-        programa={props.programa}
-        realizacao={props.realizacao}
-        error={props.error}
-        openedPopup={props.openedPopup}
-        rota={props.rota}
-        activeBar={props.activeBar}
-      />
+      // remove if not useful
+      profile={props.profile}
+      login={props.login}
+      anyLoading={props.anyLoading}
+      setPhotoGallery={props.setPhotoGallery}
+      setImagesType={props.setImagesType}
+
+
+      tema={props.tema}
+      programa={props.programa}
+      realizacao={props.realizacao}
+      error={props.error}
+      openedPopup={props.openedPopup}
+      rota={props.rota}
+      activeBar={props.activeBar}
+      setPrograma={props.setPrograma}
+      setTema={props.setTema}
+      programaData={props.programaData}
+    />
   );
 };
 
@@ -72,8 +76,9 @@ const mapStateToProps = (state) => {
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
     openCompletePhoto: state.active.openCompletePhoto,
-    setImagesType: state.images.setImagesType,  
+    setImagesType: state.images.setImagesType,
     activeBar: state.active.activeBar,
+
 
 
     tema: state.filtros.tema,
@@ -81,6 +86,8 @@ const mapStateToProps = (state) => {
     realizacao: state.filtros.realizacao,
     openedPopup: state.active.openedPopup,
     rota: state.rota.rota,
+    programaData: state.filtros.programaData,
+
   };
 };
 
@@ -92,6 +99,8 @@ const mapDispatchToProps = {
   setPhotoGallery,
   setImagesType,
   setOpenCompletePhoto,
+  setPrograma,
+  setTema,
 };
 
 export default connect(

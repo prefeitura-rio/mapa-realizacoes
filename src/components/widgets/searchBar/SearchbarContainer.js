@@ -13,7 +13,7 @@ import { setBairroData } from "./../../../redux/bairros/actions";
 import { setSubprefeituraData } from "./../../../redux/subprefeituras/actions";
 import { useEffect } from "react";
 import { setRota } from "../../../redux/rota/actions";
-import { setBairro, setPrograma,setProgramaData, setRealizacao, setRealizacoesProgramaRedux, setSubprefeitura, setTema, setTemaData } from "../../../redux/filtros/actions";
+import { setBairro, setPrograma, setProgramaData, setRealizacao, setRealizacoesProgramaRedux, setSubprefeitura, setTema, setTemaData } from "../../../redux/filtros/actions";
 import { setZoomDefault } from "../../../redux/actions";
 import { useParams } from "react-router-dom"
 
@@ -42,17 +42,17 @@ const SearchbarContainer = (props) => {
       setHistoryItems={props.setHistoryItems}
       setPlacesData={props.setPlacesData}
       historyItems={props.historyItems}
-      rota = {props.rota}
-      realizacaoId = {id}
-      setRota = {props.setRota}
-      temasNameFilter = {props.temasNameFilter}
-      programasNameFilter = {props.programasNameFilter}
-      setTema = {props.setTema}
-      setTemaData = {props.setTemaData}
-      setPrograma= {props.setPrograma}
-      setProgramaData= {props.setProgramaData}
+      rota={props.rota}
+      realizacaoId={id}
+      setRota={props.setRota}
+      temasNameFilter={props.temasNameFilter}
+      programasNameFilter={props.programasNameFilter}
+      setTema={props.setTema}
+      setTemaData={props.setTemaData}
+      setPrograma={props.setPrograma}
+      setProgramaData={props.setProgramaData}
       setRealizacao={props.setRealizacao}
-      setBairro= {props.setBairro}
+      setBairro={props.setBairro}
       setSubprefeitura={props.setSubprefeitura}
       tema={props.tema}
       programa={props.programa}
@@ -68,6 +68,7 @@ const SearchbarContainer = (props) => {
       setRealizacoesProgramaRedux={props.setRealizacoesProgramaRedux}
       setGestao={props.setGestao}
       gestao={props.gestao}
+      place={props.place}
     />
   );
 };
@@ -82,13 +83,14 @@ const mapStateToProps = (state) => {
     // anyPlaces: state.places.anyPlaces,
     historyItems: state.search.historyItems,
     rota: state.rota,
-    tema:state.filtros.tema,
-    programa:state.filtros.programa,
-    realizacao:state.filtros.realizacao,
+    tema: state.filtros.tema,
+    programa: state.filtros.programa,
+    realizacao: state.filtros.realizacao,
     bairro: state.bairros.descriptionData,
     subprefeitura: state.subprefeituras.descriptionData,
     realizacoes: state.places.allPlaces,
     gestao: state.active.gestao,
+    place: state.place.content
   };
 };
 
@@ -102,8 +104,8 @@ const mapDispatchToProps = {
   loadAllPlaces,
   setHistoryItems,
   setPlacesData,
-  setBairroData ,
-  setEhBairro ,
+  setBairroData,
+  setEhBairro,
   setSubprefeituraData,
   setRota,
   setTema,
