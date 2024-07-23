@@ -150,11 +150,11 @@ const Map = ({
             style: { color: color, weight: 4 }
           }).addTo(map);
         };
-        if(gestao == null || gestao == "3" || gestao == "1_2_3"){
-       (programa == null || programa=="BRTs Transbrasil") && addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
-       (programa == null || programa=="BRTs Transoeste") && addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
-       (programa == null || programa=="BRTs Transcarioca") && addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
-       (programa == null || programa=="BRTs Transolímpica") && addLayer('TransOlímpica', currentLayerTransOlímpica, '#1DA64D');
+        if (gestao == null || gestao == "3" || gestao == "1_2_3") {
+          (programa == null || programa == "BRTs Transbrasil") && addLayer('TransBrasil', currentLayerTransBrasil, '#ED3237');
+          (programa == null || programa == "BRTs Transoeste") && addLayer('TransOeste', currentLayerTransOeste, '#208DCD');
+          (programa == null || programa == "BRTs Transcarioca") && addLayer('TransCarioca', currentLayerTransCarioca, '#ED7422');
+          (programa == null || programa == "BRTs Transolímpica") && addLayer('TransOlímpica', currentLayerTransOlímpica, '#1DA64D');
         }
       } else {
         removeLayers();
@@ -600,63 +600,64 @@ const Map = ({
   function renderMarker(point, index) {
     return (
       <Marker
-      key={point.id + index}
-      position={Object.values(point.coords)}
-      icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? 'redicon' : 'anyIcon'), point === currentClickedPoint, point.gestao !== '3')}
-      eventHandlers={point.id_programa !== 'estações_alerta_rio' && point.id_programa !== 'câmeras' && point.id_programa !== 'sirenes'  ? {
-        click: () => onMarkerClick(point),
-      } : {}}
-    >
-      {isDesktop() &&
-      <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-        <CustomCard>
-          <CardActionArea>
-            {point.image_url && (
-              <CardMedia
-                component="img"
-                height="140"
-                image={point.image_url}
-                alt={point.nome}
-              />
-            )}
-            <CardContent>
-              <Typography
-                gutterBottom
-                component="div"
-                style={{
-                  fontSize: point.image_url ? '1.2rem' : '1.08rem',
-                  display: '-webkit-box',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  WebkitBoxOrient: 'vertical',
-                  WebkitLineClamp: 2,
-                  whiteSpace: 'normal',
-                  wordWrap: 'break-word',
-                  lineHeight: point.image_url ? '1.2' : '1',
-                  backgroundColor: 'transparent',
-                  marginBottom: point.image_url ? "" : "0px",
-                }}
-              >
-                {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.nome}
-              </Typography>
-              {point.id_bairro && (
-                <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
-                  Bairro: {toTitleCase(point.id_bairro ?? '')}
-                </Typography>
-              )}
-            </CardContent>
-          </CardActionArea>
-        </CustomCard>
-      </CustomTooltip>
-  }
-    </Marker>
+        key={point.id + index}
+        position={Object.values(point.coords)}
+        icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? 'redicon' : 'anyIcon'), point === currentClickedPoint, point.gestao !== '3')}
+        eventHandlers={point.id_programa !== 'estações_alerta_rio' && point.id_programa !== 'câmeras' && point.id_programa !== 'sirenes' ? {
+          click: () => onMarkerClick(point),
+        } : {}}
+      >
+        {isDesktop() &&
+          <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
+            <CustomCard>
+              <CardActionArea>
+                {point.image_url && (
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={point.image_url}
+                    alt={point.nome}
+                  />
+                )}
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    component="div"
+                    style={{
+                      fontSize: point.image_url ? '1.2rem' : '1.08rem',
+                      display: '-webkit-box',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      WebkitBoxOrient: 'vertical',
+                      WebkitLineClamp: 2,
+                      whiteSpace: 'normal',
+                      wordWrap: 'break-word',
+                      lineHeight: point.image_url ? '1.2' : '1',
+                      backgroundColor: 'transparent',
+                      marginBottom: point.image_url ? "" : "0px",
+                    }}
+                  >
+                    {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.nome}
+                  </Typography>
+                  {point.id_bairro && (
+                    <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
+                      Bairro: {toTitleCase(point.id_bairro ?? '')}
+                    </Typography>
+                  )}
+                </CardContent>
+              </CardActionArea>
+            </CustomCard>
+          </CustomTooltip>
+        }
+      </Marker>
     );
   }
 
+  const resilienciaClimaticaPoints = points.filter(point => toSnakeCase('Resiliência Climática') === point.id_tema);
   const asfaltoLisoPoints = points.filter(point => toSnakeCase('Asfalto liso') === point.id_programa);
-  const mobilidadePoints = points.filter(point => (toSnakeCase('Mobilidade') === point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa));
-  const otherPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao == "3"));
-  const oldPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao != "3"));
+  const mobilidadePoints = points.filter(point => (toSnakeCase('Mobilidade') === point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (toSnakeCase('Resiliência Climática') !== point.id_tema));
+  const otherPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao == "3") && (toSnakeCase('Resiliência Climática') !== point.id_tema));
+  const oldPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao != "3") && (toSnakeCase('Resiliência Climática') !== point.id_tema));
 
   const [userLocationCoords, setUserLocationCoords] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -770,9 +771,9 @@ const Map = ({
             //     return renderMarker(point, index);
             //   }
             // } else {
-              if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == null || gestao == "3" || gestao == "1_2_3")) {
-                return renderMarker(point, index);
-              }
+            if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == null || gestao == "3" || gestao == "1_2_3")) {
+              return renderMarker(point, index);
+            }
             // }
 
 
@@ -837,6 +838,31 @@ const Map = ({
           return renderMarker(point, index);
 
         })}
+
+        <MarkerClusterGroup showCoverageOnHover={false}
+          spiderfyDistanceMultiplier={2}
+          iconCreateFunction={createClusterCustomIcon}>
+          {resilienciaClimaticaPoints.map((point, index) => {
+
+            // Verifica se o ponto corresponde ao bairro selecionado
+            const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
+
+            // Verifica se o ponto corresponde ao subprefeitura selecionado
+            const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
+
+            // Verifica se o ponto corresponde ao tema selecionado
+            const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
+
+            const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
+
+
+            // Renderiza o marcador se corresponder ao bairro e aos demais
+            if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+              return renderMarker(point, index);
+            }
+
+          })}
+        </MarkerClusterGroup>
 
         {userLocation && userLocationCoords && (
           <Marker

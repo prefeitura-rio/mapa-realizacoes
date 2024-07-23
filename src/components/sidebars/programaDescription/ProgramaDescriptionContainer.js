@@ -11,6 +11,7 @@ import {
 import { setImagesType } from "../../../redux/images/actions";
 import { useEffect } from "react";
 import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaSumarioInfoBasicasCidade, loadDadosAgregadosAbaSumarioStatusEntregasCidade, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
+import { setProgramaDataCameras, setProgramaDataSirenes } from "../../../redux/filtros/actions";
 
 const ProgramaDescriptionContainer = (props) => {
 
@@ -21,39 +22,44 @@ const ProgramaDescriptionContainer = (props) => {
     // dispatch(loadDadosAgregadosAbaSumarioStatusEntregasCidade());
     // dispatch(loadDadosAgregadosAbaTemaCidade());
     // dispatch(loadDadosAgregadosAbaProgramasCidade());
-    
+
   }, []);
 
   return (
-      <ProgramaDescriptionBar
-        underSearchBar={props.underSearchBar}
-        content={props.content}
-        images_cidade={props.images_cidade}
-        cidades={props.cidades}
-        dadosAgregadosAbaTemaCidade={props.dadosAgregadosAbaTemaCidade}
-        dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
-        dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
-        dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
-        setUnderSearchBar={props.setUnderSearchBar}
-        setActiveBar={props.setActiveBar}
-        setDescriptionData={props.setDescriptionData}
-        loadData={props.loadData}
-        
-
-        // remove if not useful
-        profile={props.profile}
-        login={props.login}
-        anyLoading={props.anyLoading}
-        setPhotoGallery={props.setPhotoGallery}
-        setImagesType={props.setImagesType}
+    <ProgramaDescriptionBar
+      underSearchBar={props.underSearchBar}
+      content={props.content}
+      images_cidade={props.images_cidade}
+      cidades={props.cidades}
+      dadosAgregadosAbaTemaCidade={props.dadosAgregadosAbaTemaCidade}
+      dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
+      dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
+      dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
+      setUnderSearchBar={props.setUnderSearchBar}
+      setActiveBar={props.setActiveBar}
+      setDescriptionData={props.setDescriptionData}
+      loadData={props.loadData}
 
 
-        tema={props.tema}
-        programa={props.programa}
-        programaData={props.programaData}
-        bairro={props.bairro}
-        openedPopup={props.openedPopup}
-      />
+      // remove if not useful
+      profile={props.profile}
+      login={props.login}
+      anyLoading={props.anyLoading}
+      setPhotoGallery={props.setPhotoGallery}
+      setImagesType={props.setImagesType}
+
+
+      tema={props.tema}
+      programa={props.programa}
+      programaData={props.programaData}
+      bairro={props.bairro}
+      openedPopup={props.openedPopup}
+      programaDataCameras={props.programaDataCameras}
+      programaDataSirenes={props.programaDataSirenes}
+      programaDataEstacoesAlertaRio={props.programaDataEstacoesAlertaRio}
+
+
+    />
   );
 };
 
@@ -70,7 +76,7 @@ const mapStateToProps = (state) => {
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
     openCompletePhoto: state.active.openCompletePhoto,
-    setImagesType: state.images.setImagesType,  
+    setImagesType: state.images.setImagesType,
 
 
     tema: state.filtros.tema,
@@ -78,6 +84,9 @@ const mapStateToProps = (state) => {
     programaData: state.filtros.programaData,
     bairro: state.filtros.bairro,
     openedPopup: state.active.openedPopup,
+    programaDataCameras: state.filtros.programaDataCameras,
+    programaDataSirenes: state.filtros.programaDataSirenes,
+    programaDataEstacoesAlertaRio: state.filtros.programaDataEstacoesAlertaRio,
   };
 };
 

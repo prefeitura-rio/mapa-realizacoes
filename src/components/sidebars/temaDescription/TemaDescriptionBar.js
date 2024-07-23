@@ -25,7 +25,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioStatusEntregasCidade } from "../../../redux/cidade/actions";
 import TemaDescriptionContainer from "./TemaDescriptionContainer";
-import { getAggregatedData, getListDestaquesTema } from "../../../firebase";
+import { getAggregatedData, getListDestaquesTema, getListRealizacoesPrograma } from "../../../firebase";
 import { toSnakeCase } from "../../../utils/formatFile";
 import { DESCRIPTION_BAR } from "../../../redux/active/actions";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -33,6 +33,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { isDesktop } from "../../../redux/active/reducers";
 import { BottomSheet } from "react-spring-bottom-sheet";
+import { setProgramaDataSirenes } from "../../../redux/filtros/actions";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -315,7 +316,13 @@ const TemaDescriptionBar = forwardRef(
     tema,
     temaData,
     bairro,
-    openedPopup
+    openedPopup,
+    programaDataCameras,
+    programaDataSirenes,
+    programaDataEstacoesAlertaRio,
+    setProgramaDataCameras,
+    setProgramaDataSirenes,
+    setProgramaDataEstacoesAlertaRio
 
 
 
@@ -408,6 +415,27 @@ const TemaDescriptionBar = forwardRef(
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
 
+    useEffect(() => {
+      const loadRealizacoesPrograma = async () => {
+        try {
+          const realizacoesProgramaSirenesRef = await getListRealizacoesPrograma(toSnakeCase("Sirenes"));
+          const realizacoesProgramaCameraRef = await getListRealizacoesPrograma(toSnakeCase("Câmeras"));
+          const realizacoesProgramaEstacoesAlertaRioRef = await getListRealizacoesPrograma(toSnakeCase("Estações Alerta Rio"));
+          setProgramaDataCameras(realizacoesProgramaCameraRef);
+          setProgramaDataSirenes(realizacoesProgramaSirenesRef);
+          setProgramaDataEstacoesAlertaRio(realizacoesProgramaEstacoesAlertaRioRef);
+        } catch (error) {
+          console.error("Erro", error);
+        }
+
+      };
+
+      if (tema == "Resiliência Climática") {
+        loadRealizacoesPrograma();
+      }
+    }, [tema]);
+
+
     function SheetContentTemaDescriptionBar() {
       return (
         <Stack m={2} mt={2} spacing={2}>
@@ -459,20 +487,26 @@ const TemaDescriptionBar = forwardRef(
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
               {!dadosAgregadosAbaSumarioStatusEntregasTema ? (
                 <CircularProgress />
-              ) : dadosAgregadosAbaSumarioStatusEntregasTema.count === 0 ? (
+              ) : dadosAgregadosAbaSumarioStatusEntregasTema.count === 0 && (tema != "Resiliência Climática") ? (
                 <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
                   <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
                 </Box>
               ) : (
                 <>
                   {/* <Tooltip title="Realizações"> */}
-                    <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                      <AccountBalanceIcon />
-                      <Box>
-                        {/* TODO: valor agregado da qntdd de obras. */}
-                        <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasTema.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasTema.count > 1 ? "ões" : "ão"}</Typography>
-                      </Box>
+                  <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                    <AccountBalanceIcon />
+                    <Box>
+                      {/* TODO: valor agregado da qntdd de obras. */}
+                      {(tema == "Resiliência Climática") &&
+                        <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasTema.count + programaDataCameras.length + programaDataSirenes.length + programaDataEstacoesAlertaRio.length + " "} Realizações</Typography>
+                      }
+                      {
+                        (tema != "Resiliência Climática") &&
+                        <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasTema.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasTema.count > 1 ? "ões" : "ão"}</Typography>
+                      }
                     </Box>
+                  </Box>
                   {/* </Tooltip> */}
                   {/* <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>               
                      {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
@@ -550,7 +584,7 @@ const TemaDescriptionBar = forwardRef(
     };
 
     useEffect(() => {
-      if ( openedPopup == null && tema){
+      if (openedPopup == null && tema) {
         setIsBottomSheetOpen(true);
       }
     }, [openedPopup]);
@@ -612,24 +646,29 @@ const TemaDescriptionBar = forwardRef(
                 <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
                   {!dadosAgregadosAbaSumarioStatusEntregasTema ? (
                     <CircularProgress />
-                  ) : dadosAgregadosAbaSumarioStatusEntregasTema.count === 0 ? (
-                    <Box pl={3} pr={3} style={{opacity:0.8}} >
-                    <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
+                  ) : dadosAgregadosAbaSumarioStatusEntregasTema.count === 0 && (tema != "Resiliência Climática") ? (
+                    <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
+                      <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
                     </Box>
                   ) : (
                     <>
                       {/* <Tooltip title="Realizações"> */}
-                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                          <AccountBalanceIcon />
-                          <Box >
-                            {/* TODO: valor agregado da qntdd de obras. */}
-                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasTema.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasTema.count > 1 ? "ões" : "ão"}</Typography>
-                          </Box>
+                      <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                        <AccountBalanceIcon />
+                        <Box >
+                          {(tema == "Resiliência Climática") && programaDataCameras.length > 0 && programaDataSirenes.length > 0 && programaDataEstacoesAlertaRio.length > 0 &&
+                            <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasTema.count + programaDataCameras.length + programaDataSirenes.length + programaDataEstacoesAlertaRio.length + " "} Realizações</Typography>
+                          }
+                          {
+                            (tema != "Resiliência Climática") &&
+                            <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasTema.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasTema.count > 1 ? "ões" : "ão"}</Typography>
+                          }
                         </Box>
+                      </Box>
                       {/* </Tooltip> */}
                       {tema != "Mobilidade" && (
-                            <>
-                      {/* <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                        <>
+                          {/* <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                       {dadosAgregadosAbaSumarioStatusEntregasTema.investment !== 0 && (
                           <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
                             <AttachMoneyIcon />

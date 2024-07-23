@@ -1,4 +1,4 @@
-import { REQUEST_PROGRAMA_DATA, REQUEST_PROGRAMA_DATA_FAILED, REQUEST_PROGRAMA_DATA_SUCCESS, SET_FILTROS_OPTIONS, SET_PROGRAMA_DATA, SET_REALIZACOES_PROGRAMA, SET_TEMA_DATA } from "./actions";
+import { REQUEST_PROGRAMA_DATA, REQUEST_PROGRAMA_DATA_FAILED, REQUEST_PROGRAMA_DATA_SUCCESS, SET_FILTROS_OPTIONS, SET_PROGRAMA_DATA, SET_PROGRAMA_DATA_CAMERAS, SET_PROGRAMA_DATA_SIRENES, SET_PROGRAMA_DATA_ESTACOES_ALERTA_RIO, SET_REALIZACOES_PROGRAMA, SET_TEMA_DATA } from "./actions";
 import { SET_TEMA } from "./actions";
 import { SET_PROGRAMA } from "./actions";
 import { SET_REALIZACAO } from "./actions";
@@ -12,7 +12,10 @@ const defaultState = {
   realizacao: null,
   bairro: null,
   subprefeitura: null,
-  realizacoesPrograma:[]
+  realizacoesPrograma: [],
+  programaDataSirenes: [],
+  programaDataCameras: [],
+  programaDataEstacoesAlertaRio: [],
 };
 
 export const filtrosReducer = (state = defaultState, action) => {
@@ -32,18 +35,33 @@ export const filtrosReducer = (state = defaultState, action) => {
         ...state,
         temaData: action.payload,
       };
-      // PROGRAMA
+    // PROGRAMA
     case SET_PROGRAMA:
       return {
         ...state,
         programa: action.payload,
       };
-    // case SET_PROGRAMA_DATA:
-    //   return {
-    //     ...state,
-    //     programaData: action.payload,
-    //   };
-      case REQUEST_PROGRAMA_DATA:
+    case SET_PROGRAMA_DATA:
+      return {
+        ...state,
+        programaData: action.payload,
+      };
+    case SET_PROGRAMA_DATA_SIRENES:
+      return {
+        ...state,
+        programaDataSirenes: action.payload,
+      };
+    case SET_PROGRAMA_DATA_CAMERAS:
+      return {
+        ...state,
+        programaDataCameras: action.payload,
+      };
+    case SET_PROGRAMA_DATA_ESTACOES_ALERTA_RIO:
+      return {
+        ...state,
+        programaDataEstacoesAlertaRio: action.payload,
+      };
+    case REQUEST_PROGRAMA_DATA:
       return {
         ...state,
         programaData: null,
@@ -64,7 +82,7 @@ export const filtrosReducer = (state = defaultState, action) => {
         loading: false,
         error: true,
       };
-      //
+    //
     case SET_REALIZACAO:
       return {
         ...state,
