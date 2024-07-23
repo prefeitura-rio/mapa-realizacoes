@@ -11,6 +11,7 @@ import {
 import { setImagesType } from "../../../redux/images/actions";
 import { useEffect } from "react";
 import { loadAllCidades, loadDadosAgregadosAbaProgramasCidade, loadDadosAgregadosAbaSumarioInfoBasicasCidade, loadDadosAgregadosAbaSumarioStatusEntregasCidade, loadDadosAgregadosAbaTemaCidade } from "../../../redux/cidade/actions";
+import { setProgramaDataCameras, setProgramaDataEstacoesAlertaRio, setProgramaDataSirenes } from "../../../redux/filtros/actions";
 
 const TemaDescriptionContainer = (props) => {
 
@@ -28,34 +29,40 @@ const TemaDescriptionContainer = (props) => {
   // }, [props.dadosAgregadosAbaSumarioStatusEntregasCidade]);
 
   return (
-      <TemaDescriptionBar
-        underSearchBar={props.underSearchBar}
-        content={props.content}
-        images_cidade={props.images_cidade}
-        cidades={props.cidades}
-        dadosAgregadosAbaTemaCidade={props.dadosAgregadosAbaTemaCidade}
-        dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
-        dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
-        dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
-        setUnderSearchBar={props.setUnderSearchBar}
-        setActiveBar={props.setActiveBar}
-        setDescriptionData={props.setDescriptionData}
-        loadData={props.loadData}
-        
-
-        // remove if not useful
-        profile={props.profile}
-        login={props.login}
-        anyLoading={props.anyLoading}
-        setPhotoGallery={props.setPhotoGallery}
-        setImagesType={props.setImagesType}
+    <TemaDescriptionBar
+      underSearchBar={props.underSearchBar}
+      content={props.content}
+      images_cidade={props.images_cidade}
+      cidades={props.cidades}
+      dadosAgregadosAbaTemaCidade={props.dadosAgregadosAbaTemaCidade}
+      dadosAgregadosAbaProgramasCidade={props.dadosAgregadosAbaProgramasCidade}
+      dadosAgregadosAbaSumarioInfoBasicasCidade={props.dadosAgregadosAbaSumarioInfoBasicasCidade}
+      dadosAgregadosAbaSumarioStatusEntregasCidade={props.dadosAgregadosAbaSumarioStatusEntregasCidade}
+      setUnderSearchBar={props.setUnderSearchBar}
+      setActiveBar={props.setActiveBar}
+      setDescriptionData={props.setDescriptionData}
+      loadData={props.loadData}
 
 
-        tema={props.tema}
-        temaData={props.temaData}
-        bairro={props.bairro}
-        openedPopup={props.openedPopup}
-      />
+      // remove if not useful
+      profile={props.profile}
+      login={props.login}
+      anyLoading={props.anyLoading}
+      setPhotoGallery={props.setPhotoGallery}
+      setImagesType={props.setImagesType}
+
+
+      tema={props.tema}
+      temaData={props.temaData}
+      bairro={props.bairro}
+      openedPopup={props.openedPopup}
+      setProgramaDataCameras={props.setProgramaDataCameras}
+      setProgramaDataSirenes={props.setProgramaDataSirenes}
+      setProgramaDataEstacoesAlertaRio={props.setProgramaDataEstacoesAlertaRio}
+      programaDataCameras={props.programaDataCameras}
+      programaDataSirenes={props.programaDataSirenes}
+      programaDataEstacoesAlertaRio={props.programaDataEstacoesAlertaRio}
+    />
   );
 };
 
@@ -72,13 +79,16 @@ const mapStateToProps = (state) => {
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,
     openCompletePhoto: state.active.openCompletePhoto,
-    setImagesType: state.images.setImagesType,  
+    setImagesType: state.images.setImagesType,
 
 
     tema: state.filtros.tema,
     temaData: state.filtros.temaData,
     bairro: state.filtros.bairro,
     openedPopup: state.active.openedPopup,
+    programaDataCameras: state.filtros.programaDataCameras,
+    programaDataSirenes: state.filtros.programaDataSirenes,
+    programaDataEstacoesAlertaRio: state.filtros.programaDataEstacoesAlertaRio,
   };
 };
 
@@ -90,6 +100,9 @@ const mapDispatchToProps = {
   setPhotoGallery,
   setImagesType,
   setOpenCompletePhoto,
+  setProgramaDataCameras,
+  setProgramaDataSirenes,
+  setProgramaDataEstacoesAlertaRio
 };
 
 export default connect(

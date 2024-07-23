@@ -89,7 +89,7 @@ const useStyles = makeStyles({
       transition: "bottom 200ms cubic-bezier(0, 0, 0.2, 1)",
     },
   },
-  "@media screen and (min-width: 1279px)":{
+  "@media screen and (min-width: 1279px)": {
     filters: {
       top: "50px",
       left: "500px",
@@ -149,7 +149,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
     };
 
     loadFiltrosInfo();
-    loadFiltrosInfoIds();
+    // loadFiltrosInfoIds();
   }, []);
 
   const [value, setValue] = useState(0);
@@ -172,7 +172,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       </div>
     );
   }
-  
+
   function SheetContentBairros() {
     return (
       <div>
@@ -181,7 +181,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       </div>
     );
   }
-  
+
   function SheetContentRealizacoes() {
     return (
       <div>
@@ -191,7 +191,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
     );
   }
 
-  
+
   return (
     <div>
       <div className={classes.bottomWidgets}>

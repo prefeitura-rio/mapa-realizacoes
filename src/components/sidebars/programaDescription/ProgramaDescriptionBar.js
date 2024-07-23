@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { forwardRef, useEffect,useRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { useState } from "react";
 import DadosAgregados from "../../inlines/dadosAgregados/DadosAgregados";
 import rio_cover from "../../assets/rio_cover.jpg"
@@ -31,7 +31,7 @@ import "slick-carousel/slick/slick-theme.css";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { toSnakeCase } from "../../../utils/formatFile";
-import { getAggregatedData } from "../../../firebase";
+import { getAggregatedData, getListRealizacoesPrograma } from "../../../firebase";
 import { isDesktop } from "../../../redux/active/reducers";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
@@ -295,10 +295,10 @@ const ImageCarousel = ({ images }) => {
             </div>
             :
             <img
-      
+
               src={image}
               alt={`carousel-${index}`}
-              style={{ borderRadius: "10px", width: "100%", height: "250px", objectFit: "cover"}}
+              style={{ borderRadius: "10px", width: "100%", height: "250px", objectFit: "cover" }}
               loading="lazy"
               onError={handleImageError}
             />
@@ -327,7 +327,10 @@ const ProgramaDescriptionBar = forwardRef(
     programa,
     programaData,
     bairro,
-    openedPopup
+    openedPopup,
+    programaDataSirenes,
+    programaDataCameras,
+    programaDataEstacoesAlertaRio,
 
 
   }, ref) => {
@@ -395,7 +398,7 @@ const ProgramaDescriptionBar = forwardRef(
     function SheetContentProgramaDescriptionBar() {
       return (
         <Stack m={2} mt={2} spacing={2}>
-         <Paper
+          <Paper
             elevation={6}
             ref={ref}
             className={classes.underSearchMobile}
@@ -440,19 +443,29 @@ const ProgramaDescriptionBar = forwardRef(
             <Box height="8.5vh" display="flex" justifyContent="center" alignItems="center">
               {!dadosAgregadosAbaSumarioStatusEntregasPrograma ? (
                 <CircularProgress />
-              ) : dadosAgregadosAbaSumarioStatusEntregasPrograma.count === 0 ? (
+              ) : dadosAgregadosAbaSumarioStatusEntregasPrograma.count === 0 && (programa != "Sirenes") && (programa != "Câmeras") && (programa != "Estações Alerta Rio") ? (
                 <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
-                <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
-              </Box>
+                  <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
+                </Box>
               ) : (
                 <>
                   {/* <Tooltip title="Realizações"> */}
-                  <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                  <AccountBalanceIcon />
-                      <Box>
-                      <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasPrograma.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasPrograma.count > 1 ? "ões" : "ão"}</Typography>
-                      </Box>
-                    </Box>
+                  <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                    <AccountBalanceIcon />
+                    <Box>
+                      {(programa == "Câmeras") &&
+                        <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{programaDataCameras?.length} Realizações</Typography>
+                      }
+                      {(programa == "Sirenes") &&
+                        <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{programaDataSirenes?.length} Realizações</Typography>
+                      }
+                      {(programa == "Estações Alerta Rio") &&
+                        <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{programaDataEstacoesAlertaRio?.length} Realizações</Typography>
+                      }
+                      {(programa != "Sirenes") && (programa != "Câmeras") && (programa != "Estações Alerta Rio") &&
+                        <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasPrograma.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasPrograma.count > 1 ? "ões" : "ão"}</Typography>
+                      }                    </Box>
+                  </Box>
                   {/* </Tooltip> */}
                   {/* {programa != "BRTs Transbrasil" && (
                             <>
@@ -480,109 +493,144 @@ const ProgramaDescriptionBar = forwardRef(
             </Box>
 
 
-            </Paper>
+          </Paper>
 
-            <Paper
-              elevation={6}
-              className={classes.underSearch4Mobile}
-            >
-              <ImageCarousel images={[programaData?.image_url]} />
-            </Paper>
+          <Paper
+            elevation={6}
+            className={classes.underSearch4Mobile}
+          >
+            <ImageCarousel images={[programaData?.image_url]} />
+          </Paper>
         </Stack>
-      );}
+      );
+    }
 
-      const [value, setValue] = useState(1);
-      const [openSheet, setOpenSheet] = useState(0);
-      const sheetRef = useRef();
-  
-      const handleOpenSheet = (sheet) => {
-        setOpenSheet(sheet);
-      };
-  
-  
-      const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+    const [value, setValue] = useState(1);
+    const [openSheet, setOpenSheet] = useState(0);
+    const sheetRef = useRef();
 
-      const handleCloseSheet = () => {
-        setIsBottomSheetOpen(false);
-      };
-  
-      useEffect(() => {
-        if ( openedPopup == null && programa){
-          setIsBottomSheetOpen(true);
-        }
-      }, [openedPopup]);
-  
+    const handleOpenSheet = (sheet) => {
+      setOpenSheet(sheet);
+    };
+
+
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+
+    const handleCloseSheet = () => {
+      setIsBottomSheetOpen(false);
+    };
+
+    useEffect(() => {
+      if (openedPopup == null && programa) {
+        setIsBottomSheetOpen(true);
+      }
+    }, [openedPopup]);
+
+    // const [realizacoesCamera, setRealizacoesCamera] = useState([]);
+    // const [realizacoesSirene, setRealizacoesSirene] = useState([]);
+
+    // useEffect(() => {
+    //   const loadRealizacoesPrograma = async (p) => {
+    //     try {
+    //       const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
+    //       if (p == "Sirenes") setRealizacoesSirene(realizacoesProgramaRef);
+    //       if (p == "Câmeras") setRealizacoesCamera(realizacoesProgramaRef);
+    //     } catch (error) {
+    //       console.error("Erro", error);
+    //     }
+
+    //   };
+
+    //   if (programa == "Câmeras") {
+    //     loadRealizacoesPrograma("Câmeras");
+    //   }
+    //   if (programa == "Sirenes") {
+    //     loadRealizacoesPrograma("Sirenes");
+    //   }
+    // }, [programa]);
+
     return (
       <>
-      {isDesktop() && (
+        {isDesktop() && (
           <div >
 
-        <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            ref={ref}
-            className={classes.underSearch}
-          >
-            <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
-              <Typography className={classes.programa}>{programa}</Typography>
-              <Typography className={classes.subtitulo}> Programas</Typography>
-            </div>
-          </Paper>
-        </Slide>
-        <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-          <Paper
-            elevation={6}
-            className={classes.underSearch2}
-          >
-            <div className={classes.basicInfo}>
-              <Stack direction="row">
+            <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                ref={ref}
+                className={classes.underSearch}
+              >
+                <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+                  <Typography className={classes.programa}>{programa}</Typography>
+                  <Typography className={classes.subtitulo}> Programas</Typography>
+                </div>
+              </Paper>
+            </Slide>
+            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch2}
+              >
+                <div className={classes.basicInfo}>
+                  <Stack direction="row">
 
-                <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                {/* <Tooltip placement="right" title={`Detalhe sobre o ${programa}`}>
+                    <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                    {/* <Tooltip placement="right" title={`Detalhe sobre o ${programa}`}>
                   <IconButton>
                     <InfoIcon sx={{ color: "black" }} />
                   </IconButton>
                 </Tooltip> */}
-              </Stack>
+                  </Stack>
 
-              <Typography className={classes.subtituloMunicipio}>
-                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+                  <Typography className={classes.subtituloMunicipio}>
+                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
 
-                {fullText && fullText !== "" && fullText + " ..." !== shortText &&
-                  <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                    {isTextExpanded ? 'Leia menos' : 'Leia mais'}
-                  </Button>
-                }
-              </Typography>
-            </div>
-          </Paper>
-        </Slide>
-        {/* {dadosAgregadosAbaSumarioStatusEntregasPrograma?.count != 0 && */}
-          <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-            <Paper
-              elevation={6}
-              className={classes.underSearch3}
-            >
-               <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-              {!dadosAgregadosAbaSumarioStatusEntregasPrograma ? (
-                <CircularProgress />
-              ) : dadosAgregadosAbaSumarioStatusEntregasPrograma.count === 0 ? (
-                <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
-                <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
-              </Box>
-              ) : (
-                <>
-                  {/* <Tooltip title="Realizações"> */}
-                    <Box display="flex">
-                      <AccountBalanceIcon />
-                      <Box>
-                        <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasPrograma.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasPrograma.count > 1 ? "ões" : "ão"}</Typography>
-                      </Box>
+                    {fullText && fullText !== "" && fullText + " ..." !== shortText &&
+                      <Button onClick={() => setTextExpanded(!isTextExpanded)}>
+                        {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                      </Button>
+                    }
+                  </Typography>
+                </div>
+              </Paper>
+            </Slide>
+            {/* {dadosAgregadosAbaSumarioStatusEntregasPrograma?.count != 0 && */}
+            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+              <Paper
+                elevation={6}
+                className={classes.underSearch3}
+              >
+                <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+                  {!dadosAgregadosAbaSumarioStatusEntregasPrograma ? (
+                    <CircularProgress />
+                  ) : dadosAgregadosAbaSumarioStatusEntregasPrograma.count === 0 && (programa != "Sirenes") && (programa != "Câmeras") && (programa != "Estações Alerta Rio") ? (
+                    <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
+                      <Typography>Não há realização deste tema ou programa no bairro selecionado.</Typography>
                     </Box>
-                  {/* </Tooltip> */}
-                          {programa != "BRTs Transbrasil" && (
-                            <>
-                              {/* <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                  ) : (
+                    <>
+                      {/* <Tooltip title="Realizações"> */}
+                      <Box display="flex">
+                        <AccountBalanceIcon />
+                        <Box>
+                          {(programa == "Câmeras") &&
+                            <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{programaDataCameras?.length} Realizações</Typography>
+                          }
+                          {(programa == "Sirenes") &&
+                            <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{programaDataSirenes?.length} Realizações</Typography>
+                          }
+                          {(programa == "Estações Alerta Rio") &&
+                            <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{programaDataEstacoesAlertaRio?.length} Realizações</Typography>
+                          }
+                          {(programa != "Sirenes") && (programa != "Câmeras") && (programa != "Estações Alerta Rio") &&
+                            <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasPrograma.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasPrograma.count > 1 ? "ões" : "ão"}</Typography>
+                          }
+                        </Box>
+                      </Box>
+                      {/* </Tooltip> */}
+                      {programa != "BRTs Transbrasil" && (
+                        <>
+                          {/* <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                               {dadosAgregadosAbaSumarioStatusEntregasPrograma.investment !== 0 && (
                                 <Box display="flex">
                                   <AttachMoneyIcon />
@@ -599,31 +647,31 @@ const ProgramaDescriptionBar = forwardRef(
                                   </Box>
                                 </Box>
                               )} */}
-                            </>
-                          )}
+                        </>
+                      )}
 
-                </>
-              )}
-            </Box>
+                    </>
+                  )}
+                </Box>
 
 
-            </Paper>
-          </Slide>
-        {/* } */}
-        {programaData?.image_url &&
-          <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-            <Paper
-              elevation={6}
-              className={classes.underSearch4}
-            >
-              <ImageCarousel  images={[programaData?.image_url]} />
-            </Paper>
-          </Slide>
-        }
-         </div>
+              </Paper>
+            </Slide>
+            {/* } */}
+            {programaData?.image_url &&
+              <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                <Paper
+                  elevation={6}
+                  className={classes.underSearch4}
+                >
+                  <ImageCarousel images={[programaData?.image_url]} />
+                </Paper>
+              </Slide>
+            }
+          </div>
         )}
 
- {!isDesktop() && openedPopup == null && programa && (
+        {!isDesktop() && openedPopup == null && programa && (
           <div>
 
             <BottomSheet
