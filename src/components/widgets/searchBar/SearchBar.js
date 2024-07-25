@@ -1802,7 +1802,7 @@ const SearchBar = ({
               icon={<RestoreIcon />}
               tooltipTitle={
                 <Paper elevation={4}
-                  style={{ borderRadius: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "center", width: '80px' }}
+                  style={{ borderRadius: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "center", width: '92px' }}
                   className={`${classes.fixedButtonClock} ${gestao === "1_2" || gestao === "1_2_3" ? classes.selectedPaperOldPoints : ''}`}                >
                   <Typography
                     style={{ color: "black", fontSize: "13px", fontWeight: "bold" }}
@@ -1818,7 +1818,7 @@ const SearchBar = ({
               icon={<RestoreIcon />}
               tooltipTitle={
                 <Paper elevation={4}
-                  style={{ maxWidth: "none", width: "10px", borderRadius: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "center", width: '80px' }}
+                  style={{ maxWidth: "none", width: "10px", borderRadius: "10px", padding: "10px", display: "flex", alignItems: "center", justifyContent: "center", width: '92px' }}
                   className={`${classes.fixedButtonClock} ${gestao === "3" || gestao === "1_2_3" || gestao == null ? classes.selectedPaperG3 : ''}`}
                 >
                   <Typography
