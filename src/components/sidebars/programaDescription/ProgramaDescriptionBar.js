@@ -389,10 +389,12 @@ const ProgramaDescriptionBar = forwardRef(
     const [isScreen500, setTextScreen500] = useState(false);
 
 
-    const fullText = programaData?.descricao;
+    const fullText = programaData?.descricao
+      .replace(/(\\r\\n)/g, '<br />')
+      .replace(/-/g, '<b>-</b>') || '';
 
     // Calcule o número de caracteres com base na altura da janela
-    const numChars = Math.floor(windowHeight / (isScreen900 ? 3.3 : (isScreen500 ? 4 : 1.1)));
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 3.9 : (isScreen500 ? 4 : 1.1)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
     function SheetContentProgramaDescriptionBar() {
@@ -583,8 +585,7 @@ const ProgramaDescriptionBar = forwardRef(
                   </Stack>
 
                   <Typography className={classes.subtituloMunicipio}>
-                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
-
+                    <span dangerouslySetInnerHTML={{ __html: isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText }} />
                     {fullText && fullText !== "" && fullText + " ..." !== shortText &&
                       <Button onClick={() => setTextExpanded(!isTextExpanded)}>
                         {isTextExpanded ? 'Leia menos' : 'Leia mais'}
