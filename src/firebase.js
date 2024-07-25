@@ -193,13 +193,19 @@ export function getListTemaName() {
   });
 }
 
-export async function getListTemasNameByGestao(gestao = '3') {
+export async function getListTemasNameByGestaoBairro(gestao = '3', id_bairro = null) {
   try {
     const realizacoesRef = db.collection('realizacao');
-    const querySnapshot = await realizacoesRef.where('gestao', '==', gestao == null || gestao == "1_2_3" || gestao == "3" ? "3" : "1-2").get();
+    let query = realizacoesRef.where('gestao', '==', gestao == null || gestao == "1_2_3" || gestao == "3" ? "3" : "1-2");
+
+    if (id_bairro) {
+      query = query.where('id_bairro', '==', id_bairro);
+    }
+
+    const querySnapshot = await query.get();
 
     if (querySnapshot.empty) {
-      console.log(`Nenhuma realização encontrada com gestao igual a ${gestao}.`);
+      console.log(`Nenhuma realização encontrada com gestao igual a ${gestao} e id_bairro igual a ${id_bairro}.`);
       return [];
     }
 
@@ -210,8 +216,9 @@ export async function getListTemasNameByGestao(gestao = '3') {
         temasSet.add(snakeToCapitalized(data.id_tema));
       }
     });
+
     const temasArray = Array.from(temasSet);
-    temasArray.sort();
+    temasArray.sort(); // Ordena o array em ordem alfabética
 
     return temasArray;
   } catch (error) {
