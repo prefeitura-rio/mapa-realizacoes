@@ -295,7 +295,8 @@ const BairroDescriptionBar = forwardRef(
     setUnderSearchBar,
     loadData,
     setActiveBar,
-    openedPopup
+    openedPopup,
+    gestao
   }, ref) => {
 
     const classes = useStyles();
@@ -399,50 +400,52 @@ const BairroDescriptionBar = forwardRef(
             </Box>
 
           </Paper>
-          <Paper
-            elevation={6}
-            className={classes.underSearch4Mobile}
-          >
-            <div className={classes.basicInfo}>
-              <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-              <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                    {isLoading ? (
-                      <>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="80%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="40%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="80%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="40%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                      </>
-                    ) : destaquesBairro.length === 0 ? (
-                      <Typography className={classes.subtitulo}>Nenhum destaque encontrado para este bairro.</Typography>
-                    ) : (
-                      destaquesBairro.map((item, index) => (
-                        <li key={index} style={{ paddingBottom: "15px" }}>
-                          <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
-                            {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
-                          </Typography>
-                          <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-            </div>
-          </Paper>
+          {gestao != "1_2" &&
+            <Paper
+              elevation={6}
+              className={classes.underSearch4Mobile}
+            >
+              <div className={classes.basicInfo}>
+                <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                  {isLoading ? (
+                    <>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="80%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                      <br></br>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="40%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                      <br></br>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="80%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                      <br></br>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="40%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                    </>
+                  ) : destaquesBairro.length === 0 ? (
+                    <Typography className={classes.subtitulo}>Nenhum destaque encontrado para este bairro.</Typography>
+                  ) : (
+                    destaquesBairro.map((item, index) => (
+                      <li key={index} style={{ paddingBottom: "15px" }}>
+                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
+                          {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
+                        </Typography>
+                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+            </Paper>
+          }
         </Stack>)
     }
     const [value, setValue] = useState(1);
@@ -556,52 +559,54 @@ const BairroDescriptionBar = forwardRef(
 
               </Paper>
             </Slide>
-            <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-              <Paper
-                elevation={6}
-                className={classes.underSearch3}
-              >
-                <div className={classes.basicInfo}>
-                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                    {isLoading ? (
-                      <>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="80%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="40%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="80%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="40%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                      </>
-                    ) : destaquesBairro.length === 0 ? (
-                      <Typography className={classes.subtitulo}>Nenhum destaque encontrado para este bairro.</Typography>
-                    ) : (
-                      destaquesBairro.map((item, index) => (
-                        <li key={index} style={{ paddingBottom: "15px" }}>
-                          <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
-                            {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
-                          </Typography>
-                          <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </div>
-              </Paper>
-            </Slide>
+            {gestao != "1_2" &&
+              <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                <Paper
+                  elevation={6}
+                  className={classes.underSearch3}
+                >
+                  <div className={classes.basicInfo}>
+                    <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                    <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                      {isLoading ? (
+                        <>
+                          <Skeleton variant="text" />
+                          <Skeleton height="15px" width="80%" />
+                          <Skeleton height="15px" width="60%" />
+                          <Skeleton height="15px" width="73%" />
+                          <br></br>
+                          <Skeleton variant="text" />
+                          <Skeleton height="15px" width="40%" />
+                          <Skeleton height="15px" width="60%" />
+                          <Skeleton height="15px" width="73%" />
+                          <br></br>
+                          <Skeleton variant="text" />
+                          <Skeleton height="15px" width="80%" />
+                          <Skeleton height="15px" width="60%" />
+                          <Skeleton height="15px" width="73%" />
+                          <br></br>
+                          <Skeleton variant="text" />
+                          <Skeleton height="15px" width="40%" />
+                          <Skeleton height="15px" width="60%" />
+                          <Skeleton height="15px" width="73%" />
+                        </>
+                      ) : destaquesBairro.length === 0 ? (
+                        <Typography className={classes.subtitulo}>Nenhum destaque encontrado para este bairro.</Typography>
+                      ) : (
+                        destaquesBairro.map((item, index) => (
+                          <li key={index} style={{ paddingBottom: "15px" }}>
+                            <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
+                              {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
+                            </Typography>
+                            <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                          </li>
+                        ))
+                      )}
+                    </ul>
+                  </div>
+                </Paper>
+              </Slide>
+            }
           </>
         )}
 

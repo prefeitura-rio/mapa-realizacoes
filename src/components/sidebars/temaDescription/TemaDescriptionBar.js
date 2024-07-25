@@ -322,7 +322,8 @@ const TemaDescriptionBar = forwardRef(
     programaDataEstacoesAlertaRio,
     setProgramaDataCameras,
     setProgramaDataSirenes,
-    setProgramaDataEstacoesAlertaRio
+    setProgramaDataEstacoesAlertaRio,
+    gestao
 
 
 
@@ -531,38 +532,40 @@ const TemaDescriptionBar = forwardRef(
 
           </Paper>
 
-          <Paper
-            elevation={6}
-            className={classes.underSearch4Mobile}
-          >
-            <div className={classes.basicInfo}>
-              <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-              <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                {destaquesTema.length == 0 ? (
-                  <>
-                    <Skeleton variant="text" />
-                    <Skeleton height="15px" width="80%" />
-                    <Skeleton height="15px" width="60%" />
-                    <Skeleton height="15px" width="73%" />
-                    <br></br>
-                    <Skeleton variant="text" />
-                    <Skeleton height="15px" width="40%" />
-                    <Skeleton height="15px" width="60%" />
-                    <Skeleton height="15px" width="73%" />
-                  </>
-                )
-                  :
-                  (
-                    destaquesTema.map((item, index) => (
-                      <li key={index} style={{ paddingBottom: "15px" }}>
-                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                      </li>
-                    ))
-                  )}
-              </ul>
-            </div>
-          </Paper>
+          {gestao != "1_2" &&
+            <Paper
+              elevation={6}
+              className={classes.underSearch4Mobile}
+            >
+              <div className={classes.basicInfo}>
+                <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                  {destaquesTema.length == 0 ? (
+                    <>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="80%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                      <br></br>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="40%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                    </>
+                  )
+                    :
+                    (
+                      destaquesTema.map((item, index) => (
+                        <li key={index} style={{ paddingBottom: "15px" }}>
+                          <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                          <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                        </li>
+                      ))
+                    )}
+                </ul>
+              </div>
+            </Paper>
+          }
 
         </Stack>
       );
@@ -694,40 +697,42 @@ const TemaDescriptionBar = forwardRef(
 
               </Paper>
             </Slide>
-            <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-              <Paper
-                elevation={6}
-                className={classes.underSearch4}
-              >
-                <div className={classes.basicInfo}>
-                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                    {destaquesTema.length == 0 ? (
-                      <>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="80%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="40%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                      </>
-                    )
-                      :
-                      (
-                        destaquesTema.map((item, index) => (
-                          <li key={index} style={{ paddingBottom: "15px" }}>
-                            <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
-                            <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                          </li>
-                        ))
-                      )}
-                  </ul>
-                </div>
-              </Paper>
-            </Slide>
+            {gestao != "1_2" &&
+              <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                <Paper
+                  elevation={6}
+                  className={classes.underSearch4}
+                >
+                  <div className={classes.basicInfo}>
+                    <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                    <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                      {destaquesTema.length == 0 ? (
+                        <>
+                          <Skeleton variant="text" />
+                          <Skeleton height="15px" width="80%" />
+                          <Skeleton height="15px" width="60%" />
+                          <Skeleton height="15px" width="73%" />
+                          <br></br>
+                          <Skeleton variant="text" />
+                          <Skeleton height="15px" width="40%" />
+                          <Skeleton height="15px" width="60%" />
+                          <Skeleton height="15px" width="73%" />
+                        </>
+                      )
+                        :
+                        (
+                          destaquesTema.map((item, index) => (
+                            <li key={index} style={{ paddingBottom: "15px" }}>
+                              <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>{item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} /></Typography>
+                              <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                            </li>
+                          ))
+                        )}
+                    </ul>
+                  </div>
+                </Paper>
+              </Slide>
+            }
           </div>
         )}
 

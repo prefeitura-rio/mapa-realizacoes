@@ -62,6 +62,7 @@ const TemaDescriptionContainer = (props) => {
       programaDataCameras={props.programaDataCameras}
       programaDataSirenes={props.programaDataSirenes}
       programaDataEstacoesAlertaRio={props.programaDataEstacoesAlertaRio}
+      gestao={props.gestao}
     />
   );
 };
@@ -89,6 +90,7 @@ const mapStateToProps = (state) => {
     programaDataCameras: state.filtros.programaDataCameras,
     programaDataSirenes: state.filtros.programaDataSirenes,
     programaDataEstacoesAlertaRio: state.filtros.programaDataEstacoesAlertaRio,
+    gestao: state.active.gestao
   };
 };
 

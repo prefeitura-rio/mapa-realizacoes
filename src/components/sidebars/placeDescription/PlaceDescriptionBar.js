@@ -604,21 +604,65 @@ const PlaceDescriptionBar = forwardRef(
                         {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
                         {
                           isTextExpanded ? (
-                            content?.gestao == 3 ? (
-                              <>
+
+                            <>
+                              <span>
                                 {fullText}
-                                <Typography style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff' }} onClick={() => { setTema(content?.tema); setPrograma(content?.programa); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}>
+                                <Typography
+                                  component="span"
+                                  style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
+                                  onClick={() => {
+                                    setTema(content?.tema);
+                                    setPrograma(content?.programa);
+                                    setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                                  }}
+                                >
                                   Saiba mais
                                 </Typography>
-                              </>
-                            ) : fullText
+                              </span>
+                            </>
+
                           ) : shortText === "undefined ..." ? (
                             "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."
-                          ) : (fullText + " ..." === shortText) ? fullText : shortText
+                          ) : (fullText + " ..." === shortText) ?
+                            (
+                              <span>
+                                {fullText}
+
+                                <Typography
+                                  component="span"
+                                  style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
+                                  onClick={() => {
+                                    setTema(content?.tema);
+                                    setPrograma(content?.programa);
+                                    setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                                  }}
+                                >
+                                  Saiba mais
+                                </Typography>
+
+                              </span>
+                            ) :
+                            <span>
+                              {shortText}
+                              {isTextExpanded &&
+                                <Typography
+                                  component="span"
+                                  style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
+                                  onClick={() => {
+                                    setTema(content?.tema);
+                                    setPrograma(content?.programa);
+                                    setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                                  }}
+                                >
+                                  Saiba mais
+                                </Typography>
+                              }
+                            </span>
                         }
                         {fullText + " ..." === shortText ? null :
                           <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                            {isTextExpanded ? 'Leia menos' : 'Leia mais'}
+                            {content?.descricao && (isTextExpanded ? 'Leia menos' : 'Leia mais')}
                           </Button>
                         }
                       </Typography>
@@ -722,17 +766,61 @@ const PlaceDescriptionBar = forwardRef(
                             {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
                             {
                               isTextExpanded ? (
-                                content?.gestao == 3 ? (
-                                  <>
+
+                                <>
+                                  <span>
                                     {fullText}
-                                    <Typography style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff' }} onClick={() => { setTema(content?.tema); setPrograma(content?.programa); setActiveBar(PROGRAMA_DESCRIPTION_BAR) }}>
+                                    <Typography
+                                      component="span"
+                                      style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
+                                      onClick={() => {
+                                        setTema(content?.tema);
+                                        setPrograma(content?.programa);
+                                        setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                                      }}
+                                    >
                                       Saiba mais
                                     </Typography>
-                                  </>
-                                ) : fullText
+                                  </span>
+                                </>
+
                               ) : shortText === "undefined ..." ? (
                                 "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."
-                              ) : (fullText + " ..." === shortText) ? fullText : shortText
+                              ) : (fullText + " ..." === shortText) ?
+                                (
+                                  <span>
+                                    {fullText}
+
+                                    <Typography
+                                      component="span"
+                                      style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
+                                      onClick={() => {
+                                        setTema(content?.tema);
+                                        setPrograma(content?.programa);
+                                        setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                                      }}
+                                    >
+                                      Saiba mais
+                                    </Typography>
+
+                                  </span>
+                                ) :
+                                <span>
+                                  {shortText}
+                                  {isTextExpanded &&
+                                    <Typography
+                                      component="span"
+                                      style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
+                                      onClick={() => {
+                                        setTema(content?.tema);
+                                        setPrograma(content?.programa);
+                                        setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                                      }}
+                                    >
+                                      Saiba mais
+                                    </Typography>
+                                  }
+                                </span>
                             }
                             {fullText + " ..." === shortText ? null :
                               <Button onClick={() => setTextExpanded(!isTextExpanded)}>

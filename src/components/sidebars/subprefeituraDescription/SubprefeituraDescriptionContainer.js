@@ -4,10 +4,10 @@ import { connect, useDispatch } from "react-redux";
 
 import { setDescriptionData } from "../../../redux/place/actions";
 import { loadData } from "../../../redux/place/actions";
-import { setActiveBar,setPhotoGallery } from "../../../redux/active/actions";
+import { setActiveBar, setPhotoGallery } from "../../../redux/active/actions";
 import { useEffect } from "react";
 import { loadDadosAgregadosAbaProgramasSubprefeitura, loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura, loadDadosAgregadosAbaTemaSubprefeitura, loadSubprefeituraData } from "../../../redux/subprefeituras/actions";
-import { loadAllImagesSubprefeitura,setImagesType } from "../../../redux/images/actions";
+import { loadAllImagesSubprefeitura, setImagesType } from "../../../redux/images/actions";
 
 
 const SubprefeituraDescriptionContainer = (props) => {
@@ -25,29 +25,29 @@ const SubprefeituraDescriptionContainer = (props) => {
   }, [props.descriptionData]);
 
   return (
-      <SubprefeituraDescriptionBar
-        underSearchBar={props.underSearchBar}
-        images_subprefeitura={props.images_subprefeitura}
-        subprefeitura={props.subprefeitura}
-        dadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaTemaSubprefeitura}
-        dadosAgregadosAbaProgramasSubprefeitura={props.dadosAgregadosAbaProgramasSubprefeitura}
-        dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={props.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}
-        dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={props.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura}
-        setUnderSearchBar={props.setUnderSearchBar}
-        setActiveBar={props.setActiveBar}
-        setDescriptionData={props.setDescriptionData}
-        loadData={props.loadData}
-        setPhotoGallery={props.setPhotoGallery}
-        setImagesType={props.setImagesType}
-        openedPopup={props.openedPopup}
-        tema={props.tema}
-        programa={props.programa}
+    <SubprefeituraDescriptionBar
+      underSearchBar={props.underSearchBar}
+      images_subprefeitura={props.images_subprefeitura}
+      subprefeitura={props.subprefeitura}
+      dadosAgregadosAbaTemaSubprefeitura={props.dadosAgregadosAbaTemaSubprefeitura}
+      dadosAgregadosAbaProgramasSubprefeitura={props.dadosAgregadosAbaProgramasSubprefeitura}
+      dadosAgregadosAbaSumarioInfoBasicasSubprefeitura={props.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura}
+      dadosAgregadosAbaSumarioStatusEntregasSubprefeitura={props.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura}
+      setUnderSearchBar={props.setUnderSearchBar}
+      setActiveBar={props.setActiveBar}
+      setDescriptionData={props.setDescriptionData}
+      loadData={props.loadData}
+      setPhotoGallery={props.setPhotoGallery}
+      setImagesType={props.setImagesType}
+      openedPopup={props.openedPopup}
+      tema={props.tema}
+      programa={props.programa}
 
-        // remove if not useful
-        profile={props.profile}
-        login={props.login}
-        anyLoading={props.anyLoading}
-      />
+      // remove if not useful
+      profile={props.profile}
+      login={props.login}
+      anyLoading={props.anyLoading}
+    />
   );
 };
 
@@ -64,12 +64,13 @@ const mapStateToProps = (state) => {
     dadosAgregadosAbaProgramasSubprefeitura: state.subprefeituras.dadosAgregadosAbaProgramasSubprefeitura,
     dadosAgregadosAbaSumarioInfoBasicasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioInfoBasicasSubprefeitura,
     dadosAgregadosAbaSumarioStatusEntregasSubprefeitura: state.subprefeituras.dadosAgregadosAbaSumarioStatusEntregasSubprefeitura,
-    setImagesType: state.images.setImagesType,  
+    setImagesType: state.images.setImagesType,
     subprefeitura: state.filtros.subprefeitura,
     openedPopup: state.active.openedPopup,
     tema: state.filtros.tema,
     programa: state.filtros.programa,
-    
+    gestao: state.active.gestao
+
   };
 };
 

@@ -8,8 +8,8 @@ import VerticalContainer from "./verticalWidget/VerticalContainer";
 import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
 import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
-import { getListBairroName, getListOrgaoName, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
-import { useRef, useState } from "react";
+import { getListBairroName, getListOrgaoName, getListTemasNameByGestao, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
+import { useMemo, useRef, useState } from "react";
 import { useEffect } from "react";
 import { isDesktop } from "../../redux/active/reducers";
 import SearchIcon from "@material-ui/icons/Search";
@@ -100,48 +100,29 @@ const useStyles = makeStyles({
   }
 });
 
-const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
+const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros, gestao }) => {
   const classes = useStyles({ underSearchBar, bottomGallery });
 
   const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
   const [temasNameFilter, setTemasNameFilter] = useState([]);
-  const [programasNameFilter, setProgramasNameFilter] = useState([]);
-  const [orgaosNameFilterIds, setOrgaosNameFilterIds] = useState([]);
-  const [temasNameFilterIds, setTemasNameFilterIds] = useState([]);
-  const [programasNameFilterIds, setProgramasNameFilterIds] = useState([]);
+
+  const temaCache = useMemo(() => ({}), []);
 
   useEffect(() => {
-
     const loadFiltrosInfo = async () => {
       try {
-        const orgaoRef = await getListOrgaoName();
-        const temaRef = await getListTemaName();
-        const programaRef = await getListProgramaName();
-
-        if (!orgaoRef.empty && !temaRef.empty && !programaRef.empty) {
-          setOrgaosNameFilter(orgaoRef);
-          setTemasNameFilter(temaRef);
-          setProgramasNameFilter(programaRef);
+        if (temaCache[gestao]) {
+          // Se o resultado já está no cache, usa ele
+          setTemasNameFilter(temaCache[gestao]);
         } else {
-          console.error("Erro aqui <<== ");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar nomes dos filtros", error);
-      }
-    };
-
-    const loadFiltrosInfoIds = async () => {
-      try {
-        const realizacaoOrgaoRef = await getListRealizacaoOrgaoIds();
-        const realizacaoTemaRef = await getListRealizacaoTemaIds();
-        const realizacaoProgramaRef = await getListRealizacaoProgramaIds();
-
-        if (!realizacaoOrgaoRef.empty && !realizacaoTemaRef.empty && !realizacaoProgramaRef.empty) {
-          setOrgaosNameFilterIds(realizacaoOrgaoRef);
-          setTemasNameFilterIds(realizacaoTemaRef);
-          setProgramasNameFilterIds(realizacaoProgramaRef);
-        } else {
-          console.error("Erro aqui <<== ");
+          // Se não ta no cache, faz a chamada API e armazena o resultado no cache
+          const temaRef = await getListTemasNameByGestao(gestao);
+          if (temaRef.length > 0) {
+            temaCache[gestao] = temaRef;
+            setTemasNameFilter(temaRef);
+          } else {
+            console.error("Erro aqui <<== ");
+          }
         }
       } catch (error) {
         console.error("Erro ao buscar nomes dos filtros", error);
@@ -149,8 +130,8 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
     };
 
     loadFiltrosInfo();
-    // loadFiltrosInfoIds();
-  }, []);
+  }, [gestao, temaCache]);
+
 
   const [value, setValue] = useState(0);
   const [openSheet, setOpenSheet] = useState(null);
@@ -208,7 +189,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       </div>
 
       <div className={classes.topLeftWidgets}>
-        <SearchbarContainer temasNameFilter={temasNameFilter} programasNameFilter={programasNameFilter} />
+        <SearchbarContainer temasNameFilter={temasNameFilter} />
         <UnderSearchContainer />
       </div>
       {/* {!isDesktop() && (
