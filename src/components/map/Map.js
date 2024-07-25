@@ -653,7 +653,7 @@ const Map = ({
     );
   }
 
-  const resilienciaClimaticaPoints = points.filter(point => toSnakeCase('Resiliência Climática') === point.id_tema);
+  const resilienciaClimaticaPoints = points.filter(point => (toSnakeCase('Resiliência Climática') === point.id_tema) && (point.gestao == "3"));
   const asfaltoLisoPoints = points.filter(point => toSnakeCase('Asfalto liso') === point.id_programa);
   const mobilidadePoints = points.filter(point => (toSnakeCase('Mobilidade') === point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (toSnakeCase('Resiliência Climática') !== point.id_tema));
   const otherPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao == "3") && (toSnakeCase('Resiliência Climática') !== point.id_tema));
@@ -857,7 +857,7 @@ const Map = ({
 
 
             // Renderiza o marcador se corresponder ao bairro e aos demais
-            if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
+            if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao != "1_2")) {
               return renderMarker(point, index);
             }
 

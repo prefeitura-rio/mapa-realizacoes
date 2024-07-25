@@ -8,7 +8,7 @@ import VerticalContainer from "./verticalWidget/VerticalContainer";
 import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
 import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
-import { getListBairroName, getListOrgaoName, getListTemasNameByGestao, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
+import { getListBairroName, getListOrgaoName, getListTemasNameByGestao, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds, getListTemasNameByGestaoBairro } from "../../firebase";
 import { useMemo, useRef, useState } from "react";
 import { useEffect } from "react";
 import { isDesktop } from "../../redux/active/reducers";
@@ -17,6 +17,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import lupa_mapa from '../../icons/lupa_mapa.png';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
+import { toSnakeCase } from "../../utils/formatFile";
 
 const useStyles = makeStyles({
   bottomRightWidgets: {
@@ -100,25 +101,25 @@ const useStyles = makeStyles({
   }
 });
 
-const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros, gestao }) => {
+const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros, gestao, bairro }) => {
   const classes = useStyles({ underSearchBar, bottomGallery });
 
   const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
   const [temasNameFilter, setTemasNameFilter] = useState([]);
-
   const temaCache = useMemo(() => ({}), []);
 
   useEffect(() => {
     const loadFiltrosInfo = async () => {
       try {
-        if (temaCache[gestao]) {
+        const cacheKey = `${gestao}-${bairro || 'all'}`; // Chave única para cache
+        if (temaCache[cacheKey]) {
           // Se o resultado já está no cache, usa ele
-          setTemasNameFilter(temaCache[gestao]);
+          setTemasNameFilter(temaCache[cacheKey]);
         } else {
-          // Se não ta no cache, faz a chamada API e armazena o resultado no cache
-          const temaRef = await getListTemasNameByGestao(gestao);
+          // Se não está no cache, faz a chamada API e armazena o resultado no cache
+          const temaRef = await getListTemasNameByGestaoBairro(gestao, bairro && toSnakeCase(bairro));
           if (temaRef.length > 0) {
-            temaCache[gestao] = temaRef;
+            temaCache[cacheKey] = temaRef;
             setTemasNameFilter(temaRef);
           } else {
             console.error("Erro aqui <<== ");
@@ -130,7 +131,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros, gestao })
     };
 
     loadFiltrosInfo();
-  }, [gestao, temaCache]);
+  }, [gestao, bairro, temaCache]);
 
 
   const [value, setValue] = useState(0);
