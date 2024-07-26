@@ -492,7 +492,7 @@ const PlaceDescriptionBar = forwardRef(
     const fullText = content?.descricao;
 
     // Calcule o número de caracteres com base na altura da janela
-    const numChars = Math.floor(windowHeight / (isScreen900 ? 2.5 : (isScreen600 ? 3 : 1.4)));
+    const numChars = Math.floor(windowHeight / (isScreen900 ? 3 : (isScreen600 ? 3.2 : 1.6)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
     const [loading, setLoading] = useState(false);
@@ -618,6 +618,7 @@ const PlaceDescriptionBar = forwardRef(
                             {content?.descricao && (isTextExpanded ? 'Leia menos' : 'Leia mais')}
                           </Button>
                         )}
+                        <br></br>
                         <Typography
                           component="span"
                           style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
@@ -743,7 +744,7 @@ const PlaceDescriptionBar = forwardRef(
                               <Button onClick={() => setTextExpanded(!isTextExpanded)}>
                                 {content?.descricao && (isTextExpanded ? 'Leia menos' : 'Leia mais')}
                               </Button>
-                            )}
+                            )}<br></br>
                             <Typography
                               component="span"
                               style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
