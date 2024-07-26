@@ -170,7 +170,7 @@ export async function getRealizacaoFirstImageUrl(name_realizacao) {
     const folderRef = storageRef.child(id_realizacao);
     const res = await folderRef.listAll();
     const imageRef = res.items[0];
-    return await imageRef.getDownloadURL();  
+    return await imageRef.getDownloadURL();
   }
   catch (e) {
     return null;
@@ -191,6 +191,44 @@ export function getListTemaName() {
   return temaRef.get().then((querySnapshot) => {
     return querySnapshot.docs.map((doc) => doc.data().nome);
   });
+}
+
+export async function getListTemasNameByGestaoBairro(gestao = '3', id_bairro = null, id_subprefeitura = null) {
+  try {
+    const realizacoesRef = db.collection('realizacao');
+    let query = realizacoesRef.where('gestao', '==', gestao == null || gestao == "1_2_3" || gestao == "3" ? "3" : "1-2");
+
+    if (id_bairro) {
+      query = query.where('id_bairro', '==', id_bairro);
+    }
+
+    if (id_subprefeitura) {
+      query = query.where('id_subprefeitura', '==', id_subprefeitura);
+    }
+    console.log("gestao", gestao, "id_bairro", id_bairro, "id_subprefeitura", id_subprefeitura);
+    const querySnapshot = await query.get();
+
+    if (querySnapshot.empty) {
+      console.log(`Nenhuma realização encontrada com gestao igual a ${gestao} e id_bairro igual a ${id_bairro}.`);
+      return [];
+    }
+
+    const temasSet = new Set();
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.id_tema) {
+        temasSet.add(snakeToCapitalized(data.id_tema));
+      }
+    });
+
+    const temasArray = Array.from(temasSet);
+    temasArray.sort(); // Ordena o array em ordem alfabética
+
+    return temasArray;
+  } catch (error) {
+    console.error('Erro ao obter temas:', error);
+    return [];
+  }
 }
 
 export async function getListProgramaData() {
@@ -424,17 +462,17 @@ export async function getRealizacaoInfo(document) {
   let data = await realizacoes.find((place) => place.id === document);
   // get status
 
-  data.status = snakeToCapitalized(data.id_status??"");
+  data.status = snakeToCapitalized(data.id_status ?? "");
   // get bairro
-  data.bairro = snakeToCapitalized(data.id_bairro??"");
+  data.bairro = snakeToCapitalized(data.id_bairro ?? "");
   // get subprefeitura
-  data.subprefeitura = snakeToCapitalized(data.id_subprefeitura??"");
+  data.subprefeitura = snakeToCapitalized(data.id_subprefeitura ?? "");
   // get tema
-  data.tema =snakeToCapitalized(data.id_tema??"") ;
+  data.tema = snakeToCapitalized(data.id_tema ?? "");
   // get orgao
-  data.orgao = snakeToCapitalized(data.id_orgao??"");
+  data.orgao = snakeToCapitalized(data.id_orgao ?? "");
   // get programa
-  data.programa = snakeToCapitalized(data.id_programa??"");
+  data.programa = snakeToCapitalized(data.id_programa ?? "");
   return data;
 }
 
@@ -492,7 +530,7 @@ export async function getDadosAgregadosAbaSumarioStatusEntregas(
     id_subprefeitura: null,
     ...filters,
   };
-  try { 
+  try {
     const realizacaoIds = await getListRealizacaoIds(inputFilters);
     const data = await getListRealizacaoData(realizacaoIds);
     const contagemStatus = {
@@ -711,8 +749,8 @@ export async function getDadosAgregadosAbaProgramas(
           realizacoes.map(async (realizacao) => {
             const realizacaoPrograma = {
               titulo: realizacao.nome,
-                 // pra calcular o investimento total
-                 investimento: realizacao.investimento,
+              // pra calcular o investimento total
+              investimento: realizacao.investimento,
               status: statusDataMap[realizacao.id_status],
               imageUrl: await getRealizacaoFirstImageUrl(realizacao.nome) || "https://maps.gstatic.com/tactile/pane/result-no-thumbnail-2x.png",
             };
@@ -809,7 +847,7 @@ export async function getRealizacaoTemaIds() { // TODO: remove
 export async function getListRealizacaoTemaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_tema').get();
-  const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_tema));
+    const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_tema));
     return ids;
   } catch (error) {
     console.error('Erro ao obter os IDs dos documentos:', error);
@@ -820,7 +858,7 @@ export async function getListRealizacaoTemaIds() { // TODO: remove
 export async function getListRealizacaoProgramaIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_programa').get();
-  const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_programa));
+    const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_programa));
     return ids;
   } catch (error) {
     console.error('Erro ao obter os IDs dos documentos:', error);
@@ -831,7 +869,7 @@ export async function getListRealizacaoProgramaIds() { // TODO: remove
 export async function getListRealizacaoOrgaoIds() { // TODO: remove
   try {
     const snapshot = await db.collection('realizacao_orgao').get();
-  const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_orgao));
+    const ids = snapshot.docs.map((doc) => snakeToCapitalized(doc.data().id_orgao));
     return ids;
   } catch (error) {
     console.error('Erro ao obter os IDs dos documentos:', error);
@@ -839,22 +877,112 @@ export async function getListRealizacaoOrgaoIds() { // TODO: remove
   }
 }
 
-export async function getListProgramasTema(id_tema) {
+// export async function getListProgramasTema(id_tema) {
+//   const programasByTheme = await db.collection("programa").where("id_tema", "==", id_tema).get();
+//   const programasDocs = programasByTheme.docs;
+//   const programas = programasDocs.map((doc) => doc.data().nome);
+//   return programas;
+// }
+
+export async function getListProgramasTema(id_tema, id_bairro = null, id_subprefeitura = null, gestao = null) {
+  // console.log("Entrando em getListProgramasTema");
+  // console.log("Parâmetros recebidos:", { id_tema, id_bairro, gestao });
+
+  const realizacoesRef = db.collection("realizacao");
+  let query = realizacoesRef.where("id_tema", "==", id_tema);
+  // console.log("Consulta inicial criada:", query);
+
+  if (id_bairro) {
+    query = query.where("id_bairro", "==", id_bairro);
+    // console.log("Adicionado filtro id_bairro:", query);
+  }
+
+  if (id_subprefeitura) {
+    query = query.where("id_subprefeitura", "==", id_subprefeitura);
+    console.log("Adicionado filtro id_subprefeitura:", query);
+  }
+
+  if (gestao == null || gestao == "3") {
+    query = query.where('gestao', '==', "3");
+  } else if (gestao == "1_2_3") {
+    query = query.where('gestao', 'in', ["3", "1-2"]);
+  } else if (gestao == "1_2") {
+    query = query.where('gestao', '==', "1-2");
+  }
+
+  const realizacoesSnapshot = await query.get();
+  // console.log("realizacoesSnapshot obtido. Número de documentos:", realizacoesSnapshot.size);
+
+  const realizacoesArray = realizacoesSnapshot.docs.map(doc => doc.data());
+  // console.log("Array de realizações:", realizacoesArray);
+
+  const idProgramasSet = new Set(realizacoesSnapshot.docs.map(doc => doc.data().id_programa));
+  // console.log("idProgramasSet criado:", idProgramasSet);
+
   const programasByTheme = await db.collection("programa").where("id_tema", "==", id_tema).get();
+  // console.log("programasByTheme obtido:", programasByTheme);
+
   const programasDocs = programasByTheme.docs;
-  const programas = programasDocs.map((doc) => doc.data().nome);
+  // console.log("programasDocs obtido:", programasDocs);
+
+  const programas = programasDocs
+    .filter((doc) => idProgramasSet.has(doc.id)) // Filtra os programas que estão no conjunto idProgramasSet
+    .map((doc) => doc.data().nome);
+
+  // console.log("programas filtrados e mapeados:", programas);
+
   return programas;
 }
 
-export async function getListRealizacoesPrograma(id_programa) {
-  const realizacoesByPrograma = await db.collection("realizacao").where("id_programa", "==", id_programa).get();
-  const realizacoesDocs = realizacoesByPrograma.docs;
-  const realizacoes = realizacoesDocs.map((doc) => doc.data().nome);
+
+// export async function getListRealizacoesPrograma(id_programa) {
+//   const realizacoesByPrograma = await db.collection("realizacao").where("id_programa", "==", id_programa).get();
+//   const realizacoesDocs = realizacoesByPrograma.docs;
+//   const realizacoes = realizacoesDocs.map((doc) => doc.data().nome);
+//   return realizacoes;
+// }
+
+export async function getListRealizacoesPrograma(id_programa, id_bairro = null, id_subprefeitura = null, gestao = null) {
+  // console.log("Entrando em getListRealizacoesPrograma");
+  // console.log("Parâmetros recebidos:", { id_programa, id_bairro, gestao });
+
+  const realizacoesRef = db.collection("realizacao");
+  let query = realizacoesRef.where("id_programa", "==", id_programa);
+  // console.log("Consulta inicial criada:", query);
+
+  if (id_bairro) {
+    query = query.where("id_bairro", "==", id_bairro);
+    // console.log("Adicionado filtro id_bairro:", query);
+  }
+
+  if (id_subprefeitura) {
+    query = query.where("id_subprefeitura", "==", id_subprefeitura);
+    // console.log("Adicionado filtro id_subprefeitura:", query);
+  }
+
+  if (gestao == null || gestao == "3") {
+    query = query.where('gestao', '==', "3");
+  } else if (gestao == "1_2_3") {
+    query = query.where('gestao', 'in', ["3", "1-2"]);
+  } else if (gestao == "1_2") {
+    query = query.where('gestao', '==', "1-2");
+  }
+
+  const realizacoesSnapshot = await query.get();
+  // console.log("realizacoesSnapshot obtido. Número de documentos:", realizacoesSnapshot.size);
+
+  const realizacoesArray = realizacoesSnapshot.docs.map(doc => doc.data());
+  // console.log("Array de realizações:", realizacoesArray);
+
+  const realizacoes = realizacoesArray.map((realizacao) => realizacao.nome);
+  // console.log("Realizações mapeadas:", realizacoes);
+
   return realizacoes;
 }
 
+
 // o destaque do município conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
-export async function getListDestaquesMunicipio(id_municipio){
+export async function getListDestaquesMunicipio(id_municipio) {
   if (!id_municipio)
     id_municipio = "rio_de_janeiro"
   id_municipio = toSnakeCase(id_municipio)
@@ -872,7 +1000,7 @@ export async function getListDestaquesMunicipio(id_municipio){
 }
 
 // o destaque do bairro conterá as 3 realizacões mais caras do bairro, com o título e a descrição e lat long da realização
-export async function getListDestaquesBairro(id_bairro){
+export async function getListDestaquesBairro(id_bairro) {
   id_bairro = toSnakeCase(id_bairro)
   const realizacoesRef = await db.collection("realizacao").where("id_bairro", "==", id_bairro).where("destaque", "==", true).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
@@ -887,7 +1015,7 @@ export async function getListDestaquesBairro(id_bairro){
 }
 
 // o destaque da subprefeitura conterá as 3 realizacões mais caras da subprefeitura, com o título e a descrição e lat long da realização
-export async function getListDestaquesSubprefeitura(id_subprefeitura){
+export async function getListDestaquesSubprefeitura(id_subprefeitura) {
   id_subprefeitura = toSnakeCase(id_subprefeitura)
   const realizacoesRef = await db.collection("realizacao").where("id_subprefeitura", "==", id_subprefeitura).where("destaque", "==", true).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
@@ -902,7 +1030,7 @@ export async function getListDestaquesSubprefeitura(id_subprefeitura){
 }
 
 // o destaque do tema conterá as 3 realizacões mais caras do tema, com o título e a descrição e lat long da realização
-export async function getListDestaquesTema(id_tema){
+export async function getListDestaquesTema(id_tema) {
   id_tema = toSnakeCase(id_tema)
   const realizacoesRef = await db.collection("realizacao").where("id_tema", "==", id_tema).where("destaque", "==", true).get();
   const realizacoesData = realizacoesRef.docs.map((doc) => doc.data());
@@ -920,16 +1048,16 @@ export async function getAggregatedData(tema = null, programa = null, bairro = n
   // Create the filters array
   let filters = [];
   if (bairro) {
-      filters.push(`bairro__${bairro}`);
+    filters.push(`bairro__${bairro}`);
   }
   if (subprefeitura) {
-      filters.push(`subprefeitura__${subprefeitura}`);
+    filters.push(`subprefeitura__${subprefeitura}`);
   }
   if (tema) {
-      filters.push(`tema__${tema}`);
+    filters.push(`tema__${tema}`);
   }
   if (programa) {
-      filters.push(`programa__${programa}`);
+    filters.push(`programa__${programa}`);
   }
 
   // Python: key = "___".join(keys) if keys else "all"
@@ -937,21 +1065,21 @@ export async function getAggregatedData(tema = null, programa = null, bairro = n
   let key = filters.length > 0 ? filters.join("___") : "all";
 
   try {
-      // List all documents in the collection
-      const aggregatedDataCollection = await db.collection("aggregated_data").get();
-      let result = { count: 0, investment: 0 };
+    // List all documents in the collection
+    const aggregatedDataCollection = await db.collection("aggregated_data").get();
+    let result = { count: 0, investment: 0 };
 
-      // For each document, look for the key. If found, return the data. Otherwise, return the default value
-      aggregatedDataCollection.docs.forEach(doc => {
-          const data = doc.data();
-          if (data[key]) {
-              result = data[key];
-          }
-      });
+    // For each document, look for the key. If found, return the data. Otherwise, return the default value
+    aggregatedDataCollection.docs.forEach(doc => {
+      const data = doc.data();
+      if (data[key]) {
+        result = data[key];
+      }
+    });
 
-      return result;
+    return result;
   } catch (error) {
-      console.error("Error getting documents: ", error);
-      return { count: 0, investment: 0 };
+    console.error("Error getting documents: ", error);
+    return { count: 0, investment: 0 };
   }
 }

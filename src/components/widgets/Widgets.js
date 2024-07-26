@@ -8,8 +8,8 @@ import VerticalContainer from "./verticalWidget/VerticalContainer";
 import BottomGalleryContainer from "./bottomGallery/BottomGalleryContainer";
 import InfoWidget from "./infoWidget/InfoWidget";
 import FiltrosBotoes from "./filtrosBotoes/FiltrosBotoes";
-import { getListBairroName, getListOrgaoName, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds } from "../../firebase";
-import { useRef, useState } from "react";
+import { getListBairroName, getListOrgaoName, getListTemasNameByGestao, getListProgramaName, getListRealizacaoOrgaoIds, getListRealizacaoProgramaIds, getListRealizacaoTemaIds, getListTemaName, getRealizacaoOrgaoIds, getRealizacaoProgramaIds, getRealizacaoTemaIds, getListTemasNameByGestaoBairro } from "../../firebase";
+import { useMemo, useRef, useState } from "react";
 import { useEffect } from "react";
 import { isDesktop } from "../../redux/active/reducers";
 import SearchIcon from "@material-ui/icons/Search";
@@ -17,6 +17,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import lupa_mapa from '../../icons/lupa_mapa.png';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
+import { toSnakeCase } from "../../utils/formatFile";
 
 const useStyles = makeStyles({
   bottomRightWidgets: {
@@ -89,7 +90,7 @@ const useStyles = makeStyles({
       transition: "bottom 200ms cubic-bezier(0, 0, 0.2, 1)",
     },
   },
-  "@media screen and (min-width: 1279px)":{
+  "@media screen and (min-width: 1279px)": {
     filters: {
       top: "50px",
       left: "500px",
@@ -100,57 +101,30 @@ const useStyles = makeStyles({
   }
 });
 
-const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
+const Widgets = ({ underSearchBar, bottomGallery, gestao, bairro, subprefeitura }) => {
   const classes = useStyles({ underSearchBar, bottomGallery });
 
-  const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
   const [temasNameFilter, setTemasNameFilter] = useState([]);
-  const [programasNameFilter, setProgramasNameFilter] = useState([]);
-  const [orgaosNameFilterIds, setOrgaosNameFilterIds] = useState([]);
-  const [temasNameFilterIds, setTemasNameFilterIds] = useState([]);
-  const [programasNameFilterIds, setProgramasNameFilterIds] = useState([]);
 
   useEffect(() => {
-
     const loadFiltrosInfo = async () => {
       try {
-        const orgaoRef = await getListOrgaoName();
-        const temaRef = await getListTemaName();
-        const programaRef = await getListProgramaName();
+        const temaRef = await getListTemasNameByGestaoBairro(
+          gestao,
+          bairro ? toSnakeCase(bairro) : null,
+          subprefeitura ? toSnakeCase(subprefeitura) : null
+        );
 
-        if (!orgaoRef.empty && !temaRef.empty && !programaRef.empty) {
-          setOrgaosNameFilter(orgaoRef);
-          setTemasNameFilter(temaRef);
-          setProgramasNameFilter(programaRef);
-        } else {
-          console.error("Erro aqui <<== ");
-        }
+        setTemasNameFilter(temaRef);
+
+
       } catch (error) {
         console.error("Erro ao buscar nomes dos filtros", error);
       }
     };
-
-    const loadFiltrosInfoIds = async () => {
-      try {
-        const realizacaoOrgaoRef = await getListRealizacaoOrgaoIds();
-        const realizacaoTemaRef = await getListRealizacaoTemaIds();
-        const realizacaoProgramaRef = await getListRealizacaoProgramaIds();
-
-        if (!realizacaoOrgaoRef.empty && !realizacaoTemaRef.empty && !realizacaoProgramaRef.empty) {
-          setOrgaosNameFilterIds(realizacaoOrgaoRef);
-          setTemasNameFilterIds(realizacaoTemaRef);
-          setProgramasNameFilterIds(realizacaoProgramaRef);
-        } else {
-          console.error("Erro aqui <<== ");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar nomes dos filtros", error);
-      }
-    };
-
     loadFiltrosInfo();
-    loadFiltrosInfoIds();
-  }, []);
+  }, [gestao, bairro, subprefeitura]);
+
 
   const [value, setValue] = useState(0);
   const [openSheet, setOpenSheet] = useState(null);
@@ -172,7 +146,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       </div>
     );
   }
-  
+
   function SheetContentBairros() {
     return (
       <div>
@@ -181,7 +155,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       </div>
     );
   }
-  
+
   function SheetContentRealizacoes() {
     return (
       <div>
@@ -191,7 +165,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
     );
   }
 
-  
+
   return (
     <div>
       <div className={classes.bottomWidgets}>
@@ -208,7 +182,7 @@ const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros }) => {
       </div>
 
       <div className={classes.topLeftWidgets}>
-        <SearchbarContainer temasNameFilter={temasNameFilter} programasNameFilter={programasNameFilter} />
+        <SearchbarContainer temasNameFilter={temasNameFilter} />
         <UnderSearchContainer />
       </div>
       {/* {!isDesktop() && (

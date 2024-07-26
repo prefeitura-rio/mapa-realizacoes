@@ -305,6 +305,7 @@ const BairroDescriptionBar = forwardRef(
     openedPopup,
     tema,
     programa,
+    gestao
   }, ref) => {
 
     const classes = useStyles();
@@ -334,7 +335,7 @@ const BairroDescriptionBar = forwardRef(
 
         } catch (error) {
           console.error("Erro", error);
-        }finally {
+        } finally {
           setIsLoading(false);
         }
       };
@@ -353,106 +354,108 @@ const BairroDescriptionBar = forwardRef(
     function SheetContentSubprefeituraDescriptionBar() {
       return (
         <Stack m={2} mt={2} spacing={2}>
-           <Paper
-                elevation={6}
-                ref={ref}
-                className={classes.underSearchMobile}
-              >
-                <div className={classes.basicInfo}>
-                  <Typography className={classes.titulo}>{subprefeitura ?? <CircularProgress size={25} />}</Typography>
-                  <Typography className={classes.subtitulo}> Subprefeitura</Typography>
-                </div>
-              </Paper>
-              <Paper
-                elevation={6}
-                className={classes.underSearch2Mobile}
-              >
+          <Paper
+            elevation={6}
+            ref={ref}
+            className={classes.underSearchMobile}
+          >
+            <div className={classes.basicInfo}>
+              <Typography className={classes.titulo}>{subprefeitura ?? <CircularProgress size={25} />}</Typography>
+              <Typography className={classes.subtitulo}> Subprefeitura</Typography>
+            </div>
+          </Paper>
+          <Paper
+            elevation={6}
+            className={classes.underSearch2Mobile}
+          >
 
-                <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
-                  {!dadosAgregadosAbaSumarioStatusEntregasSubprefeitura ? (
-                    <CircularProgress />
-                  ) : dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count === 0 ? (
-                    <Box pl={3} pr={3} style={{opacity:0.8}} >
-                    <Typography>Não há realização deste tema ou programa na subprefeitura selecionada.</Typography>
-                    </Box>
-                  ) : (
-                    <>
-                      {/* <Tooltip title="Realizações"> */}
-                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                          <AccountBalanceIcon />
-                          <Box >
-                            {/* TODO: valor agregado da qntdd de obras. */}
-                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count > 1 ? "ões" : "ão"}</Typography>
-                          </Box>
-                        </Box>
-                      {/* </Tooltip> */}
-                      <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
-                      {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && (
-                        // <Tooltip title="Investimento" >
-                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                            <AttachMoneyIcon />
-                            <Box>
-                              <Typography style={{fontSize:"14px"}}>
-                                {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment.toLocaleString('pt-BR', {
-                                  style: 'currency',
-                                  currency: 'BRL',
-                                  minimumFractionDigits: 0,
-                                  maximumFractionDigits: 0,
-                                }) + " "}
-                                  Investidos
-                                </Typography>
-                              </Box>
-                            </Box>
-                          )}
-                        </>
-                      )}
+            <Box pl={1} pr={1} height="8.5vh" display="flex" justifyContent="center" alignItems="center">
+              {!dadosAgregadosAbaSumarioStatusEntregasSubprefeitura ? (
+                <CircularProgress />
+              ) : dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count === 0 ? (
+                <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
+                  <Typography>Não há realização deste tema ou programa na subprefeitura selecionada.</Typography>
                 </Box>
+              ) : (
+                <>
+                  {/* <Tooltip title="Realizações"> */}
+                  <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                    <AccountBalanceIcon />
+                    <Box >
+                      {/* TODO: valor agregado da qntdd de obras. */}
+                      <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count > 1 ? "ões" : "ão"}</Typography>
+                    </Box>
+                  </Box>
+                  {/* </Tooltip> */}
+                  <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
+                  {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && (
+                    // <Tooltip title="Investimento" >
+                    <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                      <AttachMoneyIcon />
+                      <Box>
+                        <Typography style={{ fontSize: "14px" }}>
+                          {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }) + " "}
+                          Investidos
+                        </Typography>
+                      </Box>
+                    </Box>
+                  )}
+                </>
+              )}
+            </Box>
 
-              </Paper>
-              <Paper
-                elevation={6}
-                className={classes.underSearch4Mobile}
-              >
-                <div className={classes.basicInfo}>
-                  <Typography className={classes.sobreMunicipio}>Destaques</Typography>
-                  <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
-                    {isLoading ? (
-                      <>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="80%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="40%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="80%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                        <br></br>
-                        <Skeleton variant="text" />
-                        <Skeleton height="15px" width="40%" />
-                        <Skeleton height="15px" width="60%" />
-                        <Skeleton height="15px" width="73%" />
-                      </>
-                    ) : destaquesSubprefeitura.length === 0 ? (
-                      <Typography className={classes.subtitulo}>Nenhum destaque encontrado para esta subprefeitura.</Typography>
-                    ) : (
-                      destaquesSubprefeitura.map((item, index) => (
-                        <li key={index} style={{ paddingBottom: "15px" }}>
-                          <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
-                            {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
-                          </Typography>
-                          <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </div>
-              </Paper>
+          </Paper>
+          {gestao != "1_2" &&
+            <Paper
+              elevation={6}
+              className={classes.underSearch4Mobile}
+            >
+              <div className={classes.basicInfo}>
+                <Typography className={classes.sobreMunicipio}>Destaques</Typography>
+                <ul className={classes.listStyle} style={{ listStyleType: 'none', padding: 0, textAlign: "left", }}>
+                  {isLoading ? (
+                    <>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="80%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                      <br></br>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="40%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                      <br></br>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="80%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                      <br></br>
+                      <Skeleton variant="text" />
+                      <Skeleton height="15px" width="40%" />
+                      <Skeleton height="15px" width="60%" />
+                      <Skeleton height="15px" width="73%" />
+                    </>
+                  ) : destaquesSubprefeitura.length === 0 ? (
+                    <Typography className={classes.subtitulo}>Nenhum destaque encontrado para esta subprefeitura.</Typography>
+                  ) : (
+                    destaquesSubprefeitura.map((item, index) => (
+                      <li key={index} style={{ paddingBottom: "15px" }}>
+                        <Typography className={classes.title_li} onClick={() => handleTitleClick(item.title)}>
+                          {item.title} <ArrowOutwardIcon sx={{ paddingLeft: "20px", marginBottom: "-5px" }} />
+                        </Typography>
+                        <Typography className={classes.subtituloDestaques}>{item.description}</Typography>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+            </Paper>
+          }
         </Stack>)
     }
 
@@ -512,7 +515,7 @@ const BairroDescriptionBar = forwardRef(
                 </div>
               </Paper>
             </Slide>
-             <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+            <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
               <Paper
                 elevation={6}
                 className={classes.underSearch2}
@@ -522,46 +525,47 @@ const BairroDescriptionBar = forwardRef(
                   {!dadosAgregadosAbaSumarioStatusEntregasSubprefeitura ? (
                     <CircularProgress />
                   ) : dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count === 0 ? (
-                    <Box pl={3} pr={3} style={{opacity:0.8}} >
-                    <Typography>Não há realização deste tema ou programa na subprefeitura selecionada.</Typography>
+                    <Box pl={3} pr={3} style={{ opacity: 0.8 }} >
+                      <Typography>Não há realização deste tema ou programa na subprefeitura selecionada.</Typography>
                     </Box>
                   ) : (
                     <>
                       {/* <Tooltip title="Realizações"> */}
-                        <Box display="flex" style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                          <AccountBalanceIcon />
-                          <Box >
-                            {/* TODO: valor agregado da qntdd de obras. */}
-                            <Typography style={{fontSize:"14px", paddingLeft:"5px"}}>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count > 1 ? "ões" : "ão"}</Typography>
-                          </Box>
+                      <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                        <AccountBalanceIcon />
+                        <Box >
+                          {/* TODO: valor agregado da qntdd de obras. */}
+                          <Typography style={{ fontSize: "14px", paddingLeft: "5px" }}>{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count + " "}Realizaç{dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.count > 1 ? "ões" : "ão"}</Typography>
                         </Box>
+                      </Box>
                       {/* </Tooltip> */}
                       <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
                       {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && (
                         // <Tooltip title="Investimento" >
-                          <Box display="flex"style={{display:"flex", height:"8.5vh", alignItems:"center"}}>
-                            <AttachMoneyIcon />
-                            <Box>
-                              <Typography style={{fontSize:"14px"}}>
-                                {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment.toLocaleString('pt-BR', {
-                                  style: 'currency',
-                                  currency: 'BRL',
-                                  minimumFractionDigits: 0,
-                                  maximumFractionDigits: 0,
-                                }) + " "}
-                                  Investidos
-                                </Typography>
-                              </Box>
-                            </Box>
-                          )}
-                        </>
+                        <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
+                          <AttachMoneyIcon />
+                          <Box>
+                            <Typography style={{ fontSize: "14px" }}>
+                              {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment.toLocaleString('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              }) + " "}
+                              Investidos
+                            </Typography>
+                          </Box>
+                        </Box>
                       )}
+                    </>
+                  )}
                 </Box>
 
               </Paper>
             </Slide>
 
-            <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+
+            <Slide direction="up" timeout={1000} in={gestao != "1_2"} mountOnEnter unmountOnExit>
               <Paper
                 elevation={6}
                 className={classes.underSearch3}
@@ -607,6 +611,7 @@ const BairroDescriptionBar = forwardRef(
                 </div>
               </Paper>
             </Slide>
+
           </>)}
 
         {!isDesktop() && openedPopup == null && subprefeitura && (

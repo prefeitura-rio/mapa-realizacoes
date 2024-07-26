@@ -8,6 +8,10 @@ export const SET_REALIZACAO = "SET_REALIZACAO";
 export const SET_BAIRRO = "SET_BAIRRO";
 export const SET_SUBPREFEITURA = "SET_SUBPREFEITURA";
 export const SET_REALIZACOES_PROGRAMA = "SET_REALIZACOES_PROGRAMA";
+export const SET_PROGRAMA_DATA_CAMERAS = "SET_PROGRAMA_DATA_CAMERAS";
+export const SET_PROGRAMA_DATA_SIRENES = "SET_PROGRAMA_DATA_SIRENES";
+export const SET_PROGRAMA_DATA_ESTACOES_ALERTA_RIO = "SET_PROGRAMA_DATA_ESTACOES_ALERTA_RIO";
+
 
 
 export const setFiltros = (filtros) => {
@@ -29,6 +33,27 @@ export const setTemaData = (tema) => {
     payload: tema,
   };
 };
+
+export const setProgramaDataSirenes = (programa) => {
+  return {
+    type: SET_PROGRAMA_DATA_SIRENES,
+    payload: programa,
+  };
+};
+
+export const setProgramaDataCameras = (programa) => {
+  return {
+    type: SET_PROGRAMA_DATA_CAMERAS,
+    payload: programa,
+  };
+};
+export const setProgramaDataEstacoesAlertaRio = (programa) => {
+  return {
+    type: SET_PROGRAMA_DATA_ESTACOES_ALERTA_RIO,
+    payload: programa,
+  };
+};
+
 export const setPrograma = (programa) => {
   return {
     type: SET_PROGRAMA,
@@ -71,7 +96,7 @@ export const setProgramaData = (programa) => {
     payload: programa,
   };
 };
-export const setRealizacao= (realizacao) => {
+export const setRealizacao = (realizacao) => {
   return {
     type: SET_REALIZACAO,
     payload: realizacao,

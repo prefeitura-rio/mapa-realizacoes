@@ -8,3 +8,9 @@
     font-family: 'Cera Pro Regular', sans-serif !important;
   }
   
+  .MuiSpeedDialAction-staticTooltipLabel{
+    background-color: transparent !important;
+    box-shadow: none !important;
+    margin:0 !important;
+    padding:0 !important
+  }

@@ -11,6 +11,9 @@ const WidgetsContainer = (props) => {
       bottomGallery={props.bottomGallery}
       profile={props.profile}
       setFiltros={props.setFiltros}
+      gestao={props.gestao}
+      bairro={props.bairro}
+      subprefeitura={props.subprefeitura}
     />
   );
 };
@@ -19,7 +22,10 @@ const mapStateToProps = (state) => {
   return {
     underSearchBar: state.active.underSearchBar,
     bottomGallery: state.active.bottomGallery,
-    profile: state.auth.profile
+    profile: state.auth.profile,
+    gestao: state.active.gestao,
+    bairro: state.filtros.bairro,
+    subprefeitura: state.filtros.subprefeitura,
   };
 };
 
