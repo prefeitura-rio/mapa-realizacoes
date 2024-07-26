@@ -352,48 +352,56 @@ const SearchBar = ({
   const [programasTema, setProgramasTema] = useState([]);
   useEffect(() => {
     if (tema) {
-      const loadProgramasTema = async (t) => {
+      const loadProgramasTema = async (t, bairro, subprefeitura, gestao) => {
         try {
-          const programasTemaRef = await getListProgramasTema(toSnakeCase(t));
-
+          const programasTemaRef = await getListProgramasTema(toSnakeCase(t), bairro ? toSnakeCase(bairro) : null, subprefeitura ? toSnakeCase(subprefeitura) : null, gestao ? toSnakeCase(gestao) : null);
           setProgramasTema(programasTemaRef);
         } catch (error) {
           console.error("Erro", error);
         }
       };
-      const loadTemaInfo = async (p) => {
+      loadProgramasTema(tema, bairro, subprefeitura, gestao);
+    }
+  }, [tema, bairro, subprefeitura, gestao]);
 
-        try {
-          const temaRef = await readTema(toSnakeCase(p));
+  useEffect(() => {
+    const loadTemaInfo = async (p) => {
 
-          setTemaData(temaRef);
+      try {
+        const temaRef = await readTema(toSnakeCase(p));
 
-        } catch (error) {
-          console.error("Erro", error);
-        }
+        setTemaData(temaRef);
+
+      } catch (error) {
+        console.error("Erro", error);
       }
-
-      loadTemaInfo(tema)
-      loadProgramasTema(tema);
+    }
+    if (tema) {
+      loadTemaInfo(tema);
     }
   }, [tema]);
+
 
   // realizacoes do programa -> realizacoesPrograma vai aparecer na listagem de realizacoes
   const [realizacoesPrograma, setRealizacoesPrograma] = useState([]);
   useEffect(() => {
     if (programa) {
-      const loadRealizacoesPrograma = async (p) => {
+      const loadRealizacoesPrograma = async (p, bairro, subprefeitura, gestao) => {
         try {
-          const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p));
-
+          const realizacoesProgramaRef = await getListRealizacoesPrograma(toSnakeCase(p), bairro ? toSnakeCase(bairro) : null, subprefeitura ? toSnakeCase(subprefeitura) : null, gestao ? toSnakeCase(gestao) : null);
           setRealizacoesPrograma(realizacoesProgramaRef);
           setRealizacoesProgramaRedux(realizacoesProgramaRef);
-
         } catch (error) {
           console.error("Erro", error);
         }
-
       };
+
+      loadRealizacoesPrograma(programa, bairro, subprefeitura, gestao);
+    }
+  }, [programa, bairro, subprefeitura, gestao]);
+
+  useEffect(() => {
+    if (programa) {
       const loadProgramaInfo = async (p) => {
 
         try {
@@ -407,7 +415,6 @@ const SearchBar = ({
       }
 
       loadProgramaInfo(programa)
-      loadRealizacoesPrograma(programa);
     }
   }, [programa]);
 

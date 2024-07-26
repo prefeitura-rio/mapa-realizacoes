@@ -47,6 +47,7 @@ const SubprefeituraDescriptionContainer = (props) => {
       profile={props.profile}
       login={props.login}
       anyLoading={props.anyLoading}
+      gestao={props.gestao}
     />
   );
 };
@@ -56,7 +57,7 @@ const mapStateToProps = (state) => {
     underSearchBar: state.active.underSearchBar,
     activeBar: state.active.activeBar,
     descriptionData: state.subprefeituras.descriptionData,
-    subprefeitura: state.subprefeituras.content?.nome,
+    // subprefeitura: state.subprefeituras.content?.nome,
     images_subprefeitura: state.images.allImagesSubprefeitura,
     profile: state.auth.profile,
     anyLoading: state.places.loading || state.place.loading,

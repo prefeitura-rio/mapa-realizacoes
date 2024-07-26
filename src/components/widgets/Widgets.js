@@ -101,37 +101,29 @@ const useStyles = makeStyles({
   }
 });
 
-const Widgets = ({ underSearchBar, bottomGallery, profile, setFiltros, gestao, bairro }) => {
+const Widgets = ({ underSearchBar, bottomGallery, gestao, bairro, subprefeitura }) => {
   const classes = useStyles({ underSearchBar, bottomGallery });
 
-  const [orgaosNameFilter, setOrgaosNameFilter] = useState([]);
   const [temasNameFilter, setTemasNameFilter] = useState([]);
-  const temaCache = useMemo(() => ({}), []);
 
   useEffect(() => {
     const loadFiltrosInfo = async () => {
       try {
-        const cacheKey = `${gestao}-${bairro || 'all'}`; // Chave única para cache
-        if (temaCache[cacheKey]) {
-          // Se o resultado já está no cache, usa ele
-          setTemasNameFilter(temaCache[cacheKey]);
-        } else {
-          // Se não está no cache, faz a chamada API e armazena o resultado no cache
-          const temaRef = await getListTemasNameByGestaoBairro(gestao, bairro && toSnakeCase(bairro));
-          if (temaRef.length > 0) {
-            temaCache[cacheKey] = temaRef;
-            setTemasNameFilter(temaRef);
-          } else {
-            console.error("Erro aqui <<== ");
-          }
-        }
+        const temaRef = await getListTemasNameByGestaoBairro(
+          gestao,
+          bairro ? toSnakeCase(bairro) : null,
+          subprefeitura ? toSnakeCase(subprefeitura) : null
+        );
+
+        setTemasNameFilter(temaRef);
+
+
       } catch (error) {
         console.error("Erro ao buscar nomes dos filtros", error);
       }
     };
-
     loadFiltrosInfo();
-  }, [gestao, bairro, temaCache]);
+  }, [gestao, bairro, subprefeitura]);
 
 
   const [value, setValue] = useState(0);
