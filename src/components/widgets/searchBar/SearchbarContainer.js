@@ -86,8 +86,8 @@ const mapStateToProps = (state) => {
     tema: state.filtros.tema,
     programa: state.filtros.programa,
     realizacao: state.filtros.realizacao,
-    bairro: state.bairros.descriptionData,
-    subprefeitura: state.subprefeituras.descriptionData,
+    bairro: state.filtros.bairro,
+    subprefeitura: state.filtros.subprefeitura,
     realizacoes: state.places.allPlaces,
     gestao: state.active.gestao,
     place: state.place.content

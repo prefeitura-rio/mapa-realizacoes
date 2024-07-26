@@ -193,7 +193,7 @@ export function getListTemaName() {
   });
 }
 
-export async function getListTemasNameByGestaoBairro(gestao = '3', id_bairro = null) {
+export async function getListTemasNameByGestaoBairro(gestao = '3', id_bairro = null, id_subprefeitura = null) {
   try {
     const realizacoesRef = db.collection('realizacao');
     let query = realizacoesRef.where('gestao', '==', gestao == null || gestao == "1_2_3" || gestao == "3" ? "3" : "1-2");
@@ -202,6 +202,10 @@ export async function getListTemasNameByGestaoBairro(gestao = '3', id_bairro = n
       query = query.where('id_bairro', '==', id_bairro);
     }
 
+    if (id_subprefeitura) {
+      query = query.where('id_subprefeitura', '==', id_subprefeitura);
+    }
+    console.log("gestao", gestao, "id_bairro", id_bairro, "id_subprefeitura", id_subprefeitura);
     const querySnapshot = await query.get();
 
     if (querySnapshot.empty) {
@@ -873,19 +877,109 @@ export async function getListRealizacaoOrgaoIds() { // TODO: remove
   }
 }
 
-export async function getListProgramasTema(id_tema) {
+// export async function getListProgramasTema(id_tema) {
+//   const programasByTheme = await db.collection("programa").where("id_tema", "==", id_tema).get();
+//   const programasDocs = programasByTheme.docs;
+//   const programas = programasDocs.map((doc) => doc.data().nome);
+//   return programas;
+// }
+
+export async function getListProgramasTema(id_tema, id_bairro = null, id_subprefeitura = null, gestao = null) {
+  // console.log("Entrando em getListProgramasTema");
+  // console.log("Parâmetros recebidos:", { id_tema, id_bairro, gestao });
+
+  const realizacoesRef = db.collection("realizacao");
+  let query = realizacoesRef.where("id_tema", "==", id_tema);
+  // console.log("Consulta inicial criada:", query);
+
+  if (id_bairro) {
+    query = query.where("id_bairro", "==", id_bairro);
+    // console.log("Adicionado filtro id_bairro:", query);
+  }
+
+  if (id_subprefeitura) {
+    query = query.where("id_subprefeitura", "==", id_subprefeitura);
+    console.log("Adicionado filtro id_subprefeitura:", query);
+  }
+
+  if (gestao == null || gestao == "3") {
+    query = query.where('gestao', '==', "3");
+  } else if (gestao == "1_2_3") {
+    query = query.where('gestao', 'in', ["3", "1-2"]);
+  } else if (gestao == "1_2") {
+    query = query.where('gestao', '==', "1-2");
+  }
+
+  const realizacoesSnapshot = await query.get();
+  // console.log("realizacoesSnapshot obtido. Número de documentos:", realizacoesSnapshot.size);
+
+  const realizacoesArray = realizacoesSnapshot.docs.map(doc => doc.data());
+  // console.log("Array de realizações:", realizacoesArray);
+
+  const idProgramasSet = new Set(realizacoesSnapshot.docs.map(doc => doc.data().id_programa));
+  // console.log("idProgramasSet criado:", idProgramasSet);
+
   const programasByTheme = await db.collection("programa").where("id_tema", "==", id_tema).get();
+  // console.log("programasByTheme obtido:", programasByTheme);
+
   const programasDocs = programasByTheme.docs;
-  const programas = programasDocs.map((doc) => doc.data().nome);
+  // console.log("programasDocs obtido:", programasDocs);
+
+  const programas = programasDocs
+    .filter((doc) => idProgramasSet.has(doc.id)) // Filtra os programas que estão no conjunto idProgramasSet
+    .map((doc) => doc.data().nome);
+
+  // console.log("programas filtrados e mapeados:", programas);
+
   return programas;
 }
 
-export async function getListRealizacoesPrograma(id_programa) {
-  const realizacoesByPrograma = await db.collection("realizacao").where("id_programa", "==", id_programa).get();
-  const realizacoesDocs = realizacoesByPrograma.docs;
-  const realizacoes = realizacoesDocs.map((doc) => doc.data().nome);
+
+// export async function getListRealizacoesPrograma(id_programa) {
+//   const realizacoesByPrograma = await db.collection("realizacao").where("id_programa", "==", id_programa).get();
+//   const realizacoesDocs = realizacoesByPrograma.docs;
+//   const realizacoes = realizacoesDocs.map((doc) => doc.data().nome);
+//   return realizacoes;
+// }
+
+export async function getListRealizacoesPrograma(id_programa, id_bairro = null, id_subprefeitura = null, gestao = null) {
+  // console.log("Entrando em getListRealizacoesPrograma");
+  // console.log("Parâmetros recebidos:", { id_programa, id_bairro, gestao });
+
+  const realizacoesRef = db.collection("realizacao");
+  let query = realizacoesRef.where("id_programa", "==", id_programa);
+  // console.log("Consulta inicial criada:", query);
+
+  if (id_bairro) {
+    query = query.where("id_bairro", "==", id_bairro);
+    // console.log("Adicionado filtro id_bairro:", query);
+  }
+
+  if (id_subprefeitura) {
+    query = query.where("id_subprefeitura", "==", id_subprefeitura);
+    // console.log("Adicionado filtro id_subprefeitura:", query);
+  }
+
+  if (gestao == null || gestao == "3") {
+    query = query.where('gestao', '==', "3");
+  } else if (gestao == "1_2_3") {
+    query = query.where('gestao', 'in', ["3", "1-2"]);
+  } else if (gestao == "1_2") {
+    query = query.where('gestao', '==', "1-2");
+  }
+
+  const realizacoesSnapshot = await query.get();
+  // console.log("realizacoesSnapshot obtido. Número de documentos:", realizacoesSnapshot.size);
+
+  const realizacoesArray = realizacoesSnapshot.docs.map(doc => doc.data());
+  // console.log("Array de realizações:", realizacoesArray);
+
+  const realizacoes = realizacoesArray.map((realizacao) => realizacao.nome);
+  // console.log("Realizações mapeadas:", realizacoes);
+
   return realizacoes;
 }
+
 
 // o destaque do município conterá as 3 realizacões mais caras do município, com o título e a descrição e lat long da realização
 export async function getListDestaquesMunicipio(id_municipio) {

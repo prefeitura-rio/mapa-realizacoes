@@ -13,6 +13,7 @@ const WidgetsContainer = (props) => {
       setFiltros={props.setFiltros}
       gestao={props.gestao}
       bairro={props.bairro}
+      subprefeitura={props.subprefeitura}
     />
   );
 };
@@ -24,6 +25,7 @@ const mapStateToProps = (state) => {
     profile: state.auth.profile,
     gestao: state.active.gestao,
     bairro: state.filtros.bairro,
+    subprefeitura: state.filtros.subprefeitura,
   };
 };
 
