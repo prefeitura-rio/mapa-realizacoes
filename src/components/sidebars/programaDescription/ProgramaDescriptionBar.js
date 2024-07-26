@@ -389,10 +389,8 @@ const ProgramaDescriptionBar = forwardRef(
     const [isScreen500, setTextScreen500] = useState(false);
 
 
-    const fullText = programaData?.descricao
-      // .replace(/(\\r\\n)/g, '<br />')
-      .replace(/;\s*-/g, ';<br />-') // remover essa linha quando o firestore receber o \\r\n
-      .replace(/-/g, '<b>-</b>') || '';
+    const fullText = programaData?.descricao?.replace(/;\s*-/g, ';<br />-').replace(/-/g, '<b>-</b>');
+    // .replace(/(\\r\\n)/g, '<br />')
 
     // Calcule o número de caracteres com base na altura da janela
     const numChars = Math.floor(windowHeight / (isScreen900 ? 3.9 : (isScreen500 ? 4 : 1.1)));
