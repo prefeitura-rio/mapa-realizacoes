@@ -390,7 +390,8 @@ const ProgramaDescriptionBar = forwardRef(
 
 
     const fullText = programaData?.descricao
-      .replace(/(\\r\\n)/g, '<br />')
+      // .replace(/(\\r\\n)/g, '<br />')
+      .replace(/;\s*-/g, ';<br />-') // remover essa linha quando o firestore receber o \\r\n
       .replace(/-/g, '<b>-</b>') || '';
 
     // Calcule o número de caracteres com base na altura da janela
