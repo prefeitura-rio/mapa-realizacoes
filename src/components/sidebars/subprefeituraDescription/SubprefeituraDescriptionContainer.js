@@ -47,6 +47,7 @@ const SubprefeituraDescriptionContainer = (props) => {
       profile={props.profile}
       login={props.login}
       anyLoading={props.anyLoading}
+      gestao={props.gestao}
     />
   );
 };
