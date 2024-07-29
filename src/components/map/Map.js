@@ -562,14 +562,6 @@ const Map = ({
     });
   };
 
-  const iconMapping = {
-    "brts_transolímpica": "brts_transolimpicas_icon",
-    "brts_transbrasil": "brts_transbrasil_icon",
-    "brts_transoeste": "brts_transoeste_icon",
-    "brts_transcarioca": "brts_transcarioca_icon"
-  };
-
-
   const CustomTooltip = styled(Tooltip)(({ theme }) => ({
     '&.leaflet-tooltip': {
       backgroundColor: 'transparent !important',
@@ -595,7 +587,15 @@ const Map = ({
     width: 300,
   }));
 
-
+  const iconMapping = {
+    "brts_transolímpica": "brts_transolimpicas_icon",
+    "brts_transbrasil": "brts_transbrasil_icon",
+    "brts_transoeste": "brts_transoeste_icon",
+    "brts_transcarioca": "brts_transcarioca_icon",
+    'estações_alerta_rio': 'estações_alerta_rio',
+    'câmeras': 'câmeras',
+    'sirenes': 'sirenes'
+  };
   // Função auxiliar para renderizar o marcador
   function renderMarker(point, index) {
     return (
