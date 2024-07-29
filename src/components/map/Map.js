@@ -527,7 +527,7 @@ const Map = ({
     setDescriptionData(toSnakeCase(point.nome));
     setActiveBar(DESCRIPTION_BAR);
     loadData(toSnakeCase(point.nome));
-    navigate(`/${toSnakeCase(point.nome)}`);
+    // navigate(`/${toSnakeCase(point.nome)}`);
     if (map) {
       if (point) {
         let currentZoom = map.getZoom();
@@ -541,7 +541,7 @@ const Map = ({
     }
     setRota(toSnakeCase(point.nome))
     dispatch(setCurrentClickedPoint(point));
-    setRealizacao(point.nome)
+    setRealizacao(point.nome);
   };
 
 
@@ -637,13 +637,18 @@ const Map = ({
                       marginBottom: point.image_url ? "" : "0px",
                     }}
                   >
-                    {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.nome}
+                    {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.id_tema == "educação_e_desenvolvimento" ? point.nome + " - " + toTitleCase(point.id_tipo) : point.nome}
                   </Typography>
                   {point.id_bairro && (
                     <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
                       Bairro: {toTitleCase(point.id_bairro ?? '')}
                     </Typography>
                   )}
+                  {/* {point.id_tema == "educação_e_desenvolvimento" && (
+                    <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
+                      Tipo: {toTitleCase(point.id_tipo ?? '')}
+                    </Typography>
+                  )} */}
                 </CardContent>
               </CardActionArea>
             </CustomCard>
