@@ -1080,19 +1080,21 @@ const SearchBar = ({
   };
 
   useEffect(() => {
-    if (realizacao && !inputValueTema && !inputValuePrograma) {
+    if (realizacao && !inputValueTema && !inputValuePrograma && activeBar == PROGRAMA_DESCRIPTION_BAR) {
+
       setInputValueTema(place?.tema);
       setInputValuePrograma(place?.programa);
-      setInputValueRealizacao(place?.nome);
-      setShowProgramas(false);
+
+      setTema(place?.tema);
+      setPrograma(place?.programa);
+
+      setRealizacao(null);
+
+      setShowProgramas(true);
       setShowTemas(false);
-      setShowRealizacoes(true);
-      console.log("place?.tema", place?.tema)
-      console.log("place?.programa", place?.programa)
-      console.log("place?.nome", place?.nome)
-      console.log("place", place)
+
     }
-  }, [inputValueTema, inputValuePrograma, realizacao, place]);
+  }, [inputValueTema, inputValuePrograma, realizacao, place, activeBar]);
 
 
   return (
