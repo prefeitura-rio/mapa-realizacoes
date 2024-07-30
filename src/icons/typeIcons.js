@@ -43,11 +43,11 @@ export const getIcon = (name, isClicked, isGestaoDifferent) => {
     case "brts_transolimpicas_icon":
       return createMuiIcon(DefaultIcon, size, isGestaoDifferent ? "#722F37" : "#1DA64D");
     case "estações_alerta_rio":
-      return createMuiIcon(AlertStationIcon, 40, color || "grey");
+      return createMuiIcon(AlertStationIcon, 40, color || "#007E7D");
     case "câmeras":
-      return createMuiIcon(CameraIcon, 40, color || "grey");
+      return createMuiIcon(CameraIcon, 40, color || "#007E7D");
     case "sirenes":
-      return createMuiIcon(SirenIcon, 40, color || "grey");
+      return createMuiIcon(SirenIcon, 40, color || "#007E7D");
     default:
       return createMuiIcon(DefaultIcon, isClicked ? 45 : 35, color || "#007E7D");
   }
