@@ -23,6 +23,9 @@ import {
   Snackbar,
   Backdrop,
   Collapse,
+  List,
+  ListItem,
+  ListItemText,
 } from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -32,7 +35,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { BAIRRO_DESCRIPTION_BAR, DESCRIPTION_BAR, MAIN_UNDERSEARCH_BAR, PROGRAMA_DESCRIPTION_BAR, SUBPREFEITURA_DESCRIPTION_BAR, TEMA_DESCRIPTION_BAR } from "../../../redux/active/actions";
 import PromptBlock from "./PromptBlock";
 import Orgaos from "../../modals/editInfo/Orgaos";
-import { getListBairroName, getListProgramasTema, getListRealizacoesPrograma, getListSubprefeituraName, readPrograma, readTema } from "../../../firebase";
+import { getListBairroName, getListProgramaData, getListProgramasTema, getListRealizacoesPrograma, getListSubprefeituraName, readPrograma, readTema } from "../../../firebase";
 import { useDispatch } from "react-redux";
 import { loadDadosAgregadosAbaSumarioInfoBasicasSubprefeitura, loadDadosAgregadosAbaSumarioStatusEntregasSubprefeitura } from "../../../redux/subprefeituras/actions";
 import { loadDadosAgregadosAbaSumarioStatusEntregasBairro } from "../../../redux/bairros/actions";
@@ -43,7 +46,7 @@ import { set } from "date-fns";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { loadProgramaData, setPrograma, setRealizacao, setTema } from "../../../redux/filtros/actions";
 import BackspaceIcon from '@mui/icons-material/Backspace';
-import { toSnakeCase } from "../../../utils/formatFile";
+import { snakeToCapitalized, toSnakeCase } from "../../../utils/formatFile";
 import Badge from '@material-ui/core/Badge';
 import lupa_mapa from '../../../icons/lupa_mapa.png'
 import { BottomNavigation, BottomNavigationAction, ButtonBase } from "@material-ui/core";
@@ -219,13 +222,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 
-const CustomPaperSearch = (props) => {
-  return (
-    <>
-      <Paper elevation={0} {...props} />
-    </>
-  )
-};
+
 
 const SearchBar = ({
   menuSidebar,
@@ -432,6 +429,22 @@ const SearchBar = ({
     dispatch(loadProgramaData(newValue));
   };
 
+  const handleProgramaChangeFromSearch = (event, newValue) => {
+    setInputValuePrograma(newValue.nome);
+    setShowRealizacoes(true);
+    setShowTemas(false);
+    setShowProgramas(false);
+    setPrograma(newValue.nome);
+    setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+    setInputValueTema(snakeToCapitalized(newValue.id_tema));
+    setTema(snakeToCapitalized(newValue.id_tema))
+
+    if (!bairro) {
+      setZoomDefault((Math.random() * 999 + 1));
+    }
+    dispatch(loadProgramaData(newValue.nome));
+  };
+
 
 
   const [inputValueRealizacaoFromSearch, setInputValueRealizacaoFromSearch] = useState(undefined);
@@ -612,6 +625,48 @@ const SearchBar = ({
 
     loadBairros();
   }, []);
+  const [programasOptions, setProgramasOptions] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getListProgramaData();
+        setProgramasOptions(data.map(item => item));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const CustomPaperSearch = (props) => {
+    const filteredOptions = programasOptions.filter(option =>
+      option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
+    );
+    return (
+      <>
+        <Paper elevation={0} {...props} />
+        {noOptions && filteredOptions.length > 0 && (
+          <Box style={{ width: "110%", position: "fixed", top: "60px", marginLeft: "10px", color: 'black' }}>
+            <hr style={{ margin: '10px 0' }} />
+            <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Veja os programas encontrados...</Typography>
+            <List style={{ padding: 0, marginLeft: "-15px", maxHeight: '60vh', overflowY: 'auto' }}>
+              {filteredOptions.map((option) => (
+                <ListItem
+                  button
+                  key={option.id}
+                  onMouseDown={() => handleProgramaChangeFromSearch(null, option)}
+                  style={{ paddingTop: '4px', paddingBottom: '4px' }} // Ajuste a altura aqui
+                >
+                  <ListItemText primary={option.nome} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        )}
+      </>
+    );
+  };
 
 
   const CustomPaperMenu = (props) => {
@@ -642,11 +697,11 @@ const SearchBar = ({
     setOpenPopup(null);
     setOpenedPopup(null);
   };
-
+  const [noOptions, setNoOptions] = useState(false);
+  const [currentProgramaInputValue, setCurrentProgramaInputValue] = useState('');
   const filterOptions = (options, { inputValue }) => {
     const inputWords = inputValue.toLowerCase().split(' ').filter(Boolean);
-
-    return options.filter(option => {
+    const filteredOptions = options.filter(option => {
       const optionWords = option.toLowerCase().split(' ');
 
       return inputWords.every(inputWord => {
@@ -654,6 +709,9 @@ const SearchBar = ({
         return optionWords.some(optionWord => optionWord.startsWith(inputWord));
       });
     });
+
+    setNoOptions(filteredOptions.length === 0);
+    return filteredOptions;
   };
 
 
@@ -867,14 +925,59 @@ const SearchBar = ({
   }
 
   function SheetContentBairrosSubprefeituras() {
-    return (
-      <div >
 
+    const CustomPaperSearchMobile = (props) => {
+      const filteredOptions = programasOptions.filter(option =>
+        option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
+      );
+      return (
+        <>
+          <Paper elevation={0} {...props} />
+          {noOptions && filteredOptions.length != 0 && (
+            <Box style={{ width: "90%", position: "fixed", top: "95px", marginLeft: "10px", color: 'black' }}>
+              <hr style={{ margin: '10px 0px' }} />
+              <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Veja os programas encontrados...</Typography>
+              <List style={{ padding: 0, marginLeft: "-15px", maxHeight: '50vh', overflowY: 'auto' }}>
+                {filteredOptions.map((option) => (
+                  <ListItem
+                    button
+                    key={option.id}
+                    onMouseDown={() => handleProgramaChangeFromSearch(null, option)}
+                    style={{ paddingTop: '4px', paddingBottom: '4px' }} // Ajuste a altura aqui
+                  >
+                    <ListItemText primary={option.nome} />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          )}
+        </>
+      );
+    };
+
+    const [noOptions, setNoOptions] = useState(false);
+    const [currentProgramaInputValue, setCurrentProgramaInputValue] = useState('');
+    const filterOptions = (options, { inputValue }) => {
+      const inputWords = inputValue.toLowerCase().split(' ').filter(Boolean);
+      const filteredOptions = options.filter(option => {
+        const optionWords = option.toLowerCase().split(' ');
+
+        return inputWords.every(inputWord => {
+          // check if the inputWord matches the start of any word in the optionWords
+          return optionWords.some(optionWord => optionWord.startsWith(inputWord));
+        });
+      });
+
+      setNoOptions(filteredOptions.length === 0);
+      return filteredOptions;
+    };
+
+    return (
+      <div>
         <Paper
           component="form"
           variant="elevation"
           className={classes.paperBackground}
-          // elevation={searchPrompt ? 1 : 3}
           elevation={0}
         >
           <Paper
@@ -885,21 +988,21 @@ const SearchBar = ({
                 ? clsx(classes.paper, classes.bottomRound)
                 : classes.paper
             }
-            // elevation={searchPrompt ? 1 : 3}
             elevation={3}
           >
-
-
             <Autocomplete
-              freeSolo
-              // disablePortal
+              forcePopupIcon={false}
+              noOptionsText={'Nenhum bairro/subprefeitura encontrado.'}
               className={classes.input}
               value={inputValueBairroSubprefeitura}
               onChange={handleBairroSubprefeituraChange}
+              onInputChange={(event, newInputValue) => {
+                setCurrentProgramaInputValue(newInputValue);
+              }}
               disableClearable
               options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
-              PaperComponent={CustomPaperSearch}
+              PaperComponent={CustomPaperSearchMobile}
               ListboxProps={{ style: { maxHeight: "60vh" } }}
               componentsProps={{
                 paper: {
@@ -909,10 +1012,6 @@ const SearchBar = ({
                     width: "100%",
                     height: "60vh",
                     overflowY: "hidden",
-                    // borderRadius: '0px',
-                    // borderBottomLeftRadius: '5px',
-                    // borderBottomRightRadius: '25px',
-
                   }
                 }
               }}
@@ -920,8 +1019,6 @@ const SearchBar = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  autoFocus={true}
-                  // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
                   placeholder="Filtre por Bairro ou Subprefeitura"
                   sx={{
                     "& fieldset": { border: 'none' }
@@ -929,7 +1026,6 @@ const SearchBar = ({
                 />
               )}
             />
-
           </Paper>
         </Paper>
       </div>
@@ -940,6 +1036,51 @@ const SearchBar = ({
 
     const [localRealizacaoMenuMobileOpen, setLocalRealizacaoMenuMobileOpen] = useState(false);
 
+    const CustomPaperSearchMobile = (props) => {
+      const filteredOptions = programasOptions.filter(option =>
+        option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
+      );
+      return (
+        <>
+          <Paper elevation={0} {...props} />
+          {noOptions && filteredOptions.length != 0 && (
+            <Box style={{ width: "90%", position: "fixed", top: "60px", marginLeft: "10px", color: 'black' }}>
+              <hr style={{ margin: '10px 0' }} />
+              <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Veja os programas encontrados...</Typography>
+              <List style={{ padding: 0, marginLeft: "-15px", maxHeight: '50vh', overflowY: 'auto' }}>
+                {filteredOptions.map((option) => (
+                  <ListItem
+                    button
+                    key={option.id}
+                    onMouseDown={() => handleProgramaChangeFromSearch(null, option)}
+                    style={{ paddingTop: '4px', paddingBottom: '4px' }} // Ajuste a altura aqui
+                  >
+                    <ListItemText primary={option.nome} />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          )}
+        </>
+      );
+    };
+
+    const [noOptions, setNoOptions] = useState(false);
+    const [currentProgramaInputValue, setCurrentProgramaInputValue] = useState('');
+    const filterOptions = (options, { inputValue }) => {
+      const inputWords = inputValue.toLowerCase().split(' ').filter(Boolean);
+      const filteredOptions = options.filter(option => {
+        const optionWords = option.toLowerCase().split(' ');
+
+        return inputWords.every(inputWord => {
+          // check if the inputWord matches the start of any word in the optionWords
+          return optionWords.some(optionWord => optionWord.startsWith(inputWord));
+        });
+      });
+
+      setNoOptions(filteredOptions.length === 0);
+      return filteredOptions;
+    };
     return (
       <div >
 
@@ -972,7 +1113,7 @@ const SearchBar = ({
               disableClearable
               options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
-              PaperComponent={CustomPaperSearch}
+              PaperComponent={CustomPaperSearchMobile}
               ListboxProps={{ style: { maxHeight: "60vh" } }}
               componentsProps={{
                 paper: {
@@ -987,6 +1128,7 @@ const SearchBar = ({
               }}
               open={localRealizacaoMenuMobileOpen}
               onInputChange={(_, value) => {
+                setCurrentProgramaInputValue(value);
                 if (value.length === 0) {
                   if (localRealizacaoMenuMobileOpen) setLocalRealizacaoMenuMobileOpen(false);
                 } else {
@@ -1417,11 +1559,15 @@ const SearchBar = ({
 
 
                       <Autocomplete
-                        freeSolo
-                        // disablePortal
+                        // freeSolo
+                        forcePopupIcon={false}
+                        noOptionsText={'Nenhum bairro/subprefeitura encontrado.'}
                         className={classes.input}
                         value={inputValueBairroSubprefeitura}
                         onChange={handleBairroSubprefeituraChange}
+                        onInputChange={(event, newInputValue) => {
+                          setCurrentProgramaInputValue(newInputValue);
+                        }}
                         disableClearable
                         options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
@@ -1447,6 +1593,7 @@ const SearchBar = ({
                           <TextField
                             {...params}
                             autoFocus={true}
+
                             // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
                             placeholder="Filtre por Bairro ou Subprefeitura"
                             sx={{
@@ -1574,6 +1721,7 @@ const SearchBar = ({
                         }}
                         open={localRealizacaoMenuDesktopOpen}
                         onInputChange={(_, value) => {
+                          setCurrentProgramaInputValue(value);
                           if (value.length === 0) {
                             if (localRealizacaoMenuDesktopOpen) setLocalRealizacaoMenuDesktopOpen(false);
                           } else {
