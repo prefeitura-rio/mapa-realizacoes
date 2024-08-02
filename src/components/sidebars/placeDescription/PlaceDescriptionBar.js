@@ -492,7 +492,8 @@ const PlaceDescriptionBar = forwardRef(
     const [isScreen900, setTextScreen900] = useState(false);
     const [isScreen600, setTextScreen600] = useState(false);
 
-    const fullText = content?.descricao;
+    // const fullText = content?.descricao;
+    const fullText = content?.descricao?.replace(/\\r\\n/g, '<br />');
 
     // Calcule o número de caracteres com base na altura da janela
     const numChars = Math.floor(windowHeight / (isScreen900 ? 3 : (isScreen600 ? 3.2 : 1.6)));
@@ -614,13 +615,13 @@ const PlaceDescriptionBar = forwardRef(
                         {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
                         {
                           isTextExpanded ? (
-                            <span>{fullText}</span>
+                            <span dangerouslySetInnerHTML={{ __html: fullText }}></span>
                           ) : shortText === "undefined ..." ? (
                             "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."
                           ) : (fullText + " ..." === shortText) ? (
-                            <span>{fullText}</span>
+                            <span dangerouslySetInnerHTML={{ __html: fullText }}></span>
                           ) : (
-                            <span>{shortText}</span>
+                            <span dangerouslySetInnerHTML={{ __html: shortText }}></span>
                           )
                         }
                         {fullText + " ..." !== shortText && (
@@ -782,7 +783,7 @@ const PlaceDescriptionBar = forwardRef(
                               }}
                             >
                               {content?.gestao !== "3" && "Essa é uma realização de gestões anteriores."}
-                              {fullText}
+                              <span dangerouslySetInnerHTML={{ __html: fullText }}></span>
                               {!fullText && "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."}
                             </Typography>
                           </Collapse>

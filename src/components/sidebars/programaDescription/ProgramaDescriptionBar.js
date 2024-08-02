@@ -389,7 +389,7 @@ const ProgramaDescriptionBar = forwardRef(
     const [isScreen500, setTextScreen500] = useState(false);
 
 
-    const fullText = programaData?.descricao?.replace(/;\s*-/g, ';<br />-').replace(/-/g, '<b>-</b>');
+    const fullText = programaData?.descricao?.replace(/\\r\\n/g, '<br />');
     // const fullText = programaData?.descricao?.replace(/-/g, '<br />-').replace(/-/g, '<b>-</b>');
     // .replace(/(\\r\\n)/g, '<br />')
 
