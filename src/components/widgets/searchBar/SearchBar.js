@@ -652,11 +652,11 @@ const SearchBar = ({
       option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
     );
     return (
-      <div style={{ width: "110%", maxHeight: "80vh", overflowY: 'hidden', overflowX: 'hidden' }}>
+      <div style={{ width: "110%", maxHeight: "80vh", overflowY: 'auto', overflowX: 'hidden' }}>
         {!noOptions && filteredOptions.length > 0 ? (
           <Box style={{ width: "100%", position: "relative", marginLeft: "10px", color: 'black' }}>
             <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Programas</Typography>
-            <List style={{ padding: 0, marginLeft: "-15px", maxHeight: '60vh', overflowY: 'auto' }}>
+            <List style={{ padding: 0, marginLeft: "-15px", overflowY: 'auto' }}>
               {filteredOptions.map((option) => (
                 <ListItem
                   button
@@ -1014,11 +1014,11 @@ const SearchBar = ({
         option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
       );
       return (
-        <div style={{ width: "100%", maxHeight: "63vh", overflowY: 'hidden', overflowX: 'hidden' }}>
+        <div style={{ width: "100%", maxHeight: "63vh", overflowY: 'auto', overflowX: 'hidden' }}>
           {!noOptions && filteredOptions.length > 0 ? (
             <Box style={{ width: "100%", position: "relative", marginLeft: "10px", color: 'black' }}>
               <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Programas</Typography>
-              <List style={{ padding: 0, marginLeft: "-15px", maxHeight: '40vh', overflowY: 'auto' }}>
+              <List style={{ padding: 0, marginLeft: "-15px", overflowY: 'hidden' }}>
                 {filteredOptions.map((option) => (
                   <ListItem
                     button
@@ -1088,15 +1088,15 @@ const SearchBar = ({
               options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
               PaperComponent={CustomPaperSearchMobile}
-              ListboxProps={{ style: { maxHeight: "60vh" } }}
+              ListboxProps={{ style: { maxHeight: "100vh", overflowY: 'hidden' } }}
               componentsProps={{
                 paper: {
                   sx: {
                     marginTop: "-15px",
                     marginLeft: "-5px",
                     width: "100%",
-                    height: "60vh",
-                    overflowY: "hidden",
+                    height: "100vh",
+                    overflowY: "auto",
                   }
                 }
               }}
@@ -1674,15 +1674,15 @@ const SearchBar = ({
                         options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
-                        ListboxProps={{ style: { maxHeight: "80vh" } }}
+                        ListboxProps={{ style: { maxHeight: "100vh", overflowY: 'auto' } }}
                         componentsProps={{
                           paper: {
                             sx: {
                               // marginTop: "15px",
                               marginLeft: "-5px",
                               width: "392px",
-                              height: "50vh",
-                              overflowY: "hidden",
+                              height: "100vh",
+                              overflowY: "auto",
                               borderRadius: '0px',
                               borderBottomLeftRadius: '5px',
                               borderBottomRightRadius: '25px',
