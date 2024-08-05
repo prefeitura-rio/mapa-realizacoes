@@ -639,18 +639,24 @@ const SearchBar = ({
     fetchData();
   }, []);
 
+  const CustomPaperSearchBairroSubprefeitura = (props) => {
+    return (
+      <>
+        <Paper elevation={0} {...props} />
+      </>
+    )
+  };
+
   const CustomPaperSearch = (props) => {
     const filteredOptions = programasOptions.filter(option =>
       option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
     );
     return (
-      <>
-        <Paper elevation={0} {...props} />
-        {noOptions && filteredOptions.length > 0 && (
-          <Box style={{ width: "110%", position: "fixed", top: "60px", marginLeft: "10px", color: 'black' }}>
-            <hr style={{ margin: '10px 0' }} />
-            <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Veja os programas encontrados...</Typography>
-            <List style={{ padding: 0, marginLeft: "-15px", maxHeight: '60vh', overflowY: 'auto' }}>
+      <div style={{ width: "110%", maxHeight: "80vh", overflowY: 'auto', overflowX: 'hidden' }}>
+        {!noOptions && filteredOptions.length > 0 ? (
+          <Box style={{ width: "100%", position: "relative", marginLeft: "10px", color: 'black' }}>
+            <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Programas</Typography>
+            <List style={{ padding: 0, marginLeft: "-15px", overflowY: 'auto' }}>
               {filteredOptions.map((option) => (
                 <ListItem
                   button
@@ -663,8 +669,11 @@ const SearchBar = ({
               ))}
             </List>
           </Box>
-        )}
-      </>
+        ) : (<><Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingLeft: "10px", paddingTop: "15px" }}>Programas</Typography> <Typography style={{ paddingBottom: "15px", paddingLeft: "10px", color: "grey" }}>Nenhum programa encontrado.</Typography></>)}
+        <hr style={{ margin: '10px 0' }} />
+        <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingLeft: "10px", paddingTop: "10px" }}>Realizações</Typography>
+        <Paper elevation={0} {...props} />
+      </div>
     );
   };
 
@@ -926,37 +935,6 @@ const SearchBar = ({
 
   function SheetContentBairrosSubprefeituras() {
 
-    const CustomPaperSearchMobile = (props) => {
-      const filteredOptions = programasOptions.filter(option =>
-        option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
-      );
-      return (
-        <>
-          <Paper elevation={0} {...props} />
-          {noOptions && filteredOptions.length != 0 && (
-            <Box style={{ width: "90%", position: "fixed", top: "95px", marginLeft: "10px", color: 'black' }}>
-              <hr style={{ margin: '10px 0px' }} />
-              <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Veja os programas encontrados...</Typography>
-              <List style={{ padding: 0, marginLeft: "-15px", maxHeight: '50vh', overflowY: 'auto' }}>
-                {filteredOptions.map((option) => (
-                  <ListItem
-                    button
-                    key={option.id}
-                    onMouseDown={() => handleProgramaChangeFromSearch(null, option)}
-                    style={{ paddingTop: '4px', paddingBottom: '4px' }} // Ajuste a altura aqui
-                  >
-                    <ListItemText primary={option.nome} />
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-          )}
-        </>
-      );
-    };
-
-    const [noOptions, setNoOptions] = useState(false);
-    const [currentProgramaInputValue, setCurrentProgramaInputValue] = useState('');
     const filterOptions = (options, { inputValue }) => {
       const inputWords = inputValue.toLowerCase().split(' ').filter(Boolean);
       const filteredOptions = options.filter(option => {
@@ -967,8 +945,6 @@ const SearchBar = ({
           return optionWords.some(optionWord => optionWord.startsWith(inputWord));
         });
       });
-
-      setNoOptions(filteredOptions.length === 0);
       return filteredOptions;
     };
 
@@ -996,13 +972,10 @@ const SearchBar = ({
               className={classes.input}
               value={inputValueBairroSubprefeitura}
               onChange={handleBairroSubprefeituraChange}
-              onInputChange={(event, newInputValue) => {
-                setCurrentProgramaInputValue(newInputValue);
-              }}
               disableClearable
               options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
-              PaperComponent={CustomPaperSearchMobile}
+              PaperComponent={CustomPaperSearchBairroSubprefeitura}
               ListboxProps={{ style: { maxHeight: "60vh" } }}
               componentsProps={{
                 paper: {
@@ -1041,13 +1014,11 @@ const SearchBar = ({
         option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
       );
       return (
-        <>
-          <Paper elevation={0} {...props} />
-          {noOptions && filteredOptions.length != 0 && (
-            <Box style={{ width: "90%", position: "fixed", top: "60px", marginLeft: "10px", color: 'black' }}>
-              <hr style={{ margin: '10px 0' }} />
-              <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Veja os programas encontrados...</Typography>
-              <List style={{ padding: 0, marginLeft: "-15px", maxHeight: '50vh', overflowY: 'auto' }}>
+        <div style={{ width: "100%", maxHeight: "63vh", overflowY: 'auto', overflowX: 'hidden' }}>
+          {!noOptions && filteredOptions.length > 0 ? (
+            <Box style={{ width: "100%", position: "relative", marginLeft: "10px", color: 'black' }}>
+              <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingTop: "15px" }}>Programas</Typography>
+              <List style={{ padding: 0, marginLeft: "-15px", overflowY: 'hidden' }}>
                 {filteredOptions.map((option) => (
                   <ListItem
                     button
@@ -1060,8 +1031,11 @@ const SearchBar = ({
                 ))}
               </List>
             </Box>
-          )}
-        </>
+          ) : (<><Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingLeft: "10px", paddingTop: "15px" }}>Programas</Typography> <Typography style={{ paddingBottom: "15px", paddingLeft: "10px", color: "grey" }}>Nenhum programa encontrado.</Typography></>)}
+          <hr style={{ margin: '10px 0' }} />
+          <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingLeft: "10px", paddingTop: "10px" }}>Realizações</Typography>
+          <Paper elevation={0} {...props} />
+        </div>
       );
     };
 
@@ -1114,15 +1088,15 @@ const SearchBar = ({
               options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
               PaperComponent={CustomPaperSearchMobile}
-              ListboxProps={{ style: { maxHeight: "60vh" } }}
+              ListboxProps={{ style: { maxHeight: "100vh", overflowY: 'hidden' } }}
               componentsProps={{
                 paper: {
                   sx: {
-                    marginTop: "15px",
+                    marginTop: "-15px",
                     marginLeft: "-5px",
                     width: "100%",
-                    height: "60vh",
-                    overflowY: "hidden",
+                    height: "100vh",
+                    overflowY: "auto",
                   }
                 }
               }}
@@ -1141,7 +1115,7 @@ const SearchBar = ({
                   {...params}
                   autoFocus={!inputValueRealizacaoFromSearch}
                   // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                  placeholder="Encontre uma realização"
+                  placeholder="Encontre um programa/realização"
                   sx={{
                     "& fieldset": { border: 'none' }
                   }}
@@ -1565,13 +1539,10 @@ const SearchBar = ({
                         className={classes.input}
                         value={inputValueBairroSubprefeitura}
                         onChange={handleBairroSubprefeituraChange}
-                        onInputChange={(event, newInputValue) => {
-                          setCurrentProgramaInputValue(newInputValue);
-                        }}
                         disableClearable
                         options={bairrosSubSubprefeituras.sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
-                        PaperComponent={CustomPaperSearch}
+                        PaperComponent={CustomPaperSearchBairroSubprefeitura}
                         ListboxProps={{ style: { maxHeight: "80vh" } }}
                         componentsProps={{
                           paper: {
@@ -1703,15 +1674,15 @@ const SearchBar = ({
                         options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
                         PaperComponent={CustomPaperSearch}
-                        ListboxProps={{ style: { maxHeight: "80vh" } }}
+                        ListboxProps={{ style: { maxHeight: "100vh", overflowY: 'auto' } }}
                         componentsProps={{
                           paper: {
                             sx: {
-                              marginTop: "15px",
+                              // marginTop: "15px",
                               marginLeft: "-5px",
                               width: "392px",
-                              height: "80vh",
-                              overflowY: "hidden",
+                              height: "100vh",
+                              overflowY: "auto",
                               borderRadius: '0px',
                               borderBottomLeftRadius: '5px',
                               borderBottomRightRadius: '25px',
@@ -1734,7 +1705,7 @@ const SearchBar = ({
                             {...params}
                             autoFocus={true}
                             // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                            placeholder="Encontre uma realização"
+                            placeholder="Encontre um programa/realização"
                             sx={{
                               "& fieldset": { border: 'none' }
                             }}
