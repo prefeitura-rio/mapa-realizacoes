@@ -37,26 +37,27 @@ const MapContainer = (props) => {
       setUnderSearchBar={props.setUnderSearchBar}
       currentCoords={props.currentCoords}
       profile={props.profile}
-      filtros={props.filtros}	
-      bairroNome={props.bairroNome}	
-      subprefeituraNome={props.subprefeituraNome?.nome}	
-      realizacaoId = {id}
-      rota = {props.rota}
-      setRota = {props.setRota}
-      underSearchBar = {props.underSearchBar}
-      tema = {props.tema}
-      programa = {props.programa}
-      realizacao = {props.realizacao}
-      bairro = {props.bairro}
-      subprefeitura = {props.subprefeitura}
+      filtros={props.filtros}
+      bairroNome={props.bairroNome}
+      subprefeituraNome={props.subprefeituraNome?.nome}
+      realizacaoId={id}
+      rota={props.rota}
+      setRota={props.setRota}
+      underSearchBar={props.underSearchBar}
+      tema={props.tema}
+      programa={props.programa}
+      realizacao={props.realizacao}
+      bairro={props.bairro}
+      subprefeitura={props.subprefeitura}
       zoomDefault={props.zoomDefault}
       currentClickedPoint={props.currentClickedPoint}
       setOpenedPopup={props.setOpenedPopup}
-      gestao = {props.gestao}
+      gestao={props.gestao}
       setRealizacao={props.setRealizacao}
       setUserLocation={props.setUserLocation}
       userLocation={props.userLocation}
       realizacoesPrograma={props.realizacoesPrograma}
+      setCurrentClickedPoint={props.setCurrentClickedPoint}
     />
   );
 };
@@ -98,7 +99,8 @@ const mapDispatchToProps = {
   setRota,
   setOpenedPopup,
   setRealizacao,
-  setUserLocation
+  setUserLocation,
+  setCurrentClickedPoint
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);

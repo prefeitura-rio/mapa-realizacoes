@@ -12,36 +12,3 @@
 .leaflet-bottom{
   display: none !important;
 }
-/* .MuiButtonGroup-root.makeStyles-horizontalWidget-18.MuiButtonGroup-contained{
-  display: none !important  ;
-}
-.MuiSvgIcon-root.makeStyles-apps-47{
-  display: none !important;
-}
-.MuiSvgIcon-root.makeStyles-apps-47{
-  display: none !important;
-} */
-
-.marker-cluster-custom {
-  background: #007E7D;
-  border: 3px solid #ededed;
-  border-radius: 50%;
-  color: #ededed;
-  height: 40px;
-  line-height: 37px;
-  text-align: center;
-  width: 40px;
-  z-index: 9999 !important;
-}
-
-.marker-old-points-cluster-custom {
-  background: #722F37;
-  border: 3px solid #ededed;
-  border-radius: 50%;
-  color: #ededed;
-  height: 40px;
-  line-height: 37px;
-  text-align: center;
-  width: 40px;
-  z-index: 9998 !important;
-}
