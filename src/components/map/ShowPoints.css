@@ -1,0 +1,34 @@
+.leaflet-div-icon {
+  background: none !important;
+  border: none !important;
+}
+
+.marker-cluster-custom {
+  background: #007E7D;
+  border: 3px solid #ededed;
+  border-radius: 50%;
+  color: #ededed;
+  height: 40px;
+  padding: 16px;
+  line-height: 37px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  z-index: 9999 !important;
+}
+
+.marker-old-points-cluster-custom {
+  background: #722F37;
+  border: 3px solid #ededed;
+  border-radius: 50%;
+  color: #ededed;
+  height: 40px;
+  padding: 16px;
+  line-height: 37px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  z-index: 9998 !important;
+}
