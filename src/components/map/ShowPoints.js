@@ -41,22 +41,34 @@ function ShowPoints({
 
   const icons = {};
   const fetchIcon = (count, size) => {
-    if (!icons[count]) {
-      icons[count] = L.divIcon({
-        html: `<div class="marker-cluster-custom" style="width: ${size}px; height: ${size}px;">${count}</div>`,
-
-      });
-    }
-    return icons[count];
+    return L.divIcon({
+      html: `<span>${count}</span>`,
+      className: 'marker-cluster-custom-leaflet',
+      iconSize: L.point(40, 40, true),
+    });
   };
 
   const fetchOldIcon = (count, size) => {
-    if (!icons[count]) {
-      icons[count] = L.divIcon({
-        html: `<div class="marker-old-points-cluster-custom" style="width: ${size}px; height: ${size}px;">${count}</div>`,
-      });
-    }
-    return icons[count];
+    return L.divIcon({
+      html: `<span>${count}</span>`,
+      className: 'marker-old-points-cluster-custom-leaflet',
+      iconSize: L.point(40, 40, true),
+    });
+  };
+
+  const createClusterCustomIcon = function (cluster) {
+    return L.divIcon({
+      html: `<span>${cluster.getChildCount()}</span>`,
+      className: 'marker-cluster-custom-leaflet',
+      iconSize: L.point(40, 40, true),
+    });
+  };
+  const createOldPointsClusterCustomIcon = function (cluster) {
+    return L.divIcon({
+      html: `<span>${cluster.getChildCount()}</span>`,
+      className: 'marker-old-points-cluster-custom-leaflet',
+      iconSize: L.point(40, 40, true),
+    });
   };
 
   const CustomTooltip = styled(Tooltip)(({ theme }) => ({
@@ -133,8 +145,8 @@ function ShowPoints({
       map.off('moveend', updateMap);
     };
   }, [map, updateMap]);
-  points = points || [];
 
+  points = points || [];
 
   // Filtrar pontos para cada categoria
   const resilienciaClimaticaPoints = points.filter(point => (toSnakeCase('Resiliência Climática') === point.id_tema) && (point.gestao == "3"));
@@ -236,16 +248,20 @@ function ShowPoints({
     })),
     bounds: bounds,
     zoom: zoom,
-    options: { radius: 75, maxZoom: 17 },
+    options: { radius: 100, maxZoom: 17 },
   });
 
   const renderClusters = (clusters, supercluster, fetchIconFunction) => {
+    //
     return (
       <MarkerClusterGroup
         spiderfyDistanceMultiplier={2}
         showCoverageOnHover={true}
-        maxClusterRadius={15}
-      >
+        // with this value set to 0, we manage the cluster radius withe the use-supercluster lib
+        maxClusterRadius={0}
+        spiderfyOnMaxZoom={true}
+        iconCreateFunction={fetchIconFunction == fetchIcon ? createClusterCustomIcon : createOldPointsClusterCustomIcon}>
+
         {clusters.map((cluster, index) => {
           const [longitude, latitude] = cluster.geometry.coordinates;
           const { cluster: isCluster, point_count: pointCount, pointData } = cluster.properties;
@@ -255,7 +271,7 @@ function ShowPoints({
               <Marker
                 key={`cluster-${cluster.id}`}
                 position={[latitude, longitude]}
-                icon={fetchIconFunction(pointCount, 10 + (pointCount / points.length) * 40)}
+                icon={fetchIconFunction == fetchIcon ? fetchIcon(pointCount, 10 + (pointCount / points.length) * 40) : fetchOldIcon(pointCount, 10 + (pointCount / points.length) * 40)}
                 eventHandlers={{
                   click: () => {
                     const expansionZoom = Math.min(
