@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import './ShowPoints.css';
 import { Card, CardActionArea, CardContent, CardMedia, styled, Typography } from '@material-ui/core';
 import { isDesktop } from '../../redux/active/reducers';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 function ShowPoints({
   points,
@@ -239,33 +240,41 @@ function ShowPoints({
   });
 
   const renderClusters = (clusters, supercluster, fetchIconFunction) => {
-    return clusters.map((cluster, index) => {
-      const [longitude, latitude] = cluster.geometry.coordinates;
-      const { cluster: isCluster, point_count: pointCount, pointData } = cluster.properties;
+    return (
+      <MarkerClusterGroup
+        spiderfyDistanceMultiplier={2}
+        showCoverageOnHover={true}
+        maxClusterRadius={15}
+      >
+        {clusters.map((cluster, index) => {
+          const [longitude, latitude] = cluster.geometry.coordinates;
+          const { cluster: isCluster, point_count: pointCount, pointData } = cluster.properties;
 
-      if (isCluster) {
-        return (
-          <Marker
-            key={`cluster-${cluster.id}`}
-            position={[latitude, longitude]}
-            icon={fetchIconFunction(pointCount, 10 + (pointCount / points.length) * 40)}
-            eventHandlers={{
-              click: () => {
-                const expansionZoom = Math.min(
-                  supercluster.getClusterExpansionZoom(cluster.id),
-                  maxZoom
-                );
-                map.setView([latitude, longitude], expansionZoom, {
-                  animate: true,
-                });
-              },
-            }}
-          />
-        );
-      }
+          if (isCluster) {
+            return (
+              <Marker
+                key={`cluster-${cluster.id}`}
+                position={[latitude, longitude]}
+                icon={fetchIconFunction(pointCount, 10 + (pointCount / points.length) * 40)}
+                eventHandlers={{
+                  click: () => {
+                    const expansionZoom = Math.min(
+                      supercluster.getClusterExpansionZoom(cluster.id),
+                      maxZoom
+                    );
+                    map.setView([latitude, longitude], expansionZoom, {
+                      animate: true,
+                    });
+                  },
+                }}
+              />
+            );
+          }
 
-      return renderMarker(pointData, index);
-    });
+          return renderMarker(pointData, index);
+        })}
+      </MarkerClusterGroup>
+    );
   };
 
   function renderMarker(point, index) {
