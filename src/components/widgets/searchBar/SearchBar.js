@@ -265,7 +265,8 @@ const SearchBar = ({
   setRealizacoesProgramaRedux,
   setGestao,
   gestao,
-  place
+  place,
+  currentClickedPoint
 }) => {
   const [inputValueBairroSubprefeitura, setInputValueBairroSubprefeitura] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -1224,8 +1225,8 @@ const SearchBar = ({
 
               (
                 <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Tooltip title={tema && !programa && !realizacao ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="right">
-                    <Badge badgeContent={tema && !programa && !realizacao ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
+                  <Tooltip title={tema && !programa && !realizacao || tema && !programa && currentClickedPoint ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="right">
+                    <Badge badgeContent={tema && !programa && !realizacao || tema && !programa && currentClickedPoint ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
                       <IconButton
                         style={{ backgroundColor: 'transparent' }}
                         color="grey"
@@ -1859,8 +1860,8 @@ const SearchBar = ({
             <BottomNavigationAction
               label={"Menu"}
               icon={
-                <Tooltip title={tema && !programa && !realizacao ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="top">
-                  <Badge badgeContent={tema && !programa && !realizacao ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
+                <Tooltip title={tema && !programa && !realizacao || tema && !programa && currentClickedPoint ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="right">
+                  <Badge badgeContent={tema && !programa && !realizacao || tema && !programa && currentClickedPoint ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
                     <MenuIcon />
                   </Badge>
                 </Tooltip>
