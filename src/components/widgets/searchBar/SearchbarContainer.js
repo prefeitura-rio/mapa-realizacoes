@@ -69,6 +69,7 @@ const SearchbarContainer = (props) => {
       setGestao={props.setGestao}
       gestao={props.gestao}
       place={props.place}
+      currentClickedPoint={props.currentClickedPoint}
     />
   );
 };
@@ -90,7 +91,8 @@ const mapStateToProps = (state) => {
     subprefeitura: state.filtros.subprefeitura,
     realizacoes: state.places.allPlaces,
     gestao: state.active.gestao,
-    place: state.place.content
+    place: state.place.content,
+    currentClickedPoint: state.active.currentClickedPoint,
   };
 };
 
