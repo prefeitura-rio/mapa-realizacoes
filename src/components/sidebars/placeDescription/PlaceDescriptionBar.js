@@ -13,7 +13,8 @@ import {
   Card,
   CardContent,
   CardActions,
-  Collapse
+  Collapse,
+  Grow
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -709,6 +710,10 @@ const PlaceDescriptionBar = forwardRef(
         setIsTextClamped(textRef.current.scrollHeight > textRef.current.clientHeight);
       }
     }, [fullText]);
+    const [hovered, setHovered] = useState(false);
+
+    const handleMouseEnter = () => setHovered(true);
+    const handleMouseLeave = () => setHovered(false);
 
     return (
       <>
@@ -791,16 +796,32 @@ const PlaceDescriptionBar = forwardRef(
                         <CardActions style={{ paddingTop: '0px', justifyContent: 'space-between' }}>
                           <Slide direction="right" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
                             <Button
-
                               sx={{
-                                '&:hover': {
-                                  backgroundColor: theme.palette.primary.main,
-                                }
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '8px',
                               }}
-
+                              onMouseEnter={handleMouseEnter}
+                              onMouseLeave={handleMouseLeave}
                               onClick={handleShareWhatsApp}
                             >
-                              <img src={whatsapp} alt="Fixed Button" style={{ width: "30px" }} />
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <img src={whatsapp} alt="WhatsApp Icon" style={{ width: "20px", marginRight: '8px' }} />
+
+                                <Grow in={hovered} timeout={500} style={{ transformOrigin: 'left' }}>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      whiteSpace: 'nowrap',
+                                      overflow: 'hidden',
+                                      fontSize: '14px',
+                                      marginLeft: '8px',
+                                    }}
+                                  >
+                                    Compartilhar
+                                  </Typography>
+                                </Grow>
+                              </Box>
                             </Button>
                           </Slide>
                           <div style={{ display: 'flex', gap: '8px' }}>
