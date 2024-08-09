@@ -788,22 +788,40 @@ const PlaceDescriptionBar = forwardRef(
                             </Typography>
                           </Collapse>
                         </CardContent>
-                        <CardActions style={{ paddingTop: '0px', justifyContent: 'flex-end' }}>
-                          {fullText && isTextClamped && (
-                            <Button size="small" onClick={handleExpandClick}>
-                              {expanded ? 'Leia menos' : 'Leia mais'}
-                              {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        <CardActions style={{ paddingTop: '0px', justifyContent: 'space-between' }}>
+                          <Slide direction="right" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
+                            <Button
+
+                              sx={{
+                                '&:hover': {
+                                  backgroundColor: theme.palette.primary.main,
+                                }
+                              }}
+
+                              onClick={handleShareWhatsApp}
+                            >
+                              <img src={whatsapp} alt="Fixed Button" style={{ width: "30px" }} />
                             </Button>
-                          )}
-                          <Button
-                            onClick={() => {
-                              setTema(content?.tema);
-                              setPrograma(content?.programa);
-                              setActiveBar(PROGRAMA_DESCRIPTION_BAR);
-                            }}
-                            size="small" color="primary">
-                            Saiba mais
-                          </Button>
+                          </Slide>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            {fullText && isTextClamped && (
+                              <Button size="small" onClick={handleExpandClick}>
+                                {expanded ? 'Leia menos' : 'Leia mais'}
+                                {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                              </Button>
+                            )}
+                            <Button
+                              onClick={() => {
+                                setTema(content?.tema);
+                                setPrograma(content?.programa);
+                                setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                              }}
+                              size="small"
+                              color="primary"
+                            >
+                              Saiba mais
+                            </Button>
+                          </div>
                         </CardActions>
                       </Card>
                     </Slide>
@@ -847,7 +865,7 @@ const PlaceDescriptionBar = forwardRef(
             </BottomSheet>
           </div>
         )}
-        {isDesktop() && (
+        {/* {isDesktop() && (
           <Slide direction="up" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
             <Button
               style={{
@@ -861,7 +879,7 @@ const PlaceDescriptionBar = forwardRef(
               <img src={whatsapp} alt="Fixed Button" style={{ width: "50px" }} />
             </Button>
           </Slide>
-        )}
+        )} */}
       </>
     );
   });

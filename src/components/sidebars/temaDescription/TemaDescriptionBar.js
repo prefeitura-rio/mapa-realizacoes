@@ -409,8 +409,11 @@ const TemaDescriptionBar = forwardRef(
     const [isScreen500, setTextScreen500] = useState(false);
 
 
-    const fullText = temaData?.descricao;
+    const fullText = temaData?.descricao
+      ?.replace(/&lt;br \/&gt;/g, '<br />')
+      .replace(/- /g, '• ');
 
+    console.log("fullText", fullText)
     // Calcule o número de caracteres com base na altura da janela
     const numChars = Math.floor(windowHeight / (isScreen900 ? 3 : (isScreen500 ? 4 : 1.8)));
 
@@ -468,7 +471,7 @@ const TemaDescriptionBar = forwardRef(
 
 
               <Typography className={classes.subtituloMunicipio}>
-                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+                <span dangerouslySetInnerHTML={{ __html: isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText }} />
 
                 {fullText && fullText !== "" && fullText + " ..." !== shortText &&
                   <Button onClick={() => setTextExpanded(!isTextExpanded)}>
@@ -628,8 +631,7 @@ const TemaDescriptionBar = forwardRef(
 
 
                   <Typography className={classes.subtituloMunicipio}>
-                    {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
-
+                    <span dangerouslySetInnerHTML={{ __html: isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este tema. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText }} />
                     {fullText && fullText !== "" && fullText + " ..." !== shortText &&
                       <Button onClick={() => setTextExpanded(!isTextExpanded)}>
                         {isTextExpanded ? 'Leia menos' : 'Leia mais'}
