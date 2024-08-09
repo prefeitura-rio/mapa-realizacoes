@@ -13,7 +13,8 @@ import {
   Card,
   CardContent,
   CardActions,
-  Collapse
+  Collapse,
+  Grow
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -709,6 +710,10 @@ const PlaceDescriptionBar = forwardRef(
         setIsTextClamped(textRef.current.scrollHeight > textRef.current.clientHeight);
       }
     }, [fullText]);
+    const [hovered, setHovered] = useState(false);
+
+    const handleMouseEnter = () => setHovered(true);
+    const handleMouseLeave = () => setHovered(false);
 
     return (
       <>
@@ -788,22 +793,56 @@ const PlaceDescriptionBar = forwardRef(
                             </Typography>
                           </Collapse>
                         </CardContent>
-                        <CardActions style={{ paddingTop: '0px', justifyContent: 'flex-end' }}>
-                          {fullText && isTextClamped && (
-                            <Button size="small" onClick={handleExpandClick}>
-                              {expanded ? 'Leia menos' : 'Leia mais'}
-                              {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        <CardActions style={{ paddingTop: '0px', justifyContent: 'space-between' }}>
+                          <Slide direction="right" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
+                            <Button
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '8px',
+                              }}
+                              onMouseEnter={handleMouseEnter}
+                              onMouseLeave={handleMouseLeave}
+                              onClick={handleShareWhatsApp}
+                            >
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <img src={whatsapp} alt="WhatsApp Icon" style={{ width: "20px", marginRight: '8px' }} />
+
+                                <Grow in={hovered} timeout={500} style={{ transformOrigin: 'left' }}>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      whiteSpace: 'nowrap',
+                                      overflow: 'hidden',
+                                      fontSize: '14px',
+                                      marginLeft: '8px',
+                                    }}
+                                  >
+                                    Compartilhar
+                                  </Typography>
+                                </Grow>
+                              </Box>
                             </Button>
-                          )}
-                          <Button
-                            onClick={() => {
-                              setTema(content?.tema);
-                              setPrograma(content?.programa);
-                              setActiveBar(PROGRAMA_DESCRIPTION_BAR);
-                            }}
-                            size="small" color="primary">
-                            Saiba mais
-                          </Button>
+                          </Slide>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            {fullText && isTextClamped && (
+                              <Button size="small" onClick={handleExpandClick}>
+                                {expanded ? 'Leia menos' : 'Leia mais'}
+                                {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                              </Button>
+                            )}
+                            <Button
+                              onClick={() => {
+                                setTema(content?.tema);
+                                setPrograma(content?.programa);
+                                setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                              }}
+                              size="small"
+                              color="primary"
+                            >
+                              Saiba mais
+                            </Button>
+                          </div>
                         </CardActions>
                       </Card>
                     </Slide>
@@ -847,7 +886,7 @@ const PlaceDescriptionBar = forwardRef(
             </BottomSheet>
           </div>
         )}
-        {isDesktop() && (
+        {/* {isDesktop() && (
           <Slide direction="up" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
             <Button
               style={{
@@ -861,7 +900,7 @@ const PlaceDescriptionBar = forwardRef(
               <img src={whatsapp} alt="Fixed Button" style={{ width: "50px" }} />
             </Button>
           </Slide>
-        )}
+        )} */}
       </>
     );
   });
