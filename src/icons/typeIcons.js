@@ -7,6 +7,9 @@ import RestaurantIcon from '@material-ui/icons/Restaurant';
 import BarIcon from '@material-ui/icons/LocalBar';
 import DefaultIcon from '@material-ui/icons/Place'; // Default icon
 import ReactDOMServer from 'react-dom/server';
+import AlertStationIcon from '@material-ui/icons/Warning'; // Example icon for estações_alerta_rio
+import SirenIcon from '@mui/icons-material/WifiTethering';
+import CameraIcon from '@mui/icons-material/Videocam';
 
 
 const createMuiIcon = (MuiIcon, iconSize = 15, iconColor = 'default') => {
@@ -39,6 +42,12 @@ export const getIcon = (name, isClicked, isGestaoDifferent) => {
       return createMuiIcon(DefaultIcon, size, isGestaoDifferent ? "#722F37" : "#ED7422");
     case "brts_transolimpicas_icon":
       return createMuiIcon(DefaultIcon, size, isGestaoDifferent ? "#722F37" : "#1DA64D");
+    case "estações_alerta_rio":
+      return createMuiIcon(AlertStationIcon, 40, color || "#007E7D");
+    case "câmeras":
+      return createMuiIcon(CameraIcon, 40, color || "#007E7D");
+    case "sirenes":
+      return createMuiIcon(SirenIcon, 40, color || "#007E7D");
     default:
       return createMuiIcon(DefaultIcon, isClicked ? 45 : 35, color || "#007E7D");
   }

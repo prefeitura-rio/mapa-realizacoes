@@ -19,6 +19,7 @@ import Snackbar from '@mui/material/Snackbar';
 import bairros_centros from "./centroideBairros";
 import subprefeituras_centros from "./centroideSubprefeituras";
 import MarkerClusterGroup from 'react-leaflet-cluster'
+import Supercluster from 'supercluster';
 import shapeFileBairros from "./shapeFileBairros.json"
 import shapeFileSubprefeituras from "./shapeFileSubprefeituras.json"
 import lineStringAsfaltoLiso from "./lineStringAsfaltoLiso.json"
@@ -29,6 +30,8 @@ import brtsLines from "./brtsLines.json";
 import { styled } from '@mui/material/styles';
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@material-ui/core";
 import '@luomus/leaflet-smooth-wheel-zoom';
+import ShowPoints from "./ShowPoints";
+import ShowPointsContainer from "./ShowPointsContainer";
 
 const capitalizeFirstLetter = (str) => {
   return str.toLowerCase().replace(/(^|\s)\S/g, (char) => char.toUpperCase());
@@ -64,7 +67,8 @@ const Map = ({
   gestao,
   setRealizacao,
   userLocation,
-  realizacoesPrograma
+  realizacoesPrograma,
+  setCurrentClickedPoint
 }) => {
   const [map, setMap] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -522,28 +526,6 @@ const Map = ({
       .replace(/\s+/g, '_');  // Substitui um ou mais espaços por underscore (_)
   }
 
-  const onMarkerClick = (point) => {
-    // setUnderSearchBar(true);
-    setDescriptionData(toSnakeCase(point.nome));
-    setActiveBar(DESCRIPTION_BAR);
-    loadData(toSnakeCase(point.nome));
-    navigate(`/${toSnakeCase(point.nome)}`);
-    if (map) {
-      if (point) {
-        let currentZoom = map.getZoom();
-        let targetZoom = currentZoom > 12 ? currentZoom : 13;
-        map.setView({
-          lat: point?.coords?.latitude,
-          lng: point?.coords?.longitude,
-        }, targetZoom);
-        // });
-      }
-    }
-    setRota(toSnakeCase(point.nome))
-    dispatch(setCurrentClickedPoint(point));
-    setRealizacao(point.nome)
-  };
-
 
   const [opened, setOpened] = useState(false);
 
@@ -561,167 +543,6 @@ const Map = ({
       iconSize: L.point(40, 40, true),
     });
   };
-
-  const iconMapping = {
-    "brts_transolímpica": "brts_transolimpicas_icon",
-    "brts_transbrasil": "brts_transbrasil_icon",
-    "brts_transoeste": "brts_transoeste_icon",
-    "brts_transcarioca": "brts_transcarioca_icon"
-  };
-
-
-  const CustomTooltip = styled(Tooltip)(({ theme }) => ({
-    '&.leaflet-tooltip': {
-      backgroundColor: 'transparent !important',
-      border: 'none !important',
-      boxShadow: 'none !important',
-      maxWidth: 'none',
-      padding: 0,
-    },
-    '&.leaflet-tooltip-right::before': {
-      borderRightColor: 'transparent !important',
-    },
-    '&.leaflet-tooltip-left::before': {
-      borderLeftColor: 'transparent !important',
-    },
-    '&.leaflet-tooltip-top::before': {
-      borderTopColor: 'transparent !important',
-    },
-    '&.leaflet-tooltip-bottom::before': {
-      borderBottomColor: 'transparent !important',
-    },
-  }));
-  const CustomCard = styled(Card)(({ theme }) => ({
-    width: 300,
-  }));
-
-
-  // Função auxiliar para renderizar o marcador
-  function renderMarker(point, index) {
-    return (
-      <Marker
-        key={point.id + index}
-        position={Object.values(point.coords)}
-        icon={getIcon(iconMapping[point.id_programa] || (point === currentClickedPoint ? 'redicon' : 'anyIcon'), point === currentClickedPoint, point.gestao !== '3')}
-        eventHandlers={point.id_programa !== 'estações_alerta_rio' && point.id_programa !== 'câmeras' && point.id_programa !== 'sirenes' ? {
-          click: () => onMarkerClick(point),
-        } : {}}
-      >
-        {isDesktop() &&
-          <CustomTooltip direction="right" offset={[-8, -2]} opacity={1} sticky>
-            <CustomCard>
-              <CardActionArea>
-                {point.image_url && (
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={point.image_url}
-                    alt={point.nome}
-                  />
-                )}
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    component="div"
-                    style={{
-                      fontSize: point.image_url ? '1.2rem' : '1.08rem',
-                      display: '-webkit-box',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      WebkitBoxOrient: 'vertical',
-                      WebkitLineClamp: 2,
-                      whiteSpace: 'normal',
-                      wordWrap: 'break-word',
-                      lineHeight: point.image_url ? '1.2' : '1',
-                      backgroundColor: 'transparent',
-                      marginBottom: point.image_url ? "" : "0px",
-                    }}
-                  >
-                    {point.id_programa === 'rio_em_forma' ? `Rio em Forma - ${point.nome}` : point.nome}
-                  </Typography>
-                  {point.id_bairro && (
-                    <Typography variant="body2" color="text.secondary" style={{ backgroundColor: 'transparent' }}>
-                      Bairro: {toTitleCase(point.id_bairro ?? '')}
-                    </Typography>
-                  )}
-                </CardContent>
-              </CardActionArea>
-            </CustomCard>
-          </CustomTooltip>
-        }
-      </Marker>
-    );
-  }
-
-  const resilienciaClimaticaPoints = points.filter(point => (toSnakeCase('Resiliência Climática') === point.id_tema) && (point.gestao == "3"));
-  const asfaltoLisoPoints = points.filter(point => toSnakeCase('Asfalto liso') === point.id_programa);
-  const mobilidadePoints = points.filter(point => (toSnakeCase('Mobilidade') === point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (toSnakeCase('Resiliência Climática') !== point.id_tema));
-  const otherPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao == "3") && (toSnakeCase('Resiliência Climática') !== point.id_tema));
-  const oldPoints = points.filter(point => (toSnakeCase('Mobilidade') !== point.id_tema) && (toSnakeCase('Asfalto liso') !== point.id_programa) && (point.gestao != "3") && (toSnakeCase('Resiliência Climática') !== point.id_tema));
-
-  const [userLocationCoords, setUserLocationCoords] = useState(null);
-  const [isZoomed, setIsZoomed] = useState(false);
-
-  useEffect(() => {
-    if (!map) return;
-
-    let watchId;
-
-    if (userLocation) {
-      watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const newCoords = { lat: latitude, lng: longitude };
-          setUserLocationCoords(newCoords);
-          if (!isZoomed) {
-            map.setView(newCoords, 15);
-            setIsZoomed(true);
-          }
-        },
-        (error) => {
-          console.error("Error watching position:", error);
-        },
-        {
-          enableHighAccuracy: true,
-          maximumAge: 0,
-          timeout: 1000,
-        }
-      );
-    }
-
-    return () => {
-      if (watchId) {
-        navigator.geolocation.clearWatch(watchId);
-      }
-    };
-  }, [map, userLocation, isZoomed]); // Include isZoomed in the dependency array
-
-  const svg = `
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21">
-  <style>
-    @-webkit-keyframes anim-pulse {
-      0% { opacity: 0; -webkit-transform: scale(.5); }
-      10% { opacity: 1; }
-      90% { opacity: 0; }
-      100% { -webkit-transform: scale(1.25); }
-    }
-    .core { fill: #00B7EB; stroke: white; stroke-width: 1; } /* Adicionado borda branca */
-    .ring {
-      opacity: 0;
-      stroke: #00B7EB;
-      -webkit-transform-origin: center;
-      -webkit-animation: anim-pulse 2s 1s infinite;
-    }
-  </style>
-  <g id="marker">
-    <circle class="core" cx="11.3" cy="10.5" r="3"/>
-    <circle class="ring" fill="none" stroke="%23000" stroke-miterlimit="10" cx="11.3" cy="10.5" r="6"/>
-  </g>
-</svg>
-`;
-
-  // Encode the SVG to be used as a data URL
-  const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`;
 
   return (
     <>
@@ -747,136 +568,7 @@ const Map = ({
           tileSize={512}
           zoomOffset={-1}
         />
-        <MarkerClusterGroup showCoverageOnHover={false}
-          spiderfyDistanceMultiplier={2}
-          chunkedLoading
-          iconCreateFunction={createClusterCustomIcon}>
-          {otherPoints.map((point, index) => {
-
-            // Verifica se o ponto corresponde ao bairro selecionado
-            const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
-
-            // Verifica se o ponto corresponde ao subprefeitura selecionado
-            const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
-
-            // Verifica se o ponto corresponde ao tema selecionado
-            const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
-
-            const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
-
-
-            // Renderiza o marcador se corresponder ao bairro e aos demais
-            // if (!isDesktop()) {
-            //   if ((tema || bairro || subprefeitura || (gestao == "3" || gestao == "1_2_3")) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-            //     return renderMarker(point, index);
-            //   }
-            // } else {
-            if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == null || gestao == "3" || gestao == "1_2_3")) {
-              return renderMarker(point, index);
-            }
-            // }
-
-
-          })}
-        </MarkerClusterGroup>
-
-        <MarkerClusterGroup showCoverageOnHover={false}
-          spiderfyDistanceMultiplier={2}
-          iconCreateFunction={createOldPointsClusterCustomIcon}>
-          {oldPoints.map((point, index) => {
-
-            // Verifica se o ponto corresponde ao bairro selecionado
-            const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
-
-            // Verifica se o ponto corresponde ao subprefeitura selecionado
-            const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
-
-            // Verifica se o ponto corresponde ao tema selecionado
-            const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
-
-            const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
-
-
-            // Renderiza o marcador se corresponder ao bairro e aos demais
-            // if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch) {
-            if (isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao == "1_2" || gestao == "1_2_3")) {
-              return renderMarker(point, index);
-            }
-
-          })}
-        </MarkerClusterGroup>
-
-        {tema == "Mobilidade" && mobilidadePoints.map((point, index) => {
-          const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
-          // Render the marker for points with the "Mobilidade" theme
-          if (isProgramaMatch && point.gestao == "3" && (gestao == "3" || gestao == "1_2_3" || gestao == null)) {
-            return renderMarker(point, index);
-          }
-        })}
-
-        {tema == "Mobilidade" && !programa && mobilidadePoints.map((point, index) => {
-          if ((gestao == null || gestao == "3" || gestao == "1_2_3") && point.gestao == "3") {
-            return renderMarker(point, index);
-          }
-        })}
-
-        {tema == "Mobilidade" && !programa && mobilidadePoints.map((point, index) => {
-          if ((gestao == "1_2" || gestao == "1_2_3") && point.gestao != "3") {
-            return renderMarker(point, index);
-          }
-        })}
-
-
-        {realizacao && points.map((point, index) => {
-          if (realizacao === point.nome) {
-            return renderMarker(point, index);
-          }
-        })}
-
-        {programa == "Asfalto liso" && asfaltoLisoPoints.map((point, index) => {
-
-          return renderMarker(point, index);
-
-        })}
-
-        <MarkerClusterGroup showCoverageOnHover={false}
-          spiderfyDistanceMultiplier={2}
-          iconCreateFunction={createClusterCustomIcon}>
-          {resilienciaClimaticaPoints.map((point, index) => {
-
-            // Verifica se o ponto corresponde ao bairro selecionado
-            const isBairroMatch = bairro ? toSnakeCase(bairro) === point.id_bairro : true;
-
-            // Verifica se o ponto corresponde ao subprefeitura selecionado
-            const isSubprefeituraMatch = subprefeitura ? toSnakeCase(subprefeitura) === point.id_subprefeitura : true;
-
-            // Verifica se o ponto corresponde ao tema selecionado
-            const isTemaMatch = tema ? toSnakeCase(tema) === point.id_tema : true;
-
-            const isProgramaMatch = programa ? toSnakeCase(programa) === point.id_programa : true;
-
-
-            // Renderiza o marcador se corresponder ao bairro e aos demais
-            if ((tema || bairro || subprefeitura) && isBairroMatch && isTemaMatch && isProgramaMatch && isSubprefeituraMatch && (gestao != "1_2")) {
-              return renderMarker(point, index);
-            }
-
-          })}
-        </MarkerClusterGroup>
-
-        {userLocation && userLocationCoords && (
-          <Marker
-            position={userLocationCoords}
-            icon={L.icon({ iconUrl: svgUrl, iconSize: [45, 45], iconAnchor: [12, 41] })}
-          >
-            <CustomTooltip direction="right" offset={[20, -40]} opacity={1}>
-              <Card style={{ padding: "10px" }}>
-                <Typography style={{ fontSize: "0.9rem" }} >Você está aqui.</Typography>
-              </Card>
-            </CustomTooltip>
-          </Marker>
-        )}
-
+        <ShowPointsContainer />
       </MapContainer>
     </>
   );

@@ -389,8 +389,9 @@ const ProgramaDescriptionBar = forwardRef(
     const [isScreen500, setTextScreen500] = useState(false);
 
 
-    const fullText = programaData?.descricao?.replace(/;\s*-/g, ';<br />-').replace(/-/g, '<b>-</b>');
-    // .replace(/(\\r\\n)/g, '<br />')
+    const fullText = programaData?.descricao
+      ?.replace(/&lt;br \/&gt;/g, '<br />')
+      .replace(/- /g, '• ');
 
     // Calcule o número de caracteres com base na altura da janela
     const numChars = Math.floor(windowHeight / (isScreen900 ? 3.9 : (isScreen500 ? 4 : 1.1)));
@@ -426,7 +427,8 @@ const ProgramaDescriptionBar = forwardRef(
               </Stack>
 
               <Typography className={classes.subtituloMunicipio}>
-                {isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText}
+
+                <span dangerouslySetInnerHTML={{ __html: isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText }} />
 
                 {fullText && fullText !== "" && fullText + " ..." !== shortText &&
                   <Button onClick={() => setTextExpanded(!isTextExpanded)}>
@@ -582,7 +584,6 @@ const ProgramaDescriptionBar = forwardRef(
                   </IconButton>
                 </Tooltip> */}
                   </Stack>
-
                   <Typography className={classes.subtituloMunicipio}>
                     <span dangerouslySetInnerHTML={{ __html: isTextExpanded ? fullText : shortText == "undefined ..." ? "Desculpe, ainda não possuímos descrição para este programa. Por favor, tente novamente mais tarde." : (fullText + " ..." === shortText) ? fullText : shortText }} />
                     {fullText && fullText !== "" && fullText + " ..." !== shortText &&
@@ -590,6 +591,7 @@ const ProgramaDescriptionBar = forwardRef(
                         {isTextExpanded ? 'Leia menos' : 'Leia mais'}
                       </Button>
                     }
+
                   </Typography>
                 </div>
               </Paper>

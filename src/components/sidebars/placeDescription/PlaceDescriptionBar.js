@@ -9,9 +9,14 @@ import {
   Typography,
   CircularProgress,
   Button,
-  List
+  List,
+  Card,
+  CardContent,
+  CardActions,
+  Collapse,
+  Grow
 } from "@material-ui/core";
-
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { forwardRef, useEffect, useRef } from "react";
 import { useState } from "react";
@@ -312,7 +317,7 @@ const useStyles = makeStyles((theme) => ({
   titulo: {
     // position:"relative",
     lineHeight: "26px",
-    fontSize: "1.5rem",
+    fontSize: "1.3rem",
     fontWeight: "bold",
     display: '-webkit-box',
     '-webkit-line-clamp': 2,
@@ -336,7 +341,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   sobreMunicipio: {
-    fontSize: "1.5rem",
+    fontSize: "1.1rem",
     fontWeight: "bold",
     // marginBottom:"-5px",
   },
@@ -488,13 +493,20 @@ const PlaceDescriptionBar = forwardRef(
     const [isScreen900, setTextScreen900] = useState(false);
     const [isScreen600, setTextScreen600] = useState(false);
 
-
-    const fullText = content?.descricao;
+    // const fullText = content?.descricao;
+    const fullText = content?.descricao?.replace(/\\r\\n/g, '<br />');
 
     // Calcule o número de caracteres com base na altura da janela
     const numChars = Math.floor(windowHeight / (isScreen900 ? 3 : (isScreen600 ? 3.2 : 1.6)));
 
     const shortText = `${fullText?.substring(0, numChars)} ...`;
+
+    const [expanded, setExpanded] = useState(false);
+
+    const handleExpandClick = () => {
+      setExpanded(!expanded);
+    };
+
     const [loading, setLoading] = useState(false);
 
     const handleShareWhatsApp = async () => {
@@ -604,13 +616,13 @@ const PlaceDescriptionBar = forwardRef(
                         {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
                         {
                           isTextExpanded ? (
-                            <span>{fullText}</span>
+                            <span dangerouslySetInnerHTML={{ __html: fullText }}></span>
                           ) : shortText === "undefined ..." ? (
                             "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."
                           ) : (fullText + " ..." === shortText) ? (
-                            <span>{fullText}</span>
+                            <span dangerouslySetInnerHTML={{ __html: fullText }}></span>
                           ) : (
-                            <span>{shortText}</span>
+                            <span dangerouslySetInnerHTML={{ __html: shortText }}></span>
                           )
                         }
                         {fullText + " ..." !== shortText && (
@@ -690,6 +702,19 @@ const PlaceDescriptionBar = forwardRef(
       }
     }, [openedPopup, rota]);
 
+    const [isTextClamped, setIsTextClamped] = useState(false);
+    const textRef = useRef(null);
+
+    useEffect(() => {
+      if (textRef.current) {
+        setIsTextClamped(textRef.current.scrollHeight > textRef.current.clientHeight);
+      }
+    }, [fullText]);
+    const [hovered, setHovered] = useState(false);
+
+    const handleMouseEnter = () => setHovered(true);
+    const handleMouseLeave = () => setHovered(false);
+
     return (
       <>
         {isDesktop() && (
@@ -707,94 +732,137 @@ const PlaceDescriptionBar = forwardRef(
               </Slide>
             ) : (
               <>
-                <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-                  <Paper elevation={6} ref={ref} className={classes.underSearch}>
-                    <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
-                      <Typography className={classes.titulo}>
-                        {content?.nome ?? <CircularProgress size={25} />}
-                      </Typography>
-                      <Typography className={classes.subtitulo}>
-                        {programa ? programa : content?.programa}
-                      </Typography>
-                    </div>
-                  </Paper>
-                </Slide>
-                <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-                  <Paper elevation={6} className={content?.image_url ? classes.underSearch2 : classes.underSearch2NoImage}>
-                    <div className={classes.basicInfo}>
-                      {realizacao || content?.nome ? (
-                        <>
-                          <Stack direction="row">
-                            <Typography className={classes.sobreMunicipio}>Sobre</Typography>
-                          </Stack>
-                          <Typography className={classes.subtituloMunicipio}>
-                            {content?.gestao != "3" && "Essa é uma realização de gestões anteriores."}
-                            {
-                              isTextExpanded ? (
-                                <span>{fullText}</span>
-                              ) : shortText === "undefined ..." ? (
-                                "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."
-                              ) : (fullText + " ..." === shortText) ? (
-                                <span>{fullText}</span>
-                              ) : (
-                                <span>{shortText}</span>
-                              )
-                            }
-                            {fullText + " ..." !== shortText && (
-                              <Button onClick={() => setTextExpanded(!isTextExpanded)}>
-                                {content?.descricao && (isTextExpanded ? 'Leia menos' : 'Leia mais')}
-                              </Button>
-                            )}<br></br>
+
+                <Box
+                  sx={{
+                    position: 'fixed',
+                    top: '3vh',
+                    right: '3vh',
+                    width: '25vw',
+                    minWidth: "385px",
+                    height: '94vh',
+                    overflowY: 'auto',
+                    borderRadius: '8px',
+                    backgroundColor: 'rgba(0, 0, 0, 0) !important',
+                    boxShadow: 'none !important',
+                    // custom scroll bar styling
+                    '&::-webkit-scrollbar': {
+                      width: '0px',
+                      background: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      background: 'transparent',
+                    },
+                    '&': {
+                      scrollbarWidth: 'none',
+                    }
+                  }}
+                >
+                  <Stack spacing={1}>
+                    <Slide direction="down" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                      <Paper elevation={6} ref={ref} sx={{ backgroundColor: 'rgba(0, 0, 0, 0)', boxShadow: 'none' }}>
+                        <div style={{ paddingTop: "10px", paddingBottom: "10px", paddingLeft: "25px", paddingRight: "25px" }}>
+                          <Typography className={classes.titulo}>
+                            {content?.nome ?? <CircularProgress size={25} />}
+                          </Typography>
+                          <Typography className={classes.subtitulo}>
+                            {programa ? programa : content?.programa}
+                          </Typography>
+                        </div>
+                      </Paper>
+                    </Slide>
+                    <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                      <Card elevation={6}>
+                        <CardContent style={{ paddingTop: "10px", paddingBottom: "10px", paddingLeft: "25px", paddingRight: "25px", paddingBottom: '0' }}>
+                          <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                          <Collapse in={expanded} collapsedSize={fullText && isTextClamped ? 130 : !fullText ? 80 : 100}>
                             <Typography
-                              component="span"
-                              style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
+                              ref={textRef}
+                              className={classes.subtituloMunicipio}
+                              style={{
+                                display: '-webkit-box',
+                                WebkitLineClamp: expanded ? 'unset' : 5,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                                transition: 'all 0.3s ease'
+                              }}
+                            >
+                              {content?.gestao !== "3" && "Essa é uma realização de gestões anteriores."}
+                              <span dangerouslySetInnerHTML={{ __html: fullText }}></span>
+                              {!fullText && "Desculpe, ainda não possuímos descrição para esta realização. Por favor, tente novamente mais tarde."}
+                            </Typography>
+                          </Collapse>
+                        </CardContent>
+                        <CardActions style={{ paddingTop: '0px', justifyContent: 'space-between' }}>
+                          <Slide direction="right" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
+                            <Button
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '8px',
+                              }}
+                              onMouseEnter={handleMouseEnter}
+                              onMouseLeave={handleMouseLeave}
+                              onClick={handleShareWhatsApp}
+                            >
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <img src={whatsapp} alt="WhatsApp Icon" style={{ width: "20px", marginRight: '8px' }} />
+
+                                <Grow in={hovered} timeout={500} style={{ transformOrigin: 'left' }}>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      whiteSpace: 'nowrap',
+                                      overflow: 'hidden',
+                                      fontSize: '14px',
+                                      marginLeft: '8px',
+                                    }}
+                                  >
+                                    Compartilhar
+                                  </Typography>
+                                </Grow>
+                              </Box>
+                            </Button>
+                          </Slide>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            {fullText && isTextClamped && (
+                              <Button size="small" onClick={handleExpandClick}>
+                                {expanded ? 'Leia menos' : 'Leia mais'}
+                                {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                              </Button>
+                            )}
+                            <Button
                               onClick={() => {
                                 setTema(content?.tema);
                                 setPrograma(content?.programa);
                                 setActiveBar(PROGRAMA_DESCRIPTION_BAR);
                               }}
+                              size="small"
+                              color="primary"
                             >
                               Saiba mais
-                            </Typography>
-                          </Typography>
-                        </>
-                      ) : (
-                        <CircularProgress style={{ marginTop: "1rem" }} size={25} />
-                      )}
-                    </div>
-                    {content?.status && (
-                      <span className={classes.buttonStatus}>
-                        <Button variant="contained" className={classes.statusButton}>
-                          {content?.status}
-                        </Button>
-                      </span>
+                            </Button>
+                          </div>
+                        </CardActions>
+                      </Card>
+                    </Slide>
+                    <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                      <Paper elevation={6}>
+                        <div className={classes.sumarioInfo}>
+                          {content ? <ListInfo content={content ? content : []} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
+                        </div>
+                      </Paper>
+                    </Slide>
+                    {content?.image_url && (
+                      <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
+                        <Paper elevation={6}>
+                          <ImageCarousel images={[content?.image_url]} />
+                        </Paper>
+                      </Slide>
                     )}
-                    {content?.gestao != "3" && (
-                      <span className={classes.buttonStatus}>
-                        <Button variant="contained" className={classes.statusButtonHardCoded}>
-                          Concluído
-                        </Button>
-                      </span>
-                    )}
-                  </Paper>
-                </Slide>
-                <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-                  <Paper
-                    elevation={6}
-                    className={content?.image_url ? classes.underSearch3 : classes.underSearch3NoImage}
-                  >
-                    <div className={classes.sumarioInfo}>
-                      {content ? <ListInfo content={content ? content : []} /> : <CircularProgress style={{ marginTop: "1rem", marginLeft: "1.2rem" }} size={25} />}
-                    </div>
-                  </Paper>
-                </Slide>
-                {content?.image_url && (
-                  <Slide direction="up" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
-                    <Paper elevation={6} className={classes.underSearch4}>
-                      <ImageCarousel images={[content?.image_url]} />
-                    </Paper>
-                  </Slide>
-                )}
+
+                  </Stack>
+                </Box>
               </>
             )}
           </div>)}
@@ -818,7 +886,7 @@ const PlaceDescriptionBar = forwardRef(
             </BottomSheet>
           </div>
         )}
-        {isDesktop() && (
+        {/* {isDesktop() && (
           <Slide direction="up" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
             <Button
               style={{
@@ -832,7 +900,7 @@ const PlaceDescriptionBar = forwardRef(
               <img src={whatsapp} alt="Fixed Button" style={{ width: "50px" }} />
             </Button>
           </Slide>
-        )}
+        )} */}
       </>
     );
   });
