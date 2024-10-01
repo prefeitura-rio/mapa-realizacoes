@@ -774,7 +774,13 @@ const PlaceDescriptionBar = forwardRef(
                     <Slide direction="left" timeout={1000} in={underSearchBar} mountOnEnter unmountOnExit>
                       <Card elevation={6}>
                         <CardContent style={{ paddingTop: "10px", paddingBottom: "10px", paddingLeft: "25px", paddingRight: "25px", paddingBottom: '0' }}>
-                          <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                          <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <Typography className={classes.sobreMunicipio}>Sobre</Typography>
+                            <Box flex={1} />
+                            <Button variant="contained" className={classes.statusButton}>
+                              {content?.status}
+                            </Button>
+                          </Box>
                           <Collapse in={expanded} collapsedSize={fullText && isTextClamped ? 130 : !fullText ? 80 : 100}>
                             <Typography
                               ref={textRef}
