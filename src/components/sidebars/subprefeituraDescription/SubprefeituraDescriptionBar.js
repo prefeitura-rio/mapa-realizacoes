@@ -33,6 +33,8 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { isDesktop } from "../../../redux/active/reducers";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
+const mapVersion = process.env.REACT_APP_MAPA_VERSION === "PLANO_VERAO";
+
 const useStyles = makeStyles((theme) => ({
 
   listInfo: {
@@ -388,7 +390,7 @@ const BairroDescriptionBar = forwardRef(
                   </Box>
                   {/* </Tooltip> */}
                   <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
-                  {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && (
+                  {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && !mapVersion && (
                     // <Tooltip title="Investimento" >
                     <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
                       <AttachMoneyIcon />
@@ -410,7 +412,7 @@ const BairroDescriptionBar = forwardRef(
             </Box>
 
           </Paper>
-          {gestao != "1_2" &&
+          {gestao != "1_2" && !mapVersion &&
             <Paper
               elevation={6}
               className={classes.underSearch4Mobile}
@@ -540,7 +542,7 @@ const BairroDescriptionBar = forwardRef(
                       </Box>
                       {/* </Tooltip> */}
                       <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
-                      {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && (
+                      {dadosAgregadosAbaSumarioStatusEntregasSubprefeitura.investment !== 0 && !mapVersion && (
                         // <Tooltip title="Investimento" >
                         <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
                           <AttachMoneyIcon />
@@ -565,7 +567,7 @@ const BairroDescriptionBar = forwardRef(
             </Slide>
 
 
-            <Slide direction="up" timeout={1000} in={gestao != "1_2"} mountOnEnter unmountOnExit>
+            {!mapVersion && <Slide direction="up" timeout={1000} in={gestao != "1_2"} mountOnEnter unmountOnExit>
               <Paper
                 elevation={6}
                 className={classes.underSearch3}
@@ -611,6 +613,7 @@ const BairroDescriptionBar = forwardRef(
                 </div>
               </Paper>
             </Slide>
+            }
 
           </>)}
 
