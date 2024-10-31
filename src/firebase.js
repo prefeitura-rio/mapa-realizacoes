@@ -238,40 +238,20 @@ export async function getListProgramaData() {
   });
 }
 
-export async function getListRealizacaoData(ids = null) {
+export async function getListRealizacaoData() {
   let results = [];
-  let idsChunks = [];
-  if (ids) {
-    if (ids.length === 0) {
-      return [];
-    } else if (ids.length > 10) {
-      // Firestore only allows 10 ids per query
-      for (let i = 0; i < ids.length; i += 10) {
-        idsChunks.push(ids.slice(i, i + 10));
-      }
-    } else {
-      idsChunks = [ids];
-    }
-    for (let i = 0; i < idsChunks.length; i++) {
-      if (idsChunks.length === 0) {
-        break;
-      }
-      var res = await db
-        .collection("realizacao")
-        .where(firebase.firestore.FieldPath.documentId(), "in", idsChunks[i])
-        .get();
-      results.push(
-        ...res.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        }),
-      );
-    }
+  let res;
+
+  if (process.env.REACT_APP_MAPA_VERSION == "PLANO_VERAO") {
+    res = await db.collection("realizacao").where("plano_verao", "==", true).get();
   } else {
-    var res = await db.collection("realizacao").get();
-    results = res.docs.map((doc) => {
-      return { ...doc.data(), id: doc.id };
-    });
+    res = await db.collection("realizacao").get();
   }
+
+  results = res.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
+
   return results;
 }
 
