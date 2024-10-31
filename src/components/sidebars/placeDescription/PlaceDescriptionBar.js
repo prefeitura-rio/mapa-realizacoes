@@ -563,7 +563,7 @@ const PlaceDescriptionBar = forwardRef(
     };
 
 
-
+    const mapVersion = process.env.REACT_APP_MAPA_VERSION === 'PLANO_VERAO';
     function SheetContentPlaceDescriptionBar() {
       return (
         <Stack m={2} mt={2} spacing={2}>
@@ -631,17 +631,19 @@ const PlaceDescriptionBar = forwardRef(
                           </Button>
                         )}
                         <br></br>
-                        <Typography
-                          component="span"
-                          style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
-                          onClick={() => {
-                            setTema(content?.tema);
-                            setPrograma(content?.programa);
-                            setActiveBar(PROGRAMA_DESCRIPTION_BAR);
-                          }}
-                        >
-                          Saiba mais
-                        </Typography>
+                        {!mapVersion &&
+                          <Typography
+                            component="span"
+                            style={{ cursor: 'pointer', textDecoration: 'underline', color: '#007bff', marginLeft: '8px' }}
+                            onClick={() => {
+                              setTema(content?.tema);
+                              setPrograma(content?.programa);
+                              setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                            }}
+                          >
+                            Saiba mais
+                          </Typography>
+                        }
                       </Typography>
                     </>
                   ) : (
@@ -665,16 +667,16 @@ const PlaceDescriptionBar = forwardRef(
                   <ImageCarousel images={[content?.image_url]} />
                 </Paper>
               )}
-
-              <Paper style={{ padding: "20px" }} elevation={6}>
-                <Button
-                  startIcon={<WhatsAppIcon sx={{ color: "#25d366", fontSize: "30px !important" }} />}
-                  onClick={handleShareWhatsApp}
-                  disabled={loading}
-                >
-                  Compartilhe no WhatsApp
-                </Button>
-              </Paper>
+              {!mapVersion &&
+                <Paper style={{ padding: "20px" }} elevation={6}>
+                  <Button
+                    startIcon={<WhatsAppIcon sx={{ color: "#25d366", fontSize: "30px !important" }} />}
+                    onClick={handleShareWhatsApp}
+                    disabled={loading}
+                  >
+                    Compartilhe no WhatsApp
+                  </Button>
+                </Paper>}
             </>
           )}
         </Stack>
@@ -799,37 +801,39 @@ const PlaceDescriptionBar = forwardRef(
                             </Typography>
                           </Collapse>
                         </CardContent>
-                        <CardActions style={{ paddingTop: '0px', justifyContent: 'space-between' }}>
-                          <Slide direction="right" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
-                            <Button
-                              sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                padding: '8px',
-                              }}
-                              onMouseEnter={handleMouseEnter}
-                              onMouseLeave={handleMouseLeave}
-                              onClick={handleShareWhatsApp}
-                            >
-                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <img src={whatsapp} alt="WhatsApp Icon" style={{ width: "20px", marginRight: '8px' }} />
+                        <CardActions style={{ paddingTop: '0px', justifyContent: !mapVersion ? 'space-between' : 'flex-end' }}>
+                          {!mapVersion &&
+                            <Slide direction="right" timeout={1000} in={activeBar == DESCRIPTION_BAR} mountOnEnter unmountOnExit>
+                              <Button
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  padding: '8px',
+                                }}
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                                onClick={handleShareWhatsApp}
+                              >
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                  <img src={whatsapp} alt="WhatsApp Icon" style={{ width: "20px", marginRight: '8px' }} />
 
-                                <Grow in={hovered} timeout={500} style={{ transformOrigin: 'left' }}>
-                                  <Typography
-                                    variant="body2"
-                                    sx={{
-                                      whiteSpace: 'nowrap',
-                                      overflow: 'hidden',
-                                      fontSize: '14px',
-                                      marginLeft: '8px',
-                                    }}
-                                  >
-                                    Compartilhar
-                                  </Typography>
-                                </Grow>
-                              </Box>
-                            </Button>
-                          </Slide>
+                                  <Grow in={hovered} timeout={500} style={{ transformOrigin: 'left' }}>
+                                    <Typography
+                                      variant="body2"
+                                      sx={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        fontSize: '14px',
+                                        marginLeft: '8px',
+                                      }}
+                                    >
+                                      Compartilhar
+                                    </Typography>
+                                  </Grow>
+                                </Box>
+                              </Button>
+                            </Slide>
+                          }
                           <div style={{ display: 'flex', gap: '8px' }}>
                             {fullText && isTextClamped && (
                               <Button size="small" onClick={handleExpandClick}>
@@ -837,17 +841,19 @@ const PlaceDescriptionBar = forwardRef(
                                 {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                               </Button>
                             )}
-                            <Button
-                              onClick={() => {
-                                setTema(content?.tema);
-                                setPrograma(content?.programa);
-                                setActiveBar(PROGRAMA_DESCRIPTION_BAR);
-                              }}
-                              size="small"
-                              color="primary"
-                            >
-                              Saiba mais
-                            </Button>
+                            {!mapVersion &&
+                              <Button
+                                onClick={() => {
+                                  setTema(content?.tema);
+                                  setPrograma(content?.programa);
+                                  setActiveBar(PROGRAMA_DESCRIPTION_BAR);
+                                }}
+                                size="small"
+                                color="primary"
+                              >
+                                Saiba mais
+                              </Button>
+                            }
                           </div>
                         </CardActions>
                       </Card>

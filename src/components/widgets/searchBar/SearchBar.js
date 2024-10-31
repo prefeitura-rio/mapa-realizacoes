@@ -648,6 +648,17 @@ const SearchBar = ({
     )
   };
 
+
+
+  const CustomPaperSearchMapVersion = (props) => {
+    return (
+      <div style={{ width: "110%", maxHeight: "80vh", overflowY: 'auto', overflowX: 'hidden' }}>
+        <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingLeft: "10px", paddingTop: "10px" }}>Realizações</Typography>
+        <Paper elevation={0} {...props} />
+      </div>
+    )
+  };
+
   const CustomPaperSearch = (props) => {
     const filteredOptions = programasOptions.filter(option =>
       option.nome.toLowerCase().includes(currentProgramaInputValue.toLowerCase())
@@ -769,7 +780,7 @@ const SearchBar = ({
                   paper: {
                     sx: {
                       marginTop: "15px",
-                      marginLeft: "-5px",
+                      marginLeft: "-7px",
                       width: "100%",
                       height: "60vh",
                       overflowY: "hidden",
@@ -826,7 +837,7 @@ const SearchBar = ({
                   paper: {
                     sx: {
                       marginTop: "15px",
-                      marginLeft: "-5px",
+                      marginLeft: "-7px",
                       width: "100%",
                       height: "60vh",
                       overflowY: "hidden",
@@ -894,7 +905,7 @@ const SearchBar = ({
                   paper: {
                     sx: {
                       marginTop: "15px",
-                      marginLeft: "-5px",
+                      marginLeft: "-7px",
                       width: "100%",
                       height: "60vh",
                       overflowY: "hidden",
@@ -982,7 +993,7 @@ const SearchBar = ({
                 paper: {
                   sx: {
                     marginTop: "15px",
-                    marginLeft: "-5px",
+                    marginLeft: "-7px",
                     width: "100%",
                     height: "60vh",
                     overflowY: "hidden",
@@ -1039,6 +1050,15 @@ const SearchBar = ({
         </div>
       );
     };
+    const CustomPaperSearchMobileMapVersion = (props) => {
+
+      return (
+        <div style={{ width: "100%", maxHeight: "63vh", overflowY: 'auto', overflowX: 'hidden' }}>
+          <Typography style={{ fontSize: "1.1rem", fontWeight: "bold", paddingBottom: "15px", paddingLeft: "10px", paddingTop: "10px" }}>Realizações</Typography>
+          <Paper elevation={0} {...props} />
+        </div>
+      );
+    };
 
     const [noOptions, setNoOptions] = useState(false);
     const [currentProgramaInputValue, setCurrentProgramaInputValue] = useState('');
@@ -1088,13 +1108,13 @@ const SearchBar = ({
               disableClearable
               options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
               filterOptions={filterOptions}
-              PaperComponent={CustomPaperSearchMobile}
+              PaperComponent={!mapVersion ? CustomPaperSearchMobile : CustomPaperSearchMobileMapVersion}
               ListboxProps={{ style: { maxHeight: "100vh", overflowY: 'hidden' } }}
               componentsProps={{
                 paper: {
                   sx: {
                     marginTop: "-15px",
-                    marginLeft: "-5px",
+                    marginLeft: "-7px",
                     width: "100%",
                     height: "100vh",
                     overflowY: "auto",
@@ -1116,7 +1136,7 @@ const SearchBar = ({
                   {...params}
                   autoFocus={!inputValueRealizacaoFromSearch}
                   // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                  placeholder="Encontre um programa/realização"
+                  placeholder={!mapVersion ? "Encontre um programa/realização" : "Encontre uma realização"}
                   sx={{
                     "& fieldset": { border: 'none' }
                   }}
@@ -1213,6 +1233,8 @@ const SearchBar = ({
     }
   }, [inputValueTema, inputValuePrograma, realizacao, place, activeBar]);
 
+  const mapVersion = process.env.REACT_APP_MAPA_VERSION === 'PLANO_VERAO';
+
 
   return (
 
@@ -1221,7 +1243,7 @@ const SearchBar = ({
         <ClickAwayListener onClickAway={handleClickOutside}>
           <Stack direction="row" spacing={!showMenuBar && !showSearchBar && !showRealizacaoSearchBar ? 2 : 0}>
             {/* FILTER BY TEMAS AND PROGRAMAS */}
-            {!showMenuBar ?
+            {!mapVersion && (!showMenuBar ?
 
               (
                 <Paper elevation={4} style={{ borderRadius: "10px", width: "46px", height: "46px", position: "relative", backgroundColor: 'white', display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -1284,7 +1306,7 @@ const SearchBar = ({
                             paper: {
                               sx: {
                                 marginTop: "15px",
-                                marginLeft: "-5px",
+                                marginLeft: "-7px",
                                 width: "392px",
                                 height: "80vh",
                                 overflowY: "hidden",
@@ -1340,7 +1362,7 @@ const SearchBar = ({
                           componentsProps={{
                             paper: {
                               sx: {
-                                marginLeft: "-5px",
+                                marginLeft: "-7px",
                                 marginTop: "15px",
                                 width: "392px",
                                 height: "80vh",
@@ -1410,7 +1432,7 @@ const SearchBar = ({
                             paper: {
                               sx: {
                                 marginTop: "15px",
-                                marginLeft: "-5px",
+                                marginLeft: "-7px",
                                 width: "392px",
                                 height: "80vh",
                                 overflowY: "hidden",
@@ -1484,7 +1506,7 @@ const SearchBar = ({
                   </Paper>
                 </div>
                 // </Slide>
-              )}
+              ))}
 
             {/* SEARCH FOR BAIRROS */}
             {!showSearchBar ?
@@ -1549,7 +1571,7 @@ const SearchBar = ({
                           paper: {
                             sx: {
                               marginTop: "15px",
-                              marginLeft: "-5px",
+                              marginLeft: "-7px",
                               width: "392px",
                               height: "80vh",
                               overflowY: "hidden",
@@ -1674,13 +1696,13 @@ const SearchBar = ({
                         disableClearable
                         options={(realizacoes ?? []).filter(realizacao => ((gestao == "3" || gestao == null) ? (realizacao.gestao == "3") : (gestao == "1_2") ? (realizacao.gestao == "1-2") : (realizacao.gestao == "1-2" || realizacao.gestao == "3"))).map(realizacao => realizacao.nome).sort((a, b) => a.localeCompare(b, 'pt-BR'))}
                         filterOptions={filterOptions}
-                        PaperComponent={CustomPaperSearch}
+                        PaperComponent={!mapVersion ? CustomPaperSearch : CustomPaperSearchMapVersion}
                         ListboxProps={{ style: { maxHeight: "100vh", overflowY: 'auto' } }}
                         componentsProps={{
                           paper: {
                             sx: {
                               // marginTop: "15px",
-                              marginLeft: "-5px",
+                              marginLeft: "-7px",
                               width: "392px",
                               height: "100vh",
                               overflowY: "auto",
@@ -1706,7 +1728,7 @@ const SearchBar = ({
                             {...params}
                             autoFocus={true}
                             // onFocus={activeBar == MAIN_UNDERSEARCH_BAR ? handleOnfocus : () => { }}
-                            placeholder="Encontre um programa/realização"
+                            placeholder={!mapVersion ? "Encontre um programa/realização" : "Encontre uma realização"}
                             sx={{
                               "& fieldset": { border: 'none' }
                             }}
@@ -1758,7 +1780,9 @@ const SearchBar = ({
 
               )}
 
-            <Paper elevation={4}
+
+
+            {!mapVersion && <Paper elevation={4}
               style={{ borderRadius: "10px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
               className={`${classes.fixedButtonClock} ${gestao === "1_2" || gestao === "1_2_3" ? classes.selectedPaperOldPoints : ''}`}
             >
@@ -1772,9 +1796,9 @@ const SearchBar = ({
                   2009 - 2016
                 </Typography>
               </IconButton>
-            </Paper>
+            </Paper>}
 
-            <Paper elevation={4}
+            {!mapVersion && <Paper elevation={4}
               style={{ borderRadius: "10px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
               className={`${classes.fixedButtonClock} ${gestao === "3" || gestao === "1_2_3" || gestao == null ? classes.selectedPaperG3 : ''}`}
             >
@@ -1790,7 +1814,7 @@ const SearchBar = ({
                   2021 - 2024
                 </Typography>
               </IconButton>
-            </Paper>
+            </Paper>}
 
 
 
@@ -1857,16 +1881,17 @@ const SearchBar = ({
             }}
             showLabels
           >
-            <BottomNavigationAction
-              label={"Menu"}
-              icon={
-                <Tooltip title={tema && !programa && !realizacao || tema && !programa && currentClickedPoint ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="right">
-                  <Badge badgeContent={tema && !programa && !realizacao || tema && !programa && currentClickedPoint ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
-                    <MenuIcon />
-                  </Badge>
-                </Tooltip>
+            {!mapVersion &&
+              <BottomNavigationAction
+                label={"Menu"}
+                icon={
+                  <Tooltip title={tema && !programa && !realizacao || tema && !programa && currentClickedPoint ? `Tema: ${tema}` : tema && programa && !realizacao ? `Tema: ${tema} | Programa: ${programa}` : tema && programa && realizacao ? `Tema: ${tema} | Programa: ${programa} | Realizacao: ${realizacao}` : ""} placement="right">
+                    <Badge badgeContent={tema && !programa && !realizacao || tema && !programa && currentClickedPoint ? 1 : tema && programa && !realizacao ? 2 : tema && programa && realizacao ? 3 : 0} color="primary">
+                      <MenuIcon />
+                    </Badge>
+                  </Tooltip>
 
-              } />
+                } />}
             <BottomNavigationAction
               label={"Busca"}
               icon={
@@ -1885,16 +1910,19 @@ const SearchBar = ({
                   </Badge>
                 </Tooltip>
               } />
-            <BottomNavigationAction
-              // add bottom navigation action label
-              label={"Gestões"}
-              icon={
-                <RestoreIcon
-                  // fontSize="small"
-                  // sx={{ color: gestao ? 'white' : 'grey' }}
-                  onClick={handleOpenSpeedDial}
-                />
-              } />
+            {!mapVersion &&
+              <BottomNavigationAction
+                // add bottom navigation action label
+                label={"Gestões"}
+                icon={
+                  <RestoreIcon
+                    // fontSize="small"
+                    // sx={{ color: gestao ? 'white' : 'grey' }}
+                    onClick={handleOpenSpeedDial}
+                  />
+                }
+              />
+            }
           </BottomNavigation>
 
           <Backdrop open={openSpeedDial} sx={{ zIndex: (theme) => theme.zIndex.speedDial - 1, bgcolor: 'rgba(0, 0, 0, 0.5)' }} />
