@@ -12,10 +12,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - staging.mapaplanoverao.dados.rio.dados.rio
+        - staging.mapaplanoverao.dados.rio
       secretName: mapa-realizacoes-dev-planoverao-tls
   rules:
-    - host: staging.mapaplanoverao.dados.rio.dados.rio
+    - host: staging.mapaplanoverao.dados.rio
       http:
         paths:
           - path: /
