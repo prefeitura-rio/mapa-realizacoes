@@ -6,6 +6,8 @@ import * as turf from "@turf/turf";
 import { compareContent } from "./utils/data";
 import store from './redux/store';
 
+const mapVersion = process.env.REACT_APP_MAPA_VERSION === "PLANO_VERAO"
+
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
   authDomain: firebaseCredentials.authDomain,
@@ -1046,7 +1048,7 @@ export async function getAggregatedData(tema = null, programa = null, bairro = n
 
   try {
     // List all documents in the collection
-    const aggregatedDataCollection = await db.collection("aggregated_data").get();
+    const aggregatedDataCollection = await db.collection(!mapVersion ? "aggregated_data" : "aggregated_data__planoverao").get();
     let result = { count: 0, investment: 0 };
 
     // For each document, look for the key. If found, return the data. Otherwise, return the default value
