@@ -1,6 +1,8 @@
 FROM node:12-alpine AS build-stage
 WORKDIR /app
 COPY package*.json ./
+ARG REACT_APP_MAPA_VERSION
+ENV REACT_APP_MAPA_VERSION=$REACT_APP_MAPA_VERSION
 RUN npm install
 COPY . .
 RUN npm run build

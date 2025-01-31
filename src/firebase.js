@@ -6,6 +6,8 @@ import * as turf from "@turf/turf";
 import { compareContent } from "./utils/data";
 import store from './redux/store';
 
+const mapVersion = process.env.REACT_APP_MAPA_VERSION === "PLANO_VERAO"
+
 const firebaseConfig = {
   apiKey: firebaseCredentials.apiKey,
   authDomain: firebaseCredentials.authDomain,
@@ -238,40 +240,20 @@ export async function getListProgramaData() {
   });
 }
 
-export async function getListRealizacaoData(ids = null) {
+export async function getListRealizacaoData() {
   let results = [];
-  let idsChunks = [];
-  if (ids) {
-    if (ids.length === 0) {
-      return [];
-    } else if (ids.length > 10) {
-      // Firestore only allows 10 ids per query
-      for (let i = 0; i < ids.length; i += 10) {
-        idsChunks.push(ids.slice(i, i + 10));
-      }
-    } else {
-      idsChunks = [ids];
-    }
-    for (let i = 0; i < idsChunks.length; i++) {
-      if (idsChunks.length === 0) {
-        break;
-      }
-      var res = await db
-        .collection("realizacao")
-        .where(firebase.firestore.FieldPath.documentId(), "in", idsChunks[i])
-        .get();
-      results.push(
-        ...res.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        }),
-      );
-    }
+  let res;
+
+  if (process.env.REACT_APP_MAPA_VERSION == "PLANO_VERAO") {
+    res = await db.collection("realizacao").where("plano_verao", "==", true).get();
   } else {
-    var res = await db.collection("realizacao").get();
-    results = res.docs.map((doc) => {
-      return { ...doc.data(), id: doc.id };
-    });
+    res = await db.collection("realizacao").get();
   }
+
+  results = res.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
+
   return results;
 }
 
@@ -1066,7 +1048,7 @@ export async function getAggregatedData(tema = null, programa = null, bairro = n
 
   try {
     // List all documents in the collection
-    const aggregatedDataCollection = await db.collection("aggregated_data").get();
+    const aggregatedDataCollection = await db.collection(!mapVersion ? "aggregated_data" : "aggregated_data__planoverao").get();
     let result = { count: 0, investment: 0 };
 
     // For each document, look for the key. If found, return the data. Otherwise, return the default value

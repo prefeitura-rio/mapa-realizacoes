@@ -33,6 +33,8 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { isDesktop } from "../../../redux/active/reducers";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
+const mapVersion = process.env.REACT_APP_MAPA_VERSION === "PLANO_VERAO";
+
 const useStyles = makeStyles((theme) => ({
 
   listInfo: {
@@ -378,7 +380,7 @@ const BairroDescriptionBar = forwardRef(
                   </Box>
                   {/* </Tooltip> */}
                   <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
-                  {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && (
+                  {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && !mapVersion && (
                     // <Tooltip title="Investimento" >
                     <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
                       <AttachMoneyIcon />
@@ -400,7 +402,7 @@ const BairroDescriptionBar = forwardRef(
             </Box>
 
           </Paper>
-          {gestao != "1_2" && (!isLoading && destaquesBairro.length === 0 ? null : (
+          {gestao != "1_2" && !mapVersion && (!isLoading && destaquesBairro.length === 0 ? null : (
             <Paper elevation={6} className={classes.underSearch4Mobile}>
               <div className={classes.basicInfo}>
                 <Typography className={classes.sobreMunicipio}>Destaques</Typography>
@@ -531,7 +533,7 @@ const BairroDescriptionBar = forwardRef(
                       </Box>
                       {/* </Tooltip> */}
                       <span style={{ paddingLeft: "5px", paddingRight: "5px" }}></span>
-                      {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && (
+                      {dadosAgregadosAbaSumarioStatusEntregasBairro.investment !== 0 && !mapVersion && (
                         // <Tooltip title="Investimento" >
                         <Box display="flex" style={{ display: "flex", height: "8.5vh", alignItems: "center" }}>
                           <AttachMoneyIcon />
@@ -555,7 +557,7 @@ const BairroDescriptionBar = forwardRef(
               </Paper>
             </Slide>
 
-            {(isLoading || destaquesBairro.length > 0) && (
+            {(isLoading || destaquesBairro.length > 0) && !mapVersion && (
               <Slide direction="up" timeout={1000} in={gestao != "1_2"} mountOnEnter unmountOnExit>
                 <Paper elevation={6} className={classes.underSearch3}>
                   <div className={classes.basicInfo}>
