@@ -1,56 +1,65 @@
-# Mapa de realizações da prefeitura. <br> Inspirado no Google Maps &copy;
+# Mapa de realizações da prefeitura. `<br>` Inspirado no Google Maps &copy;
+
 Projeto fullstack criado com:
+
 - React
 - Redux
 - Redux Saga
-- Leaflet 
+- Leaflet
 - Firebase (backend da aplicação)
-<br/><br/>
+  `<br/><br/>`
 
 ## Redux / Redux-Saga
+
 Este projeto utiliza Redux e Redux-Saga para gerenciar o estado da aplicação e efeitos colaterais assíncronos. A estrutura de diretórios do Redux segue uma abordagem modularizada, onde diferentes recursos (como autenticação, comentários, imagens, lugares, etc.) têm suas próprias subpastas.
+
 ### Estrutura de Pasta
 
-  /redux  <br>
-  |-- /auth <br>
-  |   |-- actions.js  <br>
-  |   |-- reducers.js  <br>
-  |-- /comments  <br>
-  |-- /images  <br>
-  |-- /places  <br>
-  |-- ...  <br>
-  .   ...  <br>
-  .   ...  <br>
-  .   ... <br>
-  |-- reducers.js <br>
-  |-- sagas.js <br>
-  |-- store.js <br>
+  /redux  `<br>`
+  |-- /auth `<br>`
+  |   |-- actions.js  `<br>`
+  |   |-- reducers.js  `<br>`
+  |-- /comments  `<br>`
+  |-- /images  `<br>`
+  |-- /places  `<br>`
+  |-- ...  `<br>`
+  .   ...  `<br>`
+  .   ...  `<br>`
+  .   ... `<br>`
+  |-- reducers.js `<br>`
+  |-- sagas.js `<br>`
+  |-- store.js `<br>`
 
 Cada subpasta contém dois arquivos principais:
 
-**actions.js** - Define as ações que podem ser despachadas. <br>
-**reducers.js** - Define como o estado muda em resposta a uma ação. <br>
-Além disso, temos três arquivos na raiz do diretório Redux: <br>
+**actions.js** - Define as ações que podem ser despachadas. `<br>`
+**reducers.js** - Define como o estado muda em resposta a uma ação. `<br>`
+Além disso, temos três arquivos na raiz do diretório Redux: `<br>`
 
-**reducers.js** - Combina todos os reducers em um. <br>
-**sagas.js**- Define sagas para lidar com efeitos colaterais assíncronos.<br>
-**store.js** - Configura e cria a Redux Store.<br>
+**reducers.js** - Combina todos os reducers em um. `<br>`
+**sagas.js**- Define sagas para lidar com efeitos colaterais assíncronos.`<br>`
+**store.js** - Configura e cria a Redux Store.`<br>`
 
 Exemplo: Autenticação (auth)
 **actions.js**
+
 ````
 Aqui definimos várias ações relacionadas à autenticação
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 ````
+
 **reducers.js**
+
 ```
 import { LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOG_OUT } from "./actions";
 ...
 
 ```
+
 ### Redux-Saga
+
 O Redux-Saga é utilizado para efeitos colaterais assíncronos, como chamadas API.
 
 **sagas.js**
@@ -77,14 +86,18 @@ export function* watchLogin() {
 }
 
 ```
+
 ### Como rodar Saga
+
 No arquivo store.js, o middleware do saga é aplicado e a saga raiz é executada.
+
 ```
 const sagaMiddleware = createSagaMiddleware();
 // ...
 sagaMiddleware.run(rootSaga);
 
 ```
+
 ## Configuração do ambiente
 
 - Baixe este repositório como um arquivo ZIP usando o botão acima e descompacte-o. Se você estiver usando `git`, clone este repositório.
@@ -100,7 +113,6 @@ npm install
 npm start
 ```
 
-
 #### Instalação e dependências
 
 Este aplicativo foi construído e testado usando
@@ -109,10 +121,10 @@ Este aplicativo foi construído e testado usando
 - NPM version 6.14.15
 
 #### ⚠ Credenciais do firebase - firebase.js ⚠
+
 ```
 As credenciais do firebase estão no arquivo firebaseconfig.js.
 
 Esse arquivo não se encontra neste repositório. Este arquivo é
 de uso exclusivo dos desenvolvedores do escritório de dados.
 ```
-  
