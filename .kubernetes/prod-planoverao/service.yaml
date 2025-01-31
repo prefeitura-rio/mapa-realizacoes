@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mapa-realizacoes-planoverao
+  name: mapa-realizacoes-planoverao
+  namespace: mapa-realizacoes
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+  selector:
+    app: mapa-realizacoes-planoverao
